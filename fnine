@@ -1,0 +1,97 @@
+function Func_fnine()
+{
+	C_WARN=''
+	C_STD='-std=c90'
+	
+	CPP_WARN=''
+	CPP_STD='-std=c++03'
+	
+	OBJECTS=0
+	
+	for I in $@
+	do		
+		case $I in
+			-c90)
+				C_STD='-std=c90'
+			;;
+			-c99)
+				C_STD='-std=c99'
+			;;
+			-c11)
+				C_STD='-std=c11'
+			;;
+			-cw)
+				C_WARN='-Wall -Wextra'
+			;;
+			
+			+c03)
+				CPP_STD='-std=c++03'
+			;;
+			+c11)
+				CPP_STD='-std=c++11'
+			;;
+			+c14)
+				CPP_STD='-std=c++14'
+			;;
+			+cw)
+				CPP_WARN='-Wall -Wextra'
+			;;
+			
+			*.c)
+				OBJECTS=1
+				NAME=${I%.*}
+			
+				if test -f $I
+				then
+					echo "gcc $C_STD $C_WARN $I -o $NAME"
+					gcc $C_STD $C_WARN $I -o $NAME
+					echo "./$NAME"
+					./$NAME
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			*.cpp)
+				OBJECTS=1
+				NAME=${I%.*}
+				
+				if test -f $I
+				then
+					echo "g++ $CPP_STD $CPP_WARN $I -o $NAME"
+					g++ $CPP_STD $CPP_WARN $I -o $NAME
+					echo "./$NAME"
+					./$NAME
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			-*)
+				echo "fnine: Błędna opcja $I. Stop."
+				return 2
+			;;
+			+*)
+				echo "fnine: Błędna opcja $I. Stop."
+				return 2
+			;;
+			*.*)
+				echo "fnine: $I: Nieobsługiwany format pliku. Stop."
+				return 2
+			*)
+				echo "fnine: $I: Niepoprawny argument. Stop."
+				return 2
+		esac
+	done
+	
+	if test $OBJECTS -eq 0
+	then
+		echo "fnine: Nie podano obiektów. Stop."
+		return 2
+	fi
+}
+
+Func_fnine $@
+
