@@ -6,11 +6,26 @@ function Func_fnine()
 	CPP_WARN=''
 	CPP_STD='-std=c++03'
 	
+	PY_STD='python2'
+	
 	OBJECTS=0
+	CMPL_ONLY=0
+	REMOVE=0
 	
 	for I in $@
 	do		
 		case $I in
+			-C)
+				CMPL_ONLY=1
+			;;
+			-R)
+				REMOVE=1
+			;;
+			-CR)
+				CMPL_ONLY=1
+				REMOVE=1
+			;;
+			
 			-c90)
 				C_STD='-std=c90'
 			;;
@@ -37,6 +52,13 @@ function Func_fnine()
 				CPP_WARN='-Wall -Wextra'
 			;;
 			
+			-py2)
+				PY_STD='python2'
+			;;
+			-py3)
+				PY_STD='python3'
+			;;
+			
 			*.c)
 				OBJECTS=1
 				NAME=${I%.*}
@@ -45,8 +67,18 @@ function Func_fnine()
 				then
 					echo "gcc $C_STD $C_WARN $I -o $NAME"
 					gcc $C_STD $C_WARN $I -o $NAME
-					echo "./$NAME"
-					./$NAME
+					
+					if test $CMPL_ONLY -eq 0
+					then
+						echo "./$NAME"
+						./$NAME
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME"
+						rm -f $NAME
+					fi
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop."
 					return 2
@@ -61,8 +93,31 @@ function Func_fnine()
 				then
 					echo "g++ $CPP_STD $CPP_WARN $I -o $NAME"
 					g++ $CPP_STD $CPP_WARN $I -o $NAME
-					echo "./$NAME"
-					./$NAME
+					
+					if test $CMPL_ONLY -eq 0
+					then
+						echo "./$NAME"
+						./$NAME
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME"
+						rm -f $NAME
+					fi
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			*.py)
+				OBJECTS=1
+			
+				if test -f $I
+				then
+					echo "$PY_STD $I"
+						$PY_STD $I
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop."
 					return 2
