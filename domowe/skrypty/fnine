@@ -8,9 +8,14 @@ function Func_fnine()
 	
 	PY_STD='python2'
 	
+	JAVA_STD='1.7'
+	
+	CS_STD='4'
+	
 	OBJECTS=0
 	CMPL_ONLY=0
 	REMOVE=0
+	SCRIPTING=0
 	
 	for I in $@
 	do		
@@ -24,6 +29,9 @@ function Func_fnine()
 			-CR)
 				CMPL_ONLY=1
 				REMOVE=1
+			;;
+			-S)
+				SCRIPTING=1
 			;;
 			
 			-c90)
@@ -116,8 +124,52 @@ function Func_fnine()
 			
 				if test -f $I
 				then
-					echo "$PY_STD $I"
+					if test $SCRIPTING -eq 1
+					then
+						echo "$PY_STD $I"
 						$PY_STD $I
+					else
+						echo "$PY_STD -m py_compile $I"
+						$PY_STD -m py_compile $I
+					
+						if test $CMPL_ONLY -eq 0
+						then
+							echo "$PY_STD $NAME.pyc"
+							$PY_STD $NAME
+						fi
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME.pyc"
+						rm -f $NAME.pyc
+					fi
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			*.hs)
+				OBJECTS=1
+				NAME=${I%.*}
+				
+				if test -f $I
+				then
+					echo "ghc $I -o $NAME"
+					ghc $I -o $NAME
+					
+					if test $CMPL_ONLY -eq 0
+					then
+						echo "./$NAME"
+						./$NAME
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME $NAME.hi $NAME.ho"
+						rm -f $NAME $NAME.hi $NAME.ho
+					fi
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop."
 					return 2
