@@ -67,6 +67,16 @@ function Func_fnine()
 				PY_STD='python3'
 			;;
 			
+			-jv5)
+				JAVA_STD='1.5'
+			;;
+			-jv6)
+				JAVA_STD='1.6'
+			;;
+			-jv7)
+				JAVA_STD='1.7'
+			;;
+			
 			*.c)
 				OBJECTS=1
 				NAME=${I%.*}
@@ -143,6 +153,32 @@ function Func_fnine()
 					then
 						echo "rm -f $NAME.pyc"
 						rm -f $NAME.pyc
+					fi
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			*.java)
+				OBJECTS=1
+				NAME=${I%.*}
+				
+				if test -f $I
+				then
+					echo "javac -source $JAVA_STD $I"
+					javac -source $JAVA_STD $I
+					
+					if test $CMPL_ONLY -eq 0
+					then
+						echo "java -version:\"$JAVA_STD*\" $NAME"
+						java -version:\"$JAVA_STD*\" $NAME
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME"
+						rm -f $NAME
 					fi
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop."
