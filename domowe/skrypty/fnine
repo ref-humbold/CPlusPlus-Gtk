@@ -77,6 +77,13 @@ function Func_fnine()
 				JAVA_STD='1.7'
 			;;
 			
+			-cs3)
+				CS_STD='3'
+			;;
+			-cs4)
+				CS_STD='4'
+			;;
+			
 			*.c)
 				OBJECTS=1
 				NAME=${I%.*}
@@ -179,6 +186,32 @@ function Func_fnine()
 					then
 						echo "rm -f $NAME"
 						rm -f $NAME
+					fi
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop."
+					return 2
+				fi
+			;;
+			
+			*.cs)
+				OBJECTS=1
+				NAME=${I%.*}
+				
+				if test -f $I
+				then
+					echo "mcs -langversion:$CS_STD $I"
+					mcs -langversion:$CS_STD $I
+					
+					if test $CMPL_ONLY -eq 0
+					then
+						echo "mono $NAME.exe"
+						mono $NAME.exe
+					fi
+					
+					if test $REMOVE -eq 1
+					then
+						echo "rm -f $NAME.exe"
+						rm -f $NAME.exe
 					fi
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop."
