@@ -83,4 +83,3 @@ BEGIN
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia EXECUTE PROCEDURE zam_trg_func();
-
