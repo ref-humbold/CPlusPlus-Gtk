@@ -40,11 +40,14 @@ class Klienci:
 		self.KlienciWindow.show()
 	
 	def KlienciButtonP16_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.")
 	
 	def KlienciButtonP27_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("DANE KLIENTA ZOSTAŁY POMYŚLNIE ZMIENIONE.")
 	
 	def KlienciButtonP35_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label(" ")
 

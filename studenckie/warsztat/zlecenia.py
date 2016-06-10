@@ -35,10 +35,12 @@ class Zlecenia:
 		self.ZleceniaWindow.show()
 	
 	def ZleceniaButtonP16_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.")
 	
 	def ZleceniaButtonP25_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("ZLECENIE ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	
 	def ZleceniaButtonP31_clicked_cb(self, button):
 		pass

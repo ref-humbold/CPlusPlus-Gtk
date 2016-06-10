@@ -29,7 +29,14 @@ class Mechanik:
 		self.MechWindow.show()
 	
 	def MechButtonP11_clicked_cb(self, button):
-		pass
+		ident = self.MechComboboxtextP11.get_active_text()
+		args = [ident]
+		cur = self.conn.cursor()
+		cur.execute("UPDATE TABLE zlecenia SET data_real = now() WHERE id = %s", args)
+		self.conn.commit()
+		cur.close()
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("ZLECENIE ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
 	
 	def MechButtonP21_clicked_cb(self, button):
 		pass

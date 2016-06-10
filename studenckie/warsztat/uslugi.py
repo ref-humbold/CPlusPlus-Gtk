@@ -30,11 +30,21 @@ class Uslugi:
 		self.UslugiWindow.show()
 	
 	def UslugiButtonP11_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label(" ")
 	
 	def UslugiButtonP23_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("USŁUGA ZOSTAŁA POMYŚLNIE DODANA.")
 	
 	def UslugiButtonP33_clicked_cb(self, button):
-		pass
+		nazwa = self.UslugiComboboxtextP31.get_active_text()
+		nowa_cena = self.UslugiEntryP32.get_text()
+		args = [nowa_cena, ident]
+		cur = self.conn.cursor()
+		cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s", args)
+		self.conn.commit()
+		cur.close()
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("CENA USŁUGI ZOSTAŁA POMYŚNIE ZMIENIONA.")
 

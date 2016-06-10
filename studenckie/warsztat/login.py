@@ -25,8 +25,19 @@ class Login:
 		self.LoginWindow.show()
 	
 	def open_error_window(self):
-		pass
+		self.LoginEntry21.set_text("")
+		self.LoginEntry22.set_text("")
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("NIEPOPRAWNY LOGIN LUB HASŁO.\nSPRÓBUJ PONOWNIE.")
 	
 	def LoginButton23_clicked_cb(self, button):
-		pass
+		lgn = self.LoginEntry21.get_text()
+		pwd = self.LoginEntry22.get_text()
+		
+		if re.match(r"^[A-Za-z0-9]*$", pwd) != None:
+			print "OK"
+			Gtk.main_quit()
+			# conn = psycopg2.connect('example.db')
+		else:
+			self.open_error_window()
 

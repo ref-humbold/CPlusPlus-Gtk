@@ -26,11 +26,11 @@ class Sprzedawca:
 		self.SprzWindow.show()
 	
 	def SprzButton21_clicked_cb(self, button):
-		pass
+		ZleceniaWindow = Zlecenia(conn)
 	
 	def SprzButton22_clicked_cb(self, button):
-		pass
+		KlienciWindow = Klienci(conn)
 	
 	def SprzButton23_clicked_cb(self, button):
-		pass
+		UslugiWindow = Uslugi(conn)
 

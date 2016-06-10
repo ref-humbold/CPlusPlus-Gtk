@@ -33,11 +33,20 @@ class Magazynier:
 		self.MagWindow.show()
 	
 	def MagButtonP14_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.")
 		
 	def MagButtonP25_clicked_cb(self, button):
-		pass
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	
 	def MagButtonP31_clicked_cb(self, button):
-		pass
+		ident = self.MagComboboxtextP31.get_active_text()
+		args = [ident]
+		cur = self.conn.cursor()
+		cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
+		self.conn.commit()
+		cur.close()
+		ExtraWindow = Extra()
+		ExtraWindow.show_label("POMYŚLNIE ODEBRANO ZAMÓWIENIE.")
 
