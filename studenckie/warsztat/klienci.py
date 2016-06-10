@@ -39,15 +39,74 @@ class Klienci:
 		
 		self.KlienciWindow.show()
 	
+	def modify(self, cur, nonstr, args, convtype):
+		if args[1] != nonstr:
+			args[1] = convtype( args[1] )
+			cur.execute("UPDATE klienci SET %s = %s WHERE id = %s;", args)
+	
 	def KlienciButtonP16_clicked_cb(self, button):
+		imie = self.KlienciEntryP11.get_text()
+		nazwisko = self.KlienciEntryP12.get_text()
+		telefon = self.KlienciEntryP13.get_text()
+		firma = self.KlienciEntryP14.get_text()
+		rabat = self.KlienciComboboxtextP15.get_active_text()
+		
+		cur = self.conn.cursor()
+		args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[ None if i == " " else i for i in [rabat] ]
+		args = [ None if args[i] == None else int( args[i] ) for i in range(args) if i == 2 or i == 4 ]
+		cur.execute("INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
+		cur.execute("SELECT max(id) FROM klienci;")
+		self.conn.commit()
+		wynid = cur.fetchone()[0]
+		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.")
+		ExtraWindow.show_label( "NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = "+str(wynid) )
 	
 	def KlienciButtonP27_clicked_cb(self, button):
+		ident = self.KlienciComboboxtextP21.get_active_text()
+		imie = self.KlienciEntryP22.get_text()
+		nazwisko = self.KlienciEntryP23.get_text()
+		telefon = self.KlienciEntryP24.get_text()
+		firma = self.KlienciEntryP25.get_text()
+		rabat = self.KlienciComboboxtextP26.get_active_text()
+		
+		cur = self.conn.cursor()
+		self.modify(cur, "", ["imie", imie, ident], str)
+		self.modify(cur, "", ["nazwisko", nazwisko, ident], str)
+		self.modify(cur, "", ["telefon", telefon, ident], int)
+		self.modify(cur, "", ["firma", firma, ident], str)
+		self.modify(cur, " ", ["rabat", rabat, ident], int)
+		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label("DANE KLIENTA ZOSTAŁY POMYŚLNIE ZMIENIONE.")
+		ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
 	
 	def KlienciButtonP35_clicked_cb(self, button):
+		ident = self.KlienciComboboxtextP31.get_active_text()
+		imie = self.KlienciEntryP32.get_text()
+		nazwisko = self.KlienciEntryP33.get_text()
+		telefon = self.KlienciEntryP34.get_text()
+		
+		cur = self.conn.cursor()
+		
+		if ident != "":
+			args = [ident]
+			cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
+		else:
+			args = [ "%"+i+"%" for i in [imie, nazwisko, telefon] ]
+			cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS TEXT) LIKE %s;", args)
+		
+		self.conn.commit()
+		
+		try:
+			wyn = cur.fetchall()
+		except ProgrammingError:
+			wyn = []
+		
+		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label(" ")
+		wynstr = "BRAK WYNIKÓW!" if wyn == [] else "\n".join( map(lambda x : ", ".join( map(str, x) ), wyn) )
+		ExtraWindow.show_label(wynstr)
 

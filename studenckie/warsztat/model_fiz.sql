@@ -10,7 +10,7 @@ CREATE DOMAIN rejestr AS char(8) NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z][A-Z, 0-9][
 CREATE DOMAIN nrtel AS int CHECK(100000000 <= VALUE AND VALUE <= 999999999);
 
 /* TWORZENE TABEL */
-CREATE TABLE klient (id serial PRIMARY KEY, imie text, nazwisko text, telefon nrtel, firma text DEFAULT NULL, rabat procent);
+CREATE TABLE klienci (id serial PRIMARY KEY, imie text, nazwisko text, telefon nrtel, firma text DEFAULT NULL, rabat procent);
 
 CREATE TABLE samochody ( model text PRIMARY KEY, marka text NOT NULL, typ typauto, waga numeric(20, 5) );
 
@@ -29,7 +29,7 @@ CREATE TABLE czesam (cze_id int, sam_model text);
 CREATE TABLE czeusl (cze_id int, usl_nazwa text);
 
 /* DODANIE KLUCZY OBCYCH */
-ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_kli FOREIGN KEY (kli_id) REFERENCES klient(id) ON DELETE SET NULL DEFERRABLE;
+ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_kli FOREIGN KEY (kli_id) REFERENCES klienci(id) ON DELETE SET NULL DEFERRABLE;
 ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_sam FOREIGN KEY (sam_model) REFERENCES samochody(model) ON DELETE SET NULL DEFERRABLE;
 
 ALTER TABLE zamowienia ADD CONSTRAINT fk_zam_cze FOREIGN KEY (cze_id) REFERENCES czesci(id) ON DELETE SET NULL DEFERRABLE;
@@ -43,14 +43,13 @@ ALTER TABLE czesam ADD CONSTRAINT fk_czesam_sam FOREIGN KEY (sam_model) REFERENC
 ALTER TABLE czeusl ADD CONSTRAINT fk_czeusl_cze FOREIGN KEY (cze_id) REFERENCES czesci(id) ON DELETE CASCADE DEFERRABLE;
 ALTER TABLE czeusl ADD CONSTRAINT fk_czeusl_usl FOREIGN KEY (usl_nazwa) REFERENCES uslugi(nazwa) ON DELETE CASCADE DEFERRABLE;
 
-/* TWORZENIE UŻYTKOWNIKÓW I RÓL */
+/* TWORZENIE RÓL I NADANIE PRAW ROLOM */
 CREATE ROLE sprzedawca;
 CREATE ROLE mechanik;
 CREATE ROLE magazynier;
 
-/* NADANIE PRAW ROLOM */
 GRANT SELECT ON uslugi, samochody TO sprzedawca;
-GRANT SELECT, INSERT, UPDATE ON klient, zlecenia, zleusl TO sprzedawca;
+GRANT SELECT, INSERT, UPDATE ON klienci, zlecenia, zleusl TO sprzedawca;
 
 GRANT SELECT ON samochody, zleusl, czeusl TO mechanik;
 GRANT SELECT, UPDATE ON czesci TO mechanik;
@@ -83,3 +82,4 @@ BEGIN
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia EXECUTE PROCEDURE zam_trg_func();
+

@@ -32,21 +32,50 @@ class Magazynier:
 		
 		self.MagWindow.show()
 	
+	def modify(self, cur, args, convtype):
+		if args[1] != "":
+			args[1] = convtype( args[1] )
+			cur.execute("UPDATE zamowienia SET %s = %s WHERE id = %s;", args)
+	
 	def MagButtonP14_clicked_cb(self, button):
+		firma = self.MagEntryP11.get_text()
+		ilosc = self.MagEntryP12.get_text()
+		cena = self.MagEntryP13.get_text()
+		
+		cur = self.conn.cursor()
+		args = [ firma, int(ilosc), int(cena) ]
+		cur.execute("INSERT INTO zamowienia() VALUES(now(), %s, %s, %s);", args)
+		self.conn.commit()
+		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.")
+		ExtraWindow.show_label( "ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = "+str(wynid) )
 		
 	def MagButtonP25_clicked_cb(self, button):
+		ident = self.MagComboboxtextP21.get_active_text()
+		firma = self.MagEntryP22.get_text()
+		ilosc = self.MagEntryP23.get_text()
+		cena = self.MagEntryP24.get_text()
+		
+		cur = self.conn.cursor()
+		modify(cur, [ "firma", firma, int(ident) ], str)
+		modify(cur, [ "ilosc", ilosc, int(ident) ], int)
+		modify(cur, [ "cena", cena, int(ident) ], float)
+		self.conn.commit()
+		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+		ExtraWindow.show_label("ZAMÓWIENIE NUMER "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	
 	def MagButtonP31_clicked_cb(self, button):
 		ident = self.MagComboboxtextP31.get_active_text()
-		args = [ident]
+		
 		cur = self.conn.cursor()
+		args = [ int(ident) ]
 		cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
 		self.conn.commit()
 		cur.close()
+		
 		ExtraWindow = Extra()
-		ExtraWindow.show_label("POMYŚLNIE ODEBRANO ZAMÓWIENIE.")
+		ExtraWindow.show_label("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER "+str(ident)+".")
 

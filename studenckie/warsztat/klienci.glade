@@ -103,7 +103,7 @@ PANEL KLIENTÓW SPRZEDAWCY
                 </child>
                 <child>
                   <object class="GtkButton" id="KlienciButtonP16">
-                    <property name="label" translatable="yes">ZŁÓŻ ZLECENIE</property>
+                    <property name="label" translatable="yes">DODAJ KLIENTA</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
@@ -173,12 +173,12 @@ PANEL KLIENTÓW SPRZEDAWCY
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <items>
-                      <item translatable="yes">0%</item>
-                      <item translatable="yes">5%</item>
-                      <item translatable="yes">10%</item>
-                      <item translatable="yes">15%</item>
-                      <item translatable="yes">20%</item>
-                      <item translatable="yes">25%</item>
+                      <item translatable="yes">0</item>
+                      <item translatable="yes">5</item>
+                      <item translatable="yes">10</item>
+                      <item translatable="yes">15</item>
+                      <item translatable="yes">20</item>
+                      <item translatable="yes">25</item>
                     </items>
                   </object>
                   <packing>
@@ -297,12 +297,12 @@ PANEL KLIENTÓW SPRZEDAWCY
                     <property name="button_sensitivity">on</property>
                     <items>
                       <item translatable="yes"> </item>
-                      <item translatable="yes">0%</item>
-                      <item translatable="yes">5%</item>
-                      <item translatable="yes">10%</item>
-                      <item translatable="yes">15%</item>
-                      <item translatable="yes">20%</item>
-                      <item translatable="yes">25%</item>
+                      <item translatable="yes">0</item>
+                      <item translatable="yes">5</item>
+                      <item translatable="yes">10</item>
+                      <item translatable="yes">15</item>
+                      <item translatable="yes">20</item>
+                      <item translatable="yes">25</item>
                     </items>
                   </object>
                   <packing>
