@@ -107,7 +107,6 @@ PANEL ZLECEŃ SPRZEDAWCY
                   <object class="GtkEntry" id="ZleceniaEntryP13">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="input_purpose">alpha</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -161,7 +160,6 @@ PANEL ZLECEŃ SPRZEDAWCY
                   <object class="GtkComboBoxText" id="ZleceniaComboboxtextP14">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <signal name="changed" handler="ZleceniaComboboxtextP14_changed_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -204,38 +202,11 @@ PANEL ZLECEŃ SPRZEDAWCY
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkButton" id="ZleceniaButtonP25">
-                    <property name="label" translatable="yes">ZATWIERDŹ ZMIANY</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <signal name="clicked" handler="ZleceniaButtonP25_clicked_cb" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="ZleceniaEntryP24">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkComboBoxText" id="ZleceniaComboboxtextP23">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <items>
-                      <item translatable="yes"> </item>
+                      <item translatable="yes">-</item>
                       <item translatable="yes">NIE</item>
                       <item translatable="yes">TAK</item>
                     </items>
@@ -255,20 +226,6 @@ PANEL ZLECEŃ SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="ZleceniaLabelP24">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">USŁUGI</property>
-                    <property name="width_chars">0</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
@@ -320,6 +277,21 @@ PANEL ZLECEŃ SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="ZleceniaButtonP24">
+                    <property name="label" translatable="yes">ZATWIERDŹ ZMIANY</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="ZleceniaButtonP24_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>

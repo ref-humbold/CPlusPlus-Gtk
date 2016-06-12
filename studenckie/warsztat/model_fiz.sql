@@ -1,32 +1,32 @@
 /* TWORZENIE DZIEDZIN */
-CREATE DOMAIN procent AS int NOT NULL DEFAULT 0 CHECK(0 <= VALUE AND VALUE <= 100);
+CREATE DOMAIN procent AS integer NOT NULL DEFAULT 0 CHECK( VALUE IN(0, 5, 10, 15, 20, 25) );
 
 CREATE DOMAIN typauto AS char(1) NOT NULL DEFAULT 'o' CHECK( VALUE IN('o', 'c', 'a', 'm') );
 
 CREATE DOMAIN typcena AS numeric(10, 2) CHECK(VALUE > 0);
 
-CREATE DOMAIN rejestr AS char(8) NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9]$)|(^[A-Z][A-Z][A-Z][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9]$)|(^[A-Z][A-Z][A-Z][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9][A-Z, 0-9]$)');
+CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)');
 
-CREATE DOMAIN nrtel AS int CHECK(100000000 <= VALUE AND VALUE <= 999999999);
+CREATE DOMAIN nrtel AS integer CHECK(100000000 <= VALUE AND VALUE <= 999999999);
 
 /* TWORZENE TABEL */
 CREATE TABLE klienci (id serial PRIMARY KEY, imie text, nazwisko text, telefon nrtel, firma text DEFAULT NULL, rabat procent);
 
-CREATE TABLE samochody ( model text PRIMARY KEY, marka text NOT NULL, typ typauto, waga numeric(20, 5) );
+CREATE TABLE samochody (model text PRIMARY KEY, marka text NOT NULL, typ typauto, waga double precision CHECK(waga > 0));
 
 CREATE TABLE uslugi (nazwa text PRIMARY KEY, cena typcena);
 
-CREATE TABLE zlecenia (id serial PRIMARY KEY, data_zlec timestamp DEFAULT now(), data_real timestamp DEFAULT NULL, nr_rej rejestr, faktura boolean DEFAULT FALSE, koszt typcena, kli_id int, sam_model text);
+CREATE TABLE zlecenia (id serial PRIMARY KEY, data_zlec timestamp DEFAULT now(), data_real timestamp DEFAULT NULL, nr_rej rejestr, faktura boolean DEFAULT FALSE, koszt typcena, kli_id integer, sam_model text);
 
-CREATE TABLE zamowienia (id serial PRIMARY KEY, data_zamow timestamp DEFAULT now(), data_real timestamp DEFAULT NULL, firma text, ilosc int CHECK(ilosc > 0), cena typcena, cze_id int);
+CREATE TABLE czesci (id serial PRIMARY KEY, producent text, ilosc integer CHECK(ilosc >= 0), typ text, uniw boolean DEFAULT TRUE);
 
-CREATE TABLE czesci (id serial PRIMARY KEY, producent text, ilosc int CHECK(ilosc >= 0), typ text, uniw boolean DEFAULT TRUE);
+CREATE TABLE zamowienia (id serial PRIMARY KEY, data_zamow timestamp DEFAULT now(), data_real timestamp DEFAULT NULL, firma text, ilosc integer CHECK(ilosc > 0), cena typcena, cze_id integer);
 
-CREATE TABLE zleusl (zle_id int, usl_nazwa text);
+CREATE TABLE zleusl (zle_id integer, usl_nazwa text);
 
-CREATE TABLE czesam (cze_id int, sam_model text);
+CREATE TABLE czesam (cze_id integer, sam_model text);
 
-CREATE TABLE czeusl (cze_id int, usl_nazwa text);
+CREATE TABLE czeusl (cze_id integer, usl_nazwa text);
 
 /* DODANIE KLUCZY OBCYCH */
 ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_kli FOREIGN KEY (kli_id) REFERENCES klienci(id) ON DELETE SET NULL DEFERRABLE;
@@ -51,7 +51,7 @@ CREATE ROLE magazynier;
 GRANT SELECT ON uslugi, samochody TO sprzedawca;
 GRANT SELECT, INSERT, UPDATE ON klienci, zlecenia, zleusl TO sprzedawca;
 
-GRANT SELECT ON samochody, zleusl, czeusl TO mechanik;
+GRANT SELECT ON zlecenia, samochody, zleusl, czeusl TO mechanik;
 GRANT SELECT, UPDATE ON czesci TO mechanik;
 GRANT UPDATE(data_real) ON zlecenia TO mechanik;
 
@@ -59,27 +59,27 @@ GRANT SELECT, INSERT, UPDATE ON zamowienia TO magazynier;
 GRANT SELECT, INSERT, UPDATE, DELETE ON czesci, czesam, czeusl TO magazynier;
 
 /* REGUŁY, FUNKCJE I WYZWALACZE */
-CREATE OR REPLACE RULE czesam_rule AS ON DELETE TO czesam DO ALSO UPDATE czesci SET uniw = TRUE WHERE czesci.id = OLD.cze_id AND NOT EXISTS(SELECT czesam.cze_id FROM czesam WHERE czesam.cze_id = OLD.cze_id AND czesam.sam_id <> OLD.sam_idl);
+CREATE OR REPLACE RULE czesam_rule AS ON DELETE TO czesam DO ALSO UPDATE czesci SET uniw = TRUE WHERE czesci.id = OLD.cze_id AND NOT EXISTS(SELECT czesam.cze_id FROM czesam WHERE czesam.cze_id = OLD.cze_id AND czesam.sam_model <> OLD.sam_model);
 
 CREATE OR REPLACE FUNCTION zleusl_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
-	WITH tab AS (SELECT sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id=NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab;
+	WITH tab AS (SELECT zlecenia.id, sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id = NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab WHERE zlecenia.id = tab.id;
 	RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
-CREATE TRIGGER zleusl_trg AFTER INSERT OR UPDATE ON zleusl EXECUTE PROCEDURE zleusl_trg_func();
+CREATE TRIGGER zleusl_trg AFTER INSERT OR UPDATE ON zleusl FOR EACH ROW EXECUTE PROCEDURE zleusl_trg_func();
 
 CREATE OR REPLACE FUNCTION zam_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
 	IF OLD.data_real IS NULL AND NEW.data_real IS NOT NULL
 	THEN
-		UPDATE czesci SET ilosc = ilosc+NEW.ilosc;
+		UPDATE czesci SET ilosc = ilosc+NEW.ilosc WHERE id = NEW.cze_id;
 	ELSIF OLD.ilosc <> NEW.ilosc
 	THEN
-		UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc;
+		UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc WHERE id = NEW.cze_id;
 	END IF;
 	RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
-CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia EXECUTE PROCEDURE zam_trg_func();
+CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia FOR EACH ROW EXECUTE PROCEDURE zam_trg_func();
 

@@ -25,12 +25,16 @@ class Sprzedawca:
 		
 		self.SprzWindow.show()
 	
+	def SprzWindow_destroy_cb(self, window):
+		self.conn.close()
+		Gtk.main_quit()
+	
 	def SprzButton21_clicked_cb(self, button):
-		ZleceniaWindow = Zlecenia(conn)
+		ZleceniaWindow = Zlecenia(self.conn)
 	
 	def SprzButton22_clicked_cb(self, button):
-		KlienciWindow = Klienci(conn)
+		KlienciWindow = Klienci(self.conn)
 	
 	def SprzButton23_clicked_cb(self, button):
-		UslugiWindow = Uslugi(conn)
+		UslugiWindow = Uslugi(self.conn)
 

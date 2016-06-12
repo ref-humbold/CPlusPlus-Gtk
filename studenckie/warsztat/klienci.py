@@ -2,6 +2,7 @@
 
 import gi
 import psycopg2
+from psycopg2.extensions import AsIs
 from gi.repository import Gtk
 from extra import *
 
@@ -30,83 +31,145 @@ class Klienci:
 		self.KlienciButtonP27 = KlienciBuilder.get_object("KlienciButtonP27")
 		
 		self.KlienciComboboxtextP31 = KlienciBuilder.get_object("KlienciComboboxtextP31")
-		self.KlienciEntryP32 = KlienciBuilder.get_object("KlienciEntryP22")
-		self.KlienciEntryP33 = KlienciBuilder.get_object("KlienciEntryP23")
-		self.KlienciEntryP34 = KlienciBuilder.get_object("KlienciEntryP24")
+		self.KlienciEntryP32 = KlienciBuilder.get_object("KlienciEntryP32")
+		self.KlienciEntryP33 = KlienciBuilder.get_object("KlienciEntryP33")
+		self.KlienciEntryP34 = KlienciBuilder.get_object("KlienciEntryP34")
 		self.KlienciButtonP35 = KlienciBuilder.get_object("KlienciButtonP35")
+		
+		self.KlienciComboboxtextP31.append_text("-")
+		self.load_ids(self.KlienciComboboxtextP21)
+		self.load_ids(self.KlienciComboboxtextP31)
 		
 		KlienciBuilder.connect_signals(self)
 		
 		self.KlienciWindow.show()
 	
-	def modify(self, cur, nonstr, args, convtype):
-		if args[1] != nonstr:
+	def load_ids(self, comboboxtext):
+		cur = self.conn.cursor()
+		cur.execute("SELECT id FROM klienci;")
+		idents = cur.fetchall()
+		self.conn.commit()
+		cur.close()
+		
+		for s in [ str( i[0] ) for i in idents ]:
+			comboboxtext.append_text(s)
+	
+	def modify(self, nonstr, args, convtype):
+		if args[1] != None and args[1] != nonstr:
 			args[1] = convtype( args[1] )
-			cur.execute("UPDATE klienci SET %s = %s WHERE id = %s;", args)
+			cur = self.conn.cursor()
+			
+			try:
+				cur.execute("UPDATE klienci SET %s = %s WHERE id = %s;", args)
+			except psycopg2.Error:
+				self.conn.rollback()
+				ExtraWindow = Extra()
+				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+				return False
+			else:
+				self.conn.commit()
+			finally:
+				cur.close()
+		
+		return True
 	
 	def KlienciButtonP16_clicked_cb(self, button):
-		imie = self.KlienciEntryP11.get_text()
-		nazwisko = self.KlienciEntryP12.get_text()
-		telefon = self.KlienciEntryP13.get_text()
-		firma = self.KlienciEntryP14.get_text()
-		rabat = self.KlienciComboboxtextP15.get_active_text()
+		imie = self.KlienciEntryP11.get_text() # SQL text
+		nazwisko = self.KlienciEntryP12.get_text() # SQL text
+		telefon = self.KlienciEntryP13.get_text() # SQL integer
+		firma = self.KlienciEntryP14.get_text() # SQL text
+		rabat = self.KlienciComboboxtextP15.get_active_text() # SQL integer
 		
 		cur = self.conn.cursor()
-		args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[ None if i == " " else i for i in [rabat] ]
-		args = [ None if args[i] == None else int( args[i] ) for i in range(args) if i == 2 or i == 4 ]
-		cur.execute("INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
-		cur.execute("SELECT max(id) FROM klienci;")
-		self.conn.commit()
-		wynid = cur.fetchone()[0]
-		cur.close()
+		args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[rabat]
+		args[2] = None if args[2] == None else int( args[2] )
+		args[4] = None if args[4] == None else int( args[4] )
 		
-		ExtraWindow = Extra()
-		ExtraWindow.show_label( "NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = "+str(wynid) )
+		try:
+			cur.execute("INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
+			cur.execute("SELECT max(id) FROM klienci;")
+			wynid = cur.fetchone()[0]
+		except (psycopg2.Error, TypeError):
+			self.conn.rollback()
+			cur.close()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+			return
+		else:
+			self.conn.commit()
+			self.KlienciComboboxtextP21.append_text( str(wynid) )
+			self.KlienciComboboxtextP31.append_text( str(wynid) )
+			ExtraWindow = Extra()
+			ExtraWindow.show_label( "NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = "+str(wynid) )
+		finally:
+			cur.close()
 	
 	def KlienciButtonP27_clicked_cb(self, button):
-		ident = self.KlienciComboboxtextP21.get_active_text()
-		imie = self.KlienciEntryP22.get_text()
-		nazwisko = self.KlienciEntryP23.get_text()
-		telefon = self.KlienciEntryP24.get_text()
-		firma = self.KlienciEntryP25.get_text()
-		rabat = self.KlienciComboboxtextP26.get_active_text()
+		ident = self.KlienciComboboxtextP21.get_active_text() # SQL integer
+		imie = self.KlienciEntryP22.get_text() # SQL text
+		nazwisko = self.KlienciEntryP23.get_text() # SQL text
+		telefon = self.KlienciEntryP24.get_text() # SQL integer
+		firma = self.KlienciEntryP25.get_text() # SQL text
+		rabat = self.KlienciComboboxtextP26.get_active_text() # SQL integer
 		
-		cur = self.conn.cursor()
-		self.modify(cur, "", ["imie", imie, ident], str)
-		self.modify(cur, "", ["nazwisko", nazwisko, ident], str)
-		self.modify(cur, "", ["telefon", telefon, ident], int)
-		self.modify(cur, "", ["firma", firma, ident], str)
-		self.modify(cur, " ", ["rabat", rabat, ident], int)
-		cur.close()
+		if not self.modify("", [ AsIs("imie"), imie, int(ident) ], str):
+			return
+		
+		if not self.modify("", [ AsIs("nazwisko"), nazwisko, int(ident) ], str):
+			return
+		
+		if not self.modify("", [ AsIs("telefon"), telefon, int(ident) ], int):
+			return
+		
+		if not self.modify("", [ AsIs("firma"), firma, int(ident) ], str):
+			return
+		
+		if not self.modify("-", [ AsIs("rabat"), rabat, int(ident) ], int):
+			return
 		
 		ExtraWindow = Extra()
 		ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
 	
 	def KlienciButtonP35_clicked_cb(self, button):
-		ident = self.KlienciComboboxtextP31.get_active_text()
-		imie = self.KlienciEntryP32.get_text()
-		nazwisko = self.KlienciEntryP33.get_text()
-		telefon = self.KlienciEntryP34.get_text()
+		ident = self.KlienciComboboxtextP31.get_active_text() # SQL integer
+		imie = self.KlienciEntryP32.get_text() # SQL text
+		nazwisko = self.KlienciEntryP33.get_text() # SQL text
+		telefon = self.KlienciEntryP34.get_text() # SQL integer
 		
 		cur = self.conn.cursor()
 		
-		if ident != "":
-			args = [ident]
-			cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
+		if ident != "-":
+			args = [ int(ident) ]
+			
+			try:
+				cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
+				wyn = cur.fetchone()[:]
+			except (psycopg2.Error, TypeError):
+				self.conn.rollback()
+				ExtraWindow = Extra()
+				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+				return
+			else:
+				self.conn.commit()
+				ExtraWindow = Extra()
+				ExtraWindow.show_label( ", ".join( map(str, wyn) ) )
+			finally:
+				cur.close()
 		else:
-			args = [ "%"+i+"%" for i in [imie, nazwisko, telefon] ]
-			cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS TEXT) LIKE %s;", args)
-		
-		self.conn.commit()
-		
-		try:
-			wyn = cur.fetchall()
-		except ProgrammingError:
-			wyn = []
-		
-		cur.close()
-		
-		ExtraWindow = Extra()
-		wynstr = "BRAK WYNIKÓW!" if wyn == [] else "\n".join( map(lambda x : ", ".join( map(str, x) ), wyn) )
-		ExtraWindow.show_label(wynstr)
+			args = [ "%"+str(i)+"%" for i in [imie, nazwisko, telefon] ]
+			
+			try:
+				cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS text) LIKE %s;", args)
+				wyn = cur.fetchall()[:]
+			except (psycopg2.Error, TypeError):
+				self.conn.rollback()
+				ExtraWindow = Extra()
+				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+				return
+			else:
+				self.conn.commit()
+				ExtraWindow = Extra()
+				ExtraWindow.show_label( "\n".join( map(lambda x : ", ".join( map(str, x) ), wyn) ) )
+			finally:
+				cur.close()
 

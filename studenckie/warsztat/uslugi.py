@@ -25,46 +25,87 @@ class Uslugi:
 		self.UslugiEntryP32 = UslugiBuilder.get_object("UslugiEntryP32")
 		self.UslugiButtonP33 = UslugiBuilder.get_object("UslugiButtonP33")
 		
+		self.load_ids(self.UslugiComboboxtextP11)
+		self.load_ids(self.UslugiComboboxtextP31)
+		
 		UslugiBuilder.connect_signals(self)
 		
 		self.UslugiWindow.show()
 	
+	def load_ids(self, comboboxtext):
+		cur = self.conn.cursor()
+		cur.execute("SELECT nazwa FROM uslugi;")
+		idents = cur.fetchall()
+		self.conn.commit()
+		cur.close()
+		
+		for s in [ i[0] for i in idents ]:
+			comboboxtext.append_text(s)
+	
 	def UslugiButtonP11_clicked_cb(self, button):
-		nazwa = self.UslugiComboboxtextP11.get_active_text()
+		nazwa = self.UslugiComboboxtextP11.get_active_text() # SQL text
 		
 		cur = self.conn.cursor()
 		args = [nazwa]
-		cur.execute("SELECT cena FROM uslugi WHERE nazwa = %s;", args)
-		wyn = cur.fetchone()[0]
-		self.conn.commit()
-		cur.close()
 		
-		ExtraWindow = Extra()
-		ExtraWindow.show_label("CENA USLUGI "+nazwa+" WYNOSI "+str(wyn)+" zł.")
+		try:
+			cur.execute("SELECT cena FROM uslugi WHERE nazwa = %s;", args)
+			wyn = cur.fetchone()[0]
+		except (psycopg2.Error, TypeError):
+			self.conn.rollback()
+			cur.close()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+		else:
+			self.conn.commit()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("CENA USLUGI "+nazwa+" WYNOSI "+str(wyn)+" zł.")
+		finally:
+			cur.close()
 	
 	def UslugiButtonP23_clicked_cb(self, button):
-		nazwa = self.UslugiEntryP21.get_text()
-		cena = self.UslugiEntryP22.get_text()
+		nazwa = self.UslugiEntryP21.get_text() # SQL text
+		cena = self.UslugiEntryP22.get_text() # SQL numeric
+		
+		getcontext().prec = 2
 		
 		cur = self.conn.cursor()
-		args = [ nazwa, int(cena) ]
-		cur.execute("INSERT INTO cena VALUES(%s, %s);", args)
-		self.conn.commit()
-		cur.close()
+		args = [ nazwa, Decimal(cena) ]
 		
-		ExtraWindow = Extra()
-		ExtraWindow.show_label("USŁUGA "+nazwa+" ZOSTAŁA POMYŚLNIE DODANA.")
+		try:
+			cur.execute("INSERT INTO uslugi(nazwa, cena) VALUES(%s, %s);", args)
+		except psycopg2.Error:
+			self.conn.rollback()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+		else:
+			self.conn.commit()
+			self.UslugiComboboxtextP11.append_text(nazwa)
+			self.UslugiComboboxtextP31.append_text(nazwa)
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("USŁUGA "+nazwa+" ZOSTAŁA POMYŚLNIE DODANA.")
+		finally:
+			cur.close()
 	
 	def UslugiButtonP33_clicked_cb(self, button):
-		nazwa = self.UslugiComboboxtextP31.get_active_text()
-		nowa_cena = self.UslugiEntryP32.get_text()
+		nazwa = self.UslugiComboboxtextP31.get_active_text() # SQL text
+		nowa_cena = self.UslugiEntryP32.get_text() # SQL numeric
+		
+		getcontext().prec = 2
 		
 		cur = self.conn.cursor()
-		args = [int(nowa_cena), nazwa]
-		cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s;", args)
-		self.conn.commit()
-		cur.close()
+		args = [Decimal(nowa_cena), nazwa]
 		
-		ExtraWindow = Extra()
-		ExtraWindow.show_label("CENA USŁUGI "+nazwa+" ZOSTAŁA POMYŚNIE ZMIENIONA.")
+		try:
+			cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s;", args)
+		except psycopg2.Error:
+			self.conn.rollback()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+		else:
+			self.conn.commit()
+			ExtraWindow = Extra()
+			ExtraWindow.show_label("CENA USŁUGI "+nazwa+" ZOSTAŁA POMYŚNIE ZMIENIONA.")
+		finally:
+			cur.close()
 

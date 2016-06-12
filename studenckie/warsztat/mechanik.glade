@@ -4,6 +4,7 @@
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkWindow" id="MechWindow">
     <property name="can_focus">False</property>
+    <signal name="destroy" handler="MechWindow_destroy_cb" swapped="no"/>
     <child>
       <object class="GtkBox" id="MechBox1">
         <property name="visible">True</property>
