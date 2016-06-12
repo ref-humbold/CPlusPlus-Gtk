@@ -25,21 +25,31 @@ class Mechanik:
 		self.MechEntryP32 = MechBuilder.get_object("MechEntryP32")
 		self.MechButtonP33 = MechBuilder.get_object("MechButtonP33")
 		
-		self.load_ids(self.MechComboboxtextP11, 'zlecenia')
-		self.load_ids(self.MechComboboxtextP21, 'czesci')
-		self.load_ids(self.MechComboboxtextP31, 'czesci')
+		self.load_unreal_ids(self.MechComboboxtextP11)
+		self.load_ids(self.MechComboboxtextP21)
+		self.load_ids(self.MechComboboxtextP31)
 		
 		MechBuilder.connect_signals(self)
 		
 		self.MechWindow.show()
 	
-	def load_ids(self, comboboxtext, tablename):
+	def load_ids(self, comboboxtext):
 		cur = self.conn.cursor()
-		cur.execute( "SELECT id FROM %s;", [ AsIs(tablename) ] )
+		cur.execute("SELECT id FROM czesci;")
 		idents = cur.fetchall()
 		self.conn.commit()
 		cur.close()
 			
+		for s in [ str( i[0] ) for i in idents ]:
+			comboboxtext.append_text(s)
+	
+	def load_unreal_ids(self, comboboxtext):
+		cur = self.conn.cursor()
+		cur.execute("SELECT id FROM zlecenia WHERE data_real IS NULL;")
+		idents = cur.fetchall()
+		self.conn.commit()
+		cur.close()
+		
 		for s in [ str( i[0] ) for i in idents ]:
 			comboboxtext.append_text(s)
 	

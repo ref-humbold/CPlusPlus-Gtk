@@ -33,7 +33,7 @@ class Magazynier:
 		
 		self.load_ids(self.MagComboboxtextP14, 'czesci')
 		self.load_ids(self.MagComboboxtextP21, 'zamowienia')
-		self.load_ids(self.MagComboboxtextP31, 'zamowienia')
+		self.load_unreal_ids(self.MagComboboxtextP31)
 		
 		MagBuilder.connect_signals(self)
 		
@@ -42,6 +42,16 @@ class Magazynier:
 	def load_ids(self, comboboxtext, tablename):
 		cur = self.conn.cursor()
 		cur.execute( "SELECT id FROM %s;", [ AsIs(tablename) ] )
+		idents = cur.fetchall()
+		self.conn.commit()
+		cur.close()
+		
+		for s in [ str( i[0] ) for i in idents ]:
+			comboboxtext.append_text(s)
+	
+	def load_unreal_ids(self, comboboxtext):
+		cur = self.conn.cursor()
+		cur.execute("SELECT id FROM zamowienia WHERE data_real IS NULL;")
 		idents = cur.fetchall()
 		self.conn.commit()
 		cur.close()
