@@ -53,15 +53,27 @@ class Klienci:
 		
 		for s in [ str( i[0] ) for i in idents ]:
 			comboboxtext.append_text(s)
+		
+		comboboxtext.set_active(0)
 	
-	def modify(self, nonstr, args, convtype):
-		if args[1] != None and args[1] != nonstr:
+	def modify(self, nonstr, fieldname, args, convtype):
+		if args[1] != nonstr:
 			args[1] = convtype( args[1] )
-			cur = self.conn.cursor()
 			
 			try:
-				cur.execute("UPDATE klienci SET %s = %s WHERE id = %s;", args)
-			except psycopg2.Error:
+				cur = self.conn.cursor()
+				
+				if fieldname == "imie":
+					cur.execute("UPDATE klienci SET imie = %s WHERE id = %s;", args)
+				elif fieldname == "nazwisko":
+					cur.execute("UPDATE klienci SET nazwisko = %s WHERE id = %s;", args)
+				elif fieldname == "telefon":
+					cur.execute("UPDATE klienci SET telefon = %s WHERE id = %s;", args)
+				elif fieldname == "firma":
+					cur.execute("UPDATE klienci SET firma = %s WHERE id = %s;", args)
+				elif fieldname == "rabat":
+					cur.execute("UPDATE klienci SET rabat = %s WHERE id = %s;", args)
+			except:
 				self.conn.rollback()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
@@ -80,21 +92,19 @@ class Klienci:
 		firma = self.KlienciEntryP14.get_text() # SQL text
 		rabat = self.KlienciComboboxtextP15.get_active_text() # SQL integer
 		
-		cur = self.conn.cursor()
-		args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[rabat]
+		args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[ int(rabat) ]
 		args[2] = None if args[2] == None else int( args[2] )
-		args[4] = None if args[4] == None else int( args[4] )
 		
 		try:
+			cur = self.conn.cursor()
 			cur.execute("INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
 			cur.execute("SELECT max(id) FROM klienci;")
 			wynid = cur.fetchone()[0]
-		except (psycopg2.Error, TypeError):
+		except:
 			self.conn.rollback()
 			cur.close()
 			ExtraWindow = Extra()
 			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-			return
 		else:
 			self.conn.commit()
 			self.KlienciComboboxtextP21.append_text( str(wynid) )
@@ -112,19 +122,19 @@ class Klienci:
 		firma = self.KlienciEntryP25.get_text() # SQL text
 		rabat = self.KlienciComboboxtextP26.get_active_text() # SQL integer
 		
-		if not self.modify("", [ AsIs("imie"), imie, int(ident) ], str):
+		if not self.modify("", "imie", [ imie, int(ident) ], str):
 			return
 		
-		if not self.modify("", [ AsIs("nazwisko"), nazwisko, int(ident) ], str):
+		if not self.modify("", "nazwisko", [ nazwisko, int(ident) ], str):
 			return
 		
-		if not self.modify("", [ AsIs("telefon"), telefon, int(ident) ], int):
+		if not self.modify("", "telefon", [ telefon, int(ident) ], int):
 			return
 		
-		if not self.modify("", [ AsIs("firma"), firma, int(ident) ], str):
+		if not self.modify("", "firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.modify("-", [ AsIs("rabat"), rabat, int(ident) ], int):
+		if not self.modify("-", "rabat", [ rabat, int(ident) ], int):
 			return
 		
 		ExtraWindow = Extra()
@@ -144,7 +154,7 @@ class Klienci:
 			try:
 				cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
 				wyn = cur.fetchone()[:]
-			except (psycopg2.Error, TypeError):
+			except:
 				self.conn.rollback()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
@@ -161,7 +171,7 @@ class Klienci:
 			try:
 				cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS text) LIKE %s;", args)
 				wyn = cur.fetchall()[:]
-			except (psycopg2.Error, TypeError):
+			except:
 				self.conn.rollback()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")

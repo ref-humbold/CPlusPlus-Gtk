@@ -51,6 +51,7 @@ PANEL MECHANIKA
                   <object class="GtkComboBoxText" id="MechComboboxtextP11">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -85,10 +86,11 @@ PANEL MECHANIKA
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="MechBoxP2">
+              <object class="GtkGrid" id="MechGridP2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
+                <property name="row_homogeneous">True</property>
+                <property name="column_homogeneous">True</property>
                 <child>
                   <object class="GtkLabel" id="MechLabelP21">
                     <property name="visible">True</property>
@@ -96,34 +98,105 @@ PANEL MECHANIKA
                     <property name="label" translatable="yes">ID CZĘŚCI</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="MechLabelP22">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">USŁUGA</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBoxText" id="MechComboboxtextP21">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">0</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButtonP21">
-                    <property name="label" translatable="yes">SZUKAJ</property>
+                  <object class="GtkComboBoxText" id="MechComboboxtextP22">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="active">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">1</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="MechButtonP24P">
+                    <property name="label" translatable="yes">PRZYDZIEL MODEL</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButtonP21_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="MechButtonP24P_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="MechButtonP24L">
+                    <property name="label" translatable="yes">DODAJ USŁUGĘ</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="MechButtonP24L_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">3</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="MechLabelP23">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">MODEL SAMOCHODU</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkComboBoxText" id="MechComboboxtextP23">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="active">0</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
                   </packing>
                 </child>
               </object>
@@ -135,7 +208,7 @@ PANEL MECHANIKA
               <object class="GtkLabel" id="MechLabel22">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">SPRAWDŹ ILOŚĆ CZĘŚCI</property>
+                <property name="label" translatable="yes">ZARZĄDZAJ CZĘŚCIAMI</property>
               </object>
               <packing>
                 <property name="position">1</property>
@@ -188,12 +261,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButtonP33">
+                  <object class="GtkButton" id="MechButtonP33P">
                     <property name="label" translatable="yes">UŻYJ!</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButtonP33_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="MechButtonP33P_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -206,6 +279,7 @@ PANEL MECHANIKA
                   <object class="GtkComboBoxText" id="MechComboboxtextP31">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -215,7 +289,19 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkButton" id="MechButtonP33L">
+                    <property name="label" translatable="yes">SPRAWDŹ ILOŚĆ</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="clicked" handler="MechButtonP33L_clicked_cb" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="left_attach">0</property>
+                    <property name="top_attach">2</property>
+                    <property name="width">1</property>
+                    <property name="height">1</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -226,7 +312,8 @@ PANEL MECHANIKA
               <object class="GtkLabel" id="MechLabel23">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">UŻYJ CZĘŚCI</property>
+                <property name="margin_left">1</property>
+                <property name="label" translatable="yes">UŻYWANIE CZĘŚCI</property>
               </object>
               <packing>
                 <property name="position">2</property>

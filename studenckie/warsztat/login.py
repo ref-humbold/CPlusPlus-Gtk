@@ -43,21 +43,21 @@ class Login:
 		lgn = self.LoginEntry21.get_text()
 		pwd = self.LoginEntry22.get_text()
 		
-		if re.match(r"^[A-Za-z0-9]*$", pwd) != None:
+		if re.match(r"^[A-Za-z]*$", lgn) != None and re.match(r"^[A-Za-z0-9]*$", pwd) != None:
 			try:
 				conn = psycopg2.connect(database = "warsztat", user = lgn, password = pwd)
-			except psycopg2.Error:
+			except:
 				self.open_error_window("NIEPOPRAWNY LOGIN LUB HASŁO.\nSPRÓBUJ PONOWNIE.")
 				return
 			else:
 				self.is_logged = True
 			
-			cur = conn.cursor()
 			args = [lgn]
 			
 			try:
+				cur = conn.cursor()
 				cur.execute('SELECT r2.rolname FROM pg_roles AS r1 JOIN pg_auth_members AS m ON r1.oid = m.member JOIN pg_roles AS r2 ON m.roleid = r2.oid WHERE r1.rolname = %s;', args)
-			except psycopg2.Error:
+			except:
 				conn.rollback()
 				cur.close()
 				conn.close()
@@ -66,7 +66,7 @@ class Login:
 			
 			try:
 				wyn = cur.fetchone()[0]
-			except (psycopg2.Error, TypeError):
+			except:
 				conn.rollback()
 				conn.close()
 				self.open_error_window("DOSTĘP DO BAZY JEST ZAMKNIĘTY DLA UŻYTKOWNIKA "+lgn+".")

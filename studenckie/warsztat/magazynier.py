@@ -31,9 +31,9 @@ class Magazynier:
 		self.MagComboboxtextP31 = MagBuilder.get_object("MagComboboxtextP31")
 		self.MagButtonP31 = MagBuilder.get_object("MagButtonP31")
 		
-		self.load_ids(self.MagComboboxtextP14, 'czesci')
-		self.load_ids(self.MagComboboxtextP21, 'zamowienia')
-		self.load_unreal_ids(self.MagComboboxtextP31)
+		self.load_ids(self.MagComboboxtextP14, "czesci")
+		self.load_ids(self.MagComboboxtextP21, "zamowienia")
+		self.load_ids(self.MagComboboxtextP31, "zamowienia_unreal")
 		
 		MagBuilder.connect_signals(self)
 		
@@ -41,32 +41,38 @@ class Magazynier:
 	
 	def load_ids(self, comboboxtext, tablename):
 		cur = self.conn.cursor()
-		cur.execute( "SELECT id FROM %s;", [ AsIs(tablename) ] )
+		
+		if tablename == "czesci":
+			cur.execute("SELECT id FROM czesci;")
+		elif tablename == "zamowienia":
+			cur.execute("SELECT id FROM zamowienia;")
+		elif tablename == "zamowienia_unreal":
+			cur.execute("SELECT id FROM zamowienia WHERE data_real IS NULL;")
+		
 		idents = cur.fetchall()
 		self.conn.commit()
 		cur.close()
 		
 		for s in [ str( i[0] ) for i in idents ]:
 			comboboxtext.append_text(s)
-	
-	def load_unreal_ids(self, comboboxtext):
-		cur = self.conn.cursor()
-		cur.execute("SELECT id FROM zamowienia WHERE data_real IS NULL;")
-		idents = cur.fetchall()
-		self.conn.commit()
-		cur.close()
 		
-		for s in [ str( i[0] ) for i in idents ]:
-			comboboxtext.append_text(s)
+		comboboxtext.set_active(0)
 	
-	def modify(self, args, convtype):
-		if args[1] != None and args[1] != "":
+	def modify(self, fieldname, args, convtype):
+		if args[1] != "":
+			getcontext().prec = 2
 			args[1] = convtype( args[1] )
-			cur = self.conn.cursor()
 			
 			try:
-				cur.execute("UPDATE zamowienia SET %s = %s WHERE id = %s;", args)
-			except psycopg2.Error:
+				cur = self.conn.cursor()
+				
+				if fieldname == "firma":
+					cur.execute("UPDATE zamowienia SET firma = %s WHERE id = %s;", args)
+				elif fieldname == "ilosc":
+					cur.execute("UPDATE zamowienia SET ilosc = %s WHERE id = %s;", args)
+				elif fieldname == "cena":
+					cur.execute("UPDATE zamowienia SET cena = %s WHERE id = %s;", args)
+			except:
 				self.conn.rollback()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
@@ -88,14 +94,15 @@ class Magazynier:
 		cena = self.MagEntryP13.get_text() # SQL numeric
 		cze_id = self.MagComboboxtextP14.get_active_text() # SQL integer
 		
-		cur = self.conn.cursor()
+		getcontext().prec = 2
 		args = [ firma, int(ilosc), Decimal(cena), int(cze_id) ]
 		
 		try:
+			cur = self.conn.cursor()
 			cur.execute("INSERT INTO zamowienia(data_zamow, firma, ilosc, cena, cze_id) VALUES(now(), %s, %s, %s, %s);", args)
 			cur.execute("SELECT max(id) FROM zamowienia;")
 			wyn = cur.fetchone()[0]
-		except (psycopg2.Error, TypeError):
+		except:
 			self.conn.rollback()
 			ExtraWindow = Extra()
 			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
@@ -114,15 +121,13 @@ class Magazynier:
 		ilosc = self.MagEntryP23.get_text() # SQL integer
 		cena = self.MagEntryP24.get_text() # SQL numeric
 		
-		getcontext().prec = 2
-		
-		if not self.modify( [ AsIs("firma"), firma, int(ident) ], str):
+		if not self.modify("firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.modify( [ AsIs("ilosc"), ilosc, int(ident) ], int):
+		if not self.modify("ilosc", [ ilosc, int(ident) ], int):
 			return
 		
-		if not self.modify( [ AsIs("cena"), cena, int(ident) ], Decimal):
+		if not self.modify("cena", [ cena, int(ident) ], Decimal):
 			return
 		
 		ExtraWindow = Extra()
@@ -131,12 +136,12 @@ class Magazynier:
 	def MagButtonP31_clicked_cb(self, button):
 		ident = self.MagComboboxtextP31.get_active_text() # SQL integer
 		
-		cur = self.conn.cursor()
 		args = [ int(ident) ]
 		
 		try:
+			cur = self.conn.cursor()
 			cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
-		except psycopg2.Error:
+		except:
 			self.conn.rollback()
 			ExtraWindow = Extra()
 			ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")

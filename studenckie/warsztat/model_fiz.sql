@@ -51,15 +51,15 @@ CREATE ROLE magazynier;
 GRANT SELECT ON uslugi, samochody TO sprzedawca;
 GRANT SELECT, INSERT, UPDATE ON klienci, zlecenia, zleusl TO sprzedawca;
 
-GRANT SELECT ON zlecenia, samochody, zleusl, czeusl TO mechanik;
-GRANT SELECT, UPDATE ON czesci TO mechanik;
+GRANT SELECT ON zlecenia, samochody, uslugi TO mechanik;
+GRANT SELECT, INSERT, UPDATE ON czesci, czesam, czeusl TO mechanik;
 GRANT UPDATE(data_real) ON zlecenia TO mechanik;
 
+GRANT SELECT ON czesci TO magazynier;
 GRANT SELECT, INSERT, UPDATE ON zamowienia TO magazynier;
-GRANT SELECT, INSERT, UPDATE, DELETE ON czesci, czesam, czeusl TO magazynier;
 
 /* REGUŁY, FUNKCJE I WYZWALACZE */
-CREATE OR REPLACE RULE czesam_rule AS ON DELETE TO czesam DO ALSO UPDATE czesci SET uniw = TRUE WHERE czesci.id = OLD.cze_id AND NOT EXISTS(SELECT czesam.cze_id FROM czesam WHERE czesam.cze_id = OLD.cze_id AND czesam.sam_model <> OLD.sam_model);
+CREATE OR REPLACE RULE czesam_rule AS ON INSERT TO czesam DO ALSO UPDATE czesci SET uniw = FALSE WHERE czesci.id = NEW.cze_id;
 
 CREATE OR REPLACE FUNCTION zleusl_trg_func() RETURNS TRIGGER AS $f$
 BEGIN

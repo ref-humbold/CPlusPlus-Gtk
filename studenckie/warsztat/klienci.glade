@@ -171,6 +171,7 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <object class="GtkComboBoxText" id="KlienciComboboxtextP15">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                     <items>
                       <item translatable="yes">0</item>
                       <item translatable="yes">5</item>
@@ -293,6 +294,7 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <object class="GtkComboBoxText" id="KlienciComboboxtextP26">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                     <property name="button_sensitivity">on</property>
                     <items>
                       <item translatable="yes">-</item>
@@ -379,6 +381,7 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <object class="GtkComboBoxText" id="KlienciComboboxtextP21">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -523,6 +526,7 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <object class="GtkComboBoxText" id="KlienciComboboxtextP31">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="active">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
