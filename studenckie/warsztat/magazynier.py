@@ -8,7 +8,13 @@ from decimal import *
 from extra import *
 
 class Magazynier:
+	"""
+	Klasa odpowiadająca za działanie okna interakcji magazyniera z bazą danych.
+	"""
 	def __init__(self, conndb):
+		"""
+		Tworzy nowe okno z połączeniem z bazą danych.
+		"""
 		self.conn = conndb
 		
 		MagBuilder = Gtk.Builder()
@@ -31,15 +37,18 @@ class Magazynier:
 		self.MagComboboxtextP31 = MagBuilder.get_object("MagComboboxtextP31")
 		self.MagButtonP31 = MagBuilder.get_object("MagButtonP31")
 		
-		self.load_ids(self.MagComboboxtextP14, "czesci")
-		self.load_ids(self.MagComboboxtextP21, "zamowienia")
-		self.load_ids(self.MagComboboxtextP31, "zamowienia_unreal")
+		self.__load_ids(self.MagComboboxtextP14, "czesci")
+		self.__load_ids(self.MagComboboxtextP21, "zamowienia")
+		self.__load_ids(self.MagComboboxtextP31, "zamowienia_unreal")
 		
 		MagBuilder.connect_signals(self)
 		
 		self.MagWindow.show()
 	
-	def load_ids(self, comboboxtext, tablename):
+	def __load_ids(self, comboboxtext, tablename):
+		"""
+		Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru.
+		"""
 		cur = self.conn.cursor()
 		
 		if tablename == "czesci":
@@ -58,7 +67,10 @@ class Magazynier:
 		
 		comboboxtext.set_active(0)
 	
-	def modify(self, fieldname, args, convtype):
+	def __modify(self, fieldname, args, convtype):
+		"""
+		Dokonuje modyfikacji wybranej kolumny tabeli zamówień.
+		"""
 		if args[1] != "":
 			getcontext().prec = 2
 			args[1] = convtype( args[1] )
@@ -85,10 +97,16 @@ class Magazynier:
 		return True
 	
 	def MagWindow_destroy_cb(self, window):
+		"""
+		Zamyka okno magazyniera.
+		"""
 		self.conn.close()
 		Gtk.main_quit()
 	
 	def MagButtonP15_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku wysłania nowego zamówienia.
+		"""
 		firma = self.MagEntryP11.get_text() # SQL text
 		ilosc = self.MagEntryP12.get_text() # SQL integer
 		cena = self.MagEntryP13.get_text() # SQL numeric
@@ -116,24 +134,30 @@ class Magazynier:
 			cur.close()
 		
 	def MagButtonP25_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku modyfikacji zamówienia.
+		"""
 		ident = self.MagComboboxtextP21.get_active_text() # SQL integer
 		firma = self.MagEntryP22.get_text() # SQL text
 		ilosc = self.MagEntryP23.get_text() # SQL integer
 		cena = self.MagEntryP24.get_text() # SQL numeric
 		
-		if not self.modify("firma", [ firma, int(ident) ], str):
+		if not self.__modify("firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.modify("ilosc", [ ilosc, int(ident) ], int):
+		if not self.__modify("ilosc", [ ilosc, int(ident) ], int):
 			return
 		
-		if not self.modify("cena", [ cena, int(ident) ], Decimal):
+		if not self.__modify("cena", [ cena, int(ident) ], Decimal):
 			return
 		
 		ExtraWindow = Extra()
 		ExtraWindow.show_label("ZAMÓWIENIE NUMER "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	
 	def MagButtonP31_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku odbioru zamówienia.
+		"""
 		ident = self.MagComboboxtextP31.get_active_text() # SQL integer
 		
 		args = [ int(ident) ]

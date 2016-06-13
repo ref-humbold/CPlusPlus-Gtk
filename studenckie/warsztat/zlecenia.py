@@ -8,7 +8,13 @@ from decimal import *
 from extra import *
 
 class Zlecenia:
+	"""
+	Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą zleceń.
+	"""
 	def __init__(self, conndb):
+		"""
+		Tworzy nowe okno z połączeniem z bazą danych.
+		"""
 		self.conn = conndb
 		
 		ZleceniaBuilder = Gtk.Builder()
@@ -29,17 +35,20 @@ class Zlecenia:
 		self.ZleceniaComboboxtextP31 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP31")
 		self.ZleceniaButtonP31 = ZleceniaBuilder.get_object("ZleceniaButtonP31")
 		
-		self.load_ids(self.ZleceniaComboboxtextP13, "klienci")
-		self.load_ids(self.ZleceniaComboboxtextP14, "samochody")
-		self.load_ids(self.ZleceniaComboboxtextP21, "zlecenia")
-		self.load_ids(self.ZleceniaComboboxtextP22, "uslugi")
-		self.load_ids(self.ZleceniaComboboxtextP31, "zlecenia")
+		self.__load_ids(self.ZleceniaComboboxtextP13, "klienci")
+		self.__load_ids(self.ZleceniaComboboxtextP14, "samochody")
+		self.__load_ids(self.ZleceniaComboboxtextP21, "zlecenia")
+		self.__load_ids(self.ZleceniaComboboxtextP22, "uslugi")
+		self.__load_ids(self.ZleceniaComboboxtextP31, "zlecenia")
 		
 		ZleceniaBuilder.connect_signals(self)
 		
 		self.ZleceniaWindow.show()
 	
-	def load_ids(self, comboboxtext, tablename):
+	def __load_ids(self, comboboxtext, tablename):
+		"""
+		Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru.
+		"""
 		cur = self.conn.cursor()
 		
 		if tablename == "zlecenia":
@@ -61,6 +70,9 @@ class Zlecenia:
 		comboboxtext.set_active(0)
 	
 	def ZleceniaButtonP15_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku dodania nowego zlecenia.
+		"""
 		nr_rej = self.ZleceniaEntryP11.get_text() # SQL text
 		faktura = self.ZleceniaComboboxtextP12.get_active_text() # SQL boolean
 		kli_id = self.ZleceniaComboboxtextP13.get_active_text() # SQL integer
@@ -89,6 +101,9 @@ class Zlecenia:
 			cur.close()
 	
 	def ZleceniaButtonP23_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku powiązania zlecenia z usługą.
+		"""
 		ident = self.ZleceniaComboboxtextP21.get_active_text() # SQL integer
 		nazwa = self.ZleceniaComboboxtextP22.get_active_text() # SQL text
 		
@@ -115,6 +130,9 @@ class Zlecenia:
 		ExtraWindow.show_label("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	
 	def ZleceniaButtonP31_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku wyszukania zlecenia.
+		"""
 		ident = self.ZleceniaComboboxtextP31.get_active_text() # SQL integer
 		
 		args = [ int(ident) ]

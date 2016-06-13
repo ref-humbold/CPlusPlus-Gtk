@@ -7,7 +7,13 @@ from gi.repository import Gtk
 from extra import *
 
 class Klienci:
+	"""
+	Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą klientów.
+	"""
 	def __init__(self, conndb):
+		"""
+		Tworzy nowe okno z połączeniem z bazą danych.
+		"""
 		self.conn = conndb
 		
 		KlienciBuilder = Gtk.Builder()
@@ -37,14 +43,17 @@ class Klienci:
 		self.KlienciButtonP35 = KlienciBuilder.get_object("KlienciButtonP35")
 		
 		self.KlienciComboboxtextP31.append_text("-")
-		self.load_ids(self.KlienciComboboxtextP21)
-		self.load_ids(self.KlienciComboboxtextP31)
+		self.__load_ids(self.KlienciComboboxtextP21)
+		self.__load_ids(self.KlienciComboboxtextP31)
 		
 		KlienciBuilder.connect_signals(self)
 		
 		self.KlienciWindow.show()
 	
-	def load_ids(self, comboboxtext):
+	def __load_ids(self, comboboxtext):
+		"""
+		Ładuje identyfikatory (klucze główne) z tabeli klientów do zadanego pola wyboru.
+		"""
 		cur = self.conn.cursor()
 		cur.execute("SELECT id FROM klienci;")
 		idents = cur.fetchall()
@@ -56,7 +65,10 @@ class Klienci:
 		
 		comboboxtext.set_active(0)
 	
-	def modify(self, nonstr, fieldname, args, convtype):
+	def __modify(self, nonstr, fieldname, args, convtype):
+		"""
+		Dokonuje modyfikacji wybranej kolumny tabeli klientów.
+		"""
 		if args[1] != nonstr:
 			args[1] = convtype( args[1] )
 			
@@ -86,6 +98,9 @@ class Klienci:
 		return True
 	
 	def KlienciButtonP16_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku dodania nowego klienta.
+		"""
 		imie = self.KlienciEntryP11.get_text() # SQL text
 		nazwisko = self.KlienciEntryP12.get_text() # SQL text
 		telefon = self.KlienciEntryP13.get_text() # SQL integer
@@ -115,6 +130,9 @@ class Klienci:
 			cur.close()
 	
 	def KlienciButtonP27_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku modyfikacji danych klienta.
+		"""
 		ident = self.KlienciComboboxtextP21.get_active_text() # SQL integer
 		imie = self.KlienciEntryP22.get_text() # SQL text
 		nazwisko = self.KlienciEntryP23.get_text() # SQL text
@@ -122,25 +140,28 @@ class Klienci:
 		firma = self.KlienciEntryP25.get_text() # SQL text
 		rabat = self.KlienciComboboxtextP26.get_active_text() # SQL integer
 		
-		if not self.modify("", "imie", [ imie, int(ident) ], str):
+		if not self.__modify("", "imie", [ imie, int(ident) ], str):
 			return
 		
-		if not self.modify("", "nazwisko", [ nazwisko, int(ident) ], str):
+		if not self.__modify("", "nazwisko", [ nazwisko, int(ident) ], str):
 			return
 		
-		if not self.modify("", "telefon", [ telefon, int(ident) ], int):
+		if not self.__modify("", "telefon", [ telefon, int(ident) ], int):
 			return
 		
-		if not self.modify("", "firma", [ firma, int(ident) ], str):
+		if not self.__modify("", "firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.modify("-", "rabat", [ rabat, int(ident) ], int):
+		if not self.__modify("-", "rabat", [ rabat, int(ident) ], int):
 			return
 		
 		ExtraWindow = Extra()
 		ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
 	
 	def KlienciButtonP35_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku wyszukania klienta.
+		"""
 		ident = self.KlienciComboboxtextP31.get_active_text() # SQL integer
 		imie = self.KlienciEntryP32.get_text() # SQL text
 		nazwisko = self.KlienciEntryP33.get_text() # SQL text

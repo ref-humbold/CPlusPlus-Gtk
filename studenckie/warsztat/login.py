@@ -10,7 +10,13 @@ from magazynier import *
 from extra import *
 
 class Login:
+	"""
+	Klasa odpowiadająca za działanie okna logowania do bazy danych.
+	"""
 	def __init__(self):
+		"""
+		Tworzy nowe okno logowania.
+		"""
 		self.is_logged = False
 		
 		LoginBuilder = Gtk.Builder()
@@ -30,16 +36,25 @@ class Login:
 		self.LoginWindow.show()
 	
 	def open_error_window(self, msg):
+		"""
+		Tworzy nowe okno wyświetlające komunikat o błedzie.
+		"""
 		self.LoginEntry21.set_text("")
 		self.LoginEntry22.set_text("")
 		ExtraWindow = Extra()
 		ExtraWindow.show_label(msg)
 	
 	def LoginWindow_destroy_cb(self, window):
+		"""
+		Zamyka okno logowania.
+		"""
 		if not self.is_logged:
 			Gtk.main_quit()
 		
 	def LoginButton23_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku zalogowania do bazy danych.
+		"""
 		lgn = self.LoginEntry21.get_text()
 		pwd = self.LoginEntry22.get_text()
 		

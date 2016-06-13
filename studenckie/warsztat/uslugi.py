@@ -6,7 +6,13 @@ from gi.repository import Gtk
 from extra import *
 
 class Uslugi:
+	"""
+	Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą usług.
+	"""
 	def __init__(self, conndb):
+		"""
+		Tworzy nowe okno z połączeniem z bazą danych.
+		"""
 		self.conn = conndb
 		
 		UslugiBuilder = Gtk.Builder()
@@ -25,14 +31,17 @@ class Uslugi:
 		self.UslugiEntryP32 = UslugiBuilder.get_object("UslugiEntryP32")
 		self.UslugiButtonP33 = UslugiBuilder.get_object("UslugiButtonP33")
 		
-		self.load_ids(self.UslugiComboboxtextP11)
-		self.load_ids(self.UslugiComboboxtextP31)
+		self.__load_ids(self.UslugiComboboxtextP11)
+		self.__load_ids(self.UslugiComboboxtextP31)
 		
 		UslugiBuilder.connect_signals(self)
 		
 		self.UslugiWindow.show()
 	
-	def load_ids(self, comboboxtext):
+	def __load_ids(self, comboboxtext):
+		"""
+		Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru.
+		"""
 		cur = self.conn.cursor()
 		cur.execute("SELECT nazwa FROM uslugi;")
 		idents = cur.fetchall()
@@ -45,6 +54,9 @@ class Uslugi:
 		comboboxtext.set_active(0)
 	
 	def UslugiButtonP11_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku wyszukania ceny za usługę.
+		"""
 		nazwa = self.UslugiComboboxtextP11.get_active_text() # SQL text
 		
 		args = [nazwa]
@@ -66,6 +78,9 @@ class Uslugi:
 			cur.close()
 	
 	def UslugiButtonP23_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku dodania usługi.
+		"""
 		nazwa = self.UslugiEntryP21.get_text() # SQL text
 		cena = self.UslugiEntryP22.get_text() # SQL numeric
 		
@@ -89,6 +104,9 @@ class Uslugi:
 			cur.close()
 	
 	def UslugiButtonP33_clicked_cb(self, button):
+		"""
+		Reaguje na kliknięcie przycisku zmiany ceny za usługę.
+		"""
 		nazwa = self.UslugiComboboxtextP31.get_active_text() # SQL text
 		nowa_cena = self.UslugiEntryP32.get_text() # SQL numeric
 		
