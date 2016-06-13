@@ -199,8 +199,9 @@ class Klienci:
 				return
 			else:
 				self.conn.commit()
+				out_str = "BRAK WYNIKÓW!" if wyn == [] else "\n".join( map(lambda x : ", ".join( map(str, x) ), wyn) )
 				ExtraWindow = Extra()
-				ExtraWindow.show_label( "\n".join( map(lambda x : ", ".join( map(str, x) ), wyn) ) )
+				ExtraWindow.show_label(out_str)
 			finally:
 				cur.close()
 
