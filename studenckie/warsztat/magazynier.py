@@ -67,17 +67,15 @@ class Magazynier:
 		
 		comboboxtext.set_active(0)
 	
-	def __modify(self, fieldname, args, convtype):
+	def __modify(self, cur, fieldname, args, convtype):
 		"""
 		Dokonuje modyfikacji wybranej kolumny tabeli zamówień.
 		"""
-		if args[1] != "":
+		if args[0] != "":
 			getcontext().prec = 2
-			args[1] = convtype( args[1] )
+			args[0] = convtype( args[0] )
 			
 			try:
-				cur = self.conn.cursor()
-				
 				if fieldname == "firma":
 					cur.execute("UPDATE zamowienia SET firma = %s WHERE id = %s;", args)
 				elif fieldname == "ilosc":
@@ -86,13 +84,10 @@ class Magazynier:
 					cur.execute("UPDATE zamowienia SET cena = %s WHERE id = %s;", args)
 			except:
 				self.conn.rollback()
+				cur.close()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
 				return False
-			else:
-				self.conn.commit()
-			finally:
-				cur.close()
 		
 		return True
 	
@@ -142,15 +137,19 @@ class Magazynier:
 		ilosc = self.MagEntryP23.get_text() # SQL integer
 		cena = self.MagEntryP24.get_text() # SQL numeric
 		
-		if not self.__modify("firma", [ firma, int(ident) ], str):
+		cur = self.conn.cursor()
+		
+		if not self.__modify(cur, "firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.__modify("ilosc", [ ilosc, int(ident) ], int):
+		if not self.__modify(cur, "ilosc", [ ilosc, int(ident) ], int):
 			return
 		
-		if not self.__modify("cena", [ cena, int(ident) ], Decimal):
+		if not self.__modify(cur, "cena", [ cena, int(ident) ], Decimal):
 			return
 		
+		self.conn.commit()
+		cur.close()
 		ExtraWindow = Extra()
 		ExtraWindow.show_label("ZAMÓWIENIE NUMER "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
 	

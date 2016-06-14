@@ -65,16 +65,14 @@ class Klienci:
 		
 		comboboxtext.set_active(0)
 	
-	def __modify(self, nonstr, fieldname, args, convtype):
+	def __modify(self, cur, nonstr, fieldname, args, convtype):
 		"""
 		Dokonuje modyfikacji wybranej kolumny tabeli klientów.
 		"""
-		if args[1] != nonstr:
-			args[1] = convtype( args[1] )
+		if args[0] != nonstr:
+			args[0] = convtype( args[0] )
 			
 			try:
-				cur = self.conn.cursor()
-				
 				if fieldname == "imie":
 					cur.execute("UPDATE klienci SET imie = %s WHERE id = %s;", args)
 				elif fieldname == "nazwisko":
@@ -87,13 +85,10 @@ class Klienci:
 					cur.execute("UPDATE klienci SET rabat = %s WHERE id = %s;", args)
 			except:
 				self.conn.rollback()
+				cur.close()
 				ExtraWindow = Extra()
 				ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
 				return False
-			else:
-				self.conn.commit()
-			finally:
-				cur.close()
 		
 		return True
 	
@@ -140,21 +135,25 @@ class Klienci:
 		firma = self.KlienciEntryP25.get_text() # SQL text
 		rabat = self.KlienciComboboxtextP26.get_active_text() # SQL integer
 		
-		if not self.__modify("", "imie", [ imie, int(ident) ], str):
+		cur = self.conn.cursor()
+		
+		if not self.__modify(cur, "", "imie", [ imie, int(ident) ], str):
 			return
 		
-		if not self.__modify("", "nazwisko", [ nazwisko, int(ident) ], str):
+		if not self.__modify(cur, "", "nazwisko", [ nazwisko, int(ident) ], str):
 			return
 		
-		if not self.__modify("", "telefon", [ telefon, int(ident) ], int):
+		if not self.__modify(cur, "", "telefon", [ telefon, int(ident) ], int):
 			return
 		
-		if not self.__modify("", "firma", [ firma, int(ident) ], str):
+		if not self.__modify(cur, "", "firma", [ firma, int(ident) ], str):
 			return
 		
-		if not self.__modify("-", "rabat", [ rabat, int(ident) ], int):
+		if not self.__modify(cur, "-", "rabat", [ rabat, int(ident) ], int):
 			return
 		
+		self.conn.commit()
+		cur.close()
 		ExtraWindow = Extra()
 		ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
 	
