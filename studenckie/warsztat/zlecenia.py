@@ -22,7 +22,8 @@ class Zlecenia:
 		
 		self.ZleceniaWindow = ZleceniaBuilder.get_object("ZleceniaWindow")
 		
-		self.ZleceniaEntryP11 = ZleceniaBuilder.get_object("ZleceniaEntryP11")
+		self.ZleceniaEntryP11L = ZleceniaBuilder.get_object("ZleceniaEntryP11L")
+		self.ZleceniaEntryP11P = ZleceniaBuilder.get_object("ZleceniaEntryP11P")
 		self.ZleceniaComboboxtextP12 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP12")
 		self.ZleceniaComboboxtextP13 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP13")
 		self.ZleceniaComboboxtextP14 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP14")
@@ -73,7 +74,7 @@ class Zlecenia:
 		"""
 		Reaguje na kliknięcie przycisku dodania nowego zlecenia.
 		"""
-		nr_rej = self.ZleceniaEntryP11.get_text() # SQL text
+		nr_rej = self.ZleceniaEntryP11L.get_text()+":"+self.ZleceniaEntryP11P.get_text() # SQL text
 		faktura = self.ZleceniaComboboxtextP12.get_active_text() # SQL boolean
 		kli_id = self.ZleceniaComboboxtextP13.get_active_text() # SQL integer
 		sam_model = self.ZleceniaComboboxtextP14.get_active_text() # SQL text

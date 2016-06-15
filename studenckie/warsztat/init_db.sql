@@ -18,9 +18,9 @@ INSERT INTO uslugi(nazwa, cena) VALUES('wymiana oleju', 125.0);
 INSERT INTO uslugi(nazwa, cena) VALUES('czyszczenie klimatyzacji', 90.0);
 INSERT INTO uslugi(nazwa, cena) VALUES('regulacja silnika', 245.0);
 
-INSERT INTO zlecenia(data_zlec, data_real, nr_rej, kli_id, sam_model) VALUES(timestamp '2016-04-19 17:16:40', timestamp '2016-04-22 11:31:18', 'DW13579', 1, 'Polo');
-INSERT INTO zlecenia(data_zlec, nr_rej, faktura, kli_id, sam_model) VALUES(timestamp '2016-04-26', 'DOA2034', 'true', 2, 'Corsa');
-INSERT INTO zlecenia(data_zlec, nr_rej, kli_id, sam_model) VALUES(timestamp '2016-05-05', 'DBA98E65', 3, 'Integra');
+INSERT INTO zlecenia(data_zlec, data_real, nr_rej, kli_id, sam_model) VALUES(timestamp '2016-04-19 17:16:40', timestamp '2016-04-22 11:31:18', 'DW:13579', 1, 'Polo');
+INSERT INTO zlecenia(data_zlec, nr_rej, faktura, kli_id, sam_model) VALUES(timestamp '2016-04-26', 'DOA:2034', 'true', 2, 'Corsa');
+INSERT INTO zlecenia(data_zlec, nr_rej, kli_id, sam_model) VALUES(timestamp '2016-05-05', 'DBA:98E65', 3, 'Integra');
 
 INSERT INTO czesci(producent, ilosc, typ) VALUES('Borygo', 10, 'plyn chlodniczy');
 INSERT INTO czesci(producent, ilosc, typ) VALUES('Stomil', 12, 'opony letnie');
