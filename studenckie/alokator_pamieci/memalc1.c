@@ -31,8 +31,8 @@ struct arena
 /** struktura informująca o znalezionej arenie i bloku */
 struct mem_found
 {
-	struct arena *ap;
-	struct block *bp;
+	struct arena *arena_adr;
+	struct block *block_adr;
 };
 
 /** ilość wolnej przestrzeni */
@@ -43,6 +43,73 @@ struct arena *arena_list = NULL;
 
 /** mutex */
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+/* ---------- OGÓLNE FUNKCJE POMOCNICZE ---------- */
+
+/**
+Funkcja określająca faktyczny rozmiar pamięci do przydzielenia
+@param size rozmiar zadeklarowany
+*/
+size_t normalise(size_t size)
+{
+	size_t TRH = 4*getpagesize();
+	
+	return size+64 > TRH ? ( (size+31+TRH)&( ~(TRH-1) ) )-32 : ( (size+15)&(~15) );
+}
+
+/**
+Funkcja wyszukująca arenę i blok przypisane do podanego wskaźnika
+@param ptr wskaźnik do odszukania
+@return wskaźniki do areny i bloku pamięci
+*/
+struct memory_found find_pointer(void *ptr)
+{
+	struct memory_found mf;
+	struct arena *ar_ptr = arena_list;
+	
+	mf.arena_adr = NULL;
+	mf.block_adr = NULL;
+	
+	while(ar_ptr != NULL)
+	{
+		if( (void*)ar_ptr+32 == ptr && ar_ptr->alloc_length > 0 && ar_ptr->block_list == NULL )
+		{
+			mf.arena_adr = ar_ptr;
+			return mf;
+		}
+		else if( (void*)ar_ptr+32<ptr && ar_ptr->block_list != NULL && ( (void*)(ar_ptr->next_ar) > ptr || (void*)(ar_ptr->next_ar) == NULL ) )
+		{	
+			struct block *bl_ptr = ar_ptr->block_list;
+			
+				while(bl_ptr != NULL)
+				{
+					if( (void*)bl_ptr+32 == ptr && bl_ptr->alloc_length > 0 )
+					{
+						mf.arena_adr = ar_ptr;
+						mf.block_adr = bl_ptr;
+						
+						return mf;
+					}
+					else if( ( (void*)bl_ptr+32 == ptr && bl_ptr->alloc_length == 0 ) || (void*)bl_ptr+32 > ptr )
+					{
+						return mf;
+					}
+				
+					bl_ptr = bl_ptr->next_bl;
+				}
+				
+			return mf;
+		}
+		else if( (void*)ar_ptr+32 > ptr )
+		{
+			return mf;
+		}
+		
+		ar_ptr = ar_ptr->next_ar;
+	}
+	
+	return mf;
+}
 
 /* ---------- FUNKCJE WYPISUJĄCE PAMIĘĆ ---------- */
 
@@ -147,6 +214,15 @@ void print_free_memory_fcn()
 /* ---------- FUNKCJE OPERUJĄCE NA PAMIĘCI ---------- */
 
 /**
+Funkcja zwalniająca pamięć spod danego wskaźnika
+@param ptr wskaźnik
+*/
+void free_fcn(void *ptr)
+{
+	
+}
+
+/**
 Funkcja przydzielająca pamięć o zadanym rozmiarze
 @param size rozmiar
 */
@@ -162,7 +238,17 @@ Funkcja przydzielająca kolejne kawałki pamięci o zadanym rozmiarze
 */
 void *calloc_fcn(size_t count, size_t size)
 {
+	if(count == 0 || size == 0)
+	{
+		return NULL;
+	}
 	
+	size_t norm_size = normalise(count*size);
+	void *ret = malloc_fcn(count*size);	
+	
+	ret = memset(ret, 0, norm_size);
+	
+	return ret;
 }
 
 /**
