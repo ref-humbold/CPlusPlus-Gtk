@@ -8,6 +8,7 @@ function Func_fnine()
 	
 	PY_STD='python2'
 	
+	JAVA_WARN=''
 	JAVA_STD='1.7'
 	
 	CS_STD='4'
@@ -56,7 +57,7 @@ function Func_fnine()
 			-c11)
 				C_STD='-std=c11'
 			;;
-			-cw)
+			-cW)
 				C_WARN='-Wall -Wextra'
 			;;
 			
@@ -69,7 +70,7 @@ function Func_fnine()
 			+c14)
 				CPP_STD='-std=c++14'
 			;;
-			+cw)
+			+cW)
 				CPP_WARN='-Wall -Wextra'
 			;;
 			
@@ -89,6 +90,9 @@ function Func_fnine()
 			-jv7)
 				JAVA_STD='1.7'
 			;;
+			-jX)
+				JAVA_WARN='-Xlint'
+			;;
 			
 			-cs3)
 				CS_STD='3'
@@ -107,14 +111,14 @@ function Func_fnine()
 					
 					if test $FLAG0 -eq 1
 					then
-						gcc $C_STD $C_WARN $I -o $BIN_FILE
+						`gcc $C_STD $C_WARN $I -o $BIN_FILE`
 					else
-						gcc $C_STD $C_WARN $I -o $BIN_FILE && echo "$BIN_FILE" && $BIN_FILE
+						`gcc $C_STD $C_WARN $I -o $BIN_FILE` && echo "$BIN_FILE" && $BIN_FILE
 					fi
 					
 					if test $FLAG1 -eq 1
 					then
-						echo "rm -f $BIN_FILE" && rm -f $BIN_FILE
+						echo "rm -f $BIN_FILE" && `rm -f $BIN_FILE`
 					fi
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
@@ -128,7 +132,6 @@ function Func_fnine()
 				if test -f $I
 				then
 					echo "g++ $CPP_STD $CPP_WARN $I -o $BIN_FILE"
-					g++ $CPP_STD $CPP_WARN $I -o $BIN_FILE
 					
 					if test $FLAG0 -eq 1
 					then
@@ -186,9 +189,9 @@ function Func_fnine()
 					
 					if test $FLAG0 -eq 1
 					then
-						javac -source $JAVA_STD $I
+						javac -source $JAVA_STD $JAVA_WARN $I
 					else
-						javac -source $JAVA_STD $I && echo "java -version:\"$JAVA_STD*\" $NAME" && java -version:\"$JAVA_STD*\" $NAME
+						javac -source $JAVA_STD $JAVA_WARN $I && echo "java $NAME" && java $NAME
 					fi
 					
 					if test $FLAG1 -eq 1
