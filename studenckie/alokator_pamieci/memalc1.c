@@ -211,6 +211,84 @@ void print_free_memory_fcn()
 	}
 }
 
+/* ---------- OPERUJĄCE NA PAMIĘCI FUNKCJE POMOCNICZE ---------- */
+
+/**
+Funkcja przydzielająca pamięć bloku
+@param ar_ptr wskaźnik na arenę
+@param bl_ptr wskaźnik na blok
+@param norm_size rozmiar do alokacji
+@param user_size rozmiar użytkownika
+@return wskaźnik do przydzielonego bloku
+*/
+void *alloc_to_block(struct arena *ar_ptr, struct block *bl_ptr, size_t norm_size, size_t user_size)
+{					
+	if(bl_ptr->total_length >= norm_size+32+16)
+	{
+		struct block *new_block = (void*)bl_ptr+32+norm_size;
+		
+		if(bl_ptr->next_fbl != NULL)
+		{
+			bl_ptr->next_fbl->prev_fbl = new_block;
+		}
+	
+		if(bl_ptr->prev_fbl != NULL)
+		{
+			bl_ptr->prev_fbl->next_fbl = new_block;
+		}
+		else
+		{
+			ar_ptr->freeblock_list = new_block;
+		}
+		
+		if(bl_ptr->next_bl != NULL)
+		{
+			bl_ptr->next_bl->prev_bl = new_block;
+		}
+		
+		new_block->alloc_length = 0;
+		new_block->total_length = bl_ptr->total_length-norm_size-32;
+		new_block->next_bl = bl_ptr->next_bl;
+		new_block->prev_bl = bl_ptr;
+		new_block->next_fbl = bl_ptr->next_fbl;
+		new_block->prev_fbl = bl_ptr->prev_fbl;
+		
+		bl_ptr->alloc_length = user_size;
+		bl_ptr->total_length = norm_size;
+		bl_ptr->next_bl = new_block;
+		bl_ptr->next_fbl = NULL;
+		bl_ptr->prev_fbl = NULL;
+		
+		free_space = free_space-32-bl_ptr->total_length;
+	}
+	else
+	{
+		if(bl_ptr->next_fbl != NULL)
+		{
+			bl_ptr->next_fbl->prev_fbl = bl_ptr->prev_fbl;
+		}
+	
+		if(bl_ptr->prev_fbl != NULL)
+		{
+			bl_ptr->prev_fbl->next_fbl = bl_ptr->next_fbl;
+		}
+		else
+		{
+			ar_ptr->freeblock_list = bl_ptr->next_fbl;
+		}
+		
+		bl_ptr->alloc_length = user_size;
+		bl_ptr->next_fbl = NULL;
+		bl_ptr->prev_fbl = NULL;
+		
+		free_space = free_space-bl_ptr->total_length;
+	}
+	
+	void *return_adr = (void*)bl_ptr+32;
+	
+	return return_adr;
+}
+
 /* ---------- FUNKCJE OPERUJĄCE NA PAMIĘCI ---------- */
 
 /**
@@ -228,7 +306,141 @@ Funkcja przydzielająca pamięć o zadanym rozmiarze
 */
 void *malloc_fcn(size_t size)
 {	
+	if(size == 0)
+	{
+		return NULL;
+	}
+
+	void *return_adr;
+	size_t norm_size = normalise(size), TRH = 4*getpagesize();
+	struct arena *ar_forw_ptr = arena_list;
+	struct arena *ar_back_ptr = NULL;
 	
+	if(norm_size+64 > TRH)
+	{
+		while(ar_forw_ptr != NULL)
+		{			
+			if(ar_forw_ptr->alloc_length == 0 && ar_forw_ptr->block_list == NULL && ar_forw_ptr->total_length >= norm_size)
+			{
+				ar_forw_ptr->alloc_length = size;
+				
+				free_space = free_space-ar_forw_ptr->total_length;
+				
+				return_adr = (void*)ar_forw_ptr+32;
+				
+				return return_adr;
+			}
+					
+			ar_back_ptr = ar_forw_ptr;
+			ar_forw_ptr = ar_forw_ptr->next_ar;
+		}
+		
+		void *map_adr = mmap(NULL, norm_size+32, (PROT_READ | PROT_WRITE), (MAP_ANONYMOUS | MAP_PRIVATE), -1, 0);
+		struct arena *ar_ptr = map_adr;
+		
+		while(ar_back_ptr != NULL && ar_back_ptr > ar_ptr)
+		{
+			ar_forw_ptr = ar_back_ptr;
+			ar_back_ptr = ar_back_ptr->prev_ar;
+		}
+			
+		if(ar_back_ptr != NULL)
+		{
+			ar_back_ptr->next_ar = ar_ptr;
+		}
+		else
+		{
+			arena_list = ar_ptr;
+		}
+		
+		if(ar_forw_ptr != NULL)
+		{
+			ar_forw_ptr->prev_ar = ar_ptr;
+		}
+		
+		ar_ptr->alloc_length = size;
+		ar_ptr->total_length = norm_size;
+		ar_ptr->next_ar = ar_forw_ptr;
+		ar_ptr->prev_ar = ar_back_ptr;
+		ar_ptr->block_list = NULL;
+		ar_ptr->freeblock_list = NULL;
+		
+		return_adr = (void*)ar_ptr+32;
+		
+		return return_adr;
+	}
+	else
+	{
+		while(ar_forw_ptr != NULL)
+		{		
+			if(ar_forw_ptr->freeblock_list != NULL)
+			{
+				struct block *fbl_ptr = ar_forw_ptr->freeblock_list;
+				
+				while(fbl_ptr != NULL)
+				{					
+					if(fbl_ptr->total_length >= norm_size)
+					{
+						return_adr = alloc_to_block(ar_forw_ptr, fbl_ptr, norm_size, size);
+						
+						return return_adr;
+					}
+					
+					fbl_ptr = fbl_ptr->next_fbl;
+				}
+			}
+		
+			ar_back_ptr = ar_forw_ptr;
+			ar_forw_ptr = ar_forw_ptr->next_ar;
+		}
+		
+		void *map_adr = mmap(NULL, TRH, (PROT_READ | PROT_WRITE), (MAP_ANONYMOUS | MAP_PRIVATE), -1, 0);
+		struct arena *ar_ptr = map_adr;
+		
+		while(ar_back_ptr != NULL && ar_back_ptr > ar_ptr)
+		{
+			ar_forw_ptr = ar_back_ptr;
+			ar_back_ptr = ar_back_ptr->prev_ar;
+		}
+			
+		if(ar_back_ptr != NULL)
+		{
+			ar_back_ptr->next_ar = ar_ptr;
+		}
+		else
+		{
+			arena_list = ar_ptr;
+		}
+		
+		if(ar_forw_ptr != NULL)
+		{
+			ar_forw_ptr->prev_ar = ar_ptr;
+		}
+		
+		ar_ptr->alloc_length = TRH-32;
+		ar_ptr->total_length = TRH-32;
+		ar_ptr->next_ar = ar_forw_ptr;
+		ar_ptr->prev_ar = ar_back_ptr;
+		ar_ptr->block_list = adr+32;
+		ar_ptr->freeblock_list = adr+32;
+		
+		map_adr = map_adr+32;
+		
+		struct block *bl_ptr = map_adr;
+		
+		bl_ptr->alloc_length = 0;
+		bl_ptr->total_length = TRH-64;
+		bl_ptr->next_bl = NULL;
+		bl_ptr->prev_bl = NULL;
+		bl_ptr->next_fbl = NULL;
+		bl_ptr->prev_fbl = NULL;
+		
+		free_space = free_space+bl_ptr->total_length;
+		
+		return_adr = alloc_to_block(ar_ptr, bl_ptr, norm_size, size);
+		
+		return return_adr;
+	}
 }
 
 /**
@@ -263,7 +475,7 @@ void *realloc_fcn(void *ptr, size_t size)
 
 /* ---------- FUNKCJE UDOSTĘPNIANE NA ZEWNĄTRZ ---------- */
 
-extern void *malloc(size_t size)
+void *malloc(size_t size)
 {
 	pthread_mutex_lock(&mutex);
 	/* printf("MALLOC - %d\n", size); */
@@ -276,7 +488,7 @@ extern void *malloc(size_t size)
 	return adr;
 }
 
-extern void *calloc(size_t count, size_t size)
+void *calloc(size_t count, size_t size)
 {
 	pthread_mutex_lock(&mutex);
 	/* printf("CALLOC - %d, %d\n", count, size); */
@@ -289,7 +501,7 @@ extern void *calloc(size_t count, size_t size)
 	return adr;
 }
 
-extern void *realloc(void *ptr, size_t size)
+void *realloc(void *ptr, size_t size)
 {
 	pthread_mutex_lock(&mutex);
 	/* printf("REALLOC - %p, %d\n", ptr, size); */
@@ -302,7 +514,7 @@ extern void *realloc(void *ptr, size_t size)
 	return adr;
 }
 
-extern void free(void *ptr)
+void free(void *ptr)
 {
 	pthread_mutex_lock(&mutex);
 	/* printf("FREE - %p\n", ptr); */
@@ -311,14 +523,14 @@ extern void free(void *ptr)
 	pthread_mutex_unlock(&mutex);
 }
 
-extern void print_all_memory()
+void print_all_memory()
 {
 	pthread_mutex_lock(&mutex);
 	print_all_memory_fcn();
 	pthread_mutex_unlock(&mutex);
 }
 
-extern void print_free_memory()
+void print_free_memory()
 {
 	pthread_mutex_lock(&mutex);
 	print_free_memory_fcn();
