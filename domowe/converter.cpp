@@ -45,11 +45,11 @@ int convert_to_decimal(string &number, int base, bool has_sign)
 		int actual_digit;
 		
 		if( number[i] >= '0' && number[i] <= '9' )
-			actual_digit = ( (int)number[i]-'0' );
+			actual_digit = +number[i]-'0';
 		else if( number[i] >= 'A' && number[i] <= 'F' )
-			actual_digit = ( (int)number[i]-'A'+10 );
+			actual_digit = +number[i]-'A'+10;
 		else if( number[i] >= 'a' && number[i] <= 'f' )
-			actual_digit = ( (int)number[i]-'a'+10 );
+			actual_digit = +number[i]-'a'+10;
 		
 		decimal = decimal*base+actual_digit;
 	}
