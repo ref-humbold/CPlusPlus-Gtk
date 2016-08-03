@@ -7,46 +7,48 @@ function Func_fnine()
 	CPP_STD='-std=c++11'
 	
 	PY_STD='python2'
+	PY_SCR=0
 	
 	JAVA_WARN=''
 	JAVA_STD='1.7'
 	
 	CS_STD='4'
 	
-	FLAG0=0 # flag 0: COMPILE ONLY
-	FLAG1=0 # flag 1: REMOVE ADDITIONAL FILES
-	FLAG2=0 # flag 2: RUN AS SCRIPT
+	HS_WARN=''
+	
+	FLAG0=0 # COMPILE ONLY
+	FLAG1=0 # REMOVE ADDITIONAL FILES
 	
 	OBJECTS=0
 	
 	for I in $@
-	do		
+	do
 		case $I in
-			-D|-0)
+			
+			# ------ GLOBAL FLAGS ------
+			
+			-D)
 				FLAG0=0
 				FLAG1=0
-				FLAG2=0
 			;;
-			-C|-1)
+			-C|-C=yes)
 				FLAG0=1
-				FLAG1=0
-				FLAG2=0
 			;;
-			-R|-2)
+			-Cn|-C=no)
 				FLAG0=0
-				FLAG1=1
-				FLAG2=0
 			;;
-			-CR|-3)
+			-R|-R=yes)
+				FLAG1=1
+			;;
+			-Rn|-R=no)
+				FLAG1=0
+			;;
+			-CR)
 				FLAG0=1
 				FLAG1=1
-				FLAG2=0
 			;;
-			-S|-4)
-				FLAG0=0
-				FLAG1=0
-				FLAG2=1
-			;;
+			
+			# ------ C ------
 			
 			-c90)
 				C_STD='-std=c90'
@@ -61,6 +63,32 @@ function Func_fnine()
 				C_WARN='-Wall -Wextra'
 			;;
 			
+			*.c)
+				OBJECTS=1
+				BIN_FILE="`dirname $I`/`basename ${I%.*}`"
+			
+				if test -f $I
+				then
+					echo "gcc $C_STD $C_WARN $I -o $BIN_FILE"
+					
+					if test $FLAG0 -eq 1
+					then
+						gcc $C_STD $C_WARN $I -o $BIN_FILE
+					else
+						gcc $C_STD $C_WARN $I -o $BIN_FILE && echo "$BIN_FILE" && $BIN_FILE
+					fi
+					
+					if test $FLAG1 -eq 1
+					then
+						echo "rm -f $BIN_FILE" && `rm -f $BIN_FILE`
+					fi
+				else
+					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
+				fi
+			;;
+			
+			# ------ C++ ------
+			
 			+c03)
 				CPP_STD='-std=c++03'
 			;;
@@ -72,57 +100,6 @@ function Func_fnine()
 			;;
 			+cW)
 				CPP_WARN='-Wall -Wextra'
-			;;
-			
-			-py2)
-				PY_STD='python2'
-			;;
-			-py3)
-				PY_STD='python3'
-			;;
-			
-			-jv5)
-				JAVA_STD='1.5'
-			;;
-			-jv6)
-				JAVA_STD='1.6'
-			;;
-			-jv7)
-				JAVA_STD='1.7'
-			;;
-			-jX)
-				JAVA_WARN='-Xlint'
-			;;
-			
-			-cs3)
-				CS_STD='3'
-			;;
-			-cs4)
-				CS_STD='4'
-			;;
-			
-			*.c)
-				OBJECTS=1
-				BIN_FILE="`dirname $I`/`basename ${I%.*}`"
-			
-				if test -f $I
-				then
-					echo "gcc $C_STD $C_WARN $I -o $BIN_FILE"
-					
-					if test $FLAG0 -eq 1
-					then
-						`gcc $C_STD $C_WARN $I -o $BIN_FILE`
-					else
-						`gcc $C_STD $C_WARN $I -o $BIN_FILE` && echo "$BIN_FILE" && $BIN_FILE
-					fi
-					
-					if test $FLAG1 -eq 1
-					then
-						echo "rm -f $BIN_FILE" && `rm -f $BIN_FILE`
-					fi
-				else
-					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
-				fi
 			;;
 			
 			*.cpp)
@@ -149,13 +126,28 @@ function Func_fnine()
 				fi
 			;;
 			
+			# ------ PYTHON ------
+			
+			-py2)
+				PY_STD='python2'
+			;;
+			-py3)
+				PY_STD='python3'
+			;;
+			-pyC)
+				PY_INT=0
+			;;
+			-pyI)
+				PY_INT=1
+			;;
+			
 			*.py)
 				OBJECTS=1
 				PYC_FILE=${I%.*}.pyc
 			
 				if test -f $I
 				then
-					if test $FLAG2 -eq 1
+					if test $PY_INT -eq 1
 					then
 						echo "$PY_STD $I" && $PY_STD $I
 					else
@@ -176,6 +168,25 @@ function Func_fnine()
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
 				fi
+			;;
+			
+			# ------ JAVA ------
+			
+			
+			-jv5)
+				JAVA_STD='1.5'
+			;;
+			-jv6)
+				JAVA_STD='1.6'
+			;;
+			-jv7)
+				JAVA_STD='1.7'
+			;;
+			-jv8)
+				JAVA_STD='1.8'
+			;;
+			-jvX)
+				JAVA_WARN='-Xlint'
 			;;
 			
 			*.java)
@@ -203,6 +214,18 @@ function Func_fnine()
 				fi
 			;;
 			
+			# ------ C SHARP ------
+			
+			-cs3)
+				CS_STD='3'
+			;;
+			-cs4)
+				CS_STD='4'
+			;;
+			-cs5)
+				CS_STD='5'
+			;;
+			
 			*.cs)
 				OBJECTS=1
 				EXE_FILE=${I%.*}.exe
@@ -225,6 +248,12 @@ function Func_fnine()
 				else
 					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
 				fi
+			;;
+			
+			# ------ HASKELL ------
+			
+			-hsW)
+				HS_WARN='-Wall'
 			;;
 			
 			*.hs)
@@ -252,6 +281,8 @@ function Func_fnine()
 					echo "fnine: $I: Nie ma takiego pliku. Stop." && return 2
 				fi
 			;;
+			
+			# ------ ERRORS ------
 			
 			-*)
 				echo "fnine: Błędna opcja $I. Stop." && return 2
