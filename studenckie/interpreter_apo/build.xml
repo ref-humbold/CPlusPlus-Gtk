@@ -1,0 +1,11 @@
+<project name="interpreter_apo" basedir="." default="build">
+	<target name="clean">
+        <delete dir="bin"/>
+    </target>
+	
+	<target name="build" depends="clean">
+		<mkdir dir="bin"/>
+		<javac includeantruntime="false" srcdir="src" destdir="bin"/>
+	</target>
+</project>
+
