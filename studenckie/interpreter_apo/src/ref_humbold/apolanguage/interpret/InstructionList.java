@@ -12,7 +12,7 @@ Klasa przechowujaca liste instrukcji programu.
 Lista zostaje utworzona podczas parsowania.
 @see Parser#parseProgram
 */
-class InstructionList
+public class InstructionList
 	implements Iterable <Instruction>
 {
 	private class InstructionIterator

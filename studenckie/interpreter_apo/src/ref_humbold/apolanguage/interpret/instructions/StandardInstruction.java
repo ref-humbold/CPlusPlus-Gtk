@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret.instructions;
 /**
 Klasa przechowujaca pojedyncza standardowa instrukcje w liscie rozkazow.
 */
-class StandardInstruction
+public class StandardInstruction
 	extends Instruction
 {
  	/** Tworzy element odpowiadajacy jednej instrukcji w programie. */

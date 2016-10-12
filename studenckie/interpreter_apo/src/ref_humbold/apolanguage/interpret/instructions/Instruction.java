@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret.instructions;
 /**
 Klasa abstrakcyjna przechowujaca pojedyncza instrukcje w liscie rozkazow.
 */
-abstract class Instruction
+public abstract class Instruction
 {
 	/** Numer wiersza programu. */
 	private int lineNumber;

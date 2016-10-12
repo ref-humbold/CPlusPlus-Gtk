@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret.instructions;
 /**
 Klasa przechowujaca pojedyncza instrukcje skoku w liscie rozkazow.
 */
-class JumpInstruction
+public class JumpInstruction
 	extends Instruction
 {
 	/** Instrukcja, do ktorego wykonamy skok */
