@@ -1,4 +1,4 @@
-package ref_humbold.apolanguage.interpret;
+package ref_humbold.apolanguage.interpret.instructions;
 
 /**
 Klasa przechowujaca pojedyncza standardowa instrukcje w liscie rozkazow.

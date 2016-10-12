@@ -1,4 +1,4 @@
-package ref_humbold.apolanguage.interpret;
+package ref_humbold.apolanguage.interpret.instructions;
 
 /**
 Klasa abstrakcyjna przechowujaca pojedyncza instrukcje w liscie rozkazow.
@@ -15,7 +15,7 @@ abstract class Instruction
 	private int[] args;
  
 	/** Nastepny element listy. */
-	Element nextInstruction;
+	private Instruction nextInstruction;
  
  	/**
  	Tworzy element odpowiadajacy jednej instrukcji w programie.
@@ -30,5 +30,32 @@ abstract class Instruction
 		this.args = args;
 		this.nextInstruction = null;
 	}
+	
+	int getLineNumber()
+	{
+		return lineNumber;
+	}
+	
+	String getName()
+	{
+		return name;
+	}
+	
+	int getArg(int i)
+	{
+		return args[i];
+	}
+	
+	Instruction getNextInstruction()
+	{
+		return nextInstruction;
+	}
+	
+	void setNextInstruction(Instruction next)
+	{
+		nextInstruction = next;
+	}
+	
+	abstract void perform();
 }
 

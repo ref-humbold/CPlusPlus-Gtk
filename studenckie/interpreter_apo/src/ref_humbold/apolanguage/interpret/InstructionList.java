@@ -1,8 +1,11 @@
 package ref_humbold.apolanguage.interpret;
 
-import java.lang.IllegalStateException;
 import java.uitl.Iterable;
 import java.util.Iterator;
+
+import ref_humbold.apolanguage.interpret.instructions.Instruction;
+import ref_humbold.apolanguage.interpret.instructions.StandardInstruction;
+import ref_humbold.apolanguage.interpret.instructions.JumpInstruction;
 
 /**
 Klasa przechowujaca liste instrukcji programu.
@@ -15,18 +18,11 @@ class InstructionList
 	private class InstructionIterator
 		implements Iterator <Instruction>
 	{
-		private boolean isJump;
 		private Instruction currentInstruction;
 		
 		InstructionIterator(Instruction instr)
 		{
 			currentInstruction = instr;
-			isJump = false;
-		}
-		
-		void setJump(boolean b)
-		{
-			isJump = b;
 		}
 		
 		boolean hasNext()
@@ -35,21 +31,53 @@ class InstructionList
 		}
 		
 		Instruction next()
-			throws NoSuchElementException, IllegalStateException
+			throws NoSuchElementException
 		{
 			if(!hasNext())
 				throw new NoSuchElementException();
 			
-			Instruction returnValue = currentInstruction;
-			
-			if(isJump && currentInstruction instanceof JumpInstruction)
-				currentInstruction = ( (JumpInstruction) currentInstruction ).linkedInstruction();
-			else if(!isJump)
-				currentInstruction = currentInstruction.nextInstruction;
+			if(currentInstruction instanceof JumpInstruction)
+			{
+				JumpInstruction jumpInstr = (JumpInstruction)currentInstruction;
+				boolean isJump = false;
+				
+				switch(jumpInstr.getName())
+				{
+					case "JUMP":
+						isJump = true;
+						break;
+
+					case "JPEQ":
+						arg0 = variableMap.getValue( jumpInstr.getArg(0) );
+						arg1 = variableMap.getValue( jumpInstr.getArg(1) );
+						isJump = arg0 == arg1;
+						break;
+
+					case "JPNE":
+						arg0 = variableMap.getValue( jumpInstr.getArg(0) );
+						arg1 = variableMap.getValue( jumpInstr.getArg(1) );
+						isJump = arg0 != arg1;
+						break;
+
+					case "JPLT":
+						arg0 = variableMap.getValue( jumpInstr.getArg(0) );
+						arg1 = variableMap.getValue( jumpInstr.getArg(1) );
+						isJump = arg0 < arg1;
+						break;
+
+					case "JPGT":
+						arg0 = variableMap.getValue( jumpInstr.getArg(0) );
+						arg1 = variableMap.getValue( jumpInstr.getArg(1) );
+						isJump = arg0 > arg1;
+						break;
+				}
+				
+				currentInstruction = isJump ? jumpInstr.linkedInstruction() : jumpInstr.nextInstruction;
+			}
 			else
-				throw new IllegalStateException("Cannot jump from non-jump instruction.");
+				currentInstruction = currentInstruction.nextInstruction;
 			
-			return returnValue;
+			return currentInstruction;
 		}
 	}
  
@@ -59,8 +87,8 @@ class InstructionList
  	/** Tworzy nowa pusta liste rozkazow. */
 	public InstructionList()
 	{
-		listBegin = null;
-		listEnd = null;
+		listBegin = new StandardInstruction(-1, "NONE", null);
+		listEnd = listBegin;
 	}
 	
 	/** Tworzy nowy iterator listy instrukcji */
@@ -79,21 +107,14 @@ class InstructionList
 	*/
 	public Instruction add(int lineNumber, String instructionName, int[] instructionArgs)
 	{
-		Instruction instr;
-	 
 		if( instructionName.startsWith("J") )
-			instr = new JumpInstruction(lineNumber, instructionName, instructionArgs);
+			listEnd.nextInstruction = new JumpInstruction(lineNumber, instructionName, instructionArgs);
 		else
-			instr = new StandardInstruction(lineNumber, instructionName, instructionArgs);
-		 
-	 	if(listBegin == null)
-			listBegin = instr;
-		else
-			listEnd.nextInstruction = instr;
-			
-		listEnd = instr;
+			listEnd.nextInstruction =  new StandardInstruction(lineNumber, instructionName, instructionArgs);
+		
+		listEnd = listEnd.nextInstruction;
 	 
-		return instr;
+		return listEnd;
 	}
 }
 
