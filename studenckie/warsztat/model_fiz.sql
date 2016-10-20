@@ -5,7 +5,7 @@ CREATE DOMAIN typauto AS char(1) NOT NULL DEFAULT 'o' CHECK( VALUE IN('o', 'c', 
 
 CREATE DOMAIN typcena AS numeric(10, 2) CHECK(VALUE > 0);
 
-CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z]:[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z]:[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z]:[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)');
+CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)');
 
 CREATE DOMAIN nrtel AS integer CHECK(100000000 <= VALUE AND VALUE <= 999999999);
 
@@ -48,10 +48,8 @@ CREATE ROLE sprzedawca;
 CREATE ROLE mechanik;
 CREATE ROLE magazynier;
 
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO sprzedawca, mechanik, magazynier;
-
-GRANT SELECT ON samochody TO sprzedawca;
-GRANT SELECT, INSERT, UPDATE ON klienci, uslugi, zlecenia, zleusl TO sprzedawca;
+GRANT SELECT ON uslugi, samochody TO sprzedawca;
+GRANT SELECT, INSERT, UPDATE ON klienci, zlecenia, zleusl TO sprzedawca;
 
 GRANT SELECT ON zlecenia, samochody, uslugi TO mechanik;
 GRANT SELECT, INSERT, UPDATE ON czesci, czesam, czeusl TO mechanik;
@@ -65,22 +63,22 @@ CREATE OR REPLACE RULE czesam_rule AS ON INSERT TO czesam DO ALSO UPDATE czesci 
 
 CREATE OR REPLACE FUNCTION zleusl_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
-    WITH tab AS (SELECT zlecenia.id, sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id = NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab WHERE zlecenia.id = tab.id;
-    RETURN NULL;
+	WITH tab AS (SELECT zlecenia.id, sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id = NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab WHERE zlecenia.id = tab.id;
+	RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zleusl_trg AFTER INSERT OR UPDATE ON zleusl FOR EACH ROW EXECUTE PROCEDURE zleusl_trg_func();
 
 CREATE OR REPLACE FUNCTION zam_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
-    IF OLD.data_real IS NULL AND NEW.data_real IS NOT NULL
-    THEN
-        UPDATE czesci SET ilosc = ilosc+NEW.ilosc WHERE id = NEW.cze_id;
-    ELSIF OLD.ilosc <> NEW.ilosc
-    THEN
-        UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc WHERE id = NEW.cze_id;
-    END IF;
-    RETURN NULL;
+	IF OLD.data_real IS NULL AND NEW.data_real IS NOT NULL
+	THEN
+		UPDATE czesci SET ilosc = ilosc+NEW.ilosc WHERE id = NEW.cze_id;
+	ELSIF OLD.ilosc <> NEW.ilosc
+	THEN
+		UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc WHERE id = NEW.cze_id;
+	END IF;
+	RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia FOR EACH ROW EXECUTE PROCEDURE zam_trg_func();
