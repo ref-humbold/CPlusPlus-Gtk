@@ -13,46 +13,46 @@ Odpowiada ona za pobranie programu do wykonania oraz rozpoczecie dzialania inter
 */
 public class Interpreter
 {
-	/**
-	Pobiera plik i uruchamia jego interpretacje w {@link interpret.Controle}.
-	@param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo oraz (opcjonalnie) rozmiar pamieci do alokacji
-	*/
-	public static void main(String args[])
-	{
-		int mem_len = 1;
-		String adr = args[0];
-	 
-		if(args.length>1)
-		{ 
-			try
-			{
-				mem_len = Integer.parseInt( args[1] );
-			}
-			catch (Exception e)
-			{
-				System.out.println("Memory not allocated. Execution stopped.");
-				return;
-			}
-		}
-	 
-		if( !adr.endsWith(".apo") )
-		{
-			System.out.println("Wrong filename extension. Execution stopped.");
-			return;
-		}
-	 
-		Path p = Paths.get(adr);
-		Controler controler = new Controler(mem_len, p);
-	 
-		try
-		{
-			controler.run();
-		}
-		catch (Exception e)
-		{
-			System.out.println("java.Exception while interpreting. Execution stopped.");
-			return;
-		}
-	}
+    /**
+    Pobiera plik i uruchamia jego interpretacje w {@link interpret.Controle}.
+    @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo oraz (opcjonalnie) rozmiar pamieci do alokacji
+    */
+    public static void main(String args[])
+    {
+        int mem_len = 1;
+        String adr = args[0];
+     
+        if(args.length>1)
+        { 
+            try
+            {
+                mem_len = Integer.parseInt( args[1] );
+            }
+            catch (Exception e)
+            {
+                System.out.println("Memory not allocated. Execution stopped.");
+                return;
+            }
+        }
+     
+        if( !adr.endsWith(".apo") )
+        {
+            System.out.println("Wrong filename extension. Execution stopped.");
+            return;
+        }
+     
+        Path p = Paths.get(adr);
+        Controler controler = new Controler(mem_len, p);
+     
+        try
+        {
+            controler.run();
+        }
+        catch (Exception e)
+        {
+            System.out.println("java.Exception while interpreting. Execution stopped.");
+            return;
+        }
+    }
 }
 
