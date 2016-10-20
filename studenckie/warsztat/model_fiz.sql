@@ -58,27 +58,29 @@ GRANT UPDATE(data_real) ON zlecenia TO mechanik;
 GRANT SELECT ON czesci TO magazynier;
 GRANT SELECT, INSERT, UPDATE ON zamowienia TO magazynier;
 
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO sprzedawca, magazynier, mechanik;
+
 /* REGUŁY, FUNKCJE I WYZWALACZE */
 CREATE OR REPLACE RULE czesam_rule AS ON INSERT TO czesam DO ALSO UPDATE czesci SET uniw = FALSE WHERE czesci.id = NEW.cze_id;
 
 CREATE OR REPLACE FUNCTION zleusl_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
-	WITH tab AS (SELECT zlecenia.id, sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id = NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab WHERE zlecenia.id = tab.id;
-	RETURN NULL;
+    WITH tab AS (SELECT zlecenia.id, sum(uslugi.cena) FROM zlecenia JOIN zleusl ON zleusl.zle_id = zlecenia.id JOIN uslugi ON zleusl.usl_nazwa = uslugi.nazwa GROUP BY zlecenia.id HAVING zlecenia.id = NEW.zle_id) UPDATE zlecenia SET koszt = tab.sum FROM tab WHERE zlecenia.id = tab.id;
+    RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zleusl_trg AFTER INSERT OR UPDATE ON zleusl FOR EACH ROW EXECUTE PROCEDURE zleusl_trg_func();
 
 CREATE OR REPLACE FUNCTION zam_trg_func() RETURNS TRIGGER AS $f$
 BEGIN
-	IF OLD.data_real IS NULL AND NEW.data_real IS NOT NULL
-	THEN
-		UPDATE czesci SET ilosc = ilosc+NEW.ilosc WHERE id = NEW.cze_id;
-	ELSIF OLD.ilosc <> NEW.ilosc
-	THEN
-		UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc WHERE id = NEW.cze_id;
-	END IF;
-	RETURN NULL;
+    IF OLD.data_real IS NULL AND NEW.data_real IS NOT NULL
+    THEN
+        UPDATE czesci SET ilosc = ilosc+NEW.ilosc WHERE id = NEW.cze_id;
+    ELSIF OLD.ilosc <> NEW.ilosc
+    THEN
+        UPDATE czesci SET ilosc = ilosc-OLD.ilosc+NEW.ilosc WHERE id = NEW.cze_id;
+    END IF;
+    RETURN NULL;
 END;
 $f$ LANGUAGE plpgsql;
 CREATE TRIGGER zam_trg AFTER UPDATE ON zamowienia FOR EACH ROW EXECUTE PROCEDURE zam_trg_func();
