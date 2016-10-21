@@ -22,24 +22,24 @@ class Magazynier:
         
         self.MagWindow = MagBuilder.get_object("MagWindow")
         
-        self.MagEntryP11 = MagBuilder.get_object("MagEntryP11")
-        self.MagEntryP12 = MagBuilder.get_object("MagEntryP12")
-        self.MagEntryP13 = MagBuilder.get_object("MagEntryP13")
-        self.MagComboboxtextP14 = MagBuilder.get_object("MagComboboxtextP14")
-        self.MagButtonP15 = MagBuilder.get_object("MagButtonP15")
+        self.MagEntry11b = MagBuilder.get_object("MagEntry11b")
+        self.MagEntry12b = MagBuilder.get_object("MagEntry12b")
+        self.MagEntry13b = MagBuilder.get_object("MagEntry13b")
+        self.MagComboboxtext14b = MagBuilder.get_object("MagComboboxtext14b")
+        self.MagButton15b = MagBuilder.get_object("MagButton15b")
         
-        self.MagComboboxtextP21 = MagBuilder.get_object("MagComboboxtextP21")
-        self.MagEntryP22 = MagBuilder.get_object("MagEntryP22")
-        self.MagEntryP23 = MagBuilder.get_object("MagEntryP23")
-        self.MagEntryP24 = MagBuilder.get_object("MagEntryP24")
-        self.MagButtonP25 = MagBuilder.get_object("MagButtonP25")
+        self.MagComboboxtext21b = MagBuilder.get_object("MagComboboxtext21b")
+        self.MagEntry22b = MagBuilder.get_object("MagEntry22b")
+        self.MagEntry23b = MagBuilder.get_object("MagEntry23b")
+        self.MagEntry24b = MagBuilder.get_object("MagEntry24b")
+        self.MagButton25b = MagBuilder.get_object("MagButton25b")
         
-        self.MagComboboxtextP31 = MagBuilder.get_object("MagComboboxtextP31")
-        self.MagButtonP31 = MagBuilder.get_object("MagButtonP31")
+        self.MagComboboxtext31b = MagBuilder.get_object("MagComboboxtext31b")
+        self.MagButton31c = MagBuilder.get_object("MagButton31c")
         
-        self.__load_ids(self.MagComboboxtextP14, "czesci")
-        self.__load_ids(self.MagComboboxtextP21, "zamowienia")
-        self.__load_ids(self.MagComboboxtextP31, "zamowienia_unreal")
+        self.__load_ids(self.MagComboboxtext14b, "czesci")
+        self.__load_ids(self.MagComboboxtext21b, "zamowienia")
+        self.__load_ids(self.MagComboboxtext31b, "zamowienia_unreal")
         
         MagBuilder.connect_signals(self)
         
@@ -98,14 +98,14 @@ class Magazynier:
         self.conn.close()
         Gtk.main_quit()
     
-    def MagButtonP15_clicked_cb(self, button):
+    def MagButton15b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku wysłania nowego zamówienia.
         """
-        firma = self.MagEntryP11.get_text() # SQL text
-        ilosc = self.MagEntryP12.get_text() # SQL integer
-        cena = self.MagEntryP13.get_text() # SQL numeric
-        cze_id = self.MagComboboxtextP14.get_active_text() # SQL integer
+        firma = self.MagEntry11b.get_text() # SQL text
+        ilosc = self.MagEntry12b.get_text() # SQL integer
+        cena = self.MagEntry13b.get_text() # SQL numeric
+        cze_id = self.MagComboboxtext14b.get_active_text() # SQL integer
         
         getcontext().prec = 2
         args = [ firma, int(ilosc), Decimal(cena), int(cze_id) ]
@@ -121,21 +121,21 @@ class Magazynier:
             ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
         else:
             self.conn.commit()
-            self.MagComboboxtextP21.append_text( str(wyn) )
-            self.MagComboboxtextP31.append_text( str(wyn) )
+            self.MagComboboxtext21b.append_text( str(wyn) )
+            self.MagComboboxtext31b.append_text( str(wyn) )
             ExtraWindow = Extra()
             ExtraWindow.show_label( "ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = "+str(wyn) )
         finally:
             cur.close()
         
-    def MagButtonP25_clicked_cb(self, button):
+    def MagButton25b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku modyfikacji zamówienia.
         """
-        ident = self.MagComboboxtextP21.get_active_text() # SQL integer
-        firma = self.MagEntryP22.get_text() # SQL text
-        ilosc = self.MagEntryP23.get_text() # SQL integer
-        cena = self.MagEntryP24.get_text() # SQL numeric
+        ident = self.MagComboboxtext21b.get_active_text() # SQL integer
+        firma = self.MagEntry22b.get_text() # SQL text
+        ilosc = self.MagEntry23b.get_text() # SQL integer
+        cena = self.MagEntry24b.get_text() # SQL numeric
         
         cur = self.conn.cursor()
         
@@ -153,11 +153,11 @@ class Magazynier:
         ExtraWindow = Extra()
         ExtraWindow.show_label("ZAMÓWIENIE NUMER "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
     
-    def MagButtonP31_clicked_cb(self, button):
+    def MagButton31c_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku odbioru zamówienia.
         """
-        ident = self.MagComboboxtextP31.get_active_text() # SQL integer
+        ident = self.MagComboboxtext31b.get_active_text() # SQL integer
         
         args = [ int(ident) ]
         

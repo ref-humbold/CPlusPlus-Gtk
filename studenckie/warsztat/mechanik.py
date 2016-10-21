@@ -21,25 +21,25 @@ class Mechanik:
         
         self.MechWindow = MechBuilder.get_object("MechWindow")
         
-        self.MechComboboxtextP11 = MechBuilder.get_object("MechComboboxtextP11")
-        self.MechButtonP11 = MechBuilder.get_object("MechButtonP11")
+        self.MechComboboxtext11b = MechBuilder.get_object("MechComboboxtext11b")
+        self.MechButton11c = MechBuilder.get_object("MechButton11c")
         
-        self.MechComboboxtextP21 = MechBuilder.get_object("MechComboboxtextP21")
-        self.MechComboboxtextP22 = MechBuilder.get_object("MechComboboxtextP22")
-        self.MechComboboxtextP23 = MechBuilder.get_object("MechComboboxtextP23")
-        self.MechButtonP24L = MechBuilder.get_object("MechButtonP24L")
-        self.MechButtonP24P = MechBuilder.get_object("MechButtonP24P")
+        self.MechComboboxtext21b = MechBuilder.get_object("MechComboboxtext21b")
+        self.MechComboboxtext22b = MechBuilder.get_object("MechComboboxtext22b")
+        self.MechComboboxtext23b = MechBuilder.get_object("MechComboboxtext23b")
+        self.MechButton24a = MechBuilder.get_object("MechButton24a")
+        self.MechButton24b = MechBuilder.get_object("MechButton24b")
         
-        self.MechComboboxtextP31 = MechBuilder.get_object("MechComboboxtextP31")
-        self.MechEntryP32 = MechBuilder.get_object("MechEntryP32")
-        self.MechButtonP33L = MechBuilder.get_object("MechButtonP33L")
-        self.MechButtonP33P = MechBuilder.get_object("MechButtonP33P")
+        self.MechComboboxtext31b = MechBuilder.get_object("MechComboboxtext31b")
+        self.MechEntry32b = MechBuilder.get_object("MechEntry32b")
+        self.MechButton33a = MechBuilder.get_object("MechButton33a")
+        self.MechButton33b = MechBuilder.get_object("MechButton33b")
         
-        self.__load_ids(self.MechComboboxtextP11, "zlecenia")
-        self.__load_ids(self.MechComboboxtextP21, "czesci")
-        self.__load_ids(self.MechComboboxtextP22, "uslugi")
-        self.__load_ids(self.MechComboboxtextP23, "samochody")
-        self.__load_ids(self.MechComboboxtextP31, "czesci")
+        self.__load_ids(self.MechComboboxtext11b, "zlecenia")
+        self.__load_ids(self.MechComboboxtext21b, "czesci")
+        self.__load_ids(self.MechComboboxtext22b, "uslugi")
+        self.__load_ids(self.MechComboboxtext23b, "samochody")
+        self.__load_ids(self.MechComboboxtext31b, "czesci")
         
         MechBuilder.connect_signals(self)
         
@@ -76,11 +76,11 @@ class Mechanik:
         self.conn.close()
         Gtk.main_quit()
     
-    def MechButtonP11_clicked_cb(self, button):
+    def MechButton11c_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zakończenia zlecenia.
         """
-        ident = self.MechComboboxtextP11.get_active_text() # SQL integer
+        ident = self.MechComboboxtext11b.get_active_text() # SQL integer
         
         args = [ int(ident) ]
         
@@ -98,12 +98,12 @@ class Mechanik:
         finally:
             cur.close()
     
-    def MechButtonP24L_clicked_cb(self, button):
+    def MechButton24a_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku przypisania części samochodowej do usługi.
         """
-        ident = self.MechComboboxtextP21.get_active_text() # SQL integer
-        nazwa = self.MechComboboxtextP22.get_active_text() # SQL text
+        ident = self.MechComboboxtext21b.get_active_text() # SQL integer
+        nazwa = self.MechComboboxtext22b.get_active_text() # SQL text
         
         args = [ int(ident), nazwa ]
         
@@ -122,12 +122,12 @@ class Mechanik:
         finally:
             cur.close()
     
-    def MechButtonP24P_clicked_cb(self, button):
+    def MechButton24b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku przypisania części samochodowej do modelu samochodu.
         """
-        ident = self.MechComboboxtextP21.get_active_text() # SQL integer
-        model = self.MechComboboxtextP23.get_active_text() # SQL text
+        ident = self.MechComboboxtext21b.get_active_text() # SQL integer
+        model = self.MechComboboxtext23b.get_active_text() # SQL text
         
         args = [ int(ident), model ]
         
@@ -146,11 +146,11 @@ class Mechanik:
         finally:
             cur.close()
     
-    def MechButtonP33L_clicked_cb(self, button):
+    def MechButton33a_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku wyświetlenia ilości części.
         """
-        ident = self.MechComboboxtextP31.get_active_text() # SQL integer
+        ident = self.MechComboboxtext31b.get_active_text() # SQL integer
         
         args = [ int(ident) ]
         
@@ -170,12 +170,12 @@ class Mechanik:
         finally:
             cur.close()
     
-    def MechButtonP33P_clicked_cb(self, button):
+    def MechButton33b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku pobrania określonej ilości części.
         """
-        ident = self.MechComboboxtextP31.get_active_text() # SQL integer
-        ilosc = self.MechEntryP32.get_text() # SQL integer
+        ident = self.MechComboboxtext31b.get_active_text() # SQL integer
+        ilosc = self.MechEntry32b.get_text() # SQL integer
         
         args = [ int(ilosc), int(ident) ]
         

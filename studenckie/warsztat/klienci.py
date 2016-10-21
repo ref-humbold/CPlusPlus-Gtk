@@ -21,30 +21,30 @@ class Klienci:
         
         self.KlienciWindow = KlienciBuilder.get_object("KlienciWindow")
         
-        self.KlienciEntryP11 = KlienciBuilder.get_object("KlienciEntryP11")
-        self.KlienciEntryP12 = KlienciBuilder.get_object("KlienciEntryP12")
-        self.KlienciEntryP13 = KlienciBuilder.get_object("KlienciEntryP13")
-        self.KlienciEntryP14 = KlienciBuilder.get_object("KlienciEntryP14")
-        self.KlienciComboboxtextP15 = KlienciBuilder.get_object("KlienciComboboxtextP15")
-        self.KlienciButtonP16 = KlienciBuilder.get_object("KlienciButtonP16")
+        self.KlienciEntry11b = KlienciBuilder.get_object("KlienciEntry11b")
+        self.KlienciEntry12b = KlienciBuilder.get_object("KlienciEntry12b")
+        self.KlienciEntry13b = KlienciBuilder.get_object("KlienciEntry13b")
+        self.KlienciEntry14b = KlienciBuilder.get_object("KlienciEntry14b")
+        self.KlienciComboboxtext15b = KlienciBuilder.get_object("KlienciComboboxtext15b")
+        self.KlienciButton16b = KlienciBuilder.get_object("KlienciButton16b")
         
-        self.KlienciComboboxtextP21 = KlienciBuilder.get_object("KlienciComboboxtextP21")
-        self.KlienciEntryP22 = KlienciBuilder.get_object("KlienciEntryP22")
-        self.KlienciEntryP23 = KlienciBuilder.get_object("KlienciEntryP23")
-        self.KlienciEntryP24 = KlienciBuilder.get_object("KlienciEntryP24")
-        self.KlienciEntryP25 = KlienciBuilder.get_object("KlienciEntryP25")
-        self.KlienciComboboxtextP26 = KlienciBuilder.get_object("KlienciComboboxtextP26")
-        self.KlienciButtonP27 = KlienciBuilder.get_object("KlienciButtonP27")
+        self.KlienciComboboxtext21b = KlienciBuilder.get_object("KlienciComboboxtext21b")
+        self.KlienciEntry22b = KlienciBuilder.get_object("KlienciEntry22b")
+        self.KlienciEntry23b = KlienciBuilder.get_object("KlienciEntry23b")
+        self.KlienciEntry24b = KlienciBuilder.get_object("KlienciEntry24b")
+        self.KlienciEntry25b = KlienciBuilder.get_object("KlienciEntry25b")
+        self.KlienciComboboxtext26b = KlienciBuilder.get_object("KlienciComboboxtext26b")
+        self.KlienciButton27b = KlienciBuilder.get_object("KlienciButton27b")
         
-        self.KlienciComboboxtextP31 = KlienciBuilder.get_object("KlienciComboboxtextP31")
-        self.KlienciEntryP32 = KlienciBuilder.get_object("KlienciEntryP32")
-        self.KlienciEntryP33 = KlienciBuilder.get_object("KlienciEntryP33")
-        self.KlienciEntryP34 = KlienciBuilder.get_object("KlienciEntryP34")
-        self.KlienciButtonP35 = KlienciBuilder.get_object("KlienciButtonP35")
+        self.KlienciComboboxtext31b = KlienciBuilder.get_object("KlienciComboboxtext31b")
+        self.KlienciEntry32b = KlienciBuilder.get_object("KlienciEntry32b")
+        self.KlienciEntry33b = KlienciBuilder.get_object("KlienciEntry33b")
+        self.KlienciEntry34b = KlienciBuilder.get_object("KlienciEntry34b")
+        self.KlienciButton35b = KlienciBuilder.get_object("KlienciButton35b")
         
-        self.KlienciComboboxtextP31.append_text("-")
-        self.__load_ids(self.KlienciComboboxtextP21)
-        self.__load_ids(self.KlienciComboboxtextP31)
+        self.KlienciComboboxtext31b.append_text("-")
+        self.__load_ids(self.KlienciComboboxtext21b)
+        self.__load_ids(self.KlienciComboboxtext31b)
         
         KlienciBuilder.connect_signals(self)
         
@@ -92,15 +92,15 @@ class Klienci:
         
         return True
     
-    def KlienciButtonP16_clicked_cb(self, button):
+    def KlienciButton16b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku dodania nowego klienta.
         """
-        imie = self.KlienciEntryP11.get_text() # SQL text
-        nazwisko = self.KlienciEntryP12.get_text() # SQL text
-        telefon = self.KlienciEntryP13.get_text() # SQL integer
-        firma = self.KlienciEntryP14.get_text() # SQL text
-        rabat = self.KlienciComboboxtextP15.get_active_text() # SQL integer
+        imie = self.KlienciEntry11b.get_text() # SQL text
+        nazwisko = self.KlienciEntry12b.get_text() # SQL text
+        telefon = self.KlienciEntry13b.get_text() # SQL integer
+        firma = self.KlienciEntry14b.get_text() # SQL text
+        rabat = self.KlienciComboboxtext15b.get_active_text() # SQL integer
         
         args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[ int(rabat) ]
         args[2] = None if args[2] == None else int( args[2] )
@@ -117,23 +117,23 @@ class Klienci:
             ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
         else:
             self.conn.commit()
-            self.KlienciComboboxtextP21.append_text( str(wynid) )
-            self.KlienciComboboxtextP31.append_text( str(wynid) )
+            self.KlienciComboboxtext21b.append_text( str(wynid) )
+            self.KlienciComboboxtext31b.append_text( str(wynid) )
             ExtraWindow = Extra()
             ExtraWindow.show_label( "NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = "+str(wynid) )
         finally:
             cur.close()
     
-    def KlienciButtonP27_clicked_cb(self, button):
+    def KlienciButton27b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku modyfikacji danych klienta.
         """
-        ident = self.KlienciComboboxtextP21.get_active_text() # SQL integer
-        imie = self.KlienciEntryP22.get_text() # SQL text
-        nazwisko = self.KlienciEntryP23.get_text() # SQL text
-        telefon = self.KlienciEntryP24.get_text() # SQL integer
-        firma = self.KlienciEntryP25.get_text() # SQL text
-        rabat = self.KlienciComboboxtextP26.get_active_text() # SQL integer
+        ident = self.KlienciComboboxtext21b.get_active_text() # SQL integer
+        imie = self.KlienciEntry22b.get_text() # SQL text
+        nazwisko = self.KlienciEntry23b.get_text() # SQL text
+        telefon = self.KlienciEntry24b.get_text() # SQL integer
+        firma = self.KlienciEntry25b.get_text() # SQL text
+        rabat = self.KlienciComboboxtext26b.get_active_text() # SQL integer
         
         cur = self.conn.cursor()
         
@@ -157,14 +157,14 @@ class Klienci:
         ExtraWindow = Extra()
         ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
     
-    def KlienciButtonP35_clicked_cb(self, button):
+    def KlienciButton35b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku wyszukania klienta.
         """
-        ident = self.KlienciComboboxtextP31.get_active_text() # SQL integer
-        imie = self.KlienciEntryP32.get_text() # SQL text
-        nazwisko = self.KlienciEntryP33.get_text() # SQL text
-        telefon = self.KlienciEntryP34.get_text() # SQL integer
+        ident = self.KlienciComboboxtext31.get_active_text() # SQL integer
+        imie = self.KlienciEntry32.get_text() # SQL text
+        nazwisko = self.KlienciEntry33.get_text() # SQL text
+        telefon = self.KlienciEntry34.get_text() # SQL integer
         
         cur = self.conn.cursor()
         

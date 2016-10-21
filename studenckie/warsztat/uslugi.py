@@ -20,19 +20,19 @@ class Uslugi:
         
         self.UslugiWindow = UslugiBuilder.get_object("UslugiWindow")
         
-        self.UslugiComboboxtextP11 = UslugiBuilder.get_object("UslugiComboboxtextP11")
-        self.UslugiButtonP11 = UslugiBuilder.get_object("UslugiButtonP11")
+        self.UslugiComboboxtext11b = UslugiBuilder.get_object("UslugiComboboxtext11b")
+        self.UslugiButton11c = UslugiBuilder.get_object("UslugiButton11c")
         
-        self.UslugiEntryP21 = UslugiBuilder.get_object("UslugiEntryP21")
-        self.UslugiEntryP22 = UslugiBuilder.get_object("UslugiEntryP22")
-        self.UslugiButtonP23 = UslugiBuilder.get_object("UslugiButtonP23")
+        self.UslugiEntry21b = UslugiBuilder.get_object("UslugiEntry21b")
+        self.UslugiEntry22b = UslugiBuilder.get_object("UslugiEntry22b")
+        self.UslugiButton23b = UslugiBuilder.get_object("UslugiButton23b")
         
-        self.UslugiComboboxtextP31 = UslugiBuilder.get_object("UslugiComboboxtextP31")
-        self.UslugiEntryP32 = UslugiBuilder.get_object("UslugiEntryP32")
-        self.UslugiButtonP33 = UslugiBuilder.get_object("UslugiButtonP33")
+        self.UslugiComboboxtext31b = UslugiBuilder.get_object("UslugiComboboxtext31b")
+        self.UslugiEntry32b = UslugiBuilder.get_object("UslugiEntry32b")
+        self.UslugiButton33b = UslugiBuilder.get_object("UslugiButton33b")
         
-        self.__load_ids(self.UslugiComboboxtextP11)
-        self.__load_ids(self.UslugiComboboxtextP31)
+        self.__load_ids(self.UslugiComboboxtext11b)
+        self.__load_ids(self.UslugiComboboxtext31b)
         
         UslugiBuilder.connect_signals(self)
         
@@ -53,11 +53,11 @@ class Uslugi:
         
         comboboxtext.set_active(0)
     
-    def UslugiButtonP11_clicked_cb(self, button):
+    def UslugiButton11c_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku wyszukania ceny za usługę.
         """
-        nazwa = self.UslugiComboboxtextP11.get_active_text() # SQL text
+        nazwa = self.UslugiComboboxtext11b.get_active_text() # SQL text
         
         args = [nazwa]
         
@@ -77,12 +77,12 @@ class Uslugi:
         finally:
             cur.close()
     
-    def UslugiButtonP23_clicked_cb(self, button):
+    def UslugiButton23b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku dodania usługi.
         """
-        nazwa = self.UslugiEntryP21.get_text() # SQL text
-        cena = self.UslugiEntryP22.get_text() # SQL numeric
+        nazwa = self.UslugiEntry21b.get_text() # SQL text
+        cena = self.UslugiEntry22b.get_text() # SQL numeric
         
         getcontext().prec = 2
         args = [ nazwa, Decimal(cena) ]
@@ -96,19 +96,19 @@ class Uslugi:
             ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
         else:
             self.conn.commit()
-            self.UslugiComboboxtextP11.append_text(nazwa)
-            self.UslugiComboboxtextP31.append_text(nazwa)
+            self.UslugiComboboxtext11b.append_text(nazwa)
+            self.UslugiComboboxtext31b.append_text(nazwa)
             ExtraWindow = Extra()
             ExtraWindow.show_label("USŁUGA "+nazwa+" ZOSTAŁA POMYŚLNIE DODANA.")
         finally:
             cur.close()
     
-    def UslugiButtonP33_clicked_cb(self, button):
+    def UslugiButton33b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zmiany ceny za usługę.
         """
-        nazwa = self.UslugiComboboxtextP31.get_active_text() # SQL text
-        nowa_cena = self.UslugiEntryP32.get_text() # SQL numeric
+        nazwa = self.UslugiComboboxtext31b.get_active_text() # SQL text
+        nowa_cena = self.UslugiEntry32b.get_text() # SQL numeric
         
         getcontext().prec = 2
         args = [Decimal(nowa_cena), nazwa]

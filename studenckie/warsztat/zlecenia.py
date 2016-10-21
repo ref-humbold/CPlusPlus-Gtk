@@ -22,24 +22,25 @@ class Zlecenia:
         
         self.ZleceniaWindow = ZleceniaBuilder.get_object("ZleceniaWindow")
         
-        self.ZleceniaEntryP11 = ZleceniaBuilder.get_object("ZleceniaEntryP11")
-        self.ZleceniaComboboxtextP12 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP12")
-        self.ZleceniaComboboxtextP13 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP13")
-        self.ZleceniaComboboxtextP14 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP14")
-        self.ZleceniaButtonP15 = ZleceniaBuilder.get_object("ZleceniaButtonP15")
+        self.ZleceniaEntry11ba = ZleceniaBuilder.get_object("ZleceniaEntry11ba")
+        self.ZleceniaEntry11bc = ZleceniaBuilder.get_object("ZleceniaEntry11bc")
+        self.ZleceniaComboboxtext12b = ZleceniaBuilder.get_object("ZleceniaComboboxtext12b")
+        self.ZleceniaComboboxtext13b = ZleceniaBuilder.get_object("ZleceniaComboboxtext13b")
+        self.ZleceniaComboboxtext14b = ZleceniaBuilder.get_object("ZleceniaComboboxtext14b")
+        self.ZleceniaButton15b = ZleceniaBuilder.get_object("ZleceniaButton15b")
         
-        self.ZleceniaComboboxtextP21 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP21")
-        self.ZleceniaComboboxtextP22 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP22")
-        self.ZleceniaButtonP23 = ZleceniaBuilder.get_object("ZleceniaButtonP23")
+        self.ZleceniaComboboxtext21b = ZleceniaBuilder.get_object("ZleceniaComboboxtext21b")
+        self.ZleceniaComboboxtext22b = ZleceniaBuilder.get_object("ZleceniaComboboxtext22b")
+        self.ZleceniaButton23b = ZleceniaBuilder.get_object("ZleceniaButton23b")
         
-        self.ZleceniaComboboxtextP31 = ZleceniaBuilder.get_object("ZleceniaComboboxtextP31")
-        self.ZleceniaButtonP31 = ZleceniaBuilder.get_object("ZleceniaButtonP31")
+        self.ZleceniaComboboxtext31b = ZleceniaBuilder.get_object("ZleceniaComboboxtext31b")
+        self.ZleceniaButton31c = ZleceniaBuilder.get_object("ZleceniaButton31c")
         
-        self.__load_ids(self.ZleceniaComboboxtextP13, "klienci")
-        self.__load_ids(self.ZleceniaComboboxtextP14, "samochody")
-        self.__load_ids(self.ZleceniaComboboxtextP21, "zlecenia")
-        self.__load_ids(self.ZleceniaComboboxtextP22, "uslugi")
-        self.__load_ids(self.ZleceniaComboboxtextP31, "zlecenia")
+        self.__load_ids(self.ZleceniaComboboxtext13b, "klienci")
+        self.__load_ids(self.ZleceniaComboboxtext14b, "samochody")
+        self.__load_ids(self.ZleceniaComboboxtext21b, "zlecenia")
+        self.__load_ids(self.ZleceniaComboboxtext22b, "uslugi")
+        self.__load_ids(self.ZleceniaComboboxtext31b, "zlecenia")
         
         ZleceniaBuilder.connect_signals(self)
         
@@ -69,14 +70,14 @@ class Zlecenia:
         
         comboboxtext.set_active(0)
     
-    def ZleceniaButtonP15_clicked_cb(self, button):
+    def ZleceniaButton15b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku dodania nowego zlecenia.
         """
-        nr_rej = self.ZleceniaEntryP11.get_text() # SQL text
-        faktura = self.ZleceniaComboboxtextP12.get_active_text() # SQL boolean
-        kli_id = self.ZleceniaComboboxtextP13.get_active_text() # SQL integer
-        sam_model = self.ZleceniaComboboxtextP14.get_active_text() # SQL text
+        nr_rej = self.ZleceniaEntry11ba.get_text()+":"+self.ZleceniaEntry11bc.get_text() # SQL text
+        faktura = self.ZleceniaComboboxtext12b.get_active_text() # SQL boolean
+        kli_id = self.ZleceniaComboboxtext13b.get_active_text() # SQL integer
+        sam_model = self.ZleceniaComboboxtext14b.get_active_text() # SQL text
         
         faktura = True if faktura == "TAK" else False
         args = [nr_rej, faktura, int(kli_id), sam_model]
@@ -93,19 +94,19 @@ class Zlecenia:
             return
         else:
             self.conn.commit()
-            self.ZleceniaComboboxtextP21.append_text( str(wyn) )
-            self.ZleceniaComboboxtextP31.append_text( str(wyn) )
+            self.ZleceniaComboboxtext21b.append_text( str(wyn) )
+            self.ZleceniaComboboxtext31b.append_text( str(wyn) )
             ExtraWindow = Extra()
             ExtraWindow.show_label( "ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = "+str(wyn) )
         finally:
             cur.close()
     
-    def ZleceniaButtonP23_clicked_cb(self, button):
+    def ZleceniaButton23b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku powiązania zlecenia z usługą.
         """
-        ident = self.ZleceniaComboboxtextP21.get_active_text() # SQL integer
-        nazwa = self.ZleceniaComboboxtextP22.get_active_text() # SQL text
+        ident = self.ZleceniaComboboxtext21b.get_active_text() # SQL integer
+        nazwa = self.ZleceniaComboboxtext22b.get_active_text() # SQL text
         
         args = [int(ident), nazwa]
         
@@ -119,8 +120,8 @@ class Zlecenia:
             return
         else:
             self.conn.commit()
-            self.ZleceniaComboboxtextP21.append_text( str(wyn) )
-            self.ZleceniaComboboxtextP31.append_text( str(wyn) )
+            self.ZleceniaComboboxtext21b.append_text( str(wyn) )
+            self.ZleceniaComboboxtext31b.append_text( str(wyn) )
             ExtraWindow = Extra()
             ExtraWindow.show_label("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
         finally:
@@ -129,11 +130,11 @@ class Zlecenia:
         ExtraWindow = Extra()
         ExtraWindow.show_label("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
     
-    def ZleceniaButtonP31_clicked_cb(self, button):
+    def ZleceniaButton31c_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku wyszukania zlecenia.
         """
-        ident = self.ZleceniaComboboxtextP31.get_active_text() # SQL integer
+        ident = self.ZleceniaComboboxtext31b.get_active_text() # SQL integer
         
         args = [ int(ident) ]
         

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkWindow" id="MagWindow">
     <property name="can_focus">False</property>
     <signal name="destroy" handler="MagWindow_destroy_cb" swapped="no"/>
     <child>
-      <object class="GtkBox" id="MagBox">
+      <object class="GtkBox" id="MagBoxMain">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="MagLabel1">
+          <object class="GtkLabel" id="MagLabelMain">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">
@@ -28,17 +28,17 @@ PANEL MAGAZYNIERA
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="MagNotebook1">
+          <object class="GtkNotebook" id="MagNotebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkGrid" id="MagGridP1">
+              <object class="GtkGrid" id="MagGridPage1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP11">
+                  <object class="GtkLabel" id="MagLabel11a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -46,12 +46,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP12">
+                  <object class="GtkLabel" id="MagLabel12a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ILOŚĆ TOWARU</property>
@@ -59,12 +57,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP13">
+                  <object class="GtkLabel" id="MagLabel13a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">CENA JEDNOSTKOWA</property>
@@ -72,24 +68,20 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP11">
+                  <object class="GtkEntry" id="MagEntry11b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP12">
+                  <object class="GtkEntry" id="MagEntry12b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
@@ -97,12 +89,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP13">
+                  <object class="GtkEntry" id="MagEntry13b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
@@ -110,27 +100,23 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MagButtonP15">
+                  <object class="GtkButton" id="MagButton15b">
                     <property name="label" translatable="yes">ZŁÓŻ ZAMÓWIENIE</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MagButtonP15_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="MagButton15b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP14">
+                  <object class="GtkLabel" id="MagLabel14a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID CZĘŚCI</property>
@@ -138,12 +124,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MagComboboxtextP14">
+                  <object class="GtkComboBoxText" id="MagComboboxtext14b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -151,8 +135,6 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -161,7 +143,7 @@ PANEL MAGAZYNIERA
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MagLabel21">
+              <object class="GtkLabel" id="MagLabelPage1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">NOWE ZAMÓWIENIE</property>
@@ -171,28 +153,26 @@ PANEL MAGAZYNIERA
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="MagGridP2">
+              <object class="GtkGrid" id="MagGridPage2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkButton" id="MagButtonP25">
+                  <object class="GtkButton" id="MagButton25b">
                     <property name="label" translatable="yes">ZATWIERDŹ ZMIANY</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MagButtonP25_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="MagButton25b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP24">
+                  <object class="GtkEntry" id="MagEntry24b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
@@ -200,12 +180,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP23">
+                  <object class="GtkEntry" id="MagEntry23b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
@@ -213,24 +191,20 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MagEntryP22">
+                  <object class="GtkEntry" id="MagEntry22b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP24">
+                  <object class="GtkLabel" id="MagLabel24a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">CENA JEDNOSTKOWA</property>
@@ -238,12 +212,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP23">
+                  <object class="GtkLabel" id="MagLabel23a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ILOŚĆ TOWARU</property>
@@ -251,12 +223,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP22">
+                  <object class="GtkLabel" id="MagLabel22a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -264,12 +234,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP21">
+                  <object class="GtkLabel" id="MagLabel21a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID</property>
@@ -277,12 +245,10 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MagComboboxtextP21">
+                  <object class="GtkComboBoxText" id="MagComboboxtext21b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -290,8 +256,6 @@ PANEL MAGAZYNIERA
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -303,7 +267,7 @@ PANEL MAGAZYNIERA
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MagLabel22">
+              <object class="GtkLabel" id="MagLabelPage2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">EDYTUJ ZAMÓWIENIE</property>
@@ -314,12 +278,12 @@ PANEL MAGAZYNIERA
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="MagBoxP3">
+              <object class="GtkBox" id="MagBoxPage3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="MagLabelP31">
+                  <object class="GtkLabel" id="MagLabel31a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID ZAMÓWIENIA</property>
@@ -331,7 +295,7 @@ PANEL MAGAZYNIERA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MagComboboxtextP31">
+                  <object class="GtkComboBoxText" id="MagComboboxtext31b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -343,12 +307,12 @@ PANEL MAGAZYNIERA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MagButtonP31">
+                  <object class="GtkButton" id="MagButton31c">
                     <property name="label" translatable="yes">ODEBRANO!</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MagButtonP31_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="MagButton31c_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -362,7 +326,7 @@ PANEL MAGAZYNIERA
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MagLabel23">
+              <object class="GtkLabel" id="MagLabelPage3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">ODBIERZ ZAMÓWIENIE</property>

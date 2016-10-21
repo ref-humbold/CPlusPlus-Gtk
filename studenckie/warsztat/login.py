@@ -24,14 +24,14 @@ class Login:
         
         self.LoginWindow = LoginBuilder.get_object("LoginWindow")
         
-        self.LoginEntry21 = LoginBuilder.get_object("LoginEntry21")
-        self.LoginEntry22 = LoginBuilder.get_object("LoginEntry22")
-        self.LoginButton23 = LoginBuilder.get_object("LoginButton23")
+        self.LoginEntry1b = LoginBuilder.get_object("LoginEntry1b")
+        self.LoginEntry2b = LoginBuilder.get_object("LoginEntry2b")
+        self.LoginButton3b = LoginBuilder.get_object("LoginButton3b")
         
         LoginBuilder.connect_signals(self)
         
-        self.LoginEntry22.set_invisible_char("#")
-        self.LoginEntry22.set_visibility(False)
+        self.LoginEntry2b.set_invisible_char("#")
+        self.LoginEntry2b.set_visibility(False)
         
         self.LoginWindow.show()
     
@@ -39,8 +39,8 @@ class Login:
         """
         Tworzy nowe okno wyświetlające komunikat o błedzie.
         """
-        self.LoginEntry21.set_text("")
-        self.LoginEntry22.set_text("")
+        self.LoginEntry1b.set_text("")
+        self.LoginEntry2b.set_text("")
         ExtraWindow = Extra()
         ExtraWindow.show_label(msg)
     
@@ -51,12 +51,12 @@ class Login:
         if not self.is_logged:
             Gtk.main_quit()
         
-    def LoginButton23_clicked_cb(self, button):
+    def LoginButton3b_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zalogowania do bazy danych.
         """
-        lgn = self.LoginEntry21.get_text()
-        pwd = self.LoginEntry22.get_text()
+        lgn = self.LoginEntry1b.get_text()
+        pwd = self.LoginEntry2b.get_text()
         
         if re.match(r"^[A-Za-z]*$", lgn) != None and re.match(r"^[A-Za-z0-9]*$", pwd) != None:
             try:

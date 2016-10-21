@@ -23,9 +23,9 @@ class Sprzedawca:
         
         self.SprzWindow = SprzBuilder.get_object("SprzWindow")
         
-        self.SprzButton21 = SprzBuilder.get_object("SprzButton21")
-        self.SprzButton22 = SprzBuilder.get_object("SprzButton22")
-        self.SprzButton23 = SprzBuilder.get_object("SprzButton23")
+        self.SprzButton1a = SprzBuilder.get_object("SprzButton1a")
+        self.SprzButton2a = SprzBuilder.get_object("SprzButton2a")
+        self.SprzButton3a = SprzBuilder.get_object("SprzButton3a")
         
         SprzBuilder.connect_signals(self)
         
@@ -38,19 +38,19 @@ class Sprzedawca:
         self.conn.close()
         Gtk.main_quit()
     
-    def SprzButton21_clicked_cb(self, button):
+    def SprzButton1a_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zarządania zleceniami.
         """
         ZleceniaWindow = Zlecenia(self.conn)
     
-    def SprzButton22_clicked_cb(self, button):
+    def SprzButton2a_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zarządania klientami.
         """
         KlienciWindow = Klienci(self.conn)
     
-    def SprzButton23_clicked_cb(self, button):
+    def SprzButton3a_clicked_cb(self, button):
         """
         Reaguje na kliknięcie przycisku zarządania usługami.
         """

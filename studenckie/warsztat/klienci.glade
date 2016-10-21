@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.16.1 -->
+<!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
   <object class="GtkWindow" id="KlienciWindow">
@@ -10,7 +10,7 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="KlienciLabel1">
+          <object class="GtkLabel" id="KlienciLabelMain">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">
@@ -26,17 +26,17 @@ PANEL KLIENTÓW SPRZEDAWCY
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="KlienciNotebook2">
+          <object class="GtkNotebook" id="KlienciNotebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkGrid" id="KlienciGridP1">
+              <object class="GtkGrid" id="KlienciGridPage1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP11">
+                  <object class="GtkLabel" id="KlienciLabel11a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -44,12 +44,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP12">
+                  <object class="GtkLabel" id="KlienciLabel12a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -57,12 +55,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP13">
+                  <object class="GtkLabel" id="KlienciLabel13a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -71,12 +67,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP11">
+                  <object class="GtkEntry" id="KlienciEntry11b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -84,12 +78,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP13">
+                  <object class="GtkEntry" id="KlienciEntry13b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -97,27 +89,23 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="KlienciButtonP16">
+                  <object class="GtkButton" id="KlienciButton16b">
                     <property name="label" translatable="yes">DODAJ KLIENTA</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="KlienciButtonP16_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="KlienciButton16b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP14">
+                  <object class="GtkLabel" id="KlienciLabel14a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -125,12 +113,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP15">
+                  <object class="GtkLabel" id="KlienciLabel15a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">RABAT</property>
@@ -138,12 +124,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP12">
+                  <object class="GtkEntry" id="KlienciEntry12b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -151,24 +135,20 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP14">
+                  <object class="GtkEntry" id="KlienciEntry14b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="KlienciComboboxtextP15">
+                  <object class="GtkComboBoxText" id="KlienciComboboxtext15b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -184,8 +164,6 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -194,7 +172,7 @@ PANEL KLIENTÓW SPRZEDAWCY
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="KlienciLabel21">
+              <object class="GtkLabel" id="KlienciLabelPage1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">NOWY KLIENT</property>
@@ -204,28 +182,26 @@ PANEL KLIENTÓW SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="KlienciGridP2">
+              <object class="GtkGrid" id="KlienciGridPage2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkButton" id="KlienciButtonP27">
+                  <object class="GtkButton" id="KlienciButton27b">
                     <property name="label" translatable="yes">ZATWIERDŹ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="KlienciButtonP27_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="KlienciButton27b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">6</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP26">
+                  <object class="GtkLabel" id="KlienciLabel26a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">RABAT</property>
@@ -233,12 +209,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP25">
+                  <object class="GtkLabel" id="KlienciLabel25a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -246,12 +220,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP24">
+                  <object class="GtkLabel" id="KlienciLabel24a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -260,12 +232,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP23">
+                  <object class="GtkLabel" id="KlienciLabel23a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -273,12 +243,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP22">
+                  <object class="GtkLabel" id="KlienciLabel22a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -286,12 +254,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="KlienciComboboxtextP26">
+                  <object class="GtkComboBoxText" id="KlienciComboboxtext26b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -309,24 +275,20 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">5</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP25">
+                  <object class="GtkEntry" id="KlienciEntry25b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP24">
+                  <object class="GtkEntry" id="KlienciEntry24b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -334,12 +296,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP23">
+                  <object class="GtkEntry" id="KlienciEntry23b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -347,12 +307,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP22">
+                  <object class="GtkEntry" id="KlienciEntry22b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -360,12 +318,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP21">
+                  <object class="GtkLabel" id="KlienciLabel21b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID</property>
@@ -373,12 +329,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="KlienciComboboxtextP21">
+                  <object class="GtkComboBoxText" id="KlienciComboboxtext21b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -386,8 +340,6 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -399,7 +351,7 @@ PANEL KLIENTÓW SPRZEDAWCY
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="KlienciLabel22">
+              <object class="GtkLabel" id="KlienciLabelPage2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">EDYTUJ DANE KLIENTA</property>
@@ -410,13 +362,13 @@ PANEL KLIENTÓW SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="KlienciGridP3">
+              <object class="GtkGrid" id="KlienciGridPage3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP34">
+                  <object class="GtkLabel" id="KlienciLabel34a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -425,12 +377,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP33">
+                  <object class="GtkLabel" id="KlienciLabel33a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -438,12 +388,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP32">
+                  <object class="GtkLabel" id="KlienciLabel32a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -451,12 +399,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP34">
+                  <object class="GtkEntry" id="KlienciEntry34b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -464,12 +410,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP33">
+                  <object class="GtkEntry" id="KlienciEntry33b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -477,12 +421,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="KlienciEntryP32">
+                  <object class="GtkEntry" id="KlienciEntry32b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -490,12 +432,10 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">1</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="KlienciLabelP31">
+                  <object class="GtkLabel" id="KlienciLabel31a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID</property>
@@ -503,27 +443,23 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">0</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="KlienciButtonP35">
+                  <object class="GtkButton" id="KlienciButton35b">
                     <property name="label" translatable="yes">SZUKAJ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="KlienciButtonP35_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="KlienciButton35b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">4</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="KlienciComboboxtextP31">
+                  <object class="GtkComboBoxText" id="KlienciComboboxtext31b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -531,8 +467,6 @@ PANEL KLIENTÓW SPRZEDAWCY
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
                   </packing>
                 </child>
                 <child>
@@ -544,7 +478,7 @@ PANEL KLIENTÓW SPRZEDAWCY
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="KlienciLabel3">
+              <object class="GtkLabel" id="KlienciLabelPage3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">WYSZUKAJ KLIENTA</property>

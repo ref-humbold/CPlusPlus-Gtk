@@ -5,7 +5,7 @@ CREATE DOMAIN typauto AS char(1) NOT NULL DEFAULT 'o' CHECK( VALUE IN('o', 'c', 
 
 CREATE DOMAIN typcena AS numeric(10, 2) CHECK(VALUE > 0);
 
-CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)');
+CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z]:[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]$)|(^[A-Z][A-Z][A-Z]:[A-Z0-9][A-Z0-9][A-Z0-9][A-Z0-9]?$)');
 
 CREATE DOMAIN nrtel AS integer CHECK(100000000 <= VALUE AND VALUE <= 999999999);
 
