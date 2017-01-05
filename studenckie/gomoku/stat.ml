@@ -7,15 +7,15 @@ let encnum num =
         if num_ = 0
         then if Random.bool () then "A" else "a"
         else let rec enc' num_' res' =
-                    if num_' = 0
-                    then res'
-                    else let n = num_' mod 10 in
-                        let newres =
-                            if Random.bool ()
-                            then (String.make 1 @@ Char.chr @@ 2*n+65)^res'
-                            else (String.make 1 @@ Char.chr @@ 2*n+97)^res' in
-                        enc' (num_'/10) newres in
-                enc' num_ res in
+                if num_' = 0
+                then res'
+                else let n = num_' mod 10 in
+                    let newres =
+                        if Random.bool ()
+                        then (String.make 1 @@ Char.chr @@ 2*n+65)^res'
+                        else (String.make 1 @@ Char.chr @@ 2*n+97)^res' in
+                    enc' (num_'/10) newres in
+            enc' num_ res in
     enc num "";;
 
 let encode lst =

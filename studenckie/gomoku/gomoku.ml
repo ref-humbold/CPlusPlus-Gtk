@@ -13,4 +13,4 @@ let play =
             ply
         end;;
 
-print_string @@ Board.string_of_player play^"wins!!\n";;
+print_string @@ Board.string_of_player play;;
