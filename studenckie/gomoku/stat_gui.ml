@@ -1,7 +1,12 @@
+let rec return () =
+    let mp = Gui.mouse_click () in
+    if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 2 16) (160, 50) mp in
+    then Menu_gui.run ()
+    else return ();;
+
 let display () =
     let lst = Stat.read () in
-    let print_info ctr str =
-        Gui.draw_text ctr str Graphics.black in
+    let print_info ctr str = Gui.draw_text ctr str Graphics.black in
     match lst with
     | [time; hmoves; cmoves; totwon; totlost; tothmoves; totcmoves; tottime] ->
         begin
@@ -22,3 +27,9 @@ let display () =
             Gui.draw_button (Gui.sc 1 2, Gui.sc 2 16) (160, 50) "POWROT" Graphics.red
         end
     | _ -> raise Stat.Stat_format_error;;
+
+let run () =
+    begin
+        display ();
+        return ()
+    end;;

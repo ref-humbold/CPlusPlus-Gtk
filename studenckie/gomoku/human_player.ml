@@ -1,7 +1,9 @@
-let choose () = (read_int (), read_int ());;
-
-let move game =
-    let p = choose () in
-    if Board.free p game
-    then p
-    else failwith "Field is occuppied."
+let move size gameboard =
+    let pos = Game_gui.choose_stone () in
+    if Board.free pos gameboard
+    then
+        begin
+            Game_gui.draw_stone size Board.Human pos;
+            pos
+        end;;
+    else move game;;

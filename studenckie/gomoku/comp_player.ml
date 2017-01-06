@@ -1,7 +1,8 @@
 let choose () = (read_int (), read_int ());;
 
 let move game =
-    let p = choose () in
-    if Board.free p game
-    then p
-    else failwith "Field is occuppied."
+    let pos = choose () in
+    begin
+        Game_gui.draw_stone size Board.Comp pos;
+        pos
+    end;;

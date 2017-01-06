@@ -1,13 +1,30 @@
-let header () = Gui.draw_text (Gui.sc 1 2, Gui.sc 7 8) "GOMOKU!!!" Graphics.green;;
-
-let footer () = Gui.draw_text (Gui.sc 1 2, Gui.sc 1 8) "(C) RAFAL KALETA, WROCLAW 2017" Graphics.black;;
-
 let display () =
     begin
         Gui.clear_window Graphics.blue;
-        header ();
+        Gui.draw_text (Gui.sc 1 2, Gui.sc 7 8) "GOMOKU!!!" Graphics.green;
         Gui.draw_button (Gui.sc 1 2, Gui.sc 3 4) (400, 100) "NOWA GRA" Graphics.magenta;
         Gui.draw_button (Gui.sc 1 2, Gui.sc 1 2) (400, 100) "STATYSTYKI" Graphics.magenta;
         Gui.draw_button (Gui.sc 1 2, Gui.sc 1 4) (400, 100) "WYJSCIE" Graphics.magenta;
-        footer ();
+        Gui.draw_text (Gui.sc 1 2, Gui.sc 1 8) "(C) RAFAL KALETA, WROCLAW 2017" Graphics.black
+    end;;
+
+let rec click_button () =
+    let mp = Gui.mouse_click () in
+    let buttons = [Gui.sc 3 4; Gui.sc 1 2; Gui.sc 1 4]
+    and actions = [Board_gui.run (); Stat_gui.run (); Graphics.close_graph ()] in
+    let clk = List.map (fun y -> Gui.check_button_clicked (Gui.sc 1 2, y) (400, 100) mp) buttons in
+    let rec choose_action lst i =
+        match lst with
+        | True::xs -> i
+        | False::xs -> choose_size xs (i+1)
+        | [] -> -1 in
+    let index = choose_action clk 0 in
+    if index >= 0
+    then List.nth actions index @@ ()
+    else click_button ();;
+
+let run () =
+    begin
+        display ();
+        click_button ()
     end;;
