@@ -1,4 +1,4 @@
-let play =
+let play () =
     let size = read_int () in
     let (ply, hmoves, cmoves, time) = Game.start size in
     match ply with
@@ -13,4 +13,11 @@ let play =
             ply
         end;;
 
-print_string @@ Board.string_of_player play;;
+let main () =
+    begin
+        Gui.new_window ();
+        Menu_gui.display ();
+        Graphics.loop_at_exit [] (fun _ -> ())
+    end;;
+
+main ();;

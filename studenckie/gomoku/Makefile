@@ -9,10 +9,10 @@ all : gomoku
 clean :
 	rm -f *.cmi *.cmx *.cmo *.o
 
-gomoku : stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx gomoku.cmx
-	$(CAMLOPT) $(CAMLFLAGS) $(GRAPHICS) stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx gomoku.cmx -o gomoku
+gomoku : stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx gui.cmx board_gui.cmx stat_gui.cmx menu_gui.cmx gomoku.cmx
+	$(CAMLOPT) $(CAMLFLAGS) $(GRAPHICS) stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx gui.cmx board_gui.cmx stat_gui.cmx menu_gui.cmx gomoku.cmx -o gomoku
 
-gomoku.cmx : stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx
+gomoku.cmx : stat.cmx board.cmx human_player.cmx comp_player.cmx game.cmx gui.cmx board_gui.cmx stat_gui.cmx menu_gui.cmx
 	$(CAMLOPT) $(CAMLFLAGS) $(GRAPHICS) -c gomoku.ml -o gomoku.cmx
 
 gui.cmi : gui.mli

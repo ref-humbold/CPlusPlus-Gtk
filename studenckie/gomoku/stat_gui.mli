@@ -1,1 +1,1 @@
-val display : int list -> unit;;
+val display : unit -> unit;;

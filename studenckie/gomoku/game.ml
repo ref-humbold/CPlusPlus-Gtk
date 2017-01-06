@@ -76,8 +76,8 @@ let rec play (mvh, mvc) player game =
 
 let start n =
     let board_of_game = Board.empty (n+2) in
-    let beg_time = Sys.time () in
+    let beg_time = 1000.0*.Sys.time () in
     let (winner, mvh, mvc) = play (0, 0) Board.Human board_of_game in
-    let end_time = Sys.time () in
+    let end_time = 1000.0*.Sys.time () in
     let tm = int_of_float @@ floor (end_time-.beg_time+.0.5) in
     (winner, mvh, mvc, tm);;
