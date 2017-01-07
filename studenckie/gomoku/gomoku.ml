@@ -16,7 +16,7 @@ let play () =
 let main () =
     begin
         Gui.new_window ();
-        Stat_gui.run;
+        Gui_runner.run_menu ();
         Graphics.loop_at_exit [] (fun _ -> ())
     end;;
 

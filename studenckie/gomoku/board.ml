@@ -12,8 +12,8 @@ let create size =
     let rec crt i v acc =
         if i = 0
         then acc
-        else create (i-1) v (v::acc) in
-    let rw = crt n None [] in
+        else crt (i-1) v (v::acc) in
+    let rw = crt size None [] in
     crt (size+2) rw [];;
 
 let is_free (r, c) gm =

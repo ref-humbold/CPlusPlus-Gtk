@@ -10,21 +10,14 @@ let display () =
 
 let rec click_button () =
     let mp = Gui.mouse_click () in
-    let buttons = [Gui.sc 3 4; Gui.sc 1 2; Gui.sc 1 4]
-    and actions = [Board_gui.run (); Stat_gui.run (); Graphics.close_graph ()] in
+    let buttons = [Gui.sc 3 4; Gui.sc 1 2; Gui.sc 1 4] in
     let clk = List.map (fun y -> Gui.check_button_clicked (Gui.sc 1 2, y) (400, 100) mp) buttons in
     let rec choose_action lst i =
         match lst with
-        | True::xs -> i
-        | False::xs -> choose_size xs (i+1)
+        | true::_ -> i
+        | false::xs -> choose_action xs (i+1)
         | [] -> -1 in
     let index = choose_action clk 0 in
     if index >= 0
-    then List.nth actions index @@ ()
+    then index
     else click_button ();;
-
-let run () =
-    begin
-        display ();
-        click_button ()
-    end;;

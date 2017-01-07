@@ -55,12 +55,13 @@ let set_move (row, col) ply game =
             else x::(set_row (n-1) xs) in
     set_row row game;;
 
-let rec play (mvh, mvc) player gameboard =
+let rec play size (mvh, mvc) player gameboard =
     let mpos =
         match player with
-        | Board.Human -> Human_player.move gameboard
-        | Board.Comp -> Comp_player.move gameboard in
+        | Board.Human -> Human_player.move size gameboard
+        | Board.Comp -> Comp_player.move () in
     let gameboard' = set_move mpos player gameboard in
+    let _ = Game_gui.draw_stone size player mpos in
     let mvnum =
         match player with
         | Board.Human -> (mvh+1, mvc)
@@ -69,16 +70,17 @@ let rec play (mvh, mvc) player gameboard =
     | None ->
         begin
             match player with
-            | Board.Human -> play mvnum Board.Comp gameboard'
-            | Board.Comp -> play mvnum Board.Human gameboard'
+            | Board.Human -> play size mvnum Board.Comp gameboard'
+            | Board.Comp -> play size mvnum Board.Human gameboard'
         end
     | Some ply -> (ply, fst mvnum, snd mvnum);;
 
 let start size =
-    let gameboard = Board.empty (size+2) in
-    let _ = Game_gui.display_board () in
+    let real_size = size+2 in
+    let gameboard = Board.create real_size in
+    let _ = Game_gui.display size in
     let beg_time = 1000.0*.Sys.time () in
-    let (winner, mvh, mvc) = play (0, 0) Board.Human gameboard in
+    let (winner, mvh, mvc) = play size (0, 0) Board.Human gameboard in
     let end_time = 1000.0*.Sys.time () in
     let tm = int_of_float @@ floor (end_time-.beg_time+.0.5) in
     (winner, mvh, mvc, tm);;

@@ -18,16 +18,10 @@ let rec choose_size () =
     let clk = List.map (fun p -> Gui.check_button_clicked p (200, 100) mp) buttons in
     let rec get_size lst sz =
         match lst with
-        | True::xs -> sz
-        | False::xs -> get_size xs (sz+2)
+        | true::_ -> sz
+        | false::xs -> get_size xs (sz+2)
         | [] -> 0 in
     let boardsize = get_size clk 15 in
     if boardsize > 0
     then boardsize
     else choose_size ();;
-
-let run () =
-    begin
-        display_sizemenu ();
-        Game_gui.run @@ choose_size ()
-    end;;

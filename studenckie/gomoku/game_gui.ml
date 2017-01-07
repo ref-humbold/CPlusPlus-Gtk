@@ -18,7 +18,7 @@ let norm size (x, y) =
     let nrm w = (w-endline)/step in
     (nrm x, nrm y);;
 
-let display_board size =
+let display size =
     let pos = get_lines_pos size
     and (pbeg, pend) = get_borders size in
     let rec draw_lines lst =
