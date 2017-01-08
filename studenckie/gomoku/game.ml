@@ -64,7 +64,7 @@ let start_game size =
 let end_game (winner, mvh, mvc, time) =
     begin
         Stat.end_game winner mvh mvc time;
-        Game_gui.return ()
+        Game_gui.return winner
     end;;
 
 let play_game size gameboard =

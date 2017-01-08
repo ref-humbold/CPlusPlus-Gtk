@@ -55,13 +55,18 @@ let rec choose_stone size =
     then (px, py)
     else choose_stone size;;
 
-let return () =
+let return winner =
+    let print_winner () =
+        match winner with
+        | Board.Human -> Gui.draw_text (Gui.sc 1 2, Gui.sc 92 100) "WYGRANA!!! :)" Graphics.blue
+        | Board.Comp -> Gui.draw_text (Gui.sc 1 2, Gui.sc 92 100) "PRZEGRANA :(" Graphics.red in
     let rec ret () =
         let mp = Gui.mouse_click () in
-        if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 1 10) (160, 30) mp
+        if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 1 16) (160, 30) mp
         then ()
         else ret () in
     begin
-        Gui.draw_button (Gui.sc 1 2, Gui.sc 1 10) (160, 30) "POWROT" Graphics.red;
+        print_winner ();
+        Gui.draw_button (Gui.sc 1 2, Gui.sc 1 16) (160, 30) "POWROT" Graphics.white;
         ret ()
     end;;
