@@ -54,3 +54,14 @@ let rec choose_stone size =
     if px >= 1 && px <= size && py >= 1 && py <= size
     then (px, py)
     else choose_stone size;;
+
+let return () =
+    let rec ret () =
+        let mp = Gui.mouse_click () in
+        if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 1 10) (160, 30) mp
+        then ()
+        else ret () in
+    begin
+        Gui.draw_button (Gui.sc 1 2, Gui.sc 1 10) (160, 30) "POWROT" Graphics.red;
+        ret ()
+    end;;

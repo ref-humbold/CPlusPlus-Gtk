@@ -62,7 +62,10 @@ let start_game size =
     end;;
 
 let end_game (winner, mvh, mvc, time) =
-    Stat.end_game winner mvh mvc time;;
+    begin
+        Stat.end_game winner mvh mvc time;
+        Game_gui.return ()
+    end;;
 
 let play_game size gameboard =
     let rec round (mvh, mvc) player gmbd =
