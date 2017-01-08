@@ -72,7 +72,7 @@ let play_game size gameboard =
     let mpos =
         match player with
         | Board.Human -> Human_player.move size gmbd
-        | Board.Comp -> Comp_player.move () in
+        | Board.Comp -> Comp_player.move size gmbd in
     let gmbd' = set_move mpos player gmbd in
     let _ = Game_gui.draw_stone size player mpos in
     let mvnum =

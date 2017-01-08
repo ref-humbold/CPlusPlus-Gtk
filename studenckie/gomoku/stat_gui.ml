@@ -1,8 +1,10 @@
-let rec return () =
+let rec check_click () =
     let mp = Gui.mouse_click () in
-    if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 2 16) (160, 50) mp
-    then ()
-    else return ();;
+    if Gui.check_button_clicked (Gui.sc 3 4, Gui.sc 2 16) (160, 50) mp
+    then 0
+    else if Gui.check_button_clicked (Gui.sc 1 4, Gui.sc 2 16) (160, 50) mp
+    then begin Stat.clear (); 1 end
+    else check_click ();;
 
 let display () =
     let lst = Stat.read () in
@@ -24,6 +26,7 @@ let display () =
             print_info (Gui.sc 1 4, Gui.sc 5 16) @@ "TWOICH: "^(string_of_int hmoves);
             print_info (Gui.sc 3 4, Gui.sc 5 16) @@ "KOMPUTERA: "^(string_of_int cmoves);
             print_info (Gui.sc 1 2, Gui.sc 4 16) @@ "CZAS OSTATNIEJ GRY: "^(string_of_int time)^" ms";
-            Gui.draw_button (Gui.sc 1 2, Gui.sc 2 16) (160, 50) "POWROT" Graphics.red
+            Gui.draw_button (Gui.sc 1 4, Gui.sc 2 16) (160, 50) "WYCZYSC" Graphics.blue;
+            Gui.draw_button (Gui.sc 3 4, Gui.sc 2 16) (160, 50) "POWROT" Graphics.red
         end
     | _ -> raise Stat.Stat_format_error;;

@@ -59,9 +59,11 @@ let write lst =
     let file = open_out filename in
     output_string file text; flush file; close_out file;;
 
+let clear () = write [0; 0; 0; 0; 0; 0; 0; 0];;
+
 let read () =
     let file = try open_in filename with
-        | Sys_error _ -> begin write [0; 0; 0; 0; 0; 0; 0; 0]; open_in filename end in
+        | Sys_error _ -> begin clear (); open_in filename end in
     let text = input_line file in
     close_in file; decode text;;
 
@@ -76,7 +78,9 @@ let end_game winner hmoves cmoves time =
     | [_; _; _; twn; tls; thm; tcm; tt] ->
         begin
             match winner with
-            | Board.Human -> write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
-            | Board.Comp -> write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
+            | Board.Human ->
+                write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
+            | Board.Comp ->
+                write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
         end
     | _ -> raise Stat_format_error;;
