@@ -55,32 +55,42 @@ let set_move (row, col) ply game =
             else x::(set_row (n-1) xs) in
     set_row row game;;
 
-let rec play size (mvh, mvc) player gameboard =
+let start_game size =
+    begin
+        Game_gui.display size;
+        Board.create @@ size+2
+    end;;
+
+let end_game (winner, mvh, mvc, time) =
+    Stat.end_game winner mvh mvc time;;
+
+let play_game size gameboard =
+    let rec round (mvh, mvc) player gmbd =
     let mpos =
         match player with
-        | Board.Human -> Human_player.move size gameboard
+        | Board.Human -> Human_player.move size gmbd
         | Board.Comp -> Comp_player.move () in
-    let gameboard' = set_move mpos player gameboard in
+    let gmbd' = set_move mpos player gmbd in
     let _ = Game_gui.draw_stone size player mpos in
     let mvnum =
         match player with
         | Board.Human -> (mvh+1, mvc)
         | Board.Comp -> (mvh, mvc+1) in
-    match win gameboard' player mpos with
+    match win gmbd' player mpos with
     | None ->
         begin
             match player with
-            | Board.Human -> play size mvnum Board.Comp gameboard'
-            | Board.Comp -> play size mvnum Board.Human gameboard'
+            | Board.Human -> round mvnum Board.Comp gmbd'
+            | Board.Comp -> round mvnum Board.Human gmbd'
         end
-    | Some ply -> (ply, fst mvnum, snd mvnum);;
-
-let start size =
-    let real_size = size+2 in
-    let gameboard = Board.create real_size in
-    let _ = Game_gui.display size in
+    | Some ply -> (ply, fst mvnum, snd mvnum) in
     let beg_time = 1000.0*.Sys.time () in
-    let (winner, mvh, mvc) = play size (0, 0) Board.Human gameboard in
+    let (winner, mvh, mvc) = round (0, 0) Board.Human gameboard in
     let end_time = 1000.0*.Sys.time () in
     let tm = int_of_float @@ floor (end_time-.beg_time+.0.5) in
     (winner, mvh, mvc, tm);;
+
+let run size =
+    let gameboard = start_game size in
+    let game_result = play_game size gameboard in
+    end_game game_result;;

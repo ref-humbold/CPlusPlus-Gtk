@@ -7,7 +7,6 @@ let get_borders size =
 let get_lines_pos size =
     let szn = size/2+1 and half = Gui.sc 1 2 in
     let rec glp i acc =
-        print_int i;
         if i+szn >= 0
         then glp (i-1) ((half+step*i)::acc)
         else acc in
@@ -15,7 +14,7 @@ let get_lines_pos size =
 
 let norm size (x, y) =
     let (_, endline) = get_borders size in
-    let nrm w = (w-endline)/step in
+    let nrm w = (w-endline+step/2)/step in
     (nrm x, nrm y);;
 
 let display size =
@@ -52,6 +51,6 @@ let draw_stone size ply (x, y) =
 
 let rec choose_stone size =
     let (px, py) = norm size @@ Gui.mouse_click () in
-    if px < 1 || py < 1 || px > size || py > size
+    if px >= 1 && px <= size && py >= 1 && py <= size
     then (px, py)
     else choose_stone size;;

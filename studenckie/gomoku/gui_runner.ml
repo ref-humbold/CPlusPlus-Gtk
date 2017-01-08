@@ -1,7 +1,7 @@
 let rec run_menu () =
     begin
         Menu_gui.display ();
-        List.nth [run_board; run_stat; Graphics.close_graph] (Menu_gui.click_button ()) @@ ()
+        List.nth [run_board; run_stat; fun _ -> ()] (Menu_gui.click_button ()) @@ ()
     end
 and run_stat () =
     begin
@@ -11,7 +11,8 @@ and run_stat () =
     end
 and run_game size =
     begin
-        run_menu ();
+        Game.run size;
+        run_menu ()
     end
 and run_board () =
     begin

@@ -70,11 +70,13 @@ let write lst =
     let file = open_out filename in
     output_string file text; flush file; close_out file;;
 
-let end_game won hmoves cmoves time =
+let end_game winner hmoves cmoves time =
     let data = read () in
     match data with
     | [_; _; _; twn; tls; thm; tcm; tt] ->
-            if won
-            then write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
-            else write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
+        begin
+            match winner with
+            | Board.Human -> write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
+            | Board.Comp -> write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
+        end
     | _ -> raise Stat_format_error;;
