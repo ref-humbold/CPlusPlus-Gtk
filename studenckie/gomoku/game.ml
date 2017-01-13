@@ -1,22 +1,24 @@
-let win gameboard player (row, col) =
+let win gameboard size player (row, col) =
     let get_row r g = List.nth g r
     and get_col c g = List.map (fun lst -> List.nth lst c) g
     and get_sum s g =
-        let rec gs s_ i g_ acc =
+        let rec gs i g_ acc =
             match g_ with
-            | [] -> acc
-            | xs::xss ->
-                try gs s_ (i+1) xss ((List.nth xs @@ s_-i)::acc) with
-                | Failure _ | Invalid_argument _ -> gs s_ (i+1) xss acc in
-        gs s 0 g []
+            | [] -> List.rev acc
+            | rw::rws ->
+                if s-i < 0 || s-i > size+1
+                then gs (i+1) rws acc
+                else gs (i+1) rws ((List.nth rw @@ s-i)::acc) in
+        gs 0 g []
     and get_diff d g =
-        let rec gd d_ i g_ acc =
+        let rec gd i g_ acc =
             match g_ with
-            | [] -> acc
-            | xs::xss ->
-                try gd d_ (i+1) xss ((List.nth xs @@ i-d_)::acc) with
-                | Failure _ | Invalid_argument _ -> gd d_ (i+1) xss acc in
-        gd d 0 g [] in
+            | [] -> List.rev acc
+            | rw::rws ->
+                if i-d < 0 || i-d > size+1
+                then gd (i+1) rws acc
+                else gd (i+1) rws ((List.nth rw @@ i-d)::acc) in
+        gd 0 g [] in
     let rec check lst =
         match lst with
         | p0::p1::p2::p3::p4::p5::p6::ps ->
@@ -41,14 +43,14 @@ let win gameboard player (row, col) =
 let set_move (row, col) player game =
     let rec set_col n r =
         match r with
-        | [] -> raise Board.Incorrect_gameboard
+        | [] -> raise @@ Board.Incorrect_gameboard "Game.set_move @ column"
         | x::xs ->
             if n = 0
             then (Some player)::xs
             else x::(set_col (n-1) xs) in
     let rec set_row n g =
         match g with
-        | [] -> raise Board.Incorrect_gameboard
+        | [] -> raise @@ Board.Incorrect_gameboard ("Game.set_move"^string_of_int row)
         | x::xs ->
             if n = 0
             then (set_col col x)::xs
@@ -61,40 +63,36 @@ let start_game size =
         Board.create @@ size+2
     end;;
 
-let end_game (winner, mvh, mvc, time) =
+let end_game (winner, mvh, mvc) =
     begin
-        Stat.end_game winner mvh mvc time;
+        Stat.end_game winner mvh mvc;
         Game_gui.return winner
     end;;
 
 let play_game size gameboard =
-    let rec turn (mvh, mvc) player gmbd lhp =
-    let mpos =
-        match player with
-        | Board.Human -> Human_player.move size gmbd
-        | Board.Comp -> Comp_player.move lhp size gmbd
-        | Board.Blocked -> raise Board.Incorrect_player in
-    let gmbd' = set_move mpos player gmbd in
-    let _ = Game_gui.draw_stone size player mpos in
-    let mvnum =
-        match player with
-        | Board.Human -> (mvh+1, mvc)
-        | Board.Comp -> (mvh, mvc+1)
-        | Board.Blocked -> raise Board.Incorrect_player in
-    match win gmbd' player mpos with
-    | None ->
-        begin
+    let rec turn (mvh, mvc) last player gmbd =
+        let mpos =
             match player with
-            | Board.Human -> turn mvnum Board.Comp gmbd' mpos
-            | Board.Comp -> turn mvnum Board.Human gmbd' (-1, -1)
-            | Board.Blocked -> raise Board.Incorrect_player
-        end
-    | Some player -> (player, fst mvnum, snd mvnum) in
-    let beg_time = 1000.0*.Sys.time () in
-    let (winner, mvh, mvc) = turn (0, 0) Board.Human gameboard (-1, -1) in
-    let end_time = 1000.0*.Sys.time () in
-    let tm = int_of_float @@ floor (end_time-.beg_time+.0.5) in
-    (winner, mvh, mvc, tm);;
+            | Board.Human -> Human_player.move size gmbd
+            | Board.Comp -> Comp_player.move last size gmbd
+            | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
+        let gmbd' = set_move mpos player gmbd in
+        let _ = Game_gui.draw_stone size player mpos in
+        let mvnum =
+            match player with
+            | Board.Human -> (mvh+1, mvc)
+            | Board.Comp -> (mvh, mvc+1)
+            | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
+        match win gmbd' size player mpos with
+        | None ->
+            begin
+                match player with
+                | Board.Human -> turn mvnum mpos Board.Comp gmbd'
+                | Board.Comp -> turn mvnum mpos Board.Human gmbd'
+                | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game"
+            end
+        | Some player -> (player, fst mvnum, snd mvnum) in
+    turn (0, 0) (0, 0) Board.Human gameboard;;
 
 let run size =
     let gameboard = start_game size in

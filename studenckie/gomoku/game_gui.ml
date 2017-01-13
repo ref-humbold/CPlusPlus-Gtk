@@ -43,7 +43,7 @@ let draw_stone size ply (row, col) =
         match ply with
         | Board.Human -> Graphics.white
         | Board.Comp -> Graphics.black
-        | Board.Blocked -> raise Board.Incorrect_player in
+        | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
     let (px, py) = (endline+col*step, endline+row*step) in
     begin
         Graphics.set_color stone_color;
@@ -61,7 +61,7 @@ let return winner =
         match winner with
         | Board.Human -> Gui.draw_text (Gui.sc 1 2, Gui.sc 92 100) "WYGRANA!!! :)" Graphics.blue
         | Board.Comp -> Gui.draw_text (Gui.sc 1 2, Gui.sc 92 100) "PRZEGRANA :(" Graphics.red
-        | Board.Blocked -> raise Board.Incorrect_player in
+        | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
     let rec ret () =
         let mp = Gui.mouse_click () in
         if Gui.check_button_clicked (Gui.sc 1 2, Gui.sc 1 16) (160, 30) mp

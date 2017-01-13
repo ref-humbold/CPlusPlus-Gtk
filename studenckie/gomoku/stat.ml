@@ -1,4 +1,4 @@
-exception Stat_format_error;;
+exception Stat_format_error of string;;
 
 let filename = "statistics";;
 
@@ -59,7 +59,7 @@ let write lst =
     let file = open_out filename in
     output_string file text; flush file; close_out file;;
 
-let clear () = write [0; 0; 0; 0; 0; 0; 0; 0];;
+let clear () = write [0; 0; 0; 0; 0; 0];;
 
 let read () =
     let file = try open_in filename with
@@ -72,16 +72,16 @@ let write lst =
     let file = open_out filename in
     output_string file text; flush file; close_out file;;
 
-let end_game winner hmoves cmoves time =
+let end_game winner hmoves cmoves =
     let data = read () in
     match data with
-    | [_; _; _; twn; tls; thm; tcm; tt] ->
+    | [_; _; twn; tls; thm; tcm] ->
         begin
             match winner with
             | Board.Human ->
-                write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
+                write [hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves]
             | Board.Comp ->
-                write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
-            | Board.Blocked -> raise Board.Incorrect_player
+                write [hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves]
+            | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game"
         end
-    | _ -> raise Stat_format_error;;
+    | _ -> raise @@ Stat_format_error "Stat.end_game";;

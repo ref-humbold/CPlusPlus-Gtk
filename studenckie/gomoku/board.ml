@@ -1,14 +1,14 @@
 type player_t = Human | Comp | Blocked;;
 type gameboard_t = player_t option list list
 
-exception Incorrect_gameboard;;
-exception Incorrect_player;;
+exception Incorrect_gameboard of string;;
+exception Incorrect_player of string;;
 
 let string_of_player player =
     match player with
     | Human -> "Human"
     | Comp -> "Computer"
-    | Blocked -> raise @@ Incorrect_player;;
+    | Blocked -> raise @@ Incorrect_player "Board.string_of_player";;
 
 let create size =
     let rec crt_row rn i acc =
