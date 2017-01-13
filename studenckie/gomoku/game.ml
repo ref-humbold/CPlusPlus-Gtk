@@ -1,4 +1,4 @@
-let win game ply (row, col) =
+let win gameboard player (row, col) =
     let get_row r g = List.nth g r
     and get_col c g = List.map (fun lst -> List.nth lst c) g
     and get_sum s g =
@@ -23,28 +23,28 @@ let win game ply (row, col) =
             begin
                 match (p0, p1, p2, p3, p4, p5, p6) with
                 | (None, Some t1, Some t2, Some t3, Some t4, Some t5, None) when
-                    ply = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
+                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
                 | (Some t0, Some t1, Some t2, Some t3, Some t4, Some t5, None) when
-                    ply = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
+                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
                 | (None, Some t1, Some t2, Some t3, Some t4, Some t5, Some t6) when
-                    ply = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
+                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
                 | (Some t0, Some t1, Some t2, Some t3, Some t4, Some t5, Some t6) when
-                    ply = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
+                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
                 | _ -> check @@ p1::p2::p3::p4::p5::p6::ps
             end
         | _ -> false in
     let get_all r c g = [get_row r g; get_col c g; get_sum (r+c) g; get_diff (r-c) g] in
-    if List.exists check @@ get_all row col game
-    then Some ply
+    if List.exists check @@ get_all row col gameboard
+    then Some player
     else None;;
 
-let set_move (row, col) ply game =
+let set_move (row, col) player game =
     let rec set_col n r =
         match r with
         | [] -> raise Board.Incorrect_gameboard
         | x::xs ->
             if n = 0
-            then (Some ply)::xs
+            then (Some player)::xs
             else x::(set_col (n-1) xs) in
     let rec set_row n g =
         match g with
@@ -68,27 +68,30 @@ let end_game (winner, mvh, mvc, time) =
     end;;
 
 let play_game size gameboard =
-    let rec round (mvh, mvc) player gmbd =
+    let rec turn (mvh, mvc) player gmbd lhp =
     let mpos =
         match player with
         | Board.Human -> Human_player.move size gmbd
-        | Board.Comp -> Comp_player.move size gmbd in
+        | Board.Comp -> Comp_player.move lhp size gmbd
+        | Board.Blocked -> raise Board.Incorrect_player in
     let gmbd' = set_move mpos player gmbd in
     let _ = Game_gui.draw_stone size player mpos in
     let mvnum =
         match player with
         | Board.Human -> (mvh+1, mvc)
-        | Board.Comp -> (mvh, mvc+1) in
+        | Board.Comp -> (mvh, mvc+1)
+        | Board.Blocked -> raise Board.Incorrect_player in
     match win gmbd' player mpos with
     | None ->
         begin
             match player with
-            | Board.Human -> round mvnum Board.Comp gmbd'
-            | Board.Comp -> round mvnum Board.Human gmbd'
+            | Board.Human -> turn mvnum Board.Comp gmbd' mpos
+            | Board.Comp -> turn mvnum Board.Human gmbd' (-1, -1)
+            | Board.Blocked -> raise Board.Incorrect_player
         end
-    | Some ply -> (ply, fst mvnum, snd mvnum) in
+    | Some player -> (player, fst mvnum, snd mvnum) in
     let beg_time = 1000.0*.Sys.time () in
-    let (winner, mvh, mvc) = round (0, 0) Board.Human gameboard in
+    let (winner, mvh, mvc) = turn (0, 0) Board.Human gameboard (-1, -1) in
     let end_time = 1000.0*.Sys.time () in
     let tm = int_of_float @@ floor (end_time-.beg_time+.0.5) in
     (winner, mvh, mvc, tm);;

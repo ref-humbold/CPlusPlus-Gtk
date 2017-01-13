@@ -82,5 +82,6 @@ let end_game winner hmoves cmoves time =
                 write [time; hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; tt+time]
             | Board.Comp ->
                 write [time; hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; tt+time]
+            | Board.Blocked -> raise Board.Incorrect_player
         end
     | _ -> raise Stat_format_error;;
