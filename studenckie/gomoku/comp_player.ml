@@ -136,7 +136,7 @@ let move human_move size gameboard =
         match defensive with
         | None -> random_pos ()
         | Some pt -> pt in
-    let (sgn, pos) = choose_pos () in
+    let pos = choose_pos () in
     begin
         last_move := pos;
         pos
