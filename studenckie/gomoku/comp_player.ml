@@ -4,10 +4,6 @@ type direction_t =
     | Sum of int
     | Diff of int;;
 
-type combination_t =
-    | Begin_free of int * direction_t * int
-    | End_free of int * direction_t * int;;
-
 let last_move = ref (0, 0);;
 
 let get_row r gmbd = (List.nth gmbd r, Row r, 0)
@@ -43,25 +39,18 @@ let rec positions lst =
     let rec add_pos lst_ retacc acc =
         match lst_ with
         | [] -> List.rev_append acc retacc
-        | comb::cs ->
-            begin
-                match comb with
-                | Begin_free (t, dir, n) | End_free (t, dir, n) ->
-                    add_pos cs retacc @@ (t, pos_in_dir dir n)::acc
-            end in
+        | (dir, n)::cs -> add_pos cs retacc @@ (pos_in_dir dir n)::acc in
     match lst with
     | [] -> []
     | combs::css -> add_pos combs (positions css) [];;
 
+let cmp_pos (n1, p1) (n2, p2) =
+    let nc = compare n1 n2 in
+    if nc = 0
+    then compare p1 p2
+    else -nc;;
+
 let count_items lst =
-    let cmp (n1, (t1, p1)) (n2, (t2, p2)) =
-        let nc = compare n1 n2 and tc = compare t1 t2
-        and pc = compare p1 p2 in
-        if nc = 0 && tc = 0
-        then pc
-        else if nc = 0
-        then -tc
-        else -nc in
     let rec cnt num lst_ =
         match lst_ with
         | x1::(x2::_ as xt) ->
@@ -70,57 +59,40 @@ let count_items lst =
             else (num, x1)::(cnt 1 xt)
         | [x] -> [(num, x)]
         | [] -> [] in
-    List.sort cmp @@ cnt 1 @@ List.sort compare lst;;
+    List.sort cmp_pos @@ cnt 1 @@ List.sort compare lst;;
 
-let check_four size player (row, col) gameboard =
+let check_situation size player (row, col) gameboard =
     let rec check acc (lst, dir, numrow) =
         match lst with
-        | p0::p1::p2::p3::p4::p5::ps ->
-            begin
-                match (p0, p1, p2, p3, p4, p5) with
-                | (None, Some t1, Some t2, Some t3, Some t4, None) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 ->
-                        check ((Begin_free (4, dir, numrow))::(Begin_free (4, dir, numrow+5))::acc) (p5::ps, dir, numrow+5)
-                | (Some t0, Some t1, Some t2, Some t3, Some t4, None) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t1 <> t0 ->
-                        check (End_free (4, dir, numrow+5)::acc) (p5::ps, dir, numrow+5)
-                | (None, Some t1, Some t2, Some t3, Some t4, Some t5) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t1 <> t5 ->
-                        check (Begin_free (4, dir, numrow)::acc) (p5::ps, dir, numrow+5)
-                | _ -> check acc (p1::p2::p3::p4::p5::ps, dir, numrow+1)
-            end
-        | _ -> acc in
-    let get_all r c g = [get_row r g; get_col c g; get_sum size (r+c) g; get_diff size (r-c) g] in
-    positions @@ List.map (check []) @@ get_all row col gameboard;;
-
-let check_three size player (row, col) gameboard =
-    let rec check acc (lst, dir, numrow) =
-        match lst with
-        | p0::p1::p2::p3::p4::ps ->
-            begin
-                match (p0, p1, p2, p3, p4) with
-                | (None, Some t1, Some t2, Some t3, None) when
-                    player = t1 && t1 = t2 && t2 = t3 ->
-                        check ((Begin_free (3, dir, numrow))::(End_free (3, dir, numrow+4))::acc) (p4::ps, dir, numrow+4)
-                | (Some t0, Some t1, Some t2, Some t3, None) when
-                    player = t1 && t1 = t2 && t2 = t3 && t1 <> t0 ->
-                        check (End_free (3, dir, numrow+4)::acc) (p4::ps, dir, numrow+4)
-                | (None, Some t1, Some t2, Some t3, Some t4) when
-                    player = t1 && t1 = t2 && t2 = t3 && t1 <> t4 ->
-                        check (Begin_free (3, dir, numrow)::acc) (p4::ps, dir, numrow+4)
-                | _ -> check acc (p1::p2::p3::p4::ps, dir, numrow+1)
-            end
-        | _ -> acc in
+        | None::Some t1::Some t2::Some t3::None::ps when
+            player = t1 && t1 = t2 && t2 = t3 ->
+                check ((dir, numrow)::(dir, numrow+4)::acc) (ps, dir, numrow+4)
+        | Some t0::Some t1::Some t2::Some t3::None::ps when
+            player = t1 && t1 = t2 && t2 = t3 && t1 <> t0 ->
+                check ((dir, numrow+4)::acc) (ps, dir, numrow+4)
+        | None::Some t1::Some t2::Some t3::Some t4::ps when
+            player = t1 && t1 = t2 && t2 = t3 && t1 <> t4 ->
+                check ((dir, numrow)::acc) (ps, dir, numrow+4)
+        | None::Some t1::Some t2::Some t3::Some t4::None::ps when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 ->
+                check ((dir, numrow)::(dir, numrow+5)::acc) (ps, dir, numrow+5)
+        | Some t0::Some t1::Some t2::Some t3::Some t4::None::ps when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t1 <> t0 ->
+                check ((dir, numrow+5)::acc) (ps, dir, numrow+5)
+        | None::Some t1::Some t2::Some t3::Some t4::Some t5::ps when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t1 <> t5 ->
+                check ((dir, numrow)::acc) (ps, dir, numrow+5)
+        | _::ps -> check acc (ps, dir, numrow+1)
+        | [] -> acc in
     let get_all r c g = [get_row r g; get_col c g; get_sum size (r+c) g; get_diff size (r-c) g] in
     positions @@ List.map (check []) @@ get_all row col gameboard;;
 
 let analyze_human size move gameboard =
-    let fours = check_four size Board.Human move gameboard
-    and threes = check_three size Board.Human move gameboard in
-    let possibles = count_items @@ fours@threes in
+    let sit = check_situation size Board.Human move gameboard in
+    let possibles = count_items sit in
     match possibles with
     | [] -> None
-    | (_, (_, pt))::_ -> Some pt;;
+    | (_, pt)::_ -> Some pt;;
 
 let choose size = (1+Random.int (size-1), 1+Random.int (size-1));;
 

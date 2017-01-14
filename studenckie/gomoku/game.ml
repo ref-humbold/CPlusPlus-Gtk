@@ -21,20 +21,16 @@ let win gameboard size player (row, col) =
         gd 0 g [] in
     let rec check lst =
         match lst with
-        | p0::p1::p2::p3::p4::p5::p6::ps ->
-            begin
-                match (p0, p1, p2, p3, p4, p5, p6) with
-                | (None, Some t1, Some t2, Some t3, Some t4, Some t5, None) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
-                | (Some t0, Some t1, Some t2, Some t3, Some t4, Some t5, None) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
-                | (None, Some t1, Some t2, Some t3, Some t4, Some t5, Some t6) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
-                | (Some t0, Some t1, Some t2, Some t3, Some t4, Some t5, Some t6) when
-                    player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
-                | _ -> check @@ p1::p2::p3::p4::p5::p6::ps
-            end
-        | _ -> false in
+        | None::Some t1::Some t2::Some t3::Some t4::Some t5::None::_ when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
+        | Some t0::Some t1::Some t2::Some t3::Some t4::Some t5::None::_ when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
+        | None::Some t1::Some t2::Some t3::Some t4::Some t5::Some t6::_ when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
+        | Some t0::Some t1::Some t2::Some t3::Some t4::Some t5::Some t6::_ when
+            player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
+        | _::ps -> check ps
+        | [] -> false in
     let get_all r c g = [get_row r g; get_col c g; get_sum (r+c) g; get_diff (r-c) g] in
     if List.exists check @@ get_all row col gameboard
     then Some player
