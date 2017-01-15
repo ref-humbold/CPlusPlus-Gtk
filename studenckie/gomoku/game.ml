@@ -55,6 +55,7 @@ let set_move (row, col) player game =
 
 let start_game size =
     begin
+        Random.self_init ();
         Game_gui.display size;
         Board.create @@ size+2
     end;;
