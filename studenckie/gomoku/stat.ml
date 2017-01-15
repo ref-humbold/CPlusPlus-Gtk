@@ -59,7 +59,7 @@ let write lst =
     let file = open_out filename in
     output_string file text; flush file; close_out file;;
 
-let clear () = write [0; 0; 0; 0; 0; 0];;
+let clear () = write [0; 0; 0; 0; 0; 0; 0];;
 
 let read () =
     let file = try open_in filename with
@@ -75,13 +75,20 @@ let write lst =
 let end_game winner hmoves cmoves =
     let data = read () in
     match data with
-    | [_; _; twn; tls; thm; tcm] ->
+    | [_; _; twn; tls; thm; tcm; topen] ->
         begin
             match winner with
             | Board.Human ->
-                write [hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves]
+                write [hmoves; cmoves; twn+1; tls; thm+hmoves; tcm+cmoves; topen]
             | Board.Comp ->
-                write [hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves]
+                write [hmoves; cmoves; twn; tls+1; thm+hmoves; tcm+cmoves; topen]
             | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game"
         end
+    | _ -> raise @@ Stat_format_error "Stat.end_game";;
+
+let open_game () =
+    let data = read () in
+    match data with
+    | [hm; cm; twn; tls; thm; tcm; topen] ->
+        write [hm; cm; twn; tls; thm; tcm; topen+1]
     | _ -> raise @@ Stat_format_error "Stat.end_game";;

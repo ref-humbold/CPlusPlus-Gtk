@@ -36,26 +36,10 @@ let win gameboard size player (row, col) =
     then Some player
     else None;;
 
-let set_move (row, col) player game =
-    let rec set_col n r =
-        match r with
-        | [] -> raise @@ Board.Incorrect_gameboard "Game.set_move @ column"
-        | x::xs ->
-            if n = 0
-            then (Some player)::xs
-            else x::(set_col (n-1) xs) in
-    let rec set_row n g =
-        match g with
-        | [] -> raise @@ Board.Incorrect_gameboard ("Game.set_move"^string_of_int row)
-        | x::xs ->
-            if n = 0
-            then (set_col col x)::xs
-            else x::(set_row (n-1) xs) in
-    set_row row game;;
-
 let start_game size =
     begin
         Random.self_init ();
+        Comp_player.clear ();
         Game_gui.display size;
         Board.create @@ size+2
     end;;
@@ -73,7 +57,7 @@ let play_game size gameboard =
             | Board.Human -> Human_player.move size gmbd
             | Board.Comp -> Comp_player.move last size gmbd
             | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
-        let gmbd' = set_move mpos player gmbd in
+        let gmbd' = Board.set_move mpos player gmbd in
         let _ = Game_gui.draw_stone size player mpos in
         let mvnum =
             match player with
@@ -81,13 +65,7 @@ let play_game size gameboard =
             | Board.Comp -> (mvh, mvc+1)
             | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
         match win gmbd' size player mpos with
-        | None ->
-            begin
-                match player with
-                | Board.Human -> turn mvnum mpos Board.Comp gmbd'
-                | Board.Comp -> turn mvnum mpos Board.Human gmbd'
-                | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game"
-            end
+        | None -> turn mvnum mpos (Board.opponent player) gmbd'
         | Some player -> (player, fst mvnum, snd mvnum) in
     turn (0, 0) (0, 0) Board.Human gameboard;;
 
