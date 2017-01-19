@@ -1,12 +1,12 @@
 CXX = g++ -std=c++11
 CXXFLAGS = -Wall -Wextra
-ANL = -I/home/anl/include/ -L/home/anl/libs/
 USR = -I/usr/include/ -L/usr/local/libs/
 GL = -lglfw3 -lGL -lGLU -lGLEW -lX11 -lXxf86vm -lXrandr -lpthread -lXi
-KALETA = -ldl -lXinerama -lXcursor -lm
+ADDITIONALS = -ldl -lXinerama -lXcursor
+MATH = -lm
 
-COMMAND = $(CXX) $(CXXFLAGS) $(USR) $(ANL)
-LIBS = -lstdc++ $(GL) $(KALETA)
+COMMAND = $(CXX) $(CXXFLAGS) $(USR)
+LIBS = -lstdc++ $(GL) $(ADDITIONALS) $(MATH)
 
 all : MemoryGame
 
