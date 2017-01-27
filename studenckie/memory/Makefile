@@ -15,14 +15,14 @@ clean :
 
 refresh : clean all
 
-MemoryGame : MemoryGame.o GLSLloader.o GLGameDrawer.o
-	$(COMMAND) MemoryGame.o GLSLloader.o GLGameDrawer.o -o MemoryGame $(LIBS)
+MemoryGame : MemoryGame.o GLSLloader.o GameController.o
+	$(COMMAND) MemoryGame.o GLSLloader.o GameController.o -o MemoryGame $(LIBS)
 
-MemoryGame.o : MemoryGame.cpp GLSLloader.hpp GLGameDrawer.hpp
+MemoryGame.o : MemoryGame.cpp GLSLloader.hpp GameController.hpp
 	$(COMMAND) -c MemoryGame.cpp -o MemoryGame.o $(LIBS)
 
-GLGameDrawer.o : GLGameDrawer.cpp GLGameDrawer.hpp
-	$(COMMAND) -c GLGameDrawer.cpp -o GLGameDrawer.o $(LIBS)
+GameController.o : GameController.cpp GameController.hpp
+	$(COMMAND) -c GameController.cpp -o GameController.o $(LIBS)
 
 GLSLloader.o : GLSLloader.cpp GLSLloader.hpp
 	$(COMMAND) -c GLSLloader.cpp -o GLSLloader.o $(LIBS)

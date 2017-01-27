@@ -2,14 +2,12 @@
 #define GLSLLOADER_HPP
 
 #include <cstdlib>
-#include <cstdio>
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <string>
 #include <vector>
 #include <algorithm>
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
