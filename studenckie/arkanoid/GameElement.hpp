@@ -1,5 +1,5 @@
-#ifndef GAMEELEMENT_HPP
-#define GAMEELEMENT_HPP
+#ifndef GAME_ELEMENT_HPP
+#define GAME_ELEMENT_HPP
 
 #include <cstdlib>
 #include <iostream>
@@ -10,8 +10,6 @@
 #include <glm/glm.hpp>
 
 using namespace glm;
-
-void createVertexArray();
 
 GLuint createVertexBuffer(const GLfloat vbData[], size_t size);
 
@@ -28,14 +26,14 @@ class GameBoard
     GLuint colorBufferHexagon;
     GLuint vertexBufferTriangle;
     GLuint colorBufferTriangle;
-    
+
     mat2 sc;
     mat2 rt;
     vec2 tr;
-    
+
     public:
     std::vector <vec2> normVecs;
-    
+
     GameBoard() :
         vbDataHexagon{0.0f, 0.0f,
                       0.4f, 0.0f,
@@ -69,11 +67,11 @@ class GameBoard
         colorBufferTriangle = createVertexBuffer( cbDataTriangle, sizeof(cbDataTriangle) );
         normVecs.resize(5);
     }
-    
+
     void drawBackground(GLuint pID);
     void drawBorderTriangles(GLuint pID);
     void countNormalVectors();
-    
+
     private:
     void drawOneTriangle(GLuint pID);
 };
@@ -87,16 +85,16 @@ class GameBrick
     GLuint vertexBufferRect;
     GLuint colorBufferRect;
     GLuint colorBufferRectBorder;
-    
+
     mat2 sc;
     mat2 rt;
     vec2 tr;
     bool modeHard;
-    
+
     public:
     std::vector < std::vector <bool> > isVisible;
     int bricksLeft;
-    
+
     GameBrick(bool modeHard) :
         vbDataRect{0.5f, 0.25f,
                    0.5f, -0.25f,
@@ -118,15 +116,15 @@ class GameBrick
         vertexBufferRect = createVertexBuffer( vbDataRect, sizeof(vbDataRect) );
         colorBufferRect = createVertexBuffer( cbDataRect, sizeof(cbDataRect) );
         colorBufferRectBorder = createVertexBuffer( cbDataRectBorder, sizeof(cbDataRectBorder) );
-        
+
         if(modeHard)
         {
             bricksLeft = 74;
             isVisible.resize(6);
-            
+
             for(auto & vc : isVisible)
                 vc.resize(13, true);
-            
+
             isVisible[4][0] = false;
             isVisible[4][12] = false;
             isVisible[5][0] = false;
@@ -139,9 +137,9 @@ class GameBrick
             isVisible[0].resize(13, true);
         }
     }
-    
+
     void drawAllBricks(GLuint pID);
-    
+
     private:
     void drawRect(GLuint pID, int col);
     void drawRectBorder(GLuint pID);
@@ -154,12 +152,12 @@ class GamePaddle
     const GLfloat cbDataPaddle[30];
     GLuint vertexBufferPaddle;
     GLuint colorBufferPaddle;
-    
+
     mat2 sc;
     mat2 rt;
     vec2 tr;
     GLfloat velocity;
-    
+
     public:
     GamePaddle() :
         vbDataPaddle{0.0f, 0.0f,
@@ -180,7 +178,7 @@ class GamePaddle
         vertexBufferPaddle = createVertexBuffer( vbDataPaddle, sizeof(vbDataPaddle) );
         colorBufferPaddle = createVertexBuffer( cbDataPaddle, sizeof(cbDataPaddle) );
     }
-    
+
     void restart();
     void drawPaddle(GLuint pID);
     void moveLeft(GLfloat delta);
@@ -200,7 +198,7 @@ class GameBall
     GLuint colorBufferBall;
     GLuint vertexBufferCross;
     GLuint colorBufferCross;
-    
+
     mat2 sc;
     mat2 rt;
     vec2 tr;
@@ -212,7 +210,7 @@ class GameBall
     GLfloat velDist;
     bool startingShot;
     std::vector < std::vector < std::pair <bool, bool> > > collided;
-    
+
     public:
     GameBall() :
         vbDataBall{0.0f, 0.0f,
@@ -265,17 +263,17 @@ class GameBall
         colorBufferBall = createVertexBuffer( cbDataBall, sizeof(cbDataBall) );
         vertexBufferCross = createVertexBuffer( vbDataCross, sizeof(vbDataCross) );
         colorBufferCross = createVertexBuffer( cbDataCross, sizeof(cbDataCross) );
-        
+
         velocity = velDist*normalize( vec2( (-10.0f+rand()%21)/10.0f, 1.0f) );
         collided.resize(7);
-        
+
         for(int i = 0; i < 5; ++i)
             collided[i].resize( 13, std::make_pair(false, false) );
-        
+
         collided[5].resize( 5, std::make_pair(false, false) );
         collided[6].resize( 1, std::make_pair(false, false) );
     }
-    
+
     void restart();
     void drawBall(GLuint pID);
     void drawCross(GLuint pID);
@@ -295,11 +293,10 @@ class GameControler
     GameControler()
     {
     }
-    
+
     void drawGame(GLuint pID, GameBoard * board, GameBall * ball, GameBrick * brick, GamePaddle * paddle);
     int checkKeyPress(GLFWwindow * window);
     void checkKeyRelease(GLFWwindow * window, int key);
 };
 
 #endif
-

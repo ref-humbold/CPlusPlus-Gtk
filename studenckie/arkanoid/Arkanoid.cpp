@@ -11,6 +11,13 @@
 
 using namespace glm;
 
+void createVertexArray()
+{
+    GLuint vertexArrayID;
+    glGenVertexArrays(1, &vertexArrayID);
+    glBindVertexArray(vertexArrayID);
+}
+
 void glfwHints()
 {
     glfwWindowHint(GLFW_SAMPLES, 4);
@@ -32,21 +39,19 @@ int main(int argc, char * argv[])
             modeHard = false;
         else if(modeArg != "1" && modeArg != "H" && modeArg == "h")
         {
-            fprintf(stderr, "BŁĄD! NIEPOPRAWNY ARGUMENT.\n");
+            std::cerr << "BŁĄD! NIEPOPRAWNY ARGUMENT.\n";
             return -1;
         }
     }
     else if(argc >= 3)
     {
-        fprintf(stderr, "BŁĄD! ZA DUŻO ARGUMENTÓW.\n");
+        std::cerr << "BŁĄD! ZA DUŻO ARGUMENTÓW.\n";
         return -1;
     }
 
-    // inicjalizacja OpenGL
-
     if(!glfwInit())
     {
-        fprintf(stderr, "FAILED TO INITIALIZE GLFW\n");
+        std::cerr << "FAILED TO INITIALIZE GLFW\n";
         return -1;
     }
 
@@ -56,7 +61,7 @@ int main(int argc, char * argv[])
 
     if(window == NULL)
     {
-        fprintf(stderr, "FAILED TO OPEN A NEW WINDOW\n");
+        std::cerr << "FAILED TO OPEN A NEW WINDOW\n";
         glfwTerminate();
         return -1;
     }
@@ -66,7 +71,7 @@ int main(int argc, char * argv[])
 
     if(glewInit() != GLEW_OK)
     {
-        fprintf(stderr, "FAILED TO INITIALIZE GLEW\n");
+        std::cerr << "FAILED TO INITIALIZE GLEW\n";
         return -1;
     }
 
@@ -76,8 +81,6 @@ int main(int argc, char * argv[])
     GLuint programID = loadShaders("VertexShader.glsl", "FragmentShader.glsl");
 
     createVertexArray();
-
-    // inicjalizacja elementów planszy
 
     srand( time(0) );
 
