@@ -76,12 +76,10 @@ int main()
 
     srand( time(0) );
 
+    GameControler * ctrl = new GameControler(window);
     std::vector<int> keys = {GLFW_KEY_TAB, GLFW_KEY_W, GLFW_KEY_X, GLFW_KEY_E, GLFW_KEY_Z,
         GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_UP, GLFW_KEY_DOWN};
     vec3 mouseBegin, mouseEnd;
-
-    GameControler * ctrl = new GameControler(window);
-
     int gameLevel = -1;
     bool isRestarted = true, mouseClicked = false;
     GLfloat timer = 0.0f, counter = 0.0f;
