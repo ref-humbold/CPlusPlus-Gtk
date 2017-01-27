@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
 
     glfwHints();
 
-    GLFWwindow * window = glfwCreateWindow(1024, 768, "Teren", NULL, NULL);
+    GLFWwindow * window = glfwCreateWindow(1024, 768, "TerrainMap", NULL, NULL);
 
     if(window == NULL)
     {
