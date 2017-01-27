@@ -1,5 +1,5 @@
-#ifndef GAMECONTROLER_HPP
-#define GAMECONTROLER_HPP
+#ifndef GAME_CONTROLER_HPP
+#define GAME_CONTROLER_HPP
 
 #include <cstdlib>
 #include <iostream>
@@ -11,12 +11,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 #include "GameAquarium.hpp"
 #include "GameBubble.hpp"
 #include "GamePlayer.hpp"
-
-#define GLM_FORCE_RADIANS
 
 using namespace glm;
 
@@ -97,4 +97,3 @@ class GameControler
 };
 
 #endif
-

@@ -1,13 +1,3 @@
-#include <cstdlib>
-#include <iostream>
-#include <cmath>
-#include <tuple>
-#include <vector>
-#include <algorithm>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include "GameBubble.hpp"
 
 using namespace glm;

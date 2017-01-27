@@ -1,5 +1,5 @@
-#ifndef GAMEAQUARIUM_HPP
-#define GAMEAQUARIUM_HPP
+#ifndef GAME_AQUARIUM_HPP
+#define GAME_AQUARIUM_HPP
 
 #include <cstdlib>
 #include <iostream>

@@ -1,10 +1,3 @@
-#include <cstdlib>
-#include <iostream>
-#include <cmath>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include "GamePlayer.hpp"
 
 using namespace glm;

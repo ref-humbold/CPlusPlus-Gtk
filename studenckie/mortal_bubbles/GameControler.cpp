@@ -1,14 +1,3 @@
-#include <cstdlib>
-#include <iostream>
-#include <cmath>
-#include <tuple>
-#include <vector>
-#include <algorithm>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
 #include "GameControler.hpp"
 
 using namespace glm;

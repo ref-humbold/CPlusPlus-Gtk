@@ -33,11 +33,9 @@ void glfwHints()
 
 int main()
 {
-    // inicjalizacja OpenGL
-
     if(!glfwInit())
     {
-        fprintf(stderr, "FAILED TO INITIALIZE GLFW\n");
+        std::cerr << "FAILED TO INITIALIZE GLFW\n";
         return -1;
     }
 
@@ -47,7 +45,7 @@ int main()
 
     if(window == NULL)
     {
-        fprintf(stderr, "FAILED TO OPEN A NEW WINDOW\n");
+        std::cerr << "FAILED TO OPEN A NEW WINDOW\n";
         glfwTerminate();
         return -1;
     }
@@ -57,7 +55,7 @@ int main()
 
     if(glewInit() != GLEW_OK)
     {
-        fprintf(stderr, "FAILED TO INITIALIZE GLEW\n");
+        std::cerr << "FAILED TO INITIALIZE GLEW\n";
         return -1;
     }
 
@@ -72,11 +70,9 @@ int main()
     glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glShadeModel(GL_SMOOTH);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-
-    // inicjalizacja elementów planszy
 
     srand( time(0) );
 
@@ -90,7 +86,6 @@ int main()
     bool isRestarted = true, mouseClicked = false;
     GLfloat timer = 0.0f, counter = 0.0f;
 
-    // kontrola gry
     std::cout << "\n\tRUNDA 1: PUNKTY = " << ctrl->points << "\n";
     ctrl->restart();
 
@@ -166,7 +161,7 @@ int main()
                     vec3 normBegin = normalize(mouseBegin);
                     vec3 normEnd = normalize(mouseEnd);
                     GLfloat cosine = dot(normBegin, normEnd);
-                    GLfloat angleRad = acos( min(cosine, 1.0f) )/40;
+                    GLfloat angleRad = acos( min(cosine, 1.0f) );
                     vec3 axis = normalize( cross(normBegin, normEnd) );
 
                     ctrl->viewRotate(angleRad, axis);
@@ -248,4 +243,3 @@ int main()
 
     return 0;
 }
-
