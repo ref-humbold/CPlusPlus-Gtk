@@ -32,7 +32,7 @@ class GameBoard
     vec2 tr;
 
     public:
-    std::vector <vec2> normVecs;
+    std::vector<vec2> normVecs;
 
     GameBoard() :
         vbDataHexagon{0.0f, 0.0f,
@@ -92,7 +92,7 @@ class GameBrick
     bool modeHard;
 
     public:
-    std::vector < std::vector <bool> > isVisible;
+    std::vector< std::vector<bool> > isVisible;
     int bricksLeft;
 
     GameBrick(bool modeHard) :
@@ -209,7 +209,7 @@ class GameBall
     GLfloat separator;
     GLfloat velDist;
     bool startingShot;
-    std::vector < std::vector < std::pair <bool, bool> > > collided;
+    std::vector< std::vector< std::pair<bool, bool> > > collided;
 
     public:
     GameBall() :

@@ -638,7 +638,7 @@ class GamePlayer
     void drawPlayer(GLuint pID, mat4 worldToCamera, mat4 cameraToClip, vec4 lightSource);
     void restart(GLfloat pos);
     void move(vec3 v);
-    std::pair <GLfloat, vec3> getRadPos();
+    std::pair<GLfloat, vec3> getRadPos();
     vec3 normalVec(GLushort i1, GLushort i2, GLushort i3);
     void countNormals();
 };

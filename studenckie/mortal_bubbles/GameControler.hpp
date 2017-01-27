@@ -33,7 +33,7 @@ class GameControler
     mat4 proj;
     vec3 cameraPos;
     vec3 cameraDir;
-    std::vector <vec4> playerMoves;
+    std::vector<vec4> playerMoves;
     bool viewInside;
     GLfloat fov;
     GLfloat persBegin;
@@ -89,9 +89,9 @@ class GameControler
     bool checkEndRound();
     void deletePointedBubble(int ix);
     GLfloat moveBubbles(GLfloat delta, GLfloat counter, int freq);
-    void movePlayer(GLfloat delta, std::vector <bool> movesMask);
+    void movePlayer(GLfloat delta, std::vector<bool> movesMask);
     vec3 getMousePos(GLFWwindow * window);
-    std::vector <bool> checkKeyPress(GLFWwindow * window, std::vector <int> & keys);
+    std::vector<bool> checkKeyPress(GLFWwindow * window, std::vector<int> & keys);
     bool checkMouseAction(GLFWwindow * window, int action);
     void checkTabReleased(GLFWwindow * window);
 };

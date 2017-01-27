@@ -2,7 +2,7 @@
 
 using namespace glm;
 
-GameController::GameController(const std::pair <int, int> & size, int numColors, int numSigns) :
+GameController::GameController(const std::pair<int, int> & size, int numColors, int numSigns) :
     vbData{-0.9f, -0.9f, 0.9f, -0.9f, 0.9f, 0.9f, -0.9f, 0.9f,  // square
            -1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f,  // frame
            0.0f, 0.7f, 0.0f, -0.7f,                             // pipe
@@ -12,7 +12,7 @@ GameController::GameController(const std::pair <int, int> & size, int numColors,
 {
     srand( time(NULL) );
 
-    std::vector <bool> isSet(size.first*size.second, false);
+    std::vector<bool> isSet(size.first*size.second, false);
     int elemSet = 0;
 
     visible.resize(size.first*size.second, false);
@@ -66,7 +66,7 @@ void GameController::setVisible(int i)
     visible[i] = true;
 }
 
-void GameController::drawGame(GLuint pID, const std::pair <int, int> & pos, bool isCurVisible)
+void GameController::drawGame(GLuint pID, const std::pair<int, int> & pos, bool isCurVisible)
 {
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -175,7 +175,7 @@ bool GameController::checkSame(int prev, int cur)
     return colorCodes[prev] == colorCodes[cur] && signCodes[prev] == signCodes[cur];
 }
 
-void GameController::drawSquares(GLuint pID, int col, std::pair <int, int> tr, int frameOffset)
+void GameController::drawSquares(GLuint pID, int col, std::pair<int, int> tr, int frameOffset)
 {
     GLint scale = glGetUniformLocation(pID, "scale");
     GLint transform = glGetUniformLocation(pID, "transform");

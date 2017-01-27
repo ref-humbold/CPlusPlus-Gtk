@@ -60,7 +60,7 @@ void GamePlayer::move(vec3 v)
     tr[3][2] += v[2]*velocity;
 }
 
-std::pair <GLfloat, vec3> GamePlayer::getRadPos()
+std::pair<GLfloat, vec3> GamePlayer::getRadPos()
 {
     return std::make_pair(sc[0][0], vec3( tr[3][0], tr[3][1], tr[3][2] ) );
 }

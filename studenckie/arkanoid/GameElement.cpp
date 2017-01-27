@@ -414,7 +414,7 @@ void GameBall::checkCollisionPaddle(GamePaddle * paddle)
 
 void GameBall::checkCollisionBrickHard(GameBrick * brick)
 {
-    std::vector< std::pair <GLfloat, GLfloat> > bricksHit;
+    std::vector< std::pair<GLfloat, GLfloat> > bricksHit;
 
     auto getBrickPos = [](vec2 v) -> vec2
         {
@@ -422,7 +422,7 @@ void GameBall::checkCollisionBrickHard(GameBrick * brick)
         };
 
     auto brickScored = [](GameBrick * brick, int br, int bc,
-        std::vector< std::pair <GLfloat, GLfloat> > & bricksHit) -> void
+        std::vector< std::pair<GLfloat, GLfloat> > & bricksHit) -> void
         {
             --brick->bricksLeft;
             bricksHit.push_back( std::make_pair(br, bc) );

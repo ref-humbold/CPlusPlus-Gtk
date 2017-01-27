@@ -112,7 +112,7 @@ void GameBubble::showUp(GLfloat side)
 
 void GameBubble::move(GLfloat delta, GLfloat side)
 {
-    auto mapping = [=](std::tuple <GLfloat, vec3, vec3, int> p)
+    auto mapping = [=](std::tuple<GLfloat, vec3, vec3, int> p)
         {
             std::get<0>(p) *= 1.002;
             std::get<1>(p)[1] += delta*velocity;
@@ -120,7 +120,7 @@ void GameBubble::move(GLfloat delta, GLfloat side)
             return p;
         };
 
-    auto isOut = [=](std::tuple <GLfloat, vec3, vec3, int> b)
+    auto isOut = [=](std::tuple<GLfloat, vec3, vec3, int> b)
     {
         return std::get<1>(b)[1] >= side;
     };

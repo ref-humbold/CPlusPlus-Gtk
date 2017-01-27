@@ -76,7 +76,7 @@ int main()
 
     srand( time(0) );
 
-    std::vector <int> keys = {GLFW_KEY_TAB, GLFW_KEY_W, GLFW_KEY_X, GLFW_KEY_E, GLFW_KEY_Z,
+    std::vector<int> keys = {GLFW_KEY_TAB, GLFW_KEY_W, GLFW_KEY_X, GLFW_KEY_E, GLFW_KEY_Z,
         GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_UP, GLFW_KEY_DOWN};
     vec3 mouseBegin, mouseEnd;
 
@@ -101,8 +101,8 @@ int main()
 
         if(gameLevel > 0)
         {
-            std::vector <bool> movesMask(6, false);
-            std::vector <bool> pressed = ctrl->checkKeyPress(window, keys);
+            std::vector<bool> movesMask(6, false);
+            std::vector<bool> pressed = ctrl->checkKeyPress(window, keys);
 
             for(unsigned int i = 0; i < pressed.size(); ++i)
                 if( pressed[i] )

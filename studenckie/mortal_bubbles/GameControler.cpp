@@ -91,7 +91,7 @@ void GameControler::viewRotate(GLfloat angleRad, vec3 axis)
 
 int GameControler::checkCollisionBubble()
 {
-    std::pair <GLfloat, vec3> ply = player->getRadPos();
+    std::pair<GLfloat, vec3> ply = player->getRadPos();
 
     for(auto it = bubble->elements.begin(); it != bubble->elements.end(); ++it)
     {
@@ -104,15 +104,15 @@ int GameControler::checkCollisionBubble()
 
 bool GameControler::checkEndRound()
 {
-    std::pair <GLfloat, vec3> ply = player->getRadPos();
-    std::tuple <GLfloat, vec3, vec3> egb = bubble->endGameBubble;
+    std::pair<GLfloat, vec3> ply = player->getRadPos();
+    std::tuple<GLfloat, vec3, vec3> egb = bubble->endGameBubble;
 
     return distance(std::get<1>(egb), ply.second) <= std::get<0>(egb)+ply.first;
 }
 
 void GameControler::deletePointedBubble(int ix)
 {
-    auto indexing = [=](std::tuple <GLfloat, vec3, vec3, int> b)
+    auto indexing = [=](std::tuple<GLfloat, vec3, vec3, int> b)
         {
             return std::get<3>(b) == ix;
         };
@@ -133,10 +133,10 @@ GLfloat GameControler::moveBubbles(GLfloat delta, GLfloat counter, int freq)
     return counter;
 }
 
-void GameControler::movePlayer(GLfloat delta, std::vector <bool> movesMask)
+void GameControler::movePlayer(GLfloat delta, std::vector<bool> movesMask)
 {
     GLfloat side = aqua->getSide();
-    std::pair <GLfloat, vec3> ply = player->getRadPos();
+    std::pair<GLfloat, vec3> ply = player->getRadPos();
     vec3 mvPlayer = vec3(0.0f, 0.0f, 0.0f);
 
     for(unsigned int i = 0; i < movesMask.size(); ++i)
@@ -179,9 +179,9 @@ vec3 GameControler::getMousePos(GLFWwindow * window)
     return res;
 }
 
-std::vector <bool> GameControler::checkKeyPress(GLFWwindow * window, std::vector <int> & keys)
+std::vector<bool> GameControler::checkKeyPress(GLFWwindow * window, std::vector<int> & keys)
 {
-    std::vector <bool> result(keys.size());
+    std::vector<bool> result(keys.size());
 
     auto pressed = [=](int k) -> bool
         {

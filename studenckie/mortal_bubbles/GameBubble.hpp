@@ -30,12 +30,12 @@ class GameBubble
     mat4 rt;
     mat4 tr;
     GLfloat velocity;
-    std::vector <vec3> coloring;
+    std::vector<vec3> coloring;
 
     public:
     int countElems;
-    std::tuple <GLfloat, vec3, vec3> endGameBubble;
-    std::list < std::tuple <GLfloat, vec3, vec3, int> > elements;
+    std::tuple<GLfloat, vec3, vec3> endGameBubble;
+    std::list< std::tuple<GLfloat, vec3, vec3, int> > elements;
 
     GameBubble() :
         vbDataBubble{0.0f,          1.0f,           0.0f, 1.0f,             //0
