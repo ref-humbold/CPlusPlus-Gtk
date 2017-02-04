@@ -86,7 +86,12 @@ void GameControler::viewRotate(GLfloat angleRad, vec3 axis)
         view = tr2*rt*tr1*view;
     }
     else
-        view = rotate(view, angleRad, axis);
+    {
+        vec4 axisObj4 = inverse(view)*vec4(axis[0], axis[1], axis[2], 0.0f);
+        vec3 axisObj = vec3(axisObj4[0], axisObj4[1], axisObj4[2]);
+
+        view = view*toMat4( angleAxis(angleRad, axisObj) );
+    }
 }
 
 int GameControler::checkCollisionBubble()

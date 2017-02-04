@@ -11,24 +11,22 @@ layout(location=2) in vec4 vertexNormal;
 
 out vec4 fragmentColor;
 out vec4 normVecCamera;
-out vec4 eyeDirCamera;
-out vec4 lightDirCamera;
+out vec4 observeDirCamera;
+out vec4 sourceDirCamera;
 
 void main()
 {
-    mat4 mMat = objectToWorldMat;
     mat4 mvMat = worldToCameraMat*objectToWorldMat;
     mat4 mvpMat = cameraToClipMat*worldToCameraMat*objectToWorldMat;
 
     vec4 vPosCamera = mvMat*vertexPos;
     vec4 vPosClip = mvpMat*vertexPos;
-    vec4 lightPosCamera = worldToCameraMat*lightSourcePos;
+    vec4 sourcePosCamera = worldToCameraMat*lightSourcePos;
 
     fragmentColor = vertexColor;
     normVecCamera = transpose( inverse(mvMat) )*vertexNormal;
-    eyeDirCamera = vec4(0, 0, 0, 1)-vPosCamera;
-    lightDirCamera = lightPosCamera+eyeDirCamera;
+    observeDirCamera = -vPosCamera;
+    sourceDirCamera = sourcePosCamera+observeDirCamera;
 
     gl_Position = vPosClip;
 }
-

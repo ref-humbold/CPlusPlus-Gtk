@@ -2,23 +2,23 @@
 
 in vec4 fragmentColor;
 in vec4 normVecCamera;
-in vec4 eyeDirCamera;
-in vec4 lightDirCamera;
+in vec4 observeDirCamera;
+in vec4 sourceDirCamera;
 
 out vec4 outColor;
 
 void main()
 {
-    float distance = length(eyeDirCamera);
-    vec4 lightColorSource = vec4(1, 1, 1, 1)*8*exp(-distance);
-    vec4 lightColorObserve = vec4(1, 1, 1, 1);
+    float distance = length(observeDirCamera);
+    vec4 lightColorSource = vec4(1.0, 1.0, 1.0, 1.0)*8*exp(-distance);
+    vec4 lightColorObserve = vec4(1.0, 1.0, 1.0, 1.0);
     vec4 ambientCoeff = vec4(0.2, 0.2, 0.2, 1.0);
     vec4 specularCoeff = vec4(0.3, 0.3, 0.3, 1.0);
 
-    vec4 eyeVector = normalize(eyeDirCamera);
+    vec4 eyeVector = normalize(observeDirCamera);
     vec4 normalVector = normalize(normVecCamera);
-    vec4 lightDirSource = normalize(lightDirCamera);
-    vec4 lightDirObserve = normalize(-eyeDirCamera);
+    vec4 lightDirSource = normalize(sourceDirCamera);
+    vec4 lightDirObserve = normalize(-observeDirCamera);
 
     vec4 reflDirSource = normalize( reflect(-lightDirSource, normalVector) );
     vec4 reflDirObserve = normalize( reflect(-lightDirObserve, normalVector) );
@@ -36,4 +36,3 @@ void main()
 
     outColor = ambient+diffuseSource+specularSource+diffuseObserve+specularObserve;
 }
-
