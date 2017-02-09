@@ -1,0 +1,20 @@
+# zapisuje kolejno do pamięci małe litery alfabetu angielskiego
+# następnie odczytuje je w odwrotnej kolejności i wypisuje je jako wielkie litery
+
+ADDI lt zero 97
+ADDI g zero 26
+ADDI a zero 1
+loopa: JPGT a g eol
+STB lt a
+ADDI lt lt 1
+ADDI a a 1
+JUMP loopa
+eol:
+ADD a g zero
+loopb: JPEQ a zero eop
+LDB ltu a
+SUBI ltu ltu 32
+PTCHR ltu
+SUBI a a 1
+JUMP loopb
+eop: PTLN
