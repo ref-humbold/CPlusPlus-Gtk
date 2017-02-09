@@ -12,45 +12,45 @@ Odpowiada ona za pobranie programu do wykonania oraz rozpoczecie dzialania inter
 */
 public class Interpreter
 {
-	/**
-	Pobiera plik i uruchamia jego interpretacje w {@link interpret.Controle}.
-	@param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo oraz (opcjonalnie) rozmiar pamieci do alokacji
-	*/
-	public static void main (String args[]) throws Exception
-	{
-	 int mem_len=1;
-	 String adr=args[0];
-	 
-	 	if(args.length>1)
-	 	{ 
-			try
-			{
-		 	 mem_len=Integer.parseInt(args[1]);
-		 	}
-		 	catch (Exception e)
-		 	{
-		 	 System.out.println("Memory not allocated. Execution stopped.");
-		 	 return;
-		 	}
-		}
-	 
-	 	if(!adr.endsWith(".apo"))
-	 	{
-	 	 System.out.println("Wrong filename extension. Execution stopped.");
-	 	 return;
-	 	}
-	 
-	 Path p=Paths.get(adr);
-	 interpret.Controle ct=new Controle(mem_len, p);
-	 
-	 	try
-	 	{
-	 	 ct.make();
-	 	}
-	 	catch (Exception e)
-	 	{
-	 	 System.out.println("java.Exception while interpreting. Execution stopped.");
-	 	 return;
-	 	}
-	}
+    /**
+    Pobiera plik i uruchamia jego interpretacje w {@link interpret.Controler}.
+    @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo oraz (opcjonalnie) rozmiar pamieci do alokacji
+    */
+    public static void main (String args[]) throws Exception
+    {
+        int memLen = 1;
+        String adr = args[0];
+
+        if(args.length>1)
+        {
+            try
+            {
+                memLen = Integer.parseInt(args[1]);
+            }
+            catch (Exception e)
+            {
+                System.err.println("Memory not allocated. Execution stopped.");
+                return;
+            }
+        }
+
+        if(!adr.endsWith(".apo"))
+        {
+            System.err.println("Wrong filename extension. Execution stopped.");
+            return;
+        }
+
+    Path p = Paths.get(adr);
+    interpret.Controler ct = new Controler(memLen, p);
+
+        try
+        {
+            ct.make();
+        }
+        catch (Exception e)
+        {
+            System.err.println("Exception while interpreting. Execution stopped.");
+            return;
+        }
+    }
 }
