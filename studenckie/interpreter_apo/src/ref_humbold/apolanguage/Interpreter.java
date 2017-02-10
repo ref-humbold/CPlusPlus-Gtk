@@ -1,7 +1,10 @@
-import interpret.*;
+package ref_humbold.apolanguage
+
 import java.nio.file.*;
 import java.nio.charset.*;
 import java.io.*;
+
+import interpret.*;
 
 /**
 Glowna klasa, ktora pozwala na uruchomienie interpretera przez uzytkownika.
@@ -34,7 +37,7 @@ public class Interpreter
             }
         }
 
-        if(!adr.endsWith(".apo"))
+        if( !adr.endsWith(".apo") )
         {
             System.err.println("Wrong filename extension. Execution stopped.");
             return;
