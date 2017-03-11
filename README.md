@@ -1,2 +1,2 @@
 # Projekty
-Programy własne oraz projekty uczelniane
+My own small home or university projects
