@@ -11,26 +11,26 @@ void SocketSender::send(const void * msg_buf, int msg_size, int ttl)
         throw SocketException(strerror(errno));
 }
 
-void SocketSender::set_receiver(const std::string & ip_addr)
+void SocketSender::set_receiver(const std::string & addr)
 {
     receiver_sck.sin_family = AF_INET;
 
-    int result = inet_pton(AF_INET, ip_addr.c_str(), &receiver_sck.sin_addr);
+    int result = inet_pton(AF_INET, addr.c_str(), &receiver_sck.sin_addr);
 
     if(result < 1)
         throw SocketException("Invalid addressing.");
 }
 
-std::unique_ptr<icmphdr> SocketSender::prepare_icmp(uint16_t id, uint16_t seq)
+icmphdr SocketSender::prepare_icmp(uint16_t id, uint16_t seq)
 {
-    std::unique_ptr<icmphdr> header = std::unique_ptr<icmphdr>(new icmphdr);
+    icmphdr header;
 
-    header->type = ICMP_ECHO;
-    header->code = 0;
-    header->un.echo.id = id;
-    header->un.echo.sequence = seq;
-    header->checksum = 0;
-    header->checksum = count_checksum((uint16_t *)(header.get()), sizeof(*header));
+    header.type = ICMP_ECHO;
+    header.code = 0;
+    header.un.echo.id = id;
+    header.un.echo.sequence = seq;
+    header.checksum = 0;
+    header.checksum = count_checksum((uint16_t *)&header, sizeof(header));
 
     return header;
 }

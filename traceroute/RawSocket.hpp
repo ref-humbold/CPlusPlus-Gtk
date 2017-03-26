@@ -4,11 +4,11 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-#include <stdexcept>
-#include <exception>
 #include <unistd.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
+#include <stdexcept>
+#include <exception>
 
 class SocketException : public std::runtime_error
 {
