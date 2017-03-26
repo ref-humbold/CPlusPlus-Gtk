@@ -54,7 +54,17 @@ bool send_msg(SocketController & sck, const std::string & addr, int ttl)
     std::set<std::string> recvaddr;
     int avg_time;
 
-    std::tie(recvaddr, avg_time) = sck.echo_reply(pid, seq);
+    try
+    {
+        std::tie(recvaddr, avg_time) = sck.echo_reply(pid, seq);
+    }
+    catch(const TimeExceededException & e)
+    {
+        std::cout << ttl << ". *\n";
+
+        return false;
+    }
+
     std::cout << ttl << ". ";
 
     if(avg_time < 0)

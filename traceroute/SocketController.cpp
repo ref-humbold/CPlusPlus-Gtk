@@ -31,7 +31,10 @@ std::tuple<std::set<std::string>, int> SocketController::echo_reply(uint16_t id,
         if(ready < 0)
             throw SocketException(strerror(errno));
 
-        if(ready == 0)
+        if(ready == 0 && recvnum == 0)
+            throw TimeExceededException("");
+
+        if(ready == 0 && recvnum > 0)
             return std::make_tuple(recvaddr, -1);
 
         std::string msg;

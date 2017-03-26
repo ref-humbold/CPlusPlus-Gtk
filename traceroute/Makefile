@@ -9,6 +9,8 @@ clean :
 distclean : clean
 	rm -f traceroute
 
+refresh : clean all
+
 traceroute : traceroute.o SocketController.o SocketSender.o SocketReceiver.o RawSocket.o
 	$(CXX) $(CXXFLAGS) traceroute.o SocketController.o SocketSender.o SocketReceiver.o RawSocket.o -o traceroute
 

@@ -28,6 +28,15 @@ class NotMyReplyException : public std::runtime_error
     }
 };
 
+class TimeExceededException : public std::runtime_error
+{
+    public:
+    TimeExceededException(const std::string & s) :
+        std::runtime_error(s)
+    {
+    }
+};
+
 class SocketController
 {
     std::shared_ptr<RawSocket> socket;
