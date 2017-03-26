@@ -1,2 +1,2 @@
 # Projekty
-My own small home or university projects
+My own small home or university projects.
