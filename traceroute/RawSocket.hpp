@@ -12,7 +12,7 @@
 
 class SocketException : public std::runtime_error
 {
-    public:
+public:
     SocketException(const std::string & s) :
         std::runtime_error(s)
     {
@@ -21,9 +21,10 @@ class SocketException : public std::runtime_error
 
 class RawSocket
 {
+private:
     int desc;
 
-    public:
+public:
     RawSocket() :
         desc{socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)}
     {

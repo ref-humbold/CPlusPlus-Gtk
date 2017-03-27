@@ -49,8 +49,8 @@ std::tuple<std::set<std::string>, int> SocketController::echo_reply(uint16_t id,
         }
 
         recvaddr.insert(msg);
-        avg_time = (avg_time+1000000-timer.tv_usec)/2;
-        recvnum++;
+        avg_time = (avg_time + 1000000 - timer.tv_usec) / 2;
+        ++recvnum;
     }
     while(recvnum < 3);
 
@@ -68,7 +68,7 @@ std::string SocketController::recv_echo(uint16_t id, uint16_t seq)
 
     if(hICMP->type == 0)
     {
-        if(hICMP->un.echo.id != id || hICMP->un.echo.sequence/3 != seq)
+        if(hICMP->un.echo.id != id || hICMP->un.echo.sequence / 3 != seq)
             throw NotMyReplyException("");
     }
     else if(hICMP->type == 11)
@@ -78,7 +78,7 @@ std::string SocketController::recv_echo(uint16_t id, uint16_t seq)
 
         std::tie(hIP_r, hICMP_r, std::ignore) = take_headers(rest);
 
-        if(hICMP_r->un.echo.id != id || hICMP_r->un.echo.sequence/3 != seq)
+        if(hICMP_r->un.echo.id != id || hICMP_r->un.echo.sequence / 3 != seq)
             throw NotMyReplyException("");
     }
 
@@ -88,8 +88,8 @@ std::string SocketController::recv_echo(uint16_t id, uint16_t seq)
 std::tuple<iphdr *, icmphdr *, uint8_t *> SocketController::take_headers(uint8_t * ptr)
 {
     iphdr * hIP = (iphdr *)ptr;
-    icmphdr * hICMP = (icmphdr *)(ptr+4*hIP->ihl);
-    uint8_t * rest = ptr+4*hIP->ihl+sizeof(icmphdr);
+    icmphdr * hICMP = (icmphdr *)(ptr + 4 * hIP->ihl);
+    uint8_t * rest = ptr + 4 * hIP->ihl+sizeof(icmphdr);
 
     return std::make_tuple(hIP, hICMP, rest);
 }

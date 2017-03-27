@@ -21,7 +21,7 @@ bool check_address(const std::string & addr)
         if(endPos != std::string::npos)
         {
             splitted.push_back(addr.substr(beginPos, endPos-beginPos));
-            beginPos = endPos+1;
+            beginPos = endPos + 1;
         }
         else
         {
@@ -84,7 +84,7 @@ bool send_msg(SocketController & sck, const std::string & addr, int ttl)
         for(auto ars : recvaddr)
             std::cout << ars << " ";
 
-        std::cout << avg_time/1000 << "ms\n";
+        std::cout << avg_time / 1000 << "ms\n";
     }
 
     return std::any_of(recvaddr.begin(), recvaddr.end(),

@@ -21,7 +21,7 @@
 
 class NotMyReplyException : public std::runtime_error
 {
-    public:
+public:
     NotMyReplyException(const std::string & s) :
         std::runtime_error(s)
     {
@@ -30,7 +30,7 @@ class NotMyReplyException : public std::runtime_error
 
 class TimeExceededException : public std::runtime_error
 {
-    public:
+public:
     TimeExceededException(const std::string & s) :
         std::runtime_error(s)
     {
@@ -43,7 +43,7 @@ class SocketController
     SocketSender sender;
     SocketReceiver receiver;
 
-    public:
+public:
     SocketController(std::shared_ptr<RawSocket> s) :
         socket{s},
         sender{SocketSender(socket)},
@@ -54,7 +54,7 @@ class SocketController
     void echo_request(const std::string & addr, uint16_t id, uint16_t seq, int ttl);
     std::tuple<std::set<std::string>, int> echo_reply(uint16_t id, uint16_t seq);
 
-    private:
+private:
     std::string recv_echo(uint16_t id, uint16_t seq);
     std::tuple<iphdr *, icmphdr *, uint8_t *> take_headers(uint8_t * ptr);
 };

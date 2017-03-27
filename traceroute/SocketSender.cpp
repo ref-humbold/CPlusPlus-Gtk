@@ -5,7 +5,7 @@ void SocketSender::send(const void * msg_buf, int msg_size, int ttl)
     setsockopt(socket->get_desc(), IPPROTO_IP, IP_TTL, &ttl, sizeof(int));
 
     ssize_t sent_size = sendto(socket->get_desc(), msg_buf, msg_size, 0,
-        (sockaddr*)&receiver_sck, sizeof(receiver_sck));
+        (sockaddr *)&receiver_sck, sizeof(receiver_sck));
 
     if(sent_size < 0)
         throw SocketException(strerror(errno));
@@ -37,7 +37,7 @@ icmphdr SocketSender::prepare_icmp(uint16_t id, uint16_t seq)
 
 uint16_t SocketSender::count_checksum(const uint16_t * hdr, int length)
 {
-    if((length&1) == 1)
+    if((length & 1) == 1)
         throw SocketException("Incorrect length of ICMP header.");
 
     uint32_t sum = 0;
@@ -49,7 +49,7 @@ uint16_t SocketSender::count_checksum(const uint16_t * hdr, int length)
         ++ptr;
     }
 
-    sum = (sum>>16)+(sum&0xFFFF);
+    sum = (sum >> 16) + (sum & 0xFFFF);
 
-    return (uint16_t)(~(sum+(sum>>16)));
+    return (uint16_t)(~(sum + (sum >> 16)));
 }

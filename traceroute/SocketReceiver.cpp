@@ -6,7 +6,7 @@ std::vector<uint8_t> SocketReceiver::receive()
     uint8_t msg_buf[IP_MAXPACKET];
 
     ssize_t msg_size = recvfrom(socket->get_desc(), msg_buf, IP_MAXPACKET, MSG_DONTWAIT,
-        (sockaddr*)&sender_sck, &sender_size);
+        (sockaddr *)&sender_sck, &sender_size);
 
     if(msg_size < 0)
         throw SocketException(strerror(errno));

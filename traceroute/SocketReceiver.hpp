@@ -17,11 +17,11 @@
 
 class SocketReceiver
 {
-    private:
+private:
     std::shared_ptr<RawSocket> socket;
     sockaddr_in sender_sck;
 
-    public:
+public:
     SocketReceiver(std::shared_ptr<RawSocket> s) :
         socket{s}
     {
