@@ -7,7 +7,7 @@
 #include <algorithm>
 
 #include "RawSocket.hpp"
-#include "SocketController.hpp"
+#include "ICMPController.hpp"
 
 bool check_address(const std::string & addr)
 {
@@ -69,7 +69,7 @@ void print_results(int ttl, const std::set<std::string> & recvaddr, int avg_time
     }
 }
 
-bool send_msg(SocketController & sck, const std::string & addr, int ttl)
+bool send_msg(ICMPController & sck, const std::string & addr, int ttl)
 {
     uint16_t pid = getpid();
     int seq = ttl;
@@ -97,7 +97,7 @@ bool send_msg(SocketController & sck, const std::string & addr, int ttl)
 int main(int argc, char * argv[])
 {
     std::shared_ptr<RawSocket> socket = std::make_shared<RawSocket>();
-    SocketController socket_ctrl = SocketController(socket);
+    ICMPController socket_ctrl = ICMPController(socket);
 
     if(argc < 2)
         throw std::invalid_argument("No destination IP specified");

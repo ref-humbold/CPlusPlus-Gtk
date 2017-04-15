@@ -11,20 +11,20 @@ distclean : clean
 
 refresh : clean all
 
-traceroute : traceroute.o SocketController.o SocketSender.o SocketReceiver.o RawSocket.o
-	$(CXX) $(CXXFLAGS) traceroute.o SocketController.o SocketSender.o SocketReceiver.o RawSocket.o -o traceroute
+traceroute : traceroute.o ICMPController.o ICMPSender.o ICMPReceiver.o RawSocket.o
+	$(CXX) $(CXXFLAGS) traceroute.o ICMPController.o ICMPSender.o ICMPReceiver.o RawSocket.o -o traceroute
 
-traceroute.o : traceroute.cpp SocketController.hpp SocketSender.hpp SocketReceiver.hpp RawSocket.hpp
+traceroute.o : traceroute.cpp ICMPController.hpp ICMPSender.hpp ICMPReceiver.hpp RawSocket.hpp
 	$(CXX) $(CXXFLAGS) -c traceroute.cpp -o traceroute.o
 
-SocketController.o : SocketController.cpp SocketController.hpp SocketSender.hpp SocketReceiver.hpp RawSocket.hpp
-	$(CXX) $(CXXFLAGS) -c SocketController.cpp -o SocketController.o
+ICMPController.o : ICMPController.cpp ICMPController.hpp ICMPSender.hpp ICMPReceiver.hpp RawSocket.hpp
+	$(CXX) $(CXXFLAGS) -c ICMPController.cpp -o ICMPController.o
 
-SocketSender.o : SocketSender.cpp RawSocket.hpp
-	$(CXX) $(CXXFLAGS) -c SocketSender.cpp -o SocketSender.o
+ICMPSender.o : ICMPSender.cpp RawSocket.hpp
+	$(CXX) $(CXXFLAGS) -c ICMPSender.cpp -o ICMPSender.o
 
-SocketReceiver.o : SocketReceiver.cpp RawSocket.hpp
-	$(CXX) $(CXXFLAGS) -c SocketReceiver.cpp -o SocketReceiver.o
+ICMPReceiver.o : ICMPReceiver.cpp RawSocket.hpp
+	$(CXX) $(CXXFLAGS) -c ICMPReceiver.cpp -o ICMPReceiver.o
 
 RawSocket.o : RawSocket.cpp RawSocket.hpp
 	$(CXX) $(CXXFLAGS) -c RawSocket.cpp -o RawSocket.o
