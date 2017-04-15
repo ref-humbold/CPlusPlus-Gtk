@@ -44,27 +44,8 @@ bool check_address(const std::string & addr)
     return true;
 }
 
-bool send_msg(SocketController & sck, const std::string & addr, int ttl)
+void print_results(int ttl, const std::set<std::string> & recvaddr, int avg_time)
 {
-    uint16_t pid = getpid();
-    int seq = ttl;
-
-    sck.echo_request(addr, pid, seq, ttl);
-
-    std::set<std::string> recvaddr;
-    int avg_time;
-
-    try
-    {
-        std::tie(recvaddr, avg_time) = sck.echo_reply(pid, seq);
-    }
-    catch(const TimeExceededException & e)
-    {
-        std::cout << ttl << ". *\n";
-
-        return false;
-    }
-
     std::cout << ttl << ". ";
 
     if(avg_time < 0)
@@ -86,9 +67,31 @@ bool send_msg(SocketController & sck, const std::string & addr, int ttl)
 
         std::cout << avg_time / 1000 << "ms\n";
     }
+}
+
+bool send_msg(SocketController & sck, const std::string & addr, int ttl)
+{
+    uint16_t pid = getpid();
+    int seq = ttl;
+
+    sck.echo_request(addr, pid, seq, ttl);
+
+    std::set<std::string> recvaddr;
+    int avg_time;
+
+    try
+    {
+        std::tie(recvaddr, avg_time) = sck.echo_reply(pid, seq);
+    }
+    catch(const TimeExceededException & e)
+    {
+        avg_time = -1;
+    }
+
+    print_results(ttl, recvaddr, avg_time);
 
     return std::any_of(recvaddr.begin(), recvaddr.end(),
-        [addr](std::string s){ return s == addr; });
+        [addr](const std::string & s){ return s == addr; });
 }
 
 int main(int argc, char * argv[])
