@@ -37,9 +37,9 @@ public:
         close(desc);
     }
 
-    RawSocket(const RawSocket & raw_sck) = default;
+    RawSocket(const RawSocket & raw_sck) = delete;
     RawSocket(RawSocket && raw_sck) = default;
-    RawSocket & operator=(const RawSocket & raw_sck) = default;
+    RawSocket & operator=(const RawSocket & raw_sck) = delete;
     RawSocket & operator=(RawSocket && raw_sck) = default;
 
     int get_desc()
