@@ -10,10 +10,10 @@
 #include <arpa/inet.h>
 #include <stdexcept>
 #include <exception>
+#include <memory>
 #include <string>
 #include <tuple>
 #include <set>
-#include <memory>
 
 #include "RawSocket.hpp"
 #include "ICMPReceiver.hpp"

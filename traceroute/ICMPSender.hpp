@@ -7,8 +7,8 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
-#include <string>
 #include <memory>
+#include <string>
 
 #include "RawSocket.hpp"
 

@@ -7,11 +7,11 @@
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
+#include <memory>
 #include <string>
 #include <tuple>
 #include <vector>
 #include <algorithm>
-#include <memory>
 
 #include "RawSocket.hpp"
 
