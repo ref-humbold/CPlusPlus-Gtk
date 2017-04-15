@@ -6,8 +6,8 @@
     <property name="junit.output.dir" value="junit_results"/>
     <property name="javadoc.output.dir" value="doc"/>
     <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.7"/>
-    <property name="source" value="1.7"/>
+    <property name="target" value="1.8"/>
+    <property name="source" value="1.8"/>
     <path id="junit4.libraryclasspath">
         <pathelement location="/usr/share/java/junit4.jar"/>
         <pathelement location="/usr/share/java/hamcrest-core.jar"/>
@@ -22,10 +22,10 @@
     <target name="init" depends="clean">
         <mkdir dir="${built.dir}"/>
         <copy includeemptydirs="false" todir="${built.dir}">
-            <fileset dir="src" excludes="**/*.java"/>
+            <fileset dir="${src.dir}" excludes="**/*.java"/>
         </copy>
         <copy includeemptydirs="false" todir="${built.dir}">
-            <fileset dir="test" excludes="**/*.java"/>
+            <fileset dir="${test.dir}" excludes="**/*.java"/>
         </copy>
     </target>
     <target name="build" depends="init">

@@ -61,7 +61,7 @@ class Parser
             g = 0;
             line = line.trim();
 
-            if( line.length() == 0 || line.startsWith("#") )
+            if(line.length() == 0 || line.startsWith("#") )
             {
                 line = reader.readLine();
                 continue;
@@ -107,8 +107,8 @@ class Parser
                 int lenJ = instr.it.arg.length;
                 String etc = etnums.get(instr.it.arg[lenJ-1]);
 
-                if( et.containsKey(etc) )
-                    instr.setLink( et.get(etc) );
+                if(et.containsKey(etc) )
+                    instr.setLink(et.get(etc) );
                 else
                     throw new LabelError(0, instr.it.counter);
             }
@@ -158,10 +158,10 @@ class Parser
     {
         String lbName = lbl.substring(0, lbl.length()-1);
 
-        if( !allLower(lbName) )
+        if(!allLower(lbName) )
             throw new LabelError(3, cnt);
 
-        if( et.containsKey(lbName) )
+        if(et.containsKey(lbName) )
             throw new LabelError(1, cnt);
 
         return lbName;
@@ -173,7 +173,7 @@ class Parser
         String op = splitted[indx];
         int[] q = new int[0];
 
-        if( op.startsWith("#") )
+        if(op.startsWith("#") )
             return doArgNone();
 
         switch(op)
@@ -503,16 +503,16 @@ class Parser
     private int doArgVar(int indx, int cnt, boolean checkZero)
     	throws SymbolError
     {
-         if( splitted[indx].startsWith("#") )
+         if(splitted[indx].startsWith("#") )
             throw new SymbolError(2, cnt);
 
-         if( !allLower(splitted[indx]) )
+         if(!allLower(splitted[indx]) )
             throw new SymbolError(3, cnt);
 
         if(checkZero && splitted[indx] == "zero")
             throw new SymbolError(0, cnt);
 
-        if( !varies.containsKey(splitted[indx]) )
+        if(!varies.containsKey(splitted[indx]) )
         {
             varies.put(splitted[indx], varsNum);
             varsNum++;
@@ -526,10 +526,10 @@ class Parser
     {
         int ret = 0;
 
-        if( splitted[indx].startsWith("#") )
+        if(splitted[indx].startsWith("#") )
             throw new SymbolError(2, cnt);
 
-        if( splitted[indx].startsWith("0x") )
+        if(splitted[indx].startsWith("0x") )
         {
             try
             {
@@ -558,10 +558,10 @@ class Parser
     private int doArgLbl(int indx, int cnt)
     	throws LanguageError
     {
-        if( splitted[indx].startsWith("#") )
+        if(splitted[indx].startsWith("#") )
             throw new SymbolError(2, cnt);
 
-        if( !allLower(splitted[indx]) )
+        if(!allLower(splitted[indx]) )
             throw new LabelError(3, cnt);
 
         if(etnums.indexOf(splitted[indx]) < 0)
@@ -575,7 +575,7 @@ class Parser
          for(int i = 0; i < s.length(); ++i)
              if(s.charAt(i) < 'a' || s.charAt(i) > 'z')
                 return false;
-         
+
          return true;
      }
 }

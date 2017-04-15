@@ -36,7 +36,7 @@ public class Interpreter
             }
         }
 
-        if( !adr.endsWith(".apo") )
+        if(!adr.endsWith(".apo"))
         {
             System.err.println("Wrong filename extension. Execution stopped.");
             return;

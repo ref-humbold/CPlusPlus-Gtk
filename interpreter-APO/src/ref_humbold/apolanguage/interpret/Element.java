@@ -46,7 +46,7 @@ class Element
     {
         next = e;
     }
-    
+
     /**
      * Porownuje dwa elementy na rownosc
      * @param obj element do porownania
@@ -55,11 +55,11 @@ class Element
     @Override
     public boolean equals(Object obj)
     {
-    	if( !(obj instanceof Element) )
-        	return false;
-    
+        if(!(obj instanceof Element))
+            return false;
+
     	Element e = (Element)obj;
-    		
+
     	return this.name == e.name && this.arg.equals(e.arg);
     }
 
