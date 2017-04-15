@@ -1,0 +1,14 @@
+# zlicza liczbę jedynek w zapisie binarnym liczby wczytanej z klawiatury
+
+RDINT x
+ADD jed zero zero
+loop: JPEQ x zero eop
+ANDI r x 1
+JPEQ r zero eif
+ADDI jed jed 1
+eif:
+SHRT x x 1
+JUMP loop
+eop: PTLN
+PTINT jed
+PTLN

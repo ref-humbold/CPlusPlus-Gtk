@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="Interpreter-APO" basedir="." default="build">
+    <property name="src.dir" value="src"/>
+    <property name="test.dir" value="test"/>
+    <property name="built.dir" value="bin"/>
+    <property name="junit.output.dir" value="junit_results"/>
+    <property name="javadoc.output.dir" value="doc"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="junit4.libraryclasspath">
+        <pathelement location="/usr/share/java/junit4.jar"/>
+        <pathelement location="/usr/share/java/hamcrest-core.jar"/>
+    </path>
+    <path id="Interpreter-APO.classpath">
+        <pathelement location="${built.dir}"/>
+        <path refid="junit4.libraryclasspath"/>
+    </path>
+    <target name="clean">
+        <delete dir="${built.dir}"/>
+    </target>
+    <target name="init" depends="clean">
+        <mkdir dir="${built.dir}"/>
+        <copy includeemptydirs="false" todir="${built.dir}">
+            <fileset dir="src" excludes="**/*.java"/>
+        </copy>
+        <copy includeemptydirs="false" todir="${built.dir}">
+            <fileset dir="test" excludes="**/*.java"/>
+        </copy>
+    </target>
+    <target name="build" depends="init">
+        <echo message="${ant.project.name} : ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${built.dir}" source="${source}" target="${target}" includeantruntime="false">
+            <src path="${src.dir}"/>
+            <src path="${test.dir}"/>
+            <classpath refid="Interpreter-APO.classpath"/>
+        </javac>
+    </target>
+    <target name="junit">
+        <delete dir="${junit.output.dir}"/>
+        <mkdir dir="${junit.output.dir}"/>
+        <junit fork="yes" printsummary="withOutAndErr">
+            <formatter type="xml"/>
+            <test name="ref_humbold.apolanguage.interpret.MemoryTest" todir="${junit.output.dir}"/>
+            <test name="ref_humbold.apolanguage.interpret.InstructionListTest" todir="${junit.output.dir}"/>
+            <test name="ref_humbold.apolanguage.interpret.VariableListTest" todir="${junit.output.dir}"/>
+            <classpath refid="Interpreter-APO.classpath"/>
+        </junit>
+        <junitreport todir="${junit.output.dir}">
+            <fileset dir="${junit.output.dir}" includes="TEST-*.xml"/>
+            <report format="frames" todir="${junit.output.dir}"/>
+        </junitreport>
+    </target>
+    <target name="javadoc" depends="build">
+        <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="package">
+            <package name="ref_humbold.apolanguage.*"/>
+            <package name="ref_humbold.apolanguage.interpret.*"/>
+            <package name="ref_humbold.apolanguage.errors.*"/>
+        </javadoc>
+    </target>
+    <target name="all" depends="build, junit, javadoc"/>
+</project>
