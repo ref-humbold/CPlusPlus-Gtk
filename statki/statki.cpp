@@ -1,17 +1,19 @@
 #include <cstdlib>
-#include <iostream>
-#include <stdexcept>
-#include <exception>
 #include <ctime>
-#include <vector>
+#include <iostream>
+#include <exception>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
 bool collide(const std::vector<std::string> & vf, int n, int row, int col)
 {
+    int size = vf.size();
+
     for(int dr = -1; dr <= 1; ++dr)
         for(int dc = -1; dc <= n; ++dc)
-            if(row+dr >= 0 && row+dr < vf.size() && col+dc >= 0 && col+dc < vf.size())
-                if(vf[row+dr][col+dc] == '#')
+            if(row + dr >= 0 && row + dr < size && col+dc >= 0 && col + dc < size)
+                if(vf[row + dr][col + dc] == '#')
                     return true;
 
     return false;
@@ -20,12 +22,12 @@ bool collide(const std::vector<std::string> & vf, int n, int row, int col)
 void add_ship(std::vector<std::string> & vf, int n)
 {
     int row, col;
-    bool cld, vert = rand()%2 == 0;
+    bool cld, vert = rand() % 2 == 0;
 
     do
     {
-        row = rand()%10;
-        col = rand()%(10-n+1);
+        row = rand() % 10;
+        col = rand() % (10 - n + 1);
         cld = vert ? collide(vf, n, row, col) : collide(vf, n, col, row);
     }
     while(cld);
@@ -33,9 +35,9 @@ void add_ship(std::vector<std::string> & vf, int n)
     for(int dc = 0; dc < n; ++dc)
     {
         if(vert)
-            vf[row][col+dc] = '#';
+            vf[row][col + dc] = '#';
         else
-            vf[col+dc][row] = '#';
+            vf[col + dc][row] = '#';
     }
 }
 
@@ -43,6 +45,7 @@ std::pair<int, int> shoot()
 {
     std::pair<int, int> coef;
 
+    std::cout << "\t\tSTATKI\n\n";
     std::cout << "Podaj współrzędne punktu strzału (od 0 do 9)\n";
     std::cout << "Wiersz: ";
     std::cin >> coef.first;
@@ -56,7 +59,7 @@ bool check_shot(std::vector<std::string> & v, const std::pair<int, int> & coef)
 {
     bool hit = false;
 
-    switch( v[coef.first][coef.second] )
+    switch(v[coef.first][coef.second])
     {
         case '#':
             std::cout << "\tTRAFIONY!!!! \n \n";
@@ -92,16 +95,16 @@ void board(const std::vector<std::string> & v, bool is_game)
 {
     std::cout << "  ";
 
-    for(int i = 0; i < v.size(); ++i)
+    for(size_t i = 0; i < v.size(); ++i)
         std::cout << i << " ";
 
     std::cout << "\n";
 
-    for(int i = 0; i < v.size(); ++i)
+    for(size_t i = 0; i < v.size(); ++i)
     {
         std::cout << i << " ";
 
-        for( char c : v[i] )
+        for(char c : v[i])
             if(is_game && c == '#')
                 std::cout << "= ";
             else
@@ -121,7 +124,7 @@ int main()
     std::cout << "\t(C) by Rafał Kaleta, Wrocław, Poland\n" << "\t\tAll rights reserved\n\n\n";
     std::cout << "\t\tGRA W STATKI\n\n";
 
-    srand( time(0) );
+    srand(time(NULL));
 
     for(int i = 4; i >= 1; --i)
         for(int j = 0; j <= 4-i; ++j)

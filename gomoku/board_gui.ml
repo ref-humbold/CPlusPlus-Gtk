@@ -12,9 +12,9 @@ let display () =
 
 let rec choose_size () =
     let mp = Gui.mouse_click () in
-    let buttons = [ (Gui.sc 1 4, Gui.sc 3 4); (Gui.sc 3 4, Gui.sc 3 4);
-                    (Gui.sc 1 4, Gui.sc 1 2); (Gui.sc 3 4, Gui.sc 1 2);
-                    (Gui.sc 1 4, Gui.sc 1 4); (Gui.sc 3 4, Gui.sc 1 4) ] in
+    let buttons = [(Gui.sc 1 4, Gui.sc 3 4); (Gui.sc 3 4, Gui.sc 3 4);
+                   (Gui.sc 1 4, Gui.sc 1 2); (Gui.sc 3 4, Gui.sc 1 2);
+                   (Gui.sc 1 4, Gui.sc 1 4); (Gui.sc 3 4, Gui.sc 1 4)] in
     let clk = List.map (fun p -> Gui.check_button_clicked p (200, 100) mp) buttons in
     let rec get_size lst sz =
         match lst with

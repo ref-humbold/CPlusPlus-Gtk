@@ -4,11 +4,11 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <memory>
+#include <string>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
-#include <memory>
-#include <string>
 
 #include "RawSocket.hpp"
 

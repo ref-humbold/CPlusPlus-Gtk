@@ -1,5 +1,5 @@
-CC = gcc
-CFLAGS = -pthread -fPIC -shared -std=gnu99 -Wall -Wextra
+CC = gcc -std=gnu99
+CFLAGS = -pthread -fPIC -shared -Wall -Wextra
 
 all : libmemalc.so
 

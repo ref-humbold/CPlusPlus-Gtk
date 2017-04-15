@@ -161,7 +161,6 @@ let check_board_situation size player gameboard =
             player = t0 && t0 = t1 && t1 = t2 && t2 = t3 -> check (4::acc) ps
         | Some t0::Some t1::Some t2::ps when player = t0 && t0 = t1 && t1 = t2 -> check (3::acc) ps
         | Some t0::Some t1::ps when player = t0 && t0 = t1 -> check (2::acc) ps
-        | Some t0::ps when player = t0 -> check (1::acc) ps
         | _::ps -> check acc ps
         | [] -> acc in
     let get_rows g = g
@@ -231,7 +230,7 @@ let heura size gameboard =
             let for_human =
                 try List.find (fun e -> fst e = n) human_sit with
                 | Not_found -> (n, 0) in
-            ((snd for_comp)-(snd for_human))::(diffs (n-1)) in
+            ((snd for_human)-(snd for_comp))::(diffs (n-1)) in
     List.fold_right (fun e a -> (float_of_int e)+.1.5*.a) (diffs 5) 0.0;;
 
 let heuristic_move size gameboard =
@@ -272,7 +271,7 @@ let heuristic_move size gameboard =
             | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
             | Board.Comp -> find_res a b empty_pos ((0, 0), neg_infinity)
             | Board.Human -> find_res a b empty_pos ((0, 0), infinity) in
-    fst @@ fwd_move 3 neg_infinity infinity Board.Comp gameboard;;
+    fst @@ fwd_move 4 neg_infinity infinity Board.Comp gameboard;;
 
 let analyze size human_move gameboard =
     let anl player mv =

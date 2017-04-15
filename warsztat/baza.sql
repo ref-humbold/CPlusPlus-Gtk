@@ -1,7 +1,7 @@
 /* TWORZENIE DZIEDZIN */
-CREATE DOMAIN procent AS integer NOT NULL DEFAULT 0 CHECK( VALUE IN(0, 5, 10, 15, 20, 25) );
+CREATE DOMAIN procent AS integer NOT NULL DEFAULT 0 CHECK(VALUE IN(0, 5, 10, 15, 20, 25));
 
-CREATE DOMAIN typauto AS char(1) NOT NULL DEFAULT 'o' CHECK( VALUE IN('o', 'c', 'a', 'm') );
+CREATE DOMAIN typauto AS char(1) NOT NULL DEFAULT 'o' CHECK(VALUE IN('o', 'c', 'a', 'm'));
 
 CREATE DOMAIN typcena AS numeric(10, 2) CHECK(VALUE > 0);
 

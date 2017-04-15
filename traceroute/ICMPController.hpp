@@ -4,16 +4,16 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <exception>
+#include <stdexcept>
+#include <memory>
+#include <string>
+#include <set>
+#include <tuple>
 #include <sys/time.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
-#include <stdexcept>
-#include <exception>
-#include <memory>
-#include <string>
-#include <tuple>
-#include <set>
 
 #include "RawSocket.hpp"
 #include "ICMPReceiver.hpp"

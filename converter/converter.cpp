@@ -1,8 +1,8 @@
 #include <cstdlib>
-#include <iostream>
-#include <stdexcept>
-#include <exception>
 #include <cmath>
+#include <iostream>
+#include <exception>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -10,13 +10,13 @@
 void check_base(int base)
 {
     if(base < 2 || base > 16)
-        throw runtime_error("Podstawa spoza zakresu 2 - 16.\n");
+        throw std::runtime_error("Podstawa spoza zakresu 2 - 16.\n");
 }
 
 void check_input_number(int decimal)
 {
     if(abs(decimal) > 1000000000)
-        throw runtime_error("Liczba poza przewidywanym zakresem wejścia.\n");
+        throw std::runtime_error("Liczba poza przewidywanym zakresem wejścia.\n");
 }
 
 void check_digits(std::string &number, int base, bool has_sign)
@@ -26,35 +26,32 @@ void check_digits(std::string &number, int base, bool has_sign)
     char max_big_hex = (char)std::max(64, base+54);
     char max_small_hex = (char)std::max(96, base+86);
 
-    for(int i = digits_begin; i < number.size(); ++i)
+    for(auto it = number.begin() + digits_begin ; it != number.end(); ++it)
     {
-        char digit = number[i];
-
-        if(digit < '0' || (digit > max_dec && digit < 'A') || (digit > max_big_hex && digit < 'a')
-           || digit > max_small_hex)
-            throw runtime_error("Znaki niewłaściwe dla podanego systemu liczbowego.\n");
+        if(*it < '0' || (*it > max_dec && *it < 'A') || (*it > max_big_hex && *it < 'a')
+           || *it > max_small_hex)
+            throw std::runtime_error("Znaki niewłaściwe dla podanego systemu liczbowego.\n");
     }
 }
 
-int convert_to_decimal(std::string &number, int base, bool has_sign)
+int convert_to_decimal(std::string & number, int base)
 {
-    int digits_begin = has_sign ? 1 : 0, decimal = 0;
+    auto actual_digit = [](const char & d)
+        {
+            if(d >= '0' && d <= '9')
+                return +d - '0';
 
-    for(int i = digits_begin; i < number.size(); ++i)
-    {
-        int actual_digit;
+            if(d >= 'A' && d <= 'F')
+                return +d - 'A' + 10;
 
-        if( number[i] >= '0' && number[i] <= '9' )
-            actual_digit = +number[i]-'0';
-        else if( number[i] >= 'A' && number[i] <= 'F' )
-            actual_digit = +number[i]-'A'+10;
-        else if( number[i] >= 'a' && number[i] <= 'f' )
-            actual_digit = +number[i]-'a'+10;
+            if(d >= 'a' && d <= 'f')
+                return +d - 'a' + 10;
 
-        decimal = decimal*base+actual_digit;
-    }
+            return 0;
+        };
 
-    return decimal;
+    return std::accumulate(number.begin(), number.end(), 0,
+        [=](int decimal, const char & d){ return decimal * base + actual_digit(d); });
 }
 
 std::vector<int> convert_to_output(int decimal, int base)
@@ -63,8 +60,8 @@ std::vector<int> convert_to_output(int decimal, int base)
 
     do
     {
-        output.push_back(decimal%base);
-        decimal = decimal/base;
+        output.push_back(decimal % base);
+        decimal = decimal / base;
     }
     while(decimal != 0);
 
@@ -76,44 +73,42 @@ int main()
     int base_in;
     std::string number_in;
 
-    cout << "\t(C) by Rafał Kaleta, Wrocław, Poland\n" << "\t\tAll rights reserved\n\n\n";
-    cout << "\t\tCONVERTER SYSTEMÓW LICZBOWYCH\n\n";
-
-    cout << "Podaj podstawę systemu liczby\n";
-    cin >> base_in;
-    cout << "\n";
+    std::cout << "\t\tCONVERTER SYSTEMÓW LICZBOWYCH\n\n";
+    std::cout << "Podaj podstawę systemu liczby\n";
+    std::cin >> base_in;
+    std::cout << "\n";
     check_base(base_in);
-    cout << "Podaj liczbę do zamiany\n";
-    cin >> number_in;
+    std::cout << "Podaj liczbę do zamiany\n";
+    std::cin >> number_in;
 
     bool has_sign = number_in[0] == '-' || number_in[0] == '+';
 
     check_digits(number_in, base_in, has_sign);
 
-    int base_out, decimal = convert_to_decimal(number_in, base_in, has_sign);
+    int base_out, decimal = convert_to_decimal(number_in, base_in);
 
     check_input_number(decimal);
-    cout << "\n" << "Podaj podstawę systemu, na który chcesz zamienić tę liczbę\n";
-    cin >> base_out;
-    cout << "\n\n";
+    std::cout << "\n" << "Podaj podstawę systemu, na który chcesz zamienić tę liczbę\n";
+    std::cin >> base_out;
+    std::cout << "\n\n";
     check_base(base_out);
 
     std::vector<int> number_out = convert_to_output(decimal, base_out);
 
-    cout << "\tTwoja liczba w systemie o podstawie " << base_out << " wynosi:\n\n" << "\t\t";
+    std::cout << "\tTwoja liczba w systemie o podstawie " << base_out << " wynosi:\n\n" << "\t\t";
 
     if(has_sign && number_in[0] == '-')
-        cout << "-";
+        std::cout << "-";
 
-    for(int i = number_out.size()-1; i >= 0; --i)
+    for(auto it = number_out.rbegin(); it != number_out.rend(); ++it)
     {
-        int shift = number_out[i] < 10 ? '0' : 'A';
-        char out_code = number_out[i]%10+shift;
+        int shift = *it < 10 ? '0' : 'A';
+        char out_code = *it % 10 + shift;
 
-        cout << (char)out_code;
+        std::cout << (char)out_code;
     }
 
-    cout << "\n\n";
+    std::cout << "\n\n";
 
     return 0;
 }
