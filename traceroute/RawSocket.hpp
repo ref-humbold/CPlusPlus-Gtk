@@ -22,19 +22,19 @@ public:
 class RawSocket
 {
 private:
-    int desc;
+    int descriptor;
 
 public:
-    RawSocket() :
-        desc{socket(AF_INET, SOCK_RAW, IPPROTO_ICMP)}
+    RawSocket(int protocol) :
+        descriptor{socket(AF_INET, SOCK_RAW, protocol)}
     {
-        if(desc < 0)
+        if(descriptor < 0)
             throw SocketException(strerror(errno));
     }
 
     ~RawSocket()
     {
-        close(desc);
+        close(descriptor);
     }
 
     RawSocket(const RawSocket & raw_sck) = delete;
@@ -42,9 +42,9 @@ public:
     RawSocket & operator=(const RawSocket & raw_sck) = delete;
     RawSocket & operator=(RawSocket && raw_sck) = default;
 
-    int get_desc()
+    int get_descriptor()
     {
-        return desc;
+        return descriptor;
     }
 };
 

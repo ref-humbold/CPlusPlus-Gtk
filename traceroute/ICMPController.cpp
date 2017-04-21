@@ -20,13 +20,13 @@ std::tuple<std::set<std::string>, int> ICMPController::echo_reply(uint16_t id, u
     int recvnum = 0;
 
     FD_ZERO(&fd);
-    FD_SET(socket->get_desc(), &fd);
+    FD_SET(socket->get_descriptor(), &fd);
     timer.tv_sec = 1;
     timer.tv_usec = 0;
 
     do
     {
-        int ready = select(socket->get_desc()+1, &fd, nullptr, nullptr, &timer);
+        int ready = select(socket->get_descriptor()+1, &fd, nullptr, nullptr, &timer);
 
         if(ready < 0)
             throw SocketException(strerror(errno));

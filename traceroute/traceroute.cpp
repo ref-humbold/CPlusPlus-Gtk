@@ -96,7 +96,7 @@ bool send_msg(ICMPController & sck, const std::string & addr, int ttl)
 
 int main(int argc, char * argv[])
 {
-    std::shared_ptr<RawSocket> socket = std::make_shared<RawSocket>();
+    std::shared_ptr<RawSocket> socket = std::make_shared<RawSocket>(IPPROTO_ICMP);
     ICMPController socket_ctrl = ICMPController(socket);
 
     if(argc < 2)

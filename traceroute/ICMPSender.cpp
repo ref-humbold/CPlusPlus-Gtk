@@ -2,9 +2,9 @@
 
 void ICMPSender::send(const void * msg_buf, int msg_size, int ttl)
 {
-    setsockopt(socket->get_desc(), IPPROTO_IP, IP_TTL, &ttl, sizeof(int));
+    setsockopt(socket->get_descriptor(), IPPROTO_IP, IP_TTL, &ttl, sizeof(int));
 
-    ssize_t sent_size = sendto(socket->get_desc(), msg_buf, msg_size, 0,
+    ssize_t sent_size = sendto(socket->get_descriptor(), msg_buf, msg_size, 0,
         (sockaddr *)&receiver_sck, sizeof(receiver_sck));
 
     if(sent_size < 0)
