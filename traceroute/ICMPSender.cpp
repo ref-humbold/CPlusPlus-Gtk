@@ -5,7 +5,7 @@ void ICMPSender::send(const void * msg_buf, int msg_size, int ttl)
     setsockopt(socket->get_descriptor(), IPPROTO_IP, IP_TTL, &ttl, sizeof(int));
 
     ssize_t sent_size = sendto(socket->get_descriptor(), msg_buf, msg_size, 0,
-        (sockaddr *)&receiver_sck, sizeof(receiver_sck));
+        (sockaddr *)&receiver_address, sizeof(receiver_address));
 
     if(sent_size < 0)
         throw SocketException(strerror(errno));
@@ -13,9 +13,9 @@ void ICMPSender::send(const void * msg_buf, int msg_size, int ttl)
 
 void ICMPSender::set_receiver(const std::string & addr)
 {
-    receiver_sck.sin_family = AF_INET;
+    receiver_address.sin_family = AF_INET;
 
-    int result = inet_pton(AF_INET, addr.c_str(), &receiver_sck.sin_addr);
+    int result = inet_pton(AF_INET, addr.c_str(), &receiver_address.sin_addr);
 
     if(result < 1)
         throw SocketException("Invalid addressing.");

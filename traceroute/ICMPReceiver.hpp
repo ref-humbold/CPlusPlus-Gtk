@@ -19,7 +19,7 @@ class ICMPReceiver
 {
 private:
     std::shared_ptr<RawSocket> socket;
-    sockaddr_in sender_sck;
+    sockaddr_in sender_address;
 
 public:
     ICMPReceiver(std::shared_ptr<RawSocket> s) :

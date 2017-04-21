@@ -16,7 +16,7 @@ class ICMPSender
 {
 private:
     std::shared_ptr<RawSocket> socket;
-    sockaddr_in receiver_sck;
+    sockaddr_in receiver_address;
 
 public:
     ICMPSender(std::shared_ptr<RawSocket> s) :
