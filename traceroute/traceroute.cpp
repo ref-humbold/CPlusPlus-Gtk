@@ -12,21 +12,21 @@
 bool check_address(const std::string & addr)
 {
     std::vector<std::string> splitted;
-    size_t beginPos = 0;
+    size_t begin_pos = 0;
 
-    while(beginPos != std::string::npos)
+    while(begin_pos != std::string::npos)
     {
-        size_t endPos = addr.find(".", beginPos);
+        size_t end_pos = addr.find(".", begin_pos);
 
-        if(endPos != std::string::npos)
+        if(end_pos != std::string::npos)
         {
-            splitted.push_back(addr.substr(beginPos, endPos-beginPos));
-            beginPos = endPos + 1;
+            splitted.push_back(addr.substr(begin_pos, end_pos-begin_pos));
+            begin_pos = end_pos + 1;
         }
         else
         {
-            splitted.push_back(addr.substr(beginPos));
-            beginPos = endPos;
+            splitted.push_back(addr.substr(begin_pos));
+            begin_pos = end_pos;
         }
     }
 
