@@ -11,11 +11,11 @@ void ICMPSender::send(const void * msg_buf, int msg_size, int ttl)
         throw SocketException(strerror(errno));
 }
 
-void ICMPSender::set_receiver(const std::string & addr)
+void ICMPSender::set_receiver(const IPAddress & addr)
 {
     receiver_address.sin_family = AF_INET;
 
-    int result = inet_pton(AF_INET, addr.c_str(), &receiver_address.sin_addr);
+    int result = inet_pton(AF_INET, std::string(addr).c_str(), &receiver_address.sin_addr);
 
     if(result < 1)
         throw SocketException("Invalid addressing.");

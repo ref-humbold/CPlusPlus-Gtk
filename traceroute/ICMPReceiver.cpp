@@ -11,10 +11,10 @@ std::vector<uint8_t> ICMPReceiver::receive()
     if(msg_size < 0)
         throw SocketException(strerror(errno));
 
-    return std::vector<uint8_t>(msg_buf, msg_buf+msg_size);
+    return std::vector<uint8_t>(std::begin(msg_buf), std::begin(msg_buf) + msg_size);
 }
 
-std::string ICMPReceiver::take_address()
+IPAddress ICMPReceiver::take_address()
 {
     char ip_str[32];
 

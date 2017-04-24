@@ -10,6 +10,7 @@
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
 
+#include "IPAddress.hpp"
 #include "RawSocket.hpp"
 
 class ICMPSender
@@ -25,7 +26,7 @@ public:
     }
 
     void send(const void * msg_buf, int msg_size, int ttl);
-    void set_receiver(const std::string & addr);
+    void set_receiver(const IPAddress & addr);
     icmphdr prepare_icmp(uint16_t id, uint16_t seq);
 
 private:

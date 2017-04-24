@@ -15,6 +15,7 @@
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
 
+#include "IPAddress.hpp"
 #include "RawSocket.hpp"
 #include "ICMPReceiver.hpp"
 #include "ICMPSender.hpp"
@@ -51,11 +52,11 @@ public:
     {
     }
 
-    void echo_request(const std::string & addr, uint16_t id, uint16_t seq, int ttl);
-    std::tuple<std::set<std::string>, int> echo_reply(uint16_t id, uint16_t seq);
+    void echo_request(const IPAddress & addr, uint16_t id, uint16_t seq, int ttl);
+    std::tuple<std::set<IPAddress>, int> echo_reply(uint16_t id, uint16_t seq);
 
 private:
-    std::string recv_echo(uint16_t id, uint16_t seq);
+    IPAddress recv_echo(uint16_t id, uint16_t seq);
     std::tuple<iphdr *, icmphdr *, uint8_t *> take_headers(uint8_t * ptr);
 };
 

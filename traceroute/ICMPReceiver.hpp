@@ -13,6 +13,7 @@
 #include <netinet/ip_icmp.h>
 #include <arpa/inet.h>
 
+#include "IPAddress.hpp"
 #include "RawSocket.hpp"
 
 class ICMPReceiver
@@ -28,7 +29,7 @@ public:
     }
 
     std::vector<uint8_t> receive();
-    std::string take_address();
+    IPAddress take_address();
 };
 
 #endif

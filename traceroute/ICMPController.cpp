@@ -1,6 +1,6 @@
 #include "ICMPController.hpp"
 
-void ICMPController::echo_request(const std::string & addr, uint16_t id, uint16_t seq, int ttl)
+void ICMPController::echo_request(const IPAddress & addr, uint16_t id, uint16_t seq, int ttl)
 {
     for(int i = 0; i < 3; ++i)
     {
@@ -11,9 +11,9 @@ void ICMPController::echo_request(const std::string & addr, uint16_t id, uint16_
     }
 }
 
-std::tuple<std::set<std::string>, int> ICMPController::echo_reply(uint16_t id, uint16_t seq)
+std::tuple<std::set<IPAddress>, int> ICMPController::echo_reply(uint16_t id, uint16_t seq)
 {
-    std::set<std::string> recvaddr;
+    std::set<IPAddress> recvaddr;
     fd_set fd;
     timeval timer;
     int avg_time = 0;
@@ -37,18 +37,18 @@ std::tuple<std::set<std::string>, int> ICMPController::echo_reply(uint16_t id, u
         if(ready == 0 && recvnum > 0)
             return std::make_tuple(recvaddr, -1);
 
-        std::string msg;
+        IPAddress address;
 
         try
         {
-            msg = recv_echo(id, seq);
+            address = recv_echo(id, seq);
         }
         catch(const NotMyReplyException & e)
         {
             continue;
         }
 
-        recvaddr.insert(msg);
+        recvaddr.insert(address);
         avg_time = (avg_time + 1000000 - timer.tv_usec) / 2;
         ++recvnum;
     }
@@ -57,7 +57,7 @@ std::tuple<std::set<std::string>, int> ICMPController::echo_reply(uint16_t id, u
     return std::make_tuple(recvaddr, avg_time);
 }
 
-std::string ICMPController::recv_echo(uint16_t id, uint16_t seq)
+IPAddress ICMPController::recv_echo(uint16_t id, uint16_t seq)
 {
     std::vector<uint8_t> message = receiver.receive();
     iphdr * hIP;

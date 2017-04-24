@@ -1,11 +1,12 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <set>
-#include <algorithm>
 #include <unistd.h>
 
+#include "IPAddress.hpp"
 #include "RawSocket.hpp"
 #include "ICMPController.hpp"
 
@@ -44,7 +45,7 @@ bool check_address(const std::string & addr)
     return true;
 }
 
-void print_results(int ttl, const std::set<std::string> & recvaddr, int avg_time)
+void print_results(int ttl, const std::set<IPAddress> & recvaddr, int avg_time)
 {
     std::cout << ttl << ". ";
 
@@ -54,29 +55,29 @@ void print_results(int ttl, const std::set<std::string> & recvaddr, int avg_time
             std::cout << "*\n";
         else
         {
-            for(auto ars : recvaddr)
-                std::cout << ars << " ";
+            for(auto addr : recvaddr)
+                std::cout << std::string(addr) << " ";
 
             std::cout << "???\n";
         }
     }
     else
     {
-        for(auto ars : recvaddr)
-            std::cout << ars << " ";
+        for(auto addr : recvaddr)
+            std::cout << std::string(addr) << " ";
 
         std::cout << avg_time / 1000 << "ms\n";
     }
 }
 
-bool send_msg(ICMPController & sck, const std::string & addr, int ttl)
+bool send_msg(ICMPController & sck, const IPAddress & addr, int ttl)
 {
     uint16_t pid = getpid();
     int seq = ttl;
 
     sck.echo_request(addr, pid, seq, ttl);
 
-    std::set<std::string> recvaddr;
+    std::set<IPAddress> recvaddr;
     int avg_time;
 
     try
@@ -91,7 +92,7 @@ bool send_msg(ICMPController & sck, const std::string & addr, int ttl)
     print_results(ttl, recvaddr, avg_time);
 
     return std::any_of(recvaddr.begin(), recvaddr.end(),
-        [addr](const std::string & s){ return s == addr; });
+        [addr](const IPAddress & a){ return a == addr; });
 }
 
 int main(int argc, char * argv[])
