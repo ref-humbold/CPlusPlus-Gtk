@@ -47,6 +47,11 @@ public:
         return address;
     }
 
+    explicit operator bool() const
+    {
+        return address != 0;
+    }
+
     explicit operator std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>() const;
     explicit operator std::string() const;
 
