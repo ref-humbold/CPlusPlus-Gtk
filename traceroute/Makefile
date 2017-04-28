@@ -6,25 +6,28 @@ all : traceroute
 clean :
 	rm -f *.o
 
+distclean : clean
+	rm -f traceroute
+
 refresh : clean all
 
-traceroute : traceroute.o ICMPController.o ICMPSender.o ICMPReceiver.o RawSocket.o IPAddress.o
-	$(CXX) $(CXXFLAGS) traceroute.o ICMPController.o ICMPSender.o ICMPReceiver.o RawSocket.o IPAddress.o -o traceroute
+traceroute : IPAddress.o RawSocket.o ICMPReceiver.o ICMPSender.o ICMPController.o traceroute.o
+	$(CXX) $(CXXFLAGS) IPAddress.o RawSocket.o ICMPReceiver.o ICMPSender.o ICMPController.o traceroute.o -o traceroute
 
-traceroute.o : traceroute.cpp ICMPController.hpp ICMPSender.hpp ICMPReceiver.hpp RawSocket.hpp IPAddress.hpp
+traceroute.o : traceroute.cpp
 	$(CXX) $(CXXFLAGS) -c traceroute.cpp -o traceroute.o
 
-ICMPController.o : ICMPController.cpp ICMPController.hpp ICMPSender.hpp ICMPReceiver.hpp RawSocket.hpp IPAddress.hpp
+ICMPController.o : ICMPController.cpp
 	$(CXX) $(CXXFLAGS) -c ICMPController.cpp -o ICMPController.o
 
-ICMPSender.o : ICMPSender.cpp RawSocket.hpp IPAddress.hpp
+ICMPSender.o : ICMPSender.cpp
 	$(CXX) $(CXXFLAGS) -c ICMPSender.cpp -o ICMPSender.o
 
-ICMPReceiver.o : ICMPReceiver.cpp RawSocket.hpp IPAddress.hpp
+ICMPReceiver.o : ICMPReceiver.cpp
 	$(CXX) $(CXXFLAGS) -c ICMPReceiver.cpp -o ICMPReceiver.o
 
-RawSocket.o : RawSocket.cpp RawSocket.hpp
+RawSocket.o : RawSocket.cpp
 	$(CXX) $(CXXFLAGS) -c RawSocket.cpp -o RawSocket.o
 
-IPAddress.o : IPAddress.cpp IPAddress.hpp
+IPAddress.o : IPAddress.cpp
 	$(CXX) $(CXXFLAGS) -c IPAddress.cpp -o IPAddress.o

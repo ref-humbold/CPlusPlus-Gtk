@@ -44,6 +44,6 @@ let draw_button (xc, yc) (w, h) lbl clr =
 
 let mouse_click () =
     let st = Graphics.wait_next_event [Graphics.Button_down] in
-    (st.mouse_x, st.mouse_y);;
+    (st.Graphics.mouse_x, st.Graphics.mouse_y);;
 
 let check_button_clicked (xc, yc) (w, h) (mpx, mpy) = abs (mpx-xc) <= w && abs (mpy-yc) <= h;;
