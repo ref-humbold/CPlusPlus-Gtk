@@ -10,41 +10,6 @@
 #include "RawSocket.hpp"
 #include "ICMPController.hpp"
 
-bool check_address(const std::string & addr)
-{
-    std::vector<std::string> splitted;
-    size_t begin_pos = 0;
-
-    while(begin_pos != std::string::npos)
-    {
-        size_t end_pos = addr.find(".", begin_pos);
-
-        if(end_pos != std::string::npos)
-        {
-            splitted.push_back(addr.substr(begin_pos, end_pos-begin_pos));
-            begin_pos = end_pos + 1;
-        }
-        else
-        {
-            splitted.push_back(addr.substr(begin_pos));
-            begin_pos = end_pos;
-        }
-    }
-
-    if(splitted.size() != 4)
-        return false;
-
-    for(const auto & s : splitted)
-        if(s == "" || std::any_of(s.begin(), s.end(), [](char c){ return c < '0' || c > '9'; }))
-            return false;
-
-    if(std::any_of(splitted.begin(), splitted.end(),
-       [](const std::string & s){ return stoi(s) < 0 || stoi(s) > 255; }))
-        return false;
-
-    return true;
-}
-
 void print_results(int ttl, const std::set<IPAddress> & recvaddr, int avg_time)
 {
     std::cout << ttl << ". ";
@@ -70,7 +35,7 @@ void print_results(int ttl, const std::set<IPAddress> & recvaddr, int avg_time)
     }
 }
 
-bool send_msg(ICMPController & sck, const IPAddress & addr, int ttl)
+bool send_message(ICMPController & sck, const IPAddress & addr, int ttl)
 {
     uint16_t pid = getpid();
     int seq = ttl;
@@ -103,13 +68,10 @@ int main(int argc, char * argv[])
     if(argc < 2)
         throw std::invalid_argument("No destination IP specified");
 
-    std::string address = argv[1];
-
-    if(!check_address(address))
-        throw std::invalid_argument("Not an IP address.");
+    IPAddress addr(argv[1]);
 
     for(int i = 1; i <= 30; ++i)
-        if(send_msg(socket_ctrl, address, i))
+        if(send_message(socket_ctrl, addr, i))
             break;
 
     return 0;

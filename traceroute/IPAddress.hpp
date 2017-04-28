@@ -1,14 +1,14 @@
-// Rafał Kaleta, 272655
 #ifndef IP_ADDRESS_HPP
 #define IP_ADDRESS_HPP
 
 #include <cstdlib>
 #include <exception>
 #include <stdexcept>
-#include <array>
+#include <algorithm>
+#include <numeric>
 #include <string>
 #include <tuple>
-#include <algorithm>
+#include <vector>
 
 using addr_t = unsigned int;
 
@@ -27,46 +27,61 @@ private:
     addr_t address;
 
 public:
-    IPAddress();
-    IPAddress(addr_t address);
+    IPAddress() :
+        address{0}
+    {
+    }
+
+    IPAddress(addr_t address) :
+        address{address}
+    {
+    }
+
     IPAddress(const std::string & address);
 
-    bool operator ==(IPAddress addr) const
+    friend bool operator ==(const IPAddress & addr1, const IPAddress & addr2);
+    friend bool operator <(const IPAddress & addr1, const IPAddress & addr2);
+
+    explicit operator addr_t() const
     {
-        return this->address == addr.address;
+        return address;
     }
 
-    bool operator !=(IPAddress addr) const
-    {
-        return !(*this == addr);
-    }
-
-    bool operator <(IPAddress addr) const
-    {
-        return this->address < addr.address;
-    }
-
-    bool operator >(IPAddress addr) const
-    {
-        return !(*this < addr) && (*this != addr);
-    }
-
-    bool operator <=(IPAddress addr) const
-    {
-        return (*this < addr) || (*this == addr);
-    }
-
-    bool operator >=(IPAddress addr) const
-    {
-        return !(*this < addr);
-    }
-
-    explicit operator addr_t() const;
     explicit operator std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>() const;
     explicit operator std::string() const;
 
 private:
     addr_t parse(const std::string & addr);
 };
+
+inline bool operator ==(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return addr1.address == addr2.address;
+}
+
+inline bool operator !=(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return !(addr1 == addr2);
+}
+
+inline bool operator <(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return addr1.address < addr2.address;
+}
+
+inline bool operator <=(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return (addr1 < addr2) || (addr1 == addr2);
+}
+
+inline bool operator >(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return !(addr1 <= addr2);
+}
+
+inline bool operator >=(const IPAddress & addr1, const IPAddress & addr2)
+{
+    return !(addr1 < addr2);
+}
 
 #endif

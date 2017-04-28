@@ -1,34 +1,19 @@
 #include "IPAddress.hpp"
 
-IPAddress::IPAddress() :
-    address{0}
-{
-}
-
-IPAddress::IPAddress(addr_t address) :
-    address{address}
-{
-}
-
 IPAddress::IPAddress(const std::string & address) :
     address{parse(address)}
 {
 }
 
-IPAddress::operator addr_t() const
-{
-    return address;
-}
-
 IPAddress::operator std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>() const
 {
     return std::make_tuple((address & 0xFF000000) >> 24, (address & 0xFF0000) >> 16,
-                            (address & 0xFF00) >> 8, address & 0xFF);
+                           (address & 0xFF00) >> 8, address & 0xFF);
 }
 
 IPAddress::operator std::string() const
 {
-    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> bytes = std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>(*this);
+    auto bytes = std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>(*this);
 
     return std::to_string(std::get<0>(bytes)) + "." + std::to_string(std::get<1>(bytes)) + "."
            + std::to_string(std::get<2>(bytes)) + "." + std::to_string(std::get<3>(bytes));
