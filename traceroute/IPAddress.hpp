@@ -42,14 +42,14 @@ public:
     friend bool operator ==(const IPAddress & addr1, const IPAddress & addr2);
     friend bool operator <(const IPAddress & addr1, const IPAddress & addr2);
 
+    operator bool() const
+    {
+        return address != 0;
+    }
+
     explicit operator addr_t() const
     {
         return address;
-    }
-
-    explicit operator bool() const
-    {
-        return address != 0;
     }
 
     explicit operator std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>() const;
