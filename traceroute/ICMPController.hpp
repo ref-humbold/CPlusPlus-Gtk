@@ -7,24 +7,27 @@
 #include <exception>
 #include <stdexcept>
 #include <memory>
-#include <string>
 #include <set>
+#include <string>
 #include <tuple>
-#include <sys/time.h>
+#include <arpa/inet.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
-#include <arpa/inet.h>
+#include <sys/time.h>
 
-#include "IPAddress.hpp"
-#include "RawSocket.hpp"
 #include "ICMPReceiver.hpp"
 #include "ICMPSender.hpp"
+#include "IPAddress.hpp"
+#include "RawSocket.hpp"
 
 class NotMyReplyException : public std::runtime_error
 {
 public:
-    NotMyReplyException(const std::string & s) :
-        std::runtime_error(s)
+    NotMyReplyException(const std::string & s) : std::runtime_error(s)
+    {
+    }
+
+    NotMyReplyException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -32,8 +35,11 @@ public:
 class TimeExceededException : public std::runtime_error
 {
 public:
-    TimeExceededException(const std::string & s) :
-        std::runtime_error(s)
+    TimeExceededException(const std::string & s) : std::runtime_error(s)
+    {
+    }
+
+    TimeExceededException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -45,10 +51,8 @@ class ICMPController
     ICMPReceiver receiver;
 
 public:
-    ICMPController(std::shared_ptr<RawSocket> s) :
-        socket{s},
-        sender{ICMPSender(socket)},
-        receiver{ICMPReceiver(socket)}
+    ICMPController(std::shared_ptr<RawSocket> s)
+        : socket{s}, sender{ICMPSender(socket)}, receiver{ICMPReceiver(socket)}
     {
     }
 

@@ -6,15 +6,18 @@
 #include <cerrno>
 #include <exception>
 #include <stdexcept>
-#include <netinet/ip.h>
 #include <arpa/inet.h>
+#include <netinet/ip.h>
 #include <unistd.h>
 
 class SocketException : public std::runtime_error
 {
 public:
-    SocketException(const std::string & s) :
-        std::runtime_error(s)
+    SocketException(const std::string & s) : std::runtime_error(s)
+    {
+    }
+
+    SocketException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -25,8 +28,7 @@ private:
     int descriptor;
 
 public:
-    RawSocket(int protocol) :
-        descriptor{socket(AF_INET, SOCK_RAW, protocol)}
+    RawSocket(int protocol) : descriptor{socket(AF_INET, SOCK_RAW, protocol)}
     {
         if(descriptor < 0)
             throw SocketException(strerror(errno));
