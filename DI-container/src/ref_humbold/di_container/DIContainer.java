@@ -24,7 +24,7 @@ public class DIContainer
     public <T> void registerType(Class<T> cls, boolean isSingleton)
         throws AbstractTypeException
     {
-        if(cls.isInterface() || Modifier.isAbstract(cls.getModifiers()))
+        if(isAbstract(cls))
             throw new AbstractTypeException();
 
         registerType(cls, cls, isSingleton);
@@ -51,27 +51,42 @@ public class DIContainer
         if(instances.containsKey(cls) && instances.get(cls) != null)
             return (T)instances.get(cls);
 
-        Class<? extends T> subcls = cls;
+        Class<? extends T> mappedcls = cls;
 
         do
         {
-            if(!classes.containsKey(subcls))
-                if(cls.isInterface() || Modifier.isAbstract(cls.getModifiers()))
+            if(!classes.containsKey(mappedcls))
+                if(isAbstract(mappedcls))
                     throw new AbstractTypeException();
                 else
-                    classes.put(subcls, subcls);
+                    classes.put(mappedcls, mappedcls);
 
-            subcls = (Class<? extends T>)classes.get(subcls);
-
+            mappedcls = (Class<? extends T>)classes.get(mappedcls);
         }
-        while(subcls.isInterface() || Modifier.isAbstract(subcls.getModifiers()));
+        while(isAbstract(mappedcls));
 
+        T object = construct(mappedcls);
+
+        if(instances.containsKey(cls))
+            instances.put(cls, object);
+
+        return object;
+    }
+
+    private boolean isAbstract(Class<?> cls)
+    {
+        return cls.isInterface() || Modifier.isAbstract(cls.getModifiers());
+    }
+
+    private <T> T construct(Class<? extends T> cls)
+        throws NoSuitableConstructorException, NewInstantanceException
+    {
         Constructor<? extends T> ctor = null;
         T object = null;
 
         try
         {
-            ctor = subcls.getConstructor();
+            ctor = cls.getConstructor();
         }
         catch(NoSuchMethodException | SecurityException e)
         {
@@ -87,9 +102,6 @@ public class DIContainer
         {
             throw new NewInstantanceException(e);
         }
-
-        if(instances.containsKey(cls))
-            instances.put(cls, object);
 
         return object;
     }
