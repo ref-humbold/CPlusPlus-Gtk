@@ -5,11 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.di_container.AbstractTypeException;
-import ref_humbold.di_container.DIContainer;
-import ref_humbold.di_container.NewInstantanceException;
-import ref_humbold.di_container.NoSuitableConstructorException;
-
 public class DIContainerTest
 {
     private DIContainer testObject;
@@ -309,12 +304,33 @@ public class DIContainerTest
     }
 
     @Test
+    public void testRegisterWhenInheritanceFromConcreteClass()
+    {
+        testObject.registerType(TestClass2.class, TestClass20.class);
+
+        TestClass2 cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestClass2.class);
+        }
+        catch(AbstractTypeException | NoSuitableConstructorException | NewInstantanceException e)
+        {
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertTrue(cls instanceof TestClass20);
+    }
+
+    @Test
     public void testRegisterWhenTwoStepsOfHierarchy()
     {
         testObject.registerType(TestInterface4.class, TestAbstractClass4.class);
         testObject.registerType(TestAbstractClass4.class, TestClass4.class);
 
         TestInterface4 cls = null;
+
         try
         {
             cls = testObject.resolve(TestInterface4.class);
@@ -326,6 +342,105 @@ public class DIContainerTest
 
         Assert.assertNotNull(cls);
         Assert.assertTrue(cls instanceof TestClass4);
+    }
+
+    @Test
+    public void testRegisterInstanceWhenInterface()
+    {
+        TestClass1 obj = new TestClass1();
+
+        testObject.registerInstance(TestInterface1.class, obj);
+
+        TestInterface1 cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterface1.class);
+        }
+        catch(AbstractTypeException | NoSuitableConstructorException | NewInstantanceException e)
+        {
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertTrue(cls instanceof TestClass1);
+        Assert.assertSame(obj, cls);
+    }
+
+    @Test
+    public void testRegisterInstanceWhenAbstractClass()
+    {
+        TestClass4 obj = new TestClass4();
+
+        testObject.registerInstance(TestAbstractClass4.class, obj);
+
+        TestAbstractClass4 cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestAbstractClass4.class);
+        }
+        catch(AbstractTypeException | NoSuitableConstructorException | NewInstantanceException e)
+        {
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertTrue(cls instanceof TestClass4);
+        Assert.assertSame(obj, cls);
+    }
+
+    @Test
+    public void testRegisterInstanceWhenSameConcreteClass()
+    {
+        TestClass3 obj = new TestClass3();
+
+        testObject.registerInstance(TestClass3.class, obj);
+
+        TestClass3 cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestClass3.class);
+        }
+        catch(AbstractTypeException | NoSuitableConstructorException | NewInstantanceException e)
+        {
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertTrue(cls instanceof TestClass3);
+        Assert.assertSame(obj, cls);
+    }
+
+    @Test
+    public void testRegisterInstanceWhenDerivedConcreteClass()
+    {
+        TestClass20 obj = new TestClass20();
+
+        testObject.registerInstance(TestClass2.class, obj);
+
+        TestClass2 cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestClass2.class);
+        }
+        catch(AbstractTypeException | NoSuitableConstructorException | NewInstantanceException e)
+        {
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertTrue(cls instanceof TestClass20);
+        Assert.assertSame(obj, cls);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRegisterInstanceWhenInstanceIsNull()
+        throws IllegalArgumentException
+    {
+        testObject.registerInstance(TestClass3.class, null);
     }
 
     @Test
@@ -347,7 +462,7 @@ public class DIContainerTest
     }
 
     @Test
-    public void testResolveWhenClassInheritsFromOtherClass()
+    public void testResolveWhenClassInheritsFromConcreteClass()
     {
         TestClass20 cls = null;
 

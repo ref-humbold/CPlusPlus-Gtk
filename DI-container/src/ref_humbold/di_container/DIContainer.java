@@ -45,7 +45,15 @@ public class DIContainer
             instances.remove(supercls);
     }
 
-    public <T> T resolve(Class<? extends T> cls)
+    public <T> void registerInstance(Class<T> cls, T instance)
+    {
+        if(instance == null)
+            throw new IllegalArgumentException("Instance is null.");
+
+        instances.put(cls, instance);
+    }
+
+    public <T> T resolve(Class<T> cls)
         throws AbstractTypeException, NoSuitableConstructorException, NewInstantanceException
     {
         if(instances.containsKey(cls) && instances.get(cls) != null)
