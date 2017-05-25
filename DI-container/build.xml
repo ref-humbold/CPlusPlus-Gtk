@@ -30,7 +30,6 @@
         </copy>
     </target>
     <target name="build" depends="init">
-        <echo message="${ant.project.name}: ${ant.file}" />
         <javac debug="true"
                debuglevel="${debuglevel}"
                destdir="${built.dir}"
