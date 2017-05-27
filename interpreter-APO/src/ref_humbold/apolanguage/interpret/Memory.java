@@ -3,92 +3,92 @@ package ref_humbold.apolanguage.interpret;
 import ref_humbold.apolanguage.errors.MemoryError;
 
 /**
-Klasa odpowiedzialna za interakcje programu z pamiecia.
-Wykonuje instrukcje zapisu i odczytu danych z pamieci.
-*/
-class Memory
+ * Klasa odpowiedzialna za interakcje programu z pamiecia. Wykonuje instrukcje zapisu i odczytu
+ * danych z pamieci.
+ */
+public class Memory
 {
-    private int[] mem;
+    private int[] memory;
 
     /**
-    Alokuje pamiec na potrzeby programu.
-    @param memLen rozmiar pamieci do zaalokowania.
-    */
-    public Memory(int memLen)
+     * Alokuje pamiec na potrzeby programu.
+     * @param memorySize rozmiar pamieci do zaalokowania.
+     */
+    public Memory(int memorySize)
     {
-        mem = new int[memLen*256];
-        System.out.println("memory>> "+memLen+"kB allocated");
+        memory = new int[memorySize * 256];
+        System.out.println("memory>> " + memorySize + "kB allocated");
     }
 
     /**
-    Odczytuje słowo 32 bit z pamieci.
-    @param adr adres do zapisu
-    @param curline numer linii programu
-    */
-    int loadWord(int adr, int curline)
-    	throws MemoryError
+     * Odczytuje słowo 32 bit z pamieci.
+     * @param address adres do zapisu
+     * @param lineNumber numer linii programu
+     */
+    int loadWord(int address, int lineNumber)
+        throws MemoryError
     {
-        if(adr < 0 || adr >= mem.length)
-            throw new MemoryError(0, curline);
+        if(address < 0 || address >= memory.length)
+            throw new MemoryError(MemoryError.OUT_OF_MEMORY, lineNumber);
 
-        if(adr%4 > 0)
-            throw new MemoryError(1, curline);
+        if(address % 4 > 0)
+            throw new MemoryError(MemoryError.ADDRESS_NOT_A_WORD, lineNumber);
 
-        return mem[adr/4];
+        return memory[address / 4];
     }
 
     /**
-    Zapisuje słowo 32 bit do pamieci.
-    @param adr adres do zapisu
-    @param var wartosc do zapisu
-    @param curline numer linii programu
-    */
-    void storeWord(int adr, int var, int curline)
-    	throws MemoryError
+     * Zapisuje słowo 32 bit do pamieci.
+     * @param address adres do zapisu
+     * @param value wartosc do zapisu
+     * @param lineNumber numer linii programu
+     */
+    void storeWord(int address, int value, int lineNumber)
+        throws MemoryError
     {
-        if(adr < 0 || adr >= mem.length)
-            throw new MemoryError(0, curline);
+        if(address < 0 || address >= memory.length)
+            throw new MemoryError(MemoryError.OUT_OF_MEMORY, lineNumber);
 
-        if(adr%4 > 0)
-            throw new MemoryError(1, curline);
+        if(address % 4 > 0)
+            throw new MemoryError(MemoryError.ADDRESS_NOT_A_WORD, lineNumber);
 
-        mem[adr/4] = var;
+        memory[address / 4] = value;
     }
 
     /**
-    Odczytuje pojedynczy bajt z pamieci.
-    @param adr adres do odczytu
-    @param curline numer linii programu
-    */
-    int loadByte(int adr, int curline)
-    	throws MemoryError
+     * Odczytuje pojedynczy bajt z pamieci.
+     * @param address adres do odczytu
+     * @param lineNumber numer linii programu
+     */
+    int loadByte(int address, int lineNumber)
+        throws MemoryError
     {
-        if(adr < 0 || adr >= mem.length)
-            throw new MemoryError(0, curline);
+        if(address < 0 || address >= memory.length)
+            throw new MemoryError(MemoryError.OUT_OF_MEMORY, lineNumber);
 
-        int shift = (3-adr%4)*8;
-        
-        return (mem[adr/4]&(0xFF<<shift))>>>shift;
+        int shift = (3 - address % 4) * 8;
+
+        return (memory[address / 4] & 0xFF << shift) >>> shift;
     }
 
     /**
-    Zapisuje liczbe okreslona na 1 bajcie do pamieci.
-    @param adr adres do zapisu
-    @param var wartosc do zapisu
-    @param curline numer linii programu
-    */
-    void storeByte(int adr, int var, int curline)
-    	throws MemoryError
+     * Zapisuje liczbe okreslona na 1 bajcie do pamieci.
+     * @param address adres do zapisu
+     * @param value wartosc do zapisu
+     * @param lineNumber numer linii programu
+     */
+    void storeByte(int address, int value, int lineNumber)
+        throws MemoryError
     {
-        if(adr < 0 || adr >= mem.length)
-            throw new MemoryError(0, curline);
+        if(address < 0 || address >= memory.length)
+            throw new MemoryError(MemoryError.OUT_OF_MEMORY, lineNumber);
 
-         if(var < 0 || var >= 256)
-            throw new MemoryError(2, curline);
+        if(value < 0 || value >= 256)
+            throw new MemoryError(MemoryError.NUMBER_NOT_IN_BYTE, lineNumber);
 
-        int shift = (3-adr%4)*8;
-        int tmp = mem[adr/4]&(~(0xFF<<shift));
-        
-        mem[adr/4] = tmp|(var<<shift);
+        int shift = (3 - address % 4) * 8;
+        int tmp = memory[address / 4] & ~(0xFF << shift);
+
+        memory[address / 4] = tmp | value << shift;
     }
 }

@@ -1,13 +1,15 @@
 package ref_humbold.apolanguage.interpret;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import ref_humbold.apolanguage.errors.LanguageError;
 
 /**
-Klasa odpowiadajaca za interakcje programu z uzytkownikiem.
-Wykonuje operacje wejscia / wyjscia zadane w programie asemblerowym.
-*/
-class IOConnector
+ * Klasa odpowiadajaca za interakcje programu z uzytkownikiem. Wykonuje operacje wejscia / wyjscia
+ * zadane w programie asemblerowym.
+ */
+public class IOConnector
 {
     private static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in), 1);
 
@@ -18,29 +20,29 @@ class IOConnector
     }
 
     /**
-    Wyswietla liczbe na standardowe wyjscie.
-    @param a liczba do wyswietlenia
-    */
+     * Wyswietla liczbe na standardowe wyjscie.
+     * @param a liczba do wyswietlenia
+     */
     void printInt(int a)
     {
         System.out.print(a);
     }
 
     /**
-    Wyswietla znak na standardowe wyjscie.
-    @param a kod znaku do wyswietlenia
-    */
+     * Wyswietla znak na standardowe wyjscie.
+     * @param a kod znaku do wyswietlenia
+     */
     void printChar(int a)
     {
-        System.out.print((char) a);
+        System.out.print((char)a);
     }
 
     /**
-    Wczytuje liczbe w systemie dziesietnym lub szesnastkowym ze standardowego wejecia.
-    @return wczytana liczba
-    */
+     * Wczytuje liczbe w systemie dziesietnym lub szesnastkowym ze standardowego wejecia.
+     * @return wczytana liczba
+     */
     int readInt()
-    	throws LanguageError
+        throws LanguageError
     {
         String stread = new String();
         System.out.print("input>> ");
@@ -49,7 +51,7 @@ class IOConnector
         {
             stread = stdin.readLine();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new LanguageError("IOException while reading");
         }
@@ -58,11 +60,11 @@ class IOConnector
     }
 
     /**
-    Wczytuje znak ze standardowego wejscia.
-    @return kod wczytanego znaku
-    */
+     * Wczytuje znak ze standardowego wejscia.
+     * @return kod wczytanego znaku
+     */
     int readChar()
-        	throws LanguageError
+        throws LanguageError
     {
         String stread = new String();
         System.out.print("input>> ");
@@ -71,11 +73,11 @@ class IOConnector
         {
             stread = stdin.readLine();
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             throw new LanguageError("IOException while reading");
         }
 
-        return (int)stread.charAt(0);
+        return stread.charAt(0);
     }
 }

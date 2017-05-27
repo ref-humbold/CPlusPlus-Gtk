@@ -38,6 +38,7 @@
                target="${target}">
             <src path="${src.dir}" />
             <src path="${test.dir}" />
+            <compilerarg line="-Xlint" />
             <classpath refid="interpreter-APO.classpath" />
         </javac>
     </target>

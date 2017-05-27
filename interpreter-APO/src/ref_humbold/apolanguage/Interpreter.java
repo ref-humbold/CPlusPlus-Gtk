@@ -1,29 +1,30 @@
 package ref_humbold.apolanguage;
 
-import java.nio.file.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import ref_humbold.apolanguage.errors.*;
 import ref_humbold.apolanguage.interpret.*;
 
 /**
-Glowna klasa, ktora pozwala na uruchomienie interpretera przez uzytkownika.
-Odpowiada ona za pobranie programu do wykonania oraz rozpoczecie dzialania interpretera.
-
-@author Rafal Kaleta
-@version 1.0
-*/
+ * Glowna klasa, ktora pozwala na uruchomienie interpretera przez uzytkownika. Odpowiada ona za
+ * pobranie programu do wykonania oraz rozpoczecie dzialania interpretera.
+ * @author Rafal Kaleta
+ * @version 1.1
+ */
 public class Interpreter
 {
     /**
-    Pobiera plik i uruchamia jego interpretacje w {@link Controler}.
-    @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo oraz (opcjonalnie) rozmiar pamieci do alokacji
-    */
-    public static void main (String args[]) throws Exception
+     * Pobiera plik i uruchamia jego interpretacje w {@link Controler}.
+     * @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo
+     * oraz (opcjonalnie) rozmiar pamieci do alokacji
+     */
+    public static void main(String args[]) throws Exception
     {
         int memLen = 1;
         String adr = args[0];
 
-        if(args.length>1)
+        if(args.length > 1)
         {
             try
             {
@@ -51,12 +52,13 @@ public class Interpreter
         }
         catch(LanguageError e)
         {
-        	e.display();
+            e.printError();
             return;
         }
         catch(Exception e)
         {
-            System.err.println("Exception while parsing: "+e.getMessage()+". Execution stopped.");
+            System.err.println("Exception while parsing: " + e.getMessage()
+                + ". Execution stopped.");
             return;
         }
 
@@ -66,11 +68,12 @@ public class Interpreter
         }
         catch(LanguageError e)
         {
-        	e.display();
+            e.printError();
         }
         catch(Exception e)
         {
-            System.err.println("Exception while interpreting: "+e.getMessage()+". Execution stopped.");
+            System.err.println("Exception while interpreting: " + e.getMessage()
+                + ". Execution stopped.");
         }
     }
 }
