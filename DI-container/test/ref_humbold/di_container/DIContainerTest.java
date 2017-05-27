@@ -28,7 +28,7 @@ public class DIContainerTest
         {
             testObject.registerType(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -42,7 +42,7 @@ public class DIContainerTest
             cls1 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
             cls2 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -60,7 +60,7 @@ public class DIContainerTest
         {
             testObject.registerType(TestClassWithDefaultConstructorOnly.class, true);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -74,7 +74,7 @@ public class DIContainerTest
             cls1 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
             cls2 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -92,7 +92,7 @@ public class DIContainerTest
         {
             testObject.registerType(TestClassWithDefaultConstructorOnly.class, true);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -106,7 +106,7 @@ public class DIContainerTest
             cls11 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
             cls12 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -120,7 +120,7 @@ public class DIContainerTest
         {
             testObject.registerType(TestClassWithDefaultConstructorOnly.class, false);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -134,7 +134,7 @@ public class DIContainerTest
             cls21 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
             cls22 = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -172,7 +172,7 @@ public class DIContainerTest
             cls1 = testObject.resolve(TestInterface.class);
             cls2 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -199,7 +199,7 @@ public class DIContainerTest
             cls1 = testObject.resolve(TestInterface.class);
             cls2 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -226,7 +226,7 @@ public class DIContainerTest
             cls11 = testObject.resolve(TestInterface.class);
             cls12 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -249,7 +249,7 @@ public class DIContainerTest
             cls21 = testObject.resolve(TestInterface.class);
             cls22 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -273,7 +273,7 @@ public class DIContainerTest
         {
             cls1 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -291,7 +291,7 @@ public class DIContainerTest
         {
             cls3 = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -312,7 +312,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestAbstractClass.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -334,7 +334,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithParameterConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -356,7 +356,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -379,7 +379,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestInterface.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -403,7 +403,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestAbstractClass.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -427,7 +427,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithDefaultAndParameterConstructor.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -451,7 +451,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithParameterConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -478,7 +478,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithDefaultConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -497,7 +497,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassInheritsFromClassWithParameterConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -516,7 +516,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassInheritsFromAbstractClass.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -528,9 +528,7 @@ public class DIContainerTest
 
     @Test(expected = MissingDependenciesException.class)
     public void testResolveWhenClassHasParameterConstructorWithoutRegisteredParameter()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestClassWithParameterConstructorOnly.class);
@@ -547,7 +545,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithParameterConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -568,7 +566,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithParameterConstructorOnly.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -586,7 +584,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestClassWithDefaultAndParameterConstructor.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -598,9 +596,7 @@ public class DIContainerTest
 
     @Test(expected = AbstractTypeException.class)
     public void testResolveWhenInterface()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestInterface.class);
@@ -608,9 +604,7 @@ public class DIContainerTest
 
     @Test(expected = AbstractTypeException.class)
     public void testResolveWhenAbstractClass()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestAbstractClass.class);
@@ -618,9 +612,7 @@ public class DIContainerTest
 
     @Test(expected = MultipleAnnotatedConstructorsException.class)
     public void testResolveWhenMultipleAnnotatedConstructors()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestClassWithMultipleAnnotatedConstructors.class);
@@ -628,9 +620,7 @@ public class DIContainerTest
 
     @Test(expected = NoSuitableConstructorException.class)
     public void testResolveWhenNoPublicConstructors()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestClassWithPrivateConstructorOnly.class);
@@ -638,9 +628,7 @@ public class DIContainerTest
 
     @Test(expected = NoSuitableConstructorException.class)
     public void testResolveWhenNoDeclaredConstructors()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.resolve(TestClassWithNoDeclaredConstructors.class);
@@ -663,7 +651,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface4.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -692,7 +680,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface4.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -720,7 +708,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface4.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -747,7 +735,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface5.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -764,9 +752,7 @@ public class DIContainerTest
 
     @Test(expected = MissingDependenciesException.class)
     public void testResolveDependenciesWithAnnotatedConstructorWithoutSomeDependencies()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
@@ -790,7 +776,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface9.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -819,7 +805,7 @@ public class DIContainerTest
         {
             cls = testObject.resolve(TestDependencyInterface9.class);
         }
-        catch(Exception e)
+        catch(DIException e)
         {
             e.printStackTrace();
             Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
@@ -836,9 +822,7 @@ public class DIContainerTest
 
     @Test(expected = CircularDependenciesException.class)
     public void testResolveCircularDependencies()
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
 
     {
         testObject.registerType(TestDependencyInterface6.class, TestDependencyClass6.class);

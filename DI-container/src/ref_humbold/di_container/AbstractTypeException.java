@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 public class AbstractTypeException
-    extends Exception
+    extends DIException
 {
     private static final long serialVersionUID = 5573956461991224741L;
 

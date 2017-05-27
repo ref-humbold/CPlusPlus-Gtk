@@ -42,6 +42,7 @@ public class DIContainer
 
     private Map<Class<?>, Object> instances = new HashMap<>();
     private Map<Class<?>, Class<?>> classes = new HashMap<>();
+    private DIException lastException = null;
 
     public DIContainer()
     {
@@ -86,11 +87,11 @@ public class DIContainer
     }
 
     public <T> T resolve(Class<T> cls)
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
     {
         ArrayDeque<Class<?>> resolved = new ArrayDeque<>();
+
+        lastException = null;
 
         return resolve(cls, resolved);
     }
@@ -123,9 +124,7 @@ public class DIContainer
     }
 
     private <T> T resolve(Class<T> cls, ArrayDeque<Class<?>> resolved)
-        throws AbstractTypeException, NoSuitableConstructorException,
-        MultipleAnnotatedConstructorsException, CircularDependenciesException,
-        MissingDependenciesException
+        throws DIException
     {
         resolved.addFirst(cls);
 
@@ -157,7 +156,7 @@ public class DIContainer
         }
 
         if(object == null)
-            throw new MissingDependenciesException();
+            throw lastException;
 
         if(instances.containsKey(referenced(cls)))
             instances.put(referenced(cls), object);
@@ -188,7 +187,7 @@ public class DIContainer
     }
 
     private <T> T createInstance(Constructor<? extends T> ctor, ArrayDeque<Class<?>> resolved)
-        throws CircularDependenciesException
+        throws DIException
     {
         T instance = null;
         ArrayList<Object> params = new ArrayList<>();
@@ -196,18 +195,27 @@ public class DIContainer
         for(Class<?> cls : ctor.getParameterTypes())
         {
             if(resolved.contains(cls))
-                throw new CircularDependenciesException();
+            {
+                lastException = new CircularDependenciesException();
+
+                return null;
+            }
 
             if(!instances.containsKey(referenced(cls)) && !classes.containsKey(referenced(cls)))
+            {
+                lastException = new MissingDependenciesException();
+
                 return null;
+            }
 
             try
             {
                 params.add(resolve(referenced(cls), resolved));
             }
-            catch(AbstractTypeException | NoSuitableConstructorException
-                  | MultipleAnnotatedConstructorsException | MissingDependenciesException e)
+            catch(DIException e)
             {
+                lastException = e;
+
                 return null;
             }
         }
@@ -219,6 +227,7 @@ public class DIContainer
         catch(InstantiationException | IllegalAccessException | IllegalArgumentException
               | InvocationTargetException e)
         {
+            lastException = new DIException(e);
         }
 
         return instance;

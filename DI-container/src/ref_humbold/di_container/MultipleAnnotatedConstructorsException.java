@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 public class MultipleAnnotatedConstructorsException
-    extends Exception
+    extends DIException
 {
     private static final long serialVersionUID = 9149838622398855405L;
 

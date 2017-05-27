@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 public class NoSuitableConstructorException
-    extends Exception
+    extends DIException
 {
     private static final long serialVersionUID = 902034423730601801L;
 

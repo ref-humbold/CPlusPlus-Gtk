@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 public class MissingDependenciesException
-    extends Exception
+    extends DIException
 {
     private static final long serialVersionUID = 7265031467533657162L;
 
