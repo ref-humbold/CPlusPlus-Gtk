@@ -38,6 +38,7 @@
                target="${target}">
             <src path="${src.dir}" />
             <src path="${test.dir}" />
+            <compilerarg line="-Xlint" />
             <classpath refid="DI-container.classpath" />
         </javac>
     </target>
@@ -49,8 +50,6 @@
             <test name="ref_humbold.di_container.DIContainerTest" todir="${junit.output.dir}" />
             <classpath refid="DI-container.classpath" />
         </junit>
-    </target>
-    <target name="junitreport">
         <junitreport todir="${junit.output.dir}">
             <fileset dir="${junit.output.dir}" includes="TEST-*.xml" />
             <report format="frames" todir="${junit.output.dir}" />

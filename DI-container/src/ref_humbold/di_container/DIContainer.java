@@ -3,11 +3,43 @@ package ref_humbold.di_container;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DIContainer
 {
+    private class ConstructorComparator
+        implements Comparator<Constructor<?>>
+    {
+        @Override
+        public int compare(Constructor<?> ctor0, Constructor<?> ctor1)
+        {
+            boolean ctorAnnotated0 = ctor0.isAnnotationPresent(DependencyConstructor.class);
+            boolean ctorAnnotated1 = ctor1.isAnnotationPresent(DependencyConstructor.class);
+
+            if(ctorAnnotated0 && !ctorAnnotated1)
+                return -1;
+
+            if(ctorAnnotated1 && !ctorAnnotated0)
+                return 1;
+
+            int ctorParams0 = ctor0.getParameterCount();
+            int ctorParams1 = ctor1.getParameterCount();
+
+            if(ctorParams0 > ctorParams1)
+                return -1;
+
+            if(ctorParams0 < ctorParams1)
+                return 1;
+
+            return 0;
+        }
+    }
+
     private Map<Class<?>, Object> instances = new HashMap<>();
     private Map<Class<?>, Class<?>> classes = new HashMap<>();
 
@@ -37,12 +69,12 @@ public class DIContainer
 
     public <T> void registerType(Class<T> supercls, Class<? extends T> cls, boolean isSingleton)
     {
-        classes.put(supercls, cls);
+        classes.put(referenced(supercls), referenced(cls));
 
         if(isSingleton)
-            instances.put(supercls, null);
-        else if(instances.containsKey(supercls))
-            instances.remove(supercls);
+            instances.put(referenced(supercls), null);
+        else if(instances.containsKey(referenced(supercls)))
+            instances.remove(referenced(supercls));
     }
 
     public <T> void registerInstance(Class<T> cls, T instance)
@@ -50,35 +82,17 @@ public class DIContainer
         if(instance == null)
             throw new IllegalArgumentException("Instance is null.");
 
-        instances.put(cls, instance);
+        instances.put(referenced(cls), instance);
     }
 
     public <T> T resolve(Class<T> cls)
-        throws AbstractTypeException, NoSuitableConstructorException, NewInstantanceException
+        throws AbstractTypeException, NoSuitableConstructorException,
+        MultipleAnnotatedConstructorsException, CircularDependenciesException,
+        MissingDependenciesException
     {
-        if(instances.containsKey(cls) && instances.get(cls) != null)
-            return (T)instances.get(cls);
+        ArrayDeque<Class<?>> resolved = new ArrayDeque<>();
 
-        Class<? extends T> mappedcls = cls;
-
-        do
-        {
-            if(!classes.containsKey(mappedcls))
-                if(isAbstract(mappedcls))
-                    throw new AbstractTypeException();
-                else
-                    classes.put(mappedcls, mappedcls);
-
-            mappedcls = (Class<? extends T>)classes.get(mappedcls);
-        }
-        while(isAbstract(mappedcls));
-
-        T object = construct(mappedcls);
-
-        if(instances.containsKey(cls))
-            instances.put(cls, object);
-
-        return object;
+        return resolve(cls, resolved);
     }
 
     private boolean isAbstract(Class<?> cls)
@@ -86,31 +100,147 @@ public class DIContainer
         return cls.isInterface() || Modifier.isAbstract(cls.getModifiers());
     }
 
-    private <T> T construct(Class<? extends T> cls)
-        throws NoSuitableConstructorException, NewInstantanceException
+    private Class<?> referenced(Class<?> cls)
     {
-        Constructor<? extends T> ctor = null;
+        if(cls == byte.class)
+            cls = Byte.class;
+        else if(cls == short.class)
+            cls = Short.class;
+        else if(cls == int.class)
+            cls = Integer.class;
+        else if(cls == long.class)
+            cls = Long.class;
+        else if(cls == float.class)
+            cls = Float.class;
+        else if(cls == double.class)
+            cls = Double.class;
+        else if(cls == boolean.class)
+            cls = Boolean.class;
+        else if(cls == char.class)
+            cls = Character.class;
+
+        return cls;
+    }
+
+    private <T> T resolve(Class<T> cls, ArrayDeque<Class<?>> resolved)
+        throws AbstractTypeException, NoSuitableConstructorException,
+        MultipleAnnotatedConstructorsException, CircularDependenciesException,
+        MissingDependenciesException
+    {
+        resolved.addFirst(cls);
+
+        if(instances.containsKey(referenced(cls)) && instances.get(referenced(cls)) != null)
+        {
+            resolved.removeFirst();
+
+            return (T)instances.get(referenced(cls));
+        }
+
+        Class<? extends T> mappedClass = getConcreteClass(cls);
+        Constructor<? extends T>[] constructors = getConstructors(mappedClass);
+
+        Arrays.sort(constructors, new ConstructorComparator());
+
+        if(constructors.length > 1)
+            if(constructors[0].isAnnotationPresent(DependencyConstructor.class)
+               && constructors[1].isAnnotationPresent(DependencyConstructor.class))
+                throw new MultipleAnnotatedConstructorsException();
+
         T object = null;
 
-        try
+        for(Constructor<? extends T> ctor : constructors)
         {
-            ctor = cls.getConstructor();
+            object = createInstance(ctor, resolved);
+
+            if(object != null || ctor.isAnnotationPresent(DependencyConstructor.class))
+                break;
         }
-        catch(NoSuchMethodException | SecurityException e)
+
+        if(object == null)
+            throw new MissingDependenciesException();
+
+        if(instances.containsKey(referenced(cls)))
+            instances.put(referenced(cls), object);
+
+        resolved.removeFirst();
+
+        return object;
+    }
+
+    private <T> Class<? extends T> getConcreteClass(Class<T> cls)
+        throws AbstractTypeException
+    {
+        Class<? extends T> mappedClass = cls;
+
+        do
         {
-            throw new NoSuitableConstructorException(e);
+            if(!classes.containsKey(referenced(mappedClass)))
+                if(isAbstract(mappedClass))
+                    throw new AbstractTypeException();
+                else
+                    classes.put(referenced(mappedClass), referenced(mappedClass));
+
+            mappedClass = (Class<? extends T>)classes.get(referenced(mappedClass));
+        }
+        while(isAbstract(mappedClass));
+
+        return mappedClass;
+    }
+
+    private <T> T createInstance(Constructor<? extends T> ctor, ArrayDeque<Class<?>> resolved)
+        throws CircularDependenciesException
+    {
+        T instance = null;
+        ArrayList<Object> params = new ArrayList<>();
+
+        for(Class<?> cls : ctor.getParameterTypes())
+        {
+            if(resolved.contains(cls))
+                throw new CircularDependenciesException();
+
+            if(!instances.containsKey(referenced(cls)) && !classes.containsKey(referenced(cls)))
+                return null;
+
+            try
+            {
+                params.add(resolve(referenced(cls), resolved));
+            }
+            catch(AbstractTypeException | NoSuitableConstructorException
+                  | MultipleAnnotatedConstructorsException | MissingDependenciesException e)
+            {
+                return null;
+            }
         }
 
         try
         {
-            object = ctor.newInstance();
+            instance = ctor.newInstance(params.toArray());
         }
         catch(InstantiationException | IllegalAccessException | IllegalArgumentException
               | InvocationTargetException e)
         {
-            throw new NewInstantanceException(e);
         }
 
-        return object;
+        return instance;
+    }
+
+    private <T> Constructor<? extends T>[] getConstructors(Class<? extends T> cls)
+        throws NoSuitableConstructorException
+    {
+        Constructor<?>[] constructors = null;
+
+        try
+        {
+            constructors = cls.getConstructors();
+        }
+        catch(SecurityException e)
+        {
+            throw new NoSuitableConstructorException(e);
+        }
+
+        if(constructors == null || constructors.length == 0)
+            throw new NoSuitableConstructorException();
+
+        return (Constructor<? extends T>[])constructors;
     }
 }
