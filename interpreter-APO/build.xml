@@ -47,10 +47,10 @@
         <mkdir dir="${junit.output.dir}" />
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml" />
-            <test name="ref_humbold.apolanguage.interpret.MemoryTest" todir="${junit.output.dir}" />
             <test name="ref_humbold.apolanguage.interpret.InstructionListTest"
                   todir="${junit.output.dir}" />
-            <test name="ref_humbold.apolanguage.interpret.VariableListTest"
+            <test name="ref_humbold.apolanguage.interpret.MemoryTest" todir="${junit.output.dir}" />
+            <test name="ref_humbold.apolanguage.interpret.VariableSetTest"
                   todir="${junit.output.dir}" />
             <classpath refid="interpreter-APO.classpath" />
         </junit>
