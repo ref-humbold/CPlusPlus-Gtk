@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 class TestClassWithDefaultConstructorOnly
-    implements TestBasicInterface
+    implements TestInterfaceBasic
 {
     public TestClassWithDefaultConstructorOnly()
     {

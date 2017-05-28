@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 class TestClassWithParameterConstructorOnly
-    implements TestBasicInterface
+    implements TestInterfaceBasic
 {
     private int number;
 

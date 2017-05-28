@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 class TestClassInheritsFromAbstractClass
-    extends TestAbstractClass
+    extends TestClassAbstract
 {
     public TestClassInheritsFromAbstractClass()
     {

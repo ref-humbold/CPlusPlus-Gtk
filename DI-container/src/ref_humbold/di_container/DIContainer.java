@@ -2,6 +2,7 @@ package ref_humbold.di_container;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DIContainer
     public <T> void registerType(Class<T> cls, boolean isSingleton)
         throws AbstractTypeException
     {
-        if(isAbstract(cls))
+        if(isAbstractType(cls))
             throw new AbstractTypeException();
 
         registerType(cls, cls, isSingleton);
@@ -41,12 +42,12 @@ public class DIContainer
 
     public <T> void registerType(Class<T> supercls, Class<? extends T> cls, boolean isSingleton)
     {
-        classes.put(referenced(supercls), referenced(cls));
+        classes.put(changeToReferenceType(supercls), changeToReferenceType(cls));
 
         if(isSingleton)
-            instances.put(referenced(supercls), null);
-        else if(instances.containsKey(referenced(supercls)))
-            instances.remove(referenced(supercls));
+            instances.put(changeToReferenceType(supercls), null);
+        else if(instances.containsKey(changeToReferenceType(supercls)))
+            instances.remove(changeToReferenceType(supercls));
     }
 
     public <T> void registerInstance(Class<T> cls, T instance)
@@ -54,7 +55,7 @@ public class DIContainer
         if(instance == null)
             throw new IllegalArgumentException("Instance is null.");
 
-        instances.put(referenced(cls), instance);
+        instances.put(changeToReferenceType(cls), instance);
     }
 
     public <T> T resolve(Class<T> cls)
@@ -67,12 +68,20 @@ public class DIContainer
         return resolve(cls, resolved);
     }
 
-    private boolean isAbstract(Class<?> cls)
+    private boolean isAbstractType(Class<?> cls)
     {
         return cls.isInterface() || Modifier.isAbstract(cls.getModifiers());
     }
 
-    private Class<?> referenced(Class<?> cls)
+    private boolean isAnnotatedMethodCorrectlyTyped(Method method)
+    {
+        if(!method.isAnnotationPresent(DependencyMethod.class))
+            throw new IllegalArgumentException();
+
+        return method.getReturnType() == void.class && method.getParameterCount() > 0;
+    }
+
+    private Class<?> changeToReferenceType(Class<?> cls)
     {
         if(cls == byte.class)
             cls = Byte.class;
@@ -99,21 +108,20 @@ public class DIContainer
     {
         resolved.addFirst(cls);
 
-        if(instances.containsKey(referenced(cls)) && instances.get(referenced(cls)) != null)
+        if(instances.containsKey(changeToReferenceType(cls)) && instances.get(changeToReferenceType(cls)) != null)
         {
             resolved.removeFirst();
 
-            return (T)instances.get(referenced(cls));
+            return (T)instances.get(changeToReferenceType(cls));
         }
 
-        Class<? extends T> mappedClass = getConcreteClass(cls);
+        Class<? extends T> mappedClass = findRegisteredConcreteClass(cls);
         Constructor<? extends T>[] constructors = getConstructors(mappedClass);
 
         Arrays.sort(constructors, new ConstructorComparator());
 
         if(constructors.length > 1)
-            if(constructors[0].isAnnotationPresent(DependencyConstructor.class)
-               && constructors[1].isAnnotationPresent(DependencyConstructor.class))
+            if(constructors[1].isAnnotationPresent(DependencyConstructor.class))
                 throw new MultipleAnnotatedConstructorsException();
 
         T object = null;
@@ -133,30 +141,30 @@ public class DIContainer
             throw lastException;
         }
 
-        if(instances.containsKey(referenced(cls)))
-            instances.put(referenced(cls), object);
+        if(instances.containsKey(changeToReferenceType(cls)))
+            instances.put(changeToReferenceType(cls), object);
 
         resolved.removeFirst();
 
         return object;
     }
 
-    private <T> Class<? extends T> getConcreteClass(Class<T> cls)
+    private <T> Class<? extends T> findRegisteredConcreteClass(Class<T> cls)
         throws AbstractTypeException
     {
         Class<? extends T> mappedClass = cls;
 
         do
         {
-            if(!classes.containsKey(referenced(mappedClass)))
-                if(isAbstract(mappedClass))
+            if(!classes.containsKey(changeToReferenceType(mappedClass)))
+                if(isAbstractType(mappedClass))
                     throw new AbstractTypeException();
                 else
-                    classes.put(referenced(mappedClass), referenced(mappedClass));
+                    classes.put(changeToReferenceType(mappedClass), changeToReferenceType(mappedClass));
 
-            mappedClass = (Class<? extends T>)classes.get(referenced(mappedClass));
+            mappedClass = (Class<? extends T>)classes.get(changeToReferenceType(mappedClass));
         }
-        while(isAbstract(mappedClass));
+        while(isAbstractType(mappedClass));
 
         return mappedClass;
     }
@@ -176,7 +184,7 @@ public class DIContainer
                 return null;
             }
 
-            if(!instances.containsKey(referenced(cls)) && !classes.containsKey(referenced(cls)))
+            if(!instances.containsKey(changeToReferenceType(cls)) && !classes.containsKey(changeToReferenceType(cls)))
             {
                 lastException = new MissingDependenciesException();
 
@@ -185,7 +193,7 @@ public class DIContainer
 
             try
             {
-                params.add(resolve(referenced(cls), resolved));
+                params.add(resolve(changeToReferenceType(cls), resolved));
             }
             catch(DIException e)
             {

@@ -1,7 +1,7 @@
 package ref_humbold.di_container;
 
 class TestClassWithDefaultAndParameterConstructor
-    implements TestBasicInterface
+    implements TestInterfaceBasic
 {
     private String text;
 

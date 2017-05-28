@@ -3,15 +3,15 @@ package ref_humbold.di_container;
 class TestClassDiamond2
     implements TestInterfaceDiamond2
 {
-    private TestBasicInterface object;
+    private TestInterfaceBasic object;
 
-    public TestClassDiamond2(TestBasicInterface object)
+    public TestClassDiamond2(TestInterfaceBasic object)
     {
         this.object = object;
     }
 
     @Override
-    public TestBasicInterface getObject()
+    public TestInterfaceBasic getObject()
     {
         return object;
     }
