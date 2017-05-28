@@ -149,7 +149,7 @@ public class DIContainerTest
     public void testRegisterWhenSingleClassIsInterface()
         throws AbstractTypeException
     {
-        testObject.registerType(TestInterface.class);
+        testObject.registerType(TestBasicInterface.class);
     }
 
     @Test(expected = AbstractTypeException.class)
@@ -162,15 +162,15 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterface()
     {
-        testObject.registerType(TestInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
 
-        TestInterface cls1 = null;
-        TestInterface cls2 = null;
+        TestBasicInterface cls1 = null;
+        TestBasicInterface cls2 = null;
 
         try
         {
-            cls1 = testObject.resolve(TestInterface.class);
-            cls2 = testObject.resolve(TestInterface.class);
+            cls1 = testObject.resolve(TestBasicInterface.class);
+            cls2 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -188,16 +188,16 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceAsSingleton()
     {
-        testObject.registerType(TestInterface.class, TestClassWithDefaultConstructorOnly.class,
-                                true);
+        testObject.registerType(TestBasicInterface.class,
+                                TestClassWithDefaultConstructorOnly.class, true);
 
-        TestInterface cls1 = null;
-        TestInterface cls2 = null;
+        TestBasicInterface cls1 = null;
+        TestBasicInterface cls2 = null;
 
         try
         {
-            cls1 = testObject.resolve(TestInterface.class);
-            cls2 = testObject.resolve(TestInterface.class);
+            cls1 = testObject.resolve(TestBasicInterface.class);
+            cls2 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -215,16 +215,16 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceChangesSingleton()
     {
-        testObject.registerType(TestInterface.class, TestClassWithDefaultConstructorOnly.class,
-                                true);
+        testObject.registerType(TestBasicInterface.class,
+                                TestClassWithDefaultConstructorOnly.class, true);
 
-        TestInterface cls11 = null;
-        TestInterface cls12 = null;
+        TestBasicInterface cls11 = null;
+        TestBasicInterface cls12 = null;
 
         try
         {
-            cls11 = testObject.resolve(TestInterface.class);
-            cls12 = testObject.resolve(TestInterface.class);
+            cls11 = testObject.resolve(TestBasicInterface.class);
+            cls12 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -238,16 +238,16 @@ public class DIContainerTest
         Assert.assertTrue(cls11 instanceof TestClassWithDefaultConstructorOnly);
         Assert.assertTrue(cls12 instanceof TestClassWithDefaultConstructorOnly);
 
-        testObject.registerType(TestInterface.class, TestClassWithDefaultConstructorOnly.class,
-                                false);
+        testObject.registerType(TestBasicInterface.class,
+                                TestClassWithDefaultConstructorOnly.class, false);
 
-        TestInterface cls21 = null;
-        TestInterface cls22 = null;
+        TestBasicInterface cls21 = null;
+        TestBasicInterface cls22 = null;
 
         try
         {
-            cls21 = testObject.resolve(TestInterface.class);
-            cls22 = testObject.resolve(TestInterface.class);
+            cls21 = testObject.resolve(TestBasicInterface.class);
+            cls22 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -265,13 +265,13 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceChangesClass()
     {
-        testObject.registerType(TestInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
 
-        TestInterface cls1 = null;
+        TestBasicInterface cls1 = null;
 
         try
         {
-            cls1 = testObject.resolve(TestInterface.class);
+            cls1 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -282,14 +282,14 @@ public class DIContainerTest
         Assert.assertNotNull(cls1);
         Assert.assertTrue(cls1 instanceof TestClassWithDefaultConstructorOnly);
 
-        testObject.registerType(TestInterface.class,
+        testObject.registerType(TestBasicInterface.class,
                                 TestClassWithDefaultAndParameterConstructor.class);
 
-        TestInterface cls3 = null;
+        TestBasicInterface cls3 = null;
 
         try
         {
-            cls3 = testObject.resolve(TestInterface.class);
+            cls3 = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -347,14 +347,14 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenTwoStepsOfHierarchy()
     {
-        testObject.registerType(TestInterface.class, TestAbstractClass.class);
+        testObject.registerType(TestBasicInterface.class, TestAbstractClass.class);
         testObject.registerType(TestAbstractClass.class, TestClassInheritsFromAbstractClass.class);
 
-        TestInterface cls = null;
+        TestBasicInterface cls = null;
 
         try
         {
-            cls = testObject.resolve(TestInterface.class);
+            cls = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -371,13 +371,13 @@ public class DIContainerTest
     {
         TestClassWithDefaultConstructorOnly obj = new TestClassWithDefaultConstructorOnly();
 
-        testObject.registerInstance(TestInterface.class, obj);
+        testObject.registerInstance(TestBasicInterface.class, obj);
 
-        TestInterface cls = null;
+        TestBasicInterface cls = null;
 
         try
         {
-            cls = testObject.resolve(TestInterface.class);
+            cls = testObject.resolve(TestBasicInterface.class);
         }
         catch(DIException e)
         {
@@ -434,8 +434,9 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertTrue(cls instanceof TestClassWithDefaultAndParameterConstructor);
         Assert.assertSame(obj, cls);
+        Assert.assertEquals(obj.getText(), cls.getText());
+        Assert.assertTrue(cls instanceof TestClassWithDefaultAndParameterConstructor);
     }
 
     @Test
@@ -458,8 +459,9 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertTrue(cls instanceof TestClassInheritsFromClassWithParameterConstructorOnly);
         Assert.assertSame(obj, cls);
+        Assert.assertTrue(cls instanceof TestClassInheritsFromClassWithParameterConstructorOnly);
+        Assert.assertEquals(obj.getNumber(), cls.getNumber());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -537,7 +539,9 @@ public class DIContainerTest
     @Test
     public void testResolveWhenClassHasParameterConstructorWithRegisteredPrimitiveParameter()
     {
-        testObject.registerInstance(int.class, 10);
+        int number = 10;
+
+        testObject.registerInstance(int.class, number);
 
         TestClassWithParameterConstructorOnly cls = null;
 
@@ -552,13 +556,16 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
+        Assert.assertEquals(number, cls.getNumber());
         Assert.assertTrue(cls instanceof TestClassWithParameterConstructorOnly);
     }
 
     @Test
     public void testResolveWhenClassHasParameterConstructorWithRegisteredReferenceParameter()
     {
-        testObject.registerInstance(Integer.class, 10);
+        Integer number = new Integer(10);
+
+        testObject.registerInstance(Integer.class, number);
 
         TestClassWithParameterConstructorOnly cls = null;
 
@@ -599,7 +606,7 @@ public class DIContainerTest
         throws DIException
 
     {
-        testObject.resolve(TestInterface.class);
+        testObject.resolve(TestBasicInterface.class);
     }
 
     @Test(expected = AbstractTypeException.class)
@@ -640,16 +647,17 @@ public class DIContainerTest
         String string = "String";
 
         testObject.registerInstance(String.class, string);
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface3.class, TestDependencyClass3.class);
-        testObject.registerType(TestDependencyInterface4.class, TestDependencyClass4.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+        testObject.registerType(TestInterfaceSimpleDependency.class,
+                                TestClassSimpleDependencyWithoutAnnotation.class);
 
-        TestDependencyInterface4 cls = null;
+        TestInterfaceSimpleDependency cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface4.class);
+            cls = testObject.resolve(TestInterfaceSimpleDependency.class);
         }
         catch(DIException e)
         {
@@ -658,27 +666,28 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNotNull(cls.getObject3());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertNotNull(cls.getObject3().getString());
-        Assert.assertEquals(string, cls.getObject3().getString());
-        Assert.assertTrue(cls instanceof TestDependencyClass4);
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNotNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertNotNull(cls.getSecondObject().getString());
+        Assert.assertEquals(string, cls.getSecondObject().getString());
+        Assert.assertTrue(cls instanceof TestClassSimpleDependencyWithoutAnnotation);
     }
 
     @Test
     public void testResolveDependenciesWithoutAnnotatedConstructorsWithAllDependencies()
     {
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface3.class, TestDependencyClass3.class);
-        testObject.registerType(TestDependencyInterface4.class, TestDependencyClass4.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+        testObject.registerType(TestInterfaceSimpleDependency.class,
+                                TestClassSimpleDependencyWithoutAnnotation.class);
 
-        TestDependencyInterface4 cls = null;
+        TestInterfaceSimpleDependency cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface4.class);
+            cls = testObject.resolve(TestInterfaceSimpleDependency.class);
         }
         catch(DIException e)
         {
@@ -687,26 +696,27 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNotNull(cls.getObject3());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertNotNull(cls.getObject3().getString());
-        Assert.assertEquals("", cls.getObject3().getString());
-        Assert.assertTrue(cls instanceof TestDependencyClass4);
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNotNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertNotNull(cls.getSecondObject().getString());
+        Assert.assertEquals("", cls.getSecondObject().getString());
+        Assert.assertTrue(cls instanceof TestClassSimpleDependencyWithoutAnnotation);
     }
 
     @Test
     public void testResolveDependenciesWithoutAnnotatedConstructorsWithoutSomeDependencies()
     {
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface4.class, TestDependencyClass4.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceSimpleDependency.class,
+                                TestClassSimpleDependencyWithoutAnnotation.class);
 
-        TestDependencyInterface4 cls = null;
+        TestInterfaceSimpleDependency cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface4.class);
+            cls = testObject.resolve(TestInterfaceSimpleDependency.class);
         }
         catch(DIException e)
         {
@@ -715,25 +725,26 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNull(cls.getObject3());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertTrue(cls instanceof TestDependencyClass4);
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertTrue(cls instanceof TestClassSimpleDependencyWithoutAnnotation);
     }
 
     @Test
     public void testResolveDependenciesWithAnnotatedConstructor()
     {
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface3.class, TestDependencyClass3.class);
-        testObject.registerType(TestDependencyInterface5.class, TestDependencyClass5.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+        testObject.registerType(TestInterfaceSimpleDependency.class,
+                                TestClassSimpleDependencyWithAnnotation.class);
 
-        TestDependencyInterface5 cls = null;
+        TestInterfaceSimpleDependency cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface5.class);
+            cls = testObject.resolve(TestInterfaceSimpleDependency.class);
         }
         catch(DIException e)
         {
@@ -742,12 +753,12 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNotNull(cls.getObject3());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertNotNull(cls.getObject3().getString());
-        Assert.assertEquals("", cls.getObject3().getString());
-        Assert.assertTrue(cls instanceof TestDependencyClass5);
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNotNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertNotNull(cls.getSecondObject().getString());
+        Assert.assertEquals("", cls.getSecondObject().getString());
+        Assert.assertTrue(cls instanceof TestClassSimpleDependencyWithAnnotation);
     }
 
     @Test(expected = MissingDependenciesException.class)
@@ -755,26 +766,26 @@ public class DIContainerTest
         throws DIException
 
     {
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface8.class, TestDependencyClass8.class);
-        testObject.registerType(TestDependencyInterface9.class, TestDependencyClass9.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceDiamond2.class, TestClassDiamond2.class);
+        testObject.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
 
-        testObject.resolve(TestDependencyInterface9.class);
+        testObject.resolve(TestInterfaceDiamondBase.class);
     }
 
     @Test
     public void testResolveDiamondDependenciesWithoutSingleton()
     {
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface8.class, TestDependencyClass8.class);
-        testObject.registerType(TestDependencyInterface9.class, TestDependencyClass9.class);
+        testObject.registerType(TestBasicInterface.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceDiamond2.class, TestClassDiamond2.class);
+        testObject.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
 
-        TestDependencyInterface9 cls = null;
+        TestInterfaceDiamondBase cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface9.class);
+            cls = testObject.resolve(TestInterfaceDiamondBase.class);
         }
         catch(DIException e)
         {
@@ -783,27 +794,28 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNotNull(cls.getObject8());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertNotNull(cls.getObject8().getObject());
-        Assert.assertNotSame(cls.getObject2().getObject(), cls.getObject8().getObject());
-        Assert.assertTrue(cls instanceof TestDependencyClass9);
+        Assert.assertNotNull(cls.getDiamond1());
+        Assert.assertNotNull(cls.getDiamond2());
+        Assert.assertNotNull(cls.getDiamond1().getObject());
+        Assert.assertNotNull(cls.getDiamond2().getObject());
+        Assert.assertNotSame(cls.getDiamond1().getObject(), cls.getDiamond2().getObject());
+        Assert.assertTrue(cls instanceof TestClassDiamondBase);
     }
 
     @Test
     public void testResolveDiamondDependenciesWithSingleton()
     {
-        testObject.registerType(TestDependencyInterface1.class, TestDependencyClass1.class, true);
-        testObject.registerType(TestDependencyInterface2.class, TestDependencyClass2.class);
-        testObject.registerType(TestDependencyInterface8.class, TestDependencyClass8.class);
-        testObject.registerType(TestDependencyInterface9.class, TestDependencyClass9.class);
+        testObject.registerType(TestBasicInterface.class,
+                                TestClassWithDefaultConstructorOnly.class, true);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceDiamond2.class, TestClassDiamond2.class);
+        testObject.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
 
-        TestDependencyInterface9 cls = null;
+        TestInterfaceDiamondBase cls = null;
 
         try
         {
-            cls = testObject.resolve(TestDependencyInterface9.class);
+            cls = testObject.resolve(TestInterfaceDiamondBase.class);
         }
         catch(DIException e)
         {
@@ -812,12 +824,12 @@ public class DIContainerTest
         }
 
         Assert.assertNotNull(cls);
-        Assert.assertNotNull(cls.getObject2());
-        Assert.assertNotNull(cls.getObject8());
-        Assert.assertNotNull(cls.getObject2().getObject());
-        Assert.assertNotNull(cls.getObject8().getObject());
-        Assert.assertSame(cls.getObject2().getObject(), cls.getObject8().getObject());
-        Assert.assertTrue(cls instanceof TestDependencyClass9);
+        Assert.assertNotNull(cls.getDiamond1());
+        Assert.assertNotNull(cls.getDiamond2());
+        Assert.assertNotNull(cls.getDiamond1().getObject());
+        Assert.assertNotNull(cls.getDiamond2().getObject());
+        Assert.assertSame(cls.getDiamond1().getObject(), cls.getDiamond2().getObject());
+        Assert.assertTrue(cls instanceof TestClassDiamondBase);
     }
 
     @Test(expected = CircularDependenciesException.class)
@@ -825,331 +837,40 @@ public class DIContainerTest
         throws DIException
 
     {
-        testObject.registerType(TestDependencyInterface6.class, TestDependencyClass6.class);
-        testObject.registerType(TestDependencyInterface7.class, TestDependencyClass7.class);
+        testObject.registerType(TestInterfaceCircular1.class, TestClassCircular1.class);
+        testObject.registerType(TestInterfaceCircular2.class, TestClassCircular2.class);
 
-        testObject.resolve(TestDependencyInterface7.class);
-    }
-}
-
-interface TestInterface
-{
-}
-
-interface TestDependencyInterface1
-{
-}
-
-interface TestDependencyInterface2
-{
-    TestDependencyInterface1 getObject();
-}
-
-interface TestDependencyInterface3
-{
-    String getString();
-}
-
-interface TestDependencyInterface4
-{
-    TestDependencyInterface2 getObject2();
-
-    TestDependencyInterface3 getObject3();
-}
-
-interface TestDependencyInterface5
-{
-    TestDependencyInterface2 getObject2();
-
-    TestDependencyInterface3 getObject3();
-}
-
-interface TestDependencyInterface6
-{
-}
-
-interface TestDependencyInterface7
-{
-}
-
-interface TestDependencyInterface8
-{
-    TestDependencyInterface1 getObject();
-}
-
-interface TestDependencyInterface9
-{
-    TestDependencyInterface2 getObject2();
-
-    TestDependencyInterface8 getObject8();
-}
-
-abstract class TestAbstractClass
-    implements TestInterface
-{
-    public TestAbstractClass()
-    {
-    }
-}
-
-class TestClassWithDefaultConstructorOnly
-    implements TestInterface
-{
-    public TestClassWithDefaultConstructorOnly()
-    {
-    }
-}
-
-class TestClassWithParameterConstructorOnly
-    implements TestInterface
-{
-    int number;
-
-    public TestClassWithParameterConstructorOnly(int number)
-    {
-        this.number = number;
-    }
-}
-
-class TestClassInheritsFromClassWithParameterConstructorOnly
-    extends TestClassWithParameterConstructorOnly
-{
-    public TestClassInheritsFromClassWithParameterConstructorOnly()
-    {
-        super(1);
-    }
-}
-
-class TestClassWithDefaultAndParameterConstructor
-    implements TestInterface
-{
-    String text;
-
-    public TestClassWithDefaultAndParameterConstructor()
-    {
-        this.text = "";
+        testObject.resolve(TestInterfaceCircular2.class);
     }
 
-    public TestClassWithDefaultAndParameterConstructor(String text)
+    @Test
+    public void testResolveWhenCanOmitCircularDependencies()
     {
-        this.text = text;
-    }
-}
+        String string = "String";
 
-class TestClassInheritsFromAbstractClass
-    extends TestAbstractClass
-{
-    public TestClassInheritsFromAbstractClass()
-    {
-        super();
-    }
-}
+        testObject.registerInstance(String.class, string);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+        testObject.registerType(TestInterfaceCircular1.class, TestClassCircular1.class);
+        testObject.registerType(TestInterfaceCircular2.class, TestClassCircular2.class);
+        testObject.registerType(TestInterfaceCircularDependency.class, TestClassCircularDependency.class);
 
-class TestClassWithAnnotatedDefaultConstructorOnly
-{
-    @DependencyConstructor
-    public TestClassWithAnnotatedDefaultConstructorOnly()
-    {
-    }
-}
+        TestInterfaceCircularDependency cls = null;
 
-class TestClassWithMultipleAnnotatedConstructors
-{
-    String text;
+        try
+        {
+            cls = testObject.resolve(TestInterfaceCircularDependency.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
 
-    @DependencyConstructor
-    public TestClassWithMultipleAnnotatedConstructors()
-    {
-    }
-
-    @DependencyConstructor
-    public TestClassWithMultipleAnnotatedConstructors(String text)
-    {
-        this.text = text;
-    }
-}
-
-class TestClassWithPrivateConstructorOnly
-{
-    private TestClassWithPrivateConstructorOnly()
-    {
-    }
-}
-
-class TestClassWithNoDeclaredConstructors
-{
-}
-
-class TestDependencyClass1
-    implements TestDependencyInterface1
-{
-    public TestDependencyClass1()
-    {
-    }
-}
-
-class TestDependencyClass2
-    implements TestDependencyInterface2
-{
-    private TestDependencyInterface1 object;
-
-    public TestDependencyClass2()
-    {
-        this.object = null;
-    }
-
-    public TestDependencyClass2(TestDependencyInterface1 object)
-    {
-        this.object = object;
-    }
-
-    @Override
-    public TestDependencyInterface1 getObject()
-    {
-        return object;
-    }
-}
-
-class TestDependencyClass3
-    implements TestDependencyInterface3
-{
-    private String text;
-
-    public TestDependencyClass3()
-    {
-        this.text = "";
-    }
-
-    public TestDependencyClass3(String text)
-    {
-        this.text = text;
-    }
-
-    @Override
-    public String getString()
-    {
-        return text;
-    }
-}
-
-class TestDependencyClass4
-    implements TestDependencyInterface4
-{
-    private TestDependencyInterface2 object2;
-    private TestDependencyInterface3 object3;
-
-    public TestDependencyClass4(TestDependencyInterface2 object2)
-    {
-        this.object2 = object2;
-        this.object3 = null;
-    }
-
-    public TestDependencyClass4(TestDependencyInterface2 object2, TestDependencyInterface3 object3)
-    {
-        this.object2 = object2;
-        this.object3 = object3;
-    }
-
-    @Override
-    public TestDependencyInterface2 getObject2()
-    {
-        return object2;
-    }
-
-    @Override
-    public TestDependencyInterface3 getObject3()
-    {
-        return object3;
-    }
-}
-
-class TestDependencyClass5
-    implements TestDependencyInterface5
-{
-    private TestDependencyInterface2 object2;
-    private TestDependencyInterface3 object3;
-
-    @DependencyConstructor
-    public TestDependencyClass5(TestDependencyInterface2 object2, TestDependencyInterface3 object3)
-    {
-        this.object2 = object2;
-        this.object3 = object3;
-    }
-
-    @Override
-    public TestDependencyInterface2 getObject2()
-    {
-        return object2;
-    }
-
-    @Override
-    public TestDependencyInterface3 getObject3()
-    {
-        return object3;
-    }
-}
-
-class TestDependencyClass6
-    implements TestDependencyInterface6
-{
-    private TestDependencyInterface7 object;
-
-    public TestDependencyClass6(TestDependencyInterface7 object)
-    {
-        this.object = object;
-    }
-}
-
-class TestDependencyClass7
-    implements TestDependencyInterface7
-{
-    private TestDependencyInterface6 object;
-
-    public TestDependencyClass7(TestDependencyInterface6 object)
-    {
-        this.object = object;
-    }
-}
-
-class TestDependencyClass8
-    implements TestDependencyInterface8
-{
-    private TestDependencyInterface1 object;
-
-    public TestDependencyClass8(TestDependencyInterface1 object)
-    {
-        this.object = object;
-    }
-
-    @Override
-    public TestDependencyInterface1 getObject()
-    {
-        return object;
-    }
-}
-
-class TestDependencyClass9
-    implements TestDependencyInterface9
-{
-    private TestDependencyInterface2 object2;
-    private TestDependencyInterface8 object8;
-
-    @DependencyConstructor
-    public TestDependencyClass9(TestDependencyInterface2 object2, TestDependencyInterface8 object8)
-    {
-        this.object2 = object2;
-        this.object8 = object8;
-    }
-
-    @Override
-    public TestDependencyInterface2 getObject2()
-    {
-        return object2;
-    }
-
-    @Override
-    public TestDependencyInterface8 getObject8()
-    {
-        return object8;
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getNonCircularObject());
+        Assert.assertNull(cls.getCircularObject());
+        Assert.assertNotNull(cls.getNonCircularObject().getString());
+        Assert.assertEquals(string, cls.getNonCircularObject().getString());
+        Assert.assertTrue(cls instanceof TestClassCircularDependency);
     }
 }

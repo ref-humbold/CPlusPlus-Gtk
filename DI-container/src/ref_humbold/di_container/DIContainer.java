@@ -6,40 +6,11 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DIContainer
 {
-    private class ConstructorComparator
-        implements Comparator<Constructor<?>>
-    {
-        @Override
-        public int compare(Constructor<?> ctor0, Constructor<?> ctor1)
-        {
-            boolean ctorAnnotated0 = ctor0.isAnnotationPresent(DependencyConstructor.class);
-            boolean ctorAnnotated1 = ctor1.isAnnotationPresent(DependencyConstructor.class);
-
-            if(ctorAnnotated0 && !ctorAnnotated1)
-                return -1;
-
-            if(ctorAnnotated1 && !ctorAnnotated0)
-                return 1;
-
-            int ctorParams0 = ctor0.getParameterCount();
-            int ctorParams1 = ctor1.getParameterCount();
-
-            if(ctorParams0 > ctorParams1)
-                return -1;
-
-            if(ctorParams0 < ctorParams1)
-                return 1;
-
-            return 0;
-        }
-    }
-
     private Map<Class<?>, Object> instances = new HashMap<>();
     private Map<Class<?>, Class<?>> classes = new HashMap<>();
     private DIException lastException = null;
@@ -156,7 +127,11 @@ public class DIContainer
         }
 
         if(object == null)
+        {
+            resolved.removeFirst();
+
             throw lastException;
+        }
 
         if(instances.containsKey(referenced(cls)))
             instances.put(referenced(cls), object);
