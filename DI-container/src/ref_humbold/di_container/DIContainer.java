@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DIContainer
+public final class DIContainer
 {
     private Map<Class<?>, Object> instances = new HashMap<>();
     private Map<Class<?>, Class<?>> classes = new HashMap<>();
@@ -61,11 +61,15 @@ public class DIContainer
     public <T> T resolve(Class<T> cls)
         throws DIException
     {
-        ArrayDeque<Class<?>> resolved = new ArrayDeque<>();
-
         lastException = null;
 
-        return resolve(cls, resolved);
+        return resolveType(cls, new ArrayDeque<Class<?>>());
+    }
+
+    public <T> void buildUp(T obj)
+        throws DIException
+    {
+        buildUpObject(obj, new ArrayDeque<Class<?>>());
     }
 
     private boolean isAbstractType(Class<?> cls)
@@ -73,7 +77,7 @@ public class DIContainer
         return cls.isInterface() || Modifier.isAbstract(cls.getModifiers());
     }
 
-    private boolean isAnnotatedMethodCorrectlyTyped(Method method)
+    private boolean isCorrectAnnotatedMethod(Method method)
     {
         if(!method.isAnnotationPresent(DependencyMethod.class))
             throw new IllegalArgumentException();
@@ -103,17 +107,26 @@ public class DIContainer
         return cls;
     }
 
-    private <T> T resolve(Class<T> cls, ArrayDeque<Class<?>> resolved)
+    private <T> T resolveType(Class<T> cls, ArrayDeque<Class<?>> resolved)
+        throws DIException
+    {
+        T object = null;
+
+        if(instances.containsKey(changeToReferenceType(cls))
+           && instances.get(changeToReferenceType(cls)) != null)
+            object = (T)instances.get(changeToReferenceType(cls));
+        else
+            object = resolveConstructor(cls, resolved);
+
+        buildUpObject(object, resolved);
+
+        return object;
+    }
+
+    private <T> T resolveConstructor(Class<T> cls, ArrayDeque<Class<?>> resolved)
         throws DIException
     {
         resolved.addFirst(cls);
-
-        if(instances.containsKey(changeToReferenceType(cls)) && instances.get(changeToReferenceType(cls)) != null)
-        {
-            resolved.removeFirst();
-
-            return (T)instances.get(changeToReferenceType(cls));
-        }
 
         Class<? extends T> mappedClass = findRegisteredConcreteClass(cls);
         Constructor<? extends T>[] constructors = getConstructors(mappedClass);
@@ -149,24 +162,40 @@ public class DIContainer
         return object;
     }
 
-    private <T> Class<? extends T> findRegisteredConcreteClass(Class<T> cls)
-        throws AbstractTypeException
+    private <T> void resolveMethod(T object, Method method, ArrayDeque<Class<?>> resolved)
+        throws DIException
     {
-        Class<? extends T> mappedClass = cls;
+        ArrayList<Object> paramObjects = new ArrayList<>();
 
-        do
+        for(Class<?> p : method.getParameterTypes())
+            paramObjects.add(resolveType(p, resolved));
+
+        try
         {
-            if(!classes.containsKey(changeToReferenceType(mappedClass)))
-                if(isAbstractType(mappedClass))
-                    throw new AbstractTypeException();
-                else
-                    classes.put(changeToReferenceType(mappedClass), changeToReferenceType(mappedClass));
-
-            mappedClass = (Class<? extends T>)classes.get(changeToReferenceType(mappedClass));
+            method.invoke(object, paramObjects.toArray());
         }
-        while(isAbstractType(mappedClass));
+        catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
+        {
+            throw new DIException(e);
+        }
+    }
 
-        return mappedClass;
+    private <T> void buildUpObject(T obj, ArrayDeque<Class<?>> resolved)
+        throws DIException
+    {
+        ArrayList<Method> methods = new ArrayList<>();
+
+        for(Method m : obj.getClass().getMethods())
+            if(m.isAnnotationPresent(DependencyMethod.class))
+            {
+                if(!isCorrectAnnotatedMethod(m))
+                    throw new IncorrectDependencyMethodSignature();
+
+                methods.add(m);
+            }
+
+        for(Method m : methods)
+            resolveMethod(obj, m, resolved);
     }
 
     private <T> T createInstance(Constructor<? extends T> ctor, ArrayDeque<Class<?>> resolved)
@@ -184,7 +213,8 @@ public class DIContainer
                 return null;
             }
 
-            if(!instances.containsKey(changeToReferenceType(cls)) && !classes.containsKey(changeToReferenceType(cls)))
+            if(!instances.containsKey(changeToReferenceType(cls))
+               && !classes.containsKey(changeToReferenceType(cls)))
             {
                 lastException = new MissingDependenciesException();
 
@@ -193,7 +223,7 @@ public class DIContainer
 
             try
             {
-                params.add(resolve(changeToReferenceType(cls), resolved));
+                params.add(resolveType(changeToReferenceType(cls), resolved));
             }
             catch(DIException e)
             {
@@ -214,6 +244,27 @@ public class DIContainer
         }
 
         return instance;
+    }
+
+    private <T> Class<? extends T> findRegisteredConcreteClass(Class<T> cls)
+        throws AbstractTypeException
+    {
+        Class<? extends T> mappedClass = cls;
+
+        do
+        {
+            if(!classes.containsKey(changeToReferenceType(mappedClass)))
+                if(isAbstractType(mappedClass))
+                    throw new AbstractTypeException();
+                else
+                    classes.put(changeToReferenceType(mappedClass),
+                                changeToReferenceType(mappedClass));
+
+            mappedClass = (Class<? extends T>)classes.get(changeToReferenceType(mappedClass));
+        }
+        while(isAbstractType(mappedClass));
+
+        return mappedClass;
     }
 
     private <T> Constructor<? extends T>[] getConstructors(Class<? extends T> cls)

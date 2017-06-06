@@ -874,4 +874,283 @@ public class DIContainerTest
         Assert.assertEquals(string, cls.getNonCircularObject().getString());
         Assert.assertTrue(cls instanceof TestClassCircularDependency);
     }
+
+    @Test(expected = IncorrectDependencyMethodSignature.class)
+    public void testResolveWhenDependencyMethodHasReturnType()
+        throws DIException
+    {
+        testObject.resolve(TestClassWithIncorrectDependencyMethod1.class);
+    }
+
+    @Test(expected = IncorrectDependencyMethodSignature.class)
+    public void testResolveWhenDependencyMethodHasNoParameters()
+        throws DIException
+    {
+        testObject.resolve(TestClassWithIncorrectDependencyMethod2.class);
+    }
+
+    @Test
+    public void testResolveWhenDependencySetterOnly()
+    {
+        testObject.registerType(TestInterfaceDependencySetter.class,
+                                TestClassWithDependencySetterOnly.class);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+
+        TestInterfaceDependencySetter cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterfaceDependencySetter.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertTrue(cls instanceof TestClassWithDependencySetterOnly);
+    }
+
+    @Test
+    public void testResolveWhenDependencySetterAndConstructor()
+    {
+        testObject.registerType(TestInterfaceDependencySetter.class,
+                                TestClassWithDependencySetterAndConstructor.class);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+
+        TestInterfaceDependencySetter cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterfaceDependencySetter.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertTrue(cls instanceof TestClassWithDependencySetterAndConstructor);
+    }
+
+    @Test
+    public void testResolveWhenComplexDependency()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceComplexDependency.class,
+                                TestClassComplexDependency.class);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceComplexDependency cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterfaceComplexDependency.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNotNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertNotNull(cls.getSecondObject().getString());
+        Assert.assertEquals(string, cls.getSecondObject().getString());
+        Assert.assertTrue(cls instanceof TestClassComplexDependency);
+    }
+
+    @Test
+    public void testResolveWhenDoubleDependencySetter()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceDoubleDependencySetter.class,
+                                TestClassWithDoubleDependencySetter.class);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceDoubleDependencySetter cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterfaceDoubleDependencySetter.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getStringObject());
+        Assert.assertNotNull(cls.getStringObject().getString());
+        Assert.assertEquals(string, cls.getStringObject().getString());
+        Assert.assertTrue(cls instanceof TestClassWithDoubleDependencySetter);
+    }
+
+    @Test
+    public void testResolveWhenMultipleDependencySetters()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceMultipleDependencySetters.class,
+                                TestClassWithMultipleDependencySetters.class);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceMultipleDependencySetters cls = null;
+
+        try
+        {
+            cls = testObject.resolve(TestInterfaceMultipleDependencySetters.class);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getStringObject());
+        Assert.assertNotNull(cls.getStringObject().getString());
+        Assert.assertEquals(string, cls.getStringObject().getString());
+        Assert.assertTrue(cls instanceof TestClassWithMultipleDependencySetters);
+    }
+
+    @Test
+    public void testBuildUpWhenDependencySetterOnly()
+    {
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+
+        TestInterfaceDependencySetter cls = new TestClassWithDependencySetterOnly();
+
+        try
+        {
+            testObject.buildUp(cls);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+    }
+
+    @Test
+    public void testBuildUpWhenDoubleDependencySetter()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceDoubleDependencySetter cls = new TestClassWithDoubleDependencySetter();
+
+        try
+        {
+            testObject.buildUp(cls);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getStringObject());
+        Assert.assertNotNull(cls.getStringObject().getString());
+        Assert.assertEquals(string, cls.getStringObject().getString());
+        Assert.assertTrue(cls instanceof TestClassWithDoubleDependencySetter);
+    }
+
+    @Test
+    public void testBuildUpWhenMultipleDependencySetters()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceMultipleDependencySetters cls = new TestClassWithMultipleDependencySetters();
+
+        try
+        {
+            testObject.buildUp(cls);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getStringObject());
+        Assert.assertNotNull(cls.getStringObject().getString());
+        Assert.assertEquals(string, cls.getStringObject().getString());
+        Assert.assertTrue(cls instanceof TestClassWithMultipleDependencySetters);
+    }
+
+    @Test
+    public void testBuildUpWhenComplexDependency()
+    {
+        String string = "string";
+
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
+        testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
+
+        testObject.registerInstance(String.class, string);
+
+        TestInterfaceComplexDependency cls = null;
+
+        try
+        {
+            TestInterfaceDiamond1 diamond1 = testObject.resolve(TestInterfaceDiamond1.class);
+            TestInterfaceWithString withString = testObject.resolve(TestInterfaceWithString.class);
+
+            cls = new TestClassComplexDependency(diamond1, withString);
+            testObject.buildUp(cls);
+        }
+        catch(DIException e)
+        {
+            e.printStackTrace();
+            Assert.fail("An instance of " + e.getClass().getSimpleName() + " was thrown.");
+        }
+
+        Assert.assertNotNull(cls);
+        Assert.assertNotNull(cls.getBasicObject());
+        Assert.assertNotNull(cls.getFirstObject());
+        Assert.assertNotNull(cls.getSecondObject());
+        Assert.assertNotNull(cls.getFirstObject().getObject());
+        Assert.assertNotNull(cls.getSecondObject().getString());
+        Assert.assertEquals(string, cls.getSecondObject().getString());
+        Assert.assertTrue(cls instanceof TestClassComplexDependency);
+    }
 }

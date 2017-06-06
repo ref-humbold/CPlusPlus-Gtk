@@ -3,7 +3,7 @@ package ref_humbold.di_container;
 import java.lang.reflect.Constructor;
 import java.util.Comparator;
 
-class ConstructorComparator
+final class ConstructorComparator
     implements Comparator<Constructor<?>>
 {
     @Override
