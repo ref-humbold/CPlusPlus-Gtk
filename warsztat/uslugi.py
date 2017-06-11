@@ -1,36 +1,41 @@
 # -*- coding: utf-8 -*-
+from gi import require_version
+
+require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from extra import Extra
 
+
 class Uslugi:
     """Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą usług."""
+
     def __init__(self, conndb):
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
 
-        UslugiBuilder = Gtk.Builder()
-        UslugiBuilder.add_from_file("uslugi.glade")
+        uslugi_builder = Gtk.Builder()
+        uslugi_builder.add_from_file("uslugi.glade")
 
-        self.UslugiWindow = UslugiBuilder.get_object("UslugiWindow")
+        self.uslugi_window = uslugi_builder.get_object("uslugi_window")
 
-        self.UslugiComboboxtext11b = UslugiBuilder.get_object("UslugiComboboxtext11b")
-        self.UslugiButton11c = UslugiBuilder.get_object("UslugiButton11c")
+        self.uslugi_comboboxtext1_1b = uslugi_builder.get_object("uslugi_comboboxtext1_1b")
+        self.uslugi_button1_1c = uslugi_builder.get_object("uslugi_button1_1c")
 
-        self.UslugiEntry21b = UslugiBuilder.get_object("UslugiEntry21b")
-        self.UslugiEntry22b = UslugiBuilder.get_object("UslugiEntry22b")
-        self.UslugiButton23b = UslugiBuilder.get_object("UslugiButton23b")
+        self.uslugi_entry2_1b = uslugi_builder.get_object("uslugi_entry2_1b")
+        self.uslugi_entry2_2b = uslugi_builder.get_object("uslugi_entry2_2b")
+        self.uslugi_button2_3b = uslugi_builder.get_object("uslugi_button2_3b")
 
-        self.UslugiComboboxtext31b = UslugiBuilder.get_object("UslugiComboboxtext31b")
-        self.UslugiEntry32b = UslugiBuilder.get_object("UslugiEntry32b")
-        self.UslugiButton33b = UslugiBuilder.get_object("UslugiButton33b")
+        self.uslugi_comboboxtext3_1b = uslugi_builder.get_object("uslugi_comboboxtext3_1b")
+        self.uslugi_entry3_2b = uslugi_builder.get_object("uslugi_entry3_2b")
+        self.uslugi_button3_3b = uslugi_builder.get_object("uslugi_button3_3b")
 
-        self.__load_ids(self.UslugiComboboxtext11b)
-        self.__load_ids(self.UslugiComboboxtext31b)
+        self.__load_ids(self.uslugi_comboboxtext1_1b)
+        self.__load_ids(self.uslugi_comboboxtext3_1b)
 
-        UslugiBuilder.connect_signals(self)
+        uslugi_builder.connect_signals(self)
 
-        self.UslugiWindow.show()
+        self.uslugi_window.show()
 
     def __load_ids(self, comboboxtext):
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
@@ -40,15 +45,14 @@ class Uslugi:
         self.conn.commit()
         cur.close()
 
-        for s in [ i[0] for i in idents ]:
+        for s in [i[0] for i in idents]:
             comboboxtext.append_text(s)
 
         comboboxtext.set_active(0)
 
-    def UslugiButton11c_clicked_cb(self, button):
+    def uslugi_button1_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania ceny za usługę."""
-        nazwa = self.UslugiComboboxtext11b.get_active_text() # SQL text
-
+        nazwa = self.uslugi_comboboxtext1_1b.get_active_text()  # SQL text
         args = [nazwa]
 
         try:
@@ -58,58 +62,55 @@ class Uslugi:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("CENA USLUGI "+nazwa+" WYNOSI "+str(wyn)+" zł.")
+            ExtraWindow = Extra("CENA USLUGI " + nazwa + " WYNOSI " + str(wyn) + " zł.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def UslugiButton23b_clicked_cb(self, button):
+    def uslugi_button2_3b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku dodania usługi."""
-        nazwa = self.UslugiEntry21b.get_text() # SQL text
-        cena = self.UslugiEntry22b.get_text() # SQL numeric
-
-        getcontext().prec = 2
+        nazwa = self.uslugi_entry2_1b.get_text()  # SQL text
+        cena = self.uslugi_entry2_2b.get_text()  # SQL numeric
         args = [nazwa, Decimal(cena)]
+        getcontext().prec = 2
 
         try:
             cur = self.conn.cursor()
             cur.execute("INSERT INTO uslugi(nazwa, cena) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            self.UslugiComboboxtext11b.append_text(nazwa)
-            self.UslugiComboboxtext31b.append_text(nazwa)
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("USŁUGA "+nazwa+" ZOSTAŁA POMYŚLNIE DODANA.")
+            self.uslugi_comboboxtext1_1b.append_text(nazwa)
+            self.uslugi_comboboxtext3_1b.append_text(nazwa)
+            ExtraWindow = Extra("USŁUGA " + nazwa + " ZOSTAŁA POMYŚLNIE DODANA.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def UslugiButton33b_clicked_cb(self, button):
+    def uslugi_button3_3b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zmiany ceny za usługę."""
-        nazwa = self.UslugiComboboxtext31b.get_active_text() # SQL text
-        nowa_cena = self.UslugiEntry32b.get_text() # SQL numeric
-
-        getcontext().prec = 2
+        nazwa = self.uslugi_comboboxtext3_1b.get_active_text()  # SQL text
+        nowa_cena = self.uslugi_entry3_2b.get_text()  # SQL numeric
         args = [Decimal(nowa_cena), nazwa]
+        getcontext().prec = 2
 
         try:
             cur = self.conn.cursor()
             cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s;", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("CENA USŁUGI "+nazwa+" ZOSTAŁA POMYŚNIE ZMIENIONA.")
+            ExtraWindow = Extra("CENA USŁUGI " + nazwa + " ZOSTAŁA POMYŚNIE ZMIENIONA.")
+            ExtraWindow.show()
         finally:
             cur.close()
-

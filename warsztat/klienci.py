@@ -1,47 +1,53 @@
 # -*- coding: utf-8 -*-
-from psycopg2.extensions import AsIs
+from gi import require_version
+
+require_version('Gtk', '3.0')
+
 from gi.repository import Gtk
+from psycopg2.extensions import AsIs
 from extra import Extra
+
 
 class Klienci:
     """Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą klientów."""
+
     def __init__(self, conndb):
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
 
-        KlienciBuilder = Gtk.Builder()
-        KlienciBuilder.add_from_file("klienci.glade")
+        klienci_builder = Gtk.Builder()
+        klienci_builder.add_from_file("klienci.glade")
 
-        self.KlienciWindow = KlienciBuilder.get_object("KlienciWindow")
+        self.klienci_window = klienci_builder.get_object("klienci_window")
 
-        self.KlienciEntry11b = KlienciBuilder.get_object("KlienciEntry11b")
-        self.KlienciEntry12b = KlienciBuilder.get_object("KlienciEntry12b")
-        self.KlienciEntry13b = KlienciBuilder.get_object("KlienciEntry13b")
-        self.KlienciEntry14b = KlienciBuilder.get_object("KlienciEntry14b")
-        self.KlienciComboboxtext15b = KlienciBuilder.get_object("KlienciComboboxtext15b")
-        self.KlienciButton16b = KlienciBuilder.get_object("KlienciButton16b")
+        self.klienci_entry1_1b = klienci_builder.get_object("klienci_entry1_1b")
+        self.klienci_entry1_2b = klienci_builder.get_object("klienci_entry1_2b")
+        self.klienci_entry1_3b = klienci_builder.get_object("klienci_entry1_3b")
+        self.klienci_entry1_4b = klienci_builder.get_object("klienci_entry1_4b")
+        self.klienci_comboboxtext1_5b = klienci_builder.get_object("klienci_comboboxtext1_5b")
+        self.klienci_button1_6b = klienci_builder.get_object("klienci_button1_6b")
 
-        self.KlienciComboboxtext21b = KlienciBuilder.get_object("KlienciComboboxtext21b")
-        self.KlienciEntry22b = KlienciBuilder.get_object("KlienciEntry22b")
-        self.KlienciEntry23b = KlienciBuilder.get_object("KlienciEntry23b")
-        self.KlienciEntry24b = KlienciBuilder.get_object("KlienciEntry24b")
-        self.KlienciEntry25b = KlienciBuilder.get_object("KlienciEntry25b")
-        self.KlienciComboboxtext26b = KlienciBuilder.get_object("KlienciComboboxtext26b")
-        self.KlienciButton27b = KlienciBuilder.get_object("KlienciButton27b")
+        self.klienci_comboboxtext2_1b = klienci_builder.get_object("klienci_comboboxtext2_1b")
+        self.klienci_entry2_2b = klienci_builder.get_object("klienci_entry2_2b")
+        self.klienci_entry2_3b = klienci_builder.get_object("klienci_entry2_3b")
+        self.klienci_entry2_4b = klienci_builder.get_object("klienci_entry2_4b")
+        self.klienci_entry2_5b = klienci_builder.get_object("klienci_entry2_5b")
+        self.klienci_comboboxtext2_6b = klienci_builder.get_object("klienci_comboboxtext2_6b")
+        self.klienci_button2_7b = klienci_builder.get_object("klienci_button2_7b")
 
-        self.KlienciComboboxtext31b = KlienciBuilder.get_object("KlienciComboboxtext31b")
-        self.KlienciEntry32b = KlienciBuilder.get_object("KlienciEntry32b")
-        self.KlienciEntry33b = KlienciBuilder.get_object("KlienciEntry33b")
-        self.KlienciEntry34b = KlienciBuilder.get_object("KlienciEntry34b")
-        self.KlienciButton35b = KlienciBuilder.get_object("KlienciButton35b")
+        self.klienci_comboboxtext3_1b = klienci_builder.get_object("klienci_comboboxtext3_1b")
+        self.klienci_entry3_2b = klienci_builder.get_object("klienci_entry3_2b")
+        self.klienci_entry3_3b = klienci_builder.get_object("klienci_entry3_3b")
+        self.klienci_entry3_4b = klienci_builder.get_object("klienci_entry3_4b")
+        self.klienci_button3_5b = klienci_builder.get_object("klienci_button3_5b")
 
-        self.KlienciComboboxtext31b.append_text("-")
-        self.__load_ids(self.KlienciComboboxtext21b)
-        self.__load_ids(self.KlienciComboboxtext31b)
+        self.klienci_comboboxtext3_1b.append_text("-")
+        self.__load_ids(self.klienci_comboboxtext2_1b)
+        self.__load_ids(self.klienci_comboboxtext3_1b)
 
-        KlienciBuilder.connect_signals(self)
+        klienci_builder.connect_signals(self)
 
-        self.KlienciWindow.show()
+        self.klienci_window.show()
 
     def __load_ids(self, comboboxtext):
         """Ładuje identyfikatory (klucze główne) z tabeli klientów do zadanego pola wyboru."""
@@ -75,83 +81,80 @@ class Klienci:
             except:
                 self.conn.rollback()
                 cur.close()
-                ExtraWindow = Extra()
-                ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow.show()
                 return False
 
         return True
 
-    def KlienciButton16b_clicked_cb(self, button):
-        """
-        Reaguje na kliknięcie przycisku dodania nowego klienta.
-        """
-        imie = self.KlienciEntry11b.get_text() # SQL text
-        nazwisko = self.KlienciEntry12b.get_text() # SQL text
-        telefon = self.KlienciEntry13b.get_text() # SQL integer
-        firma = self.KlienciEntry14b.get_text() # SQL text
-        rabat = self.KlienciComboboxtext15b.get_active_text() # SQL integer
+    def klienci_button1_6b_clicked_cb(self, button):
+        """Reaguje na kliknięcie przycisku dodania nowego klienta."""
+        imie = self.klienci_entry1_1b.get_text()  # SQL text
+        nazwisko = self.klienci_entry1_2b.get_text()  # SQL text
+        telefon = self.klienci_entry1_3b.get_text()  # SQL integer
+        firma = self.klienci_entry1_4b.get_text()  # SQL text
+        rabat = self.klienci_comboboxtext1_5b.get_active_text()  # SQL integer
 
-        args = [ None if i == "" else i for i in [imie, nazwisko, telefon, firma] ]+[ int(rabat) ]
+        args = [None if i == "" else i for i in [imie, nazwisko, telefon, firma]] + [int(rabat)]
         args[2] = None if args[2] == None else int(args[2])
 
         try:
             cur = self.conn.cursor()
-            cur.execute("INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
+            cur.execute(
+                "INSERT INTO klienci(imie, nazwisko, telefon, firma, rabat) VALUES (%s, %s, %s, %s, %s);", args)
             cur.execute("SELECT max(id) FROM klienci;")
             wynid = cur.fetchone()[0]
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            self.KlienciComboboxtext21b.append_text(str(wynid))
-            self.KlienciComboboxtext31b.append_text(str(wynid))
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = "+str(wynid))
+            self.klienci_comboboxtext2_1b.append_text(str(wynid))
+            self.klienci_comboboxtext3_1b.append_text(str(wynid))
+            ExtraWindow = Extra("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = " + str(wynid))
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def KlienciButton27b_clicked_cb(self, button):
-        """
-        Reaguje na kliknięcie przycisku modyfikacji danych klienta.
-        """
-        ident = self.KlienciComboboxtext21b.get_active_text() # SQL integer
-        imie = self.KlienciEntry22b.get_text() # SQL text
-        nazwisko = self.KlienciEntry23b.get_text() # SQL text
-        telefon = self.KlienciEntry24b.get_text() # SQL integer
-        firma = self.KlienciEntry25b.get_text() # SQL text
-        rabat = self.KlienciComboboxtext26b.get_active_text() # SQL integer
+    def klienci_button2_7b_clicked_cb(self, button):
+        """Reaguje na kliknięcie przycisku modyfikacji danych klienta."""
+        ident = self.klienci_comboboxtext2_1b.get_active_text()  # SQL integer
+        imie = self.klienci_entry2_2b.get_text()  # SQL text
+        nazwisko = self.klienci_entry2_3b.get_text()  # SQL text
+        telefon = self.klienci_entry2_4b.get_text()  # SQL integer
+        firma = self.klienci_entry2_5b.get_text()  # SQL text
+        rabat = self.klienci_comboboxtext2_6b.get_active_text()  # SQL integer
 
         cur = self.conn.cursor()
 
-        if not self.__modify(cur, "", "imie", [ imie, int(ident) ], str):
+        if not self.__modify(cur, "", "imie", [imie, int(ident)], str):
             return
 
-        if not self.__modify(cur, "", "nazwisko", [ nazwisko, int(ident) ], str):
+        if not self.__modify(cur, "", "nazwisko", [nazwisko, int(ident)], str):
             return
 
-        if not self.__modify(cur, "", "telefon", [ telefon, int(ident) ], int):
+        if not self.__modify(cur, "", "telefon", [telefon, int(ident)], int):
             return
 
-        if not self.__modify(cur, "", "firma", [ firma, int(ident) ], str):
+        if not self.__modify(cur, "", "firma", [firma, int(ident)], str):
             return
 
-        if not self.__modify(cur, "-", "rabat", [ rabat, int(ident) ], int):
+        if not self.__modify(cur, "-", "rabat", [rabat, int(ident)], int):
             return
 
         self.conn.commit()
         cur.close()
-        ExtraWindow = Extra()
-        ExtraWindow.show_label("DANE KLIENTA NUMER "+str(ident)+" ZOSTAŁY POMYŚLNIE ZMIENIONE.")
+        ExtraWindow = Extra("DANE KLIENTA NUMER " + str(ident) + " ZOSTAŁY POMYŚLNIE ZMIENIONE.")
+        ExtraWindow.show()
 
-    def KlienciButton35b_clicked_cb(self, button):
+    def klienci_button3_5b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania klienta."""
-        ident = self.KlienciComboboxtext31b.get_active_text() # SQL integer
-        imie = self.KlienciEntry32b.get_text() # SQL text
-        nazwisko = self.KlienciEntry33b.get_text() # SQL text
-        telefon = self.KlienciEntry34b.get_text() # SQL integer
+        ident = self.klienci_comboboxtext3_1b.get_active_text()  # SQL integer
+        imie = self.klienci_entry3_2b.get_text()  # SQL text
+        nazwisko = self.klienci_entry3_3b.get_text()  # SQL text
+        telefon = self.klienci_entry3_4b.get_text()  # SQL integer
 
         cur = self.conn.cursor()
 
@@ -159,36 +162,37 @@ class Klienci:
             args = [int(ident)]
 
             try:
-                cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
+                cur.execute(
+                    "SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE id = %s;", args)
                 wyn = cur.fetchone()[:]
             except:
                 self.conn.rollback()
-                ExtraWindow = Extra()
-                ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow.show()
                 return
             else:
                 self.conn.commit()
-                ExtraWindow = Extra()
-                ExtraWindow.show_label(", ".join(map(str, wyn)))
+                ExtraWindow = Extra(", ".join(map(str, wyn)))
+                ExtraWindow.show()
             finally:
                 cur.close()
         else:
-            args = ["%"+str(i)+"%" for i in [imie, nazwisko, telefon]]
+            args = ["%" + str(i) + "%" for i in [imie, nazwisko, telefon]]
 
             try:
-                cur.execute("SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS text) LIKE %s;", args)
+                cur.execute(
+                    "SELECT id, imie, nazwisko, telefon, firma, rabat FROM klienci WHERE imie LIKE %s AND nazwisko LIKE %s AND CAST(telefon AS text) LIKE %s;", args)
                 wyn = cur.fetchall()[:]
             except:
                 self.conn.rollback()
-                ExtraWindow = Extra()
-                ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow.show()
                 return
             else:
                 self.conn.commit()
                 res = map(lambda x: ", ".join(map(str, x)), wyn)
                 out_str = "BRAK WYNIKÓW!" if wyn == [] else "\n".join(res)
-                ExtraWindow = Extra()
-                ExtraWindow.show_label(out_str)
+                ExtraWindow = Extra(out_str)
+                ExtraWindow.show()
             finally:
                 cur.close()
-

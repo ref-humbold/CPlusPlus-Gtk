@@ -2,24 +2,20 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkWindow" id="SprzWindow">
+  <object class="GtkWindow" id="sprzedawca_window">
     <property name="can_focus">False</property>
-    <signal name="destroy" handler="SprzWindow_destroy_cb" swapped="no"/>
+    <signal name="destroy" handler="sprzedawca_window_destroy_cb" swapped="no"/>
     <child>
-      <object class="GtkBox" id="SprzBoxMain">
+      <object class="GtkBox" id="sprzedawca_box_main">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="SprzLabelMain">
+          <object class="GtkLabel" id="sprzedawca_label_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">
-
-PANEL SPRZEDAWCY
-
-</property>
+            <property name="label" translatable="yes">PANEL SPRZEDAWCY</property>
             <property name="justify">center</property>
           </object>
           <packing>
@@ -29,18 +25,18 @@ PANEL SPRZEDAWCY
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="SprzBoxButtons">
+          <object class="GtkBox" id="sprzedawca_box_buttons">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="SprzButton1a">
+              <object class="GtkButton" id="sprzedawca_button_1">
                 <property name="label" translatable="yes">Zarządzaj zleceniami</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="SprzButton1a_clicked_cb" swapped="no"/>
+                <signal name="clicked" handler="sprzedawca_button_1_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -49,12 +45,12 @@ PANEL SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="SprzButton2a">
+              <object class="GtkButton" id="sprzedawca_button_2">
                 <property name="label" translatable="yes">Zarządzaj klientami</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="SprzButton2a_clicked_cb" swapped="no"/>
+                <signal name="clicked" handler="sprzedawca_button_2_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -63,12 +59,12 @@ PANEL SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="SprzButton3a">
+              <object class="GtkButton" id="sprzedawca_button_3">
                 <property name="label" translatable="yes">Zarządzaj usługami</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="SprzButton3a_clicked_cb" swapped="no"/>
+                <signal name="clicked" handler="sprzedawca_button_3_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>

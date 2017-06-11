@@ -1,25 +1,31 @@
 # -*- coding: utf-8 -*-
+from gi import require_version
+
+require_version('Gtk', '3.0')
+
 from gi.repository import Gtk
+
 
 class Extra:
     """Klasa odpowiadająca za działanie okna przekazywania dodatkowych informacji."""
-    def __init__(self):
+
+    def __init__(self, text):
         """Tworzy nowe okno."""
-        ExtraBuilder = Gtk.Builder()
-        ExtraBuilder.add_from_file("extra.glade")
+        extra_builder = Gtk.Builder()
+        extra_builder.add_from_file("extra.glade")
 
-        self.ExtraWindow = ExtraBuilder.get_object("ExtraWindow")
-        self.ExtraLabel = ExtraBuilder.get_object("ExtraLabel")
-        self.ExtraButton = ExtraBuilder.get_object("ExtraButton")
+        self.__extra_window = extra_builder.get_object("extra_window")
+        self.__extra_label = extra_builder.get_object("extra_label")
+        self.__extra_button = extra_builder.get_object("extra_button")
 
-        ExtraBuilder.connect_signals(self)
+        extra_builder.connect_signals(self)
 
-    def show_label(self, text):
+        self.__extra_label.set_label(text)
+
+    def show(self):
         """Wyświetla okno wraz z tekstem."""
-        self.ExtraLabel1.set_label(text)
-        self.ExtraWindow.show()
+        self.__extra_window.show()
 
-    def ExtraButton_clicked_cb(self, button):
+    def extra_button_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zatwierdzenia."""
-        self.ExtraWindow.destroy()
-
+        self.__extra_window.destroy()

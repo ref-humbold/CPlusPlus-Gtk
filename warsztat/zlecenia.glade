@@ -2,22 +2,18 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkWindow" id="ZleceniaWindow">
+  <object class="GtkWindow" id="zlecenia_window">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkBox" id="ZleceniaBoxMain">
+      <object class="GtkBox" id="zlecenia_box_main">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="ZleceniaLabelMain">
+          <object class="GtkLabel" id="zlecenia_label_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">
-
-PANEL ZLECEŃ SPRZEDAWCY
-
-</property>
+            <property name="label" translatable="yes">PANEL ZLECEŃ SPRZEDAWCY</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -26,17 +22,17 @@ PANEL ZLECEŃ SPRZEDAWCY
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="ZleceniaNotebook">
+          <object class="GtkNotebook" id="zlecenia_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkGrid" id="ZleceniaGridPage1">
+              <object class="GtkGrid" id="zlecenia_grid_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel11a">
+                  <object class="GtkLabel" id="zlecenia_label1_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER REJESTRACYJNY</property>
@@ -47,7 +43,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel12a">
+                  <object class="GtkLabel" id="zlecenia_label1_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">CZY FAKTURA</property>
@@ -58,7 +54,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext12b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext1_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -73,7 +69,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel13a">
+                  <object class="GtkLabel" id="zlecenia_label1_3a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID KLIENTA</property>
@@ -84,7 +80,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel14a">
+                  <object class="GtkLabel" id="zlecenia_label1_4a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">MODEL SAMOCHODU</property>
@@ -95,7 +91,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext13b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext1_3b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -106,7 +102,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext14b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext1_4b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                   </object>
@@ -116,12 +112,12 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="ZleceniaButton15b">
+                  <object class="GtkButton" id="zlecenia_button1_5b">
                     <property name="label" translatable="yes">ZŁÓŻ ZLECENIE</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="ZleceniaButton15b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="zlecenia_button1_5b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -129,11 +125,11 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="ZleceniaBox11b">
+                  <object class="GtkBox" id="zlecenia_box1_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkEntry" id="ZleceniaEntry11ba">
+                      <object class="GtkEntry" id="zlecenia_entry1_1ba">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_width_chars">2</property>
@@ -146,7 +142,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="ZleceniaLabel11bb">
+                      <object class="GtkLabel" id="zlecenia_label1_1bb">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="label" translatable="yes">  :  </property>
@@ -158,7 +154,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="ZleceniaEntry11bc">
+                      <object class="GtkEntry" id="zlecenia_entry1_1bc">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="max_length">5</property>
@@ -182,7 +178,7 @@ PANEL ZLECEŃ SPRZEDAWCY
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="ZleceniaLabelPage1">
+              <object class="GtkLabel" id="zlecenia_label_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">NOWE ZLECENIE</property>
@@ -192,13 +188,13 @@ PANEL ZLECEŃ SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="ZleceniaGridPage2">
+              <object class="GtkGrid" id="zlecenia_grid_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel21a">
+                  <object class="GtkLabel" id="zlecenia_label2_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID ZLECENIA</property>
@@ -209,7 +205,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext21b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext2_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -220,7 +216,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel22a">
+                  <object class="GtkLabel" id="zlecenia_label2_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA USŁUGI</property>
@@ -231,12 +227,12 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="ZleceniaButton23b">
+                  <object class="GtkButton" id="zlecenia_button2_3b">
                     <property name="label" translatable="yes">ZATWIERDŹ ZMIANY</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="ZleceniaButton23b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="zlecenia_button2_3b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -244,7 +240,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext22b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext2_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -263,7 +259,7 @@ PANEL ZLECEŃ SPRZEDAWCY
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="ZleceniaLabelPage2">
+              <object class="GtkLabel" id="zlecenia_label_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">DOPISZ USŁUGĘ</property>
@@ -274,12 +270,12 @@ PANEL ZLECEŃ SPRZEDAWCY
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="ZleceniaBoxPage3">
+              <object class="GtkBox" id="zlecenia_box_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="ZleceniaLabel31a">
+                  <object class="GtkLabel" id="zlecenia_label3_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID ZLECENIA</property>
@@ -291,7 +287,7 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="ZleceniaComboboxtext31b">
+                  <object class="GtkComboBoxText" id="zlecenia_comboboxtext3_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -303,12 +299,12 @@ PANEL ZLECEŃ SPRZEDAWCY
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="ZleceniaButton31c">
+                  <object class="GtkButton" id="zlecenia_button3_1c">
                     <property name="label" translatable="yes">SZUKAJ!</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="ZleceniaButton31c_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="zlecenia_button3_1c_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -322,7 +318,7 @@ PANEL ZLECEŃ SPRZEDAWCY
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="ZleceniaLabelPage3">
+              <object class="GtkLabel" id="zlecenia_label_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">WYSZUKAJ ZLECENIE</property>

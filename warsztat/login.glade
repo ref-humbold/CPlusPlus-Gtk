@@ -2,25 +2,20 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkWindow" id="LoginWindow">
+  <object class="GtkWindow" id="login_window">
     <property name="can_focus">False</property>
-    <signal name="destroy" handler="LoginWindow_destroy_cb" swapped="no"/>
+    <signal name="destroy" handler="login_window_destroy_cb" swapped="no"/>
     <child>
-      <object class="GtkBox" id="LoginBox">
+      <object class="GtkBox" id="login_box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <property name="homogeneous">True</property>
         <child>
-          <object class="GtkLabel" id="LoginLabel">
+          <object class="GtkLabel" id="login_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">
-WARSZTAT SAMOCHODOWY
-
-
-ZALOGUJ SIĘ DO SYSTEMU:
-</property>
+            <property name="label" translatable="yes">WARSZTAT SAMOCHODOWY - ZALOGUJ SIĘ DO SYSTEMU:</property>
             <property name="justify">center</property>
           </object>
           <packing>
@@ -30,13 +25,13 @@ ZALOGUJ SIĘ DO SYSTEMU:
           </packing>
         </child>
         <child>
-          <object class="GtkGrid" id="LoginGrid">
+          <object class="GtkGrid" id="login_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkEntry" id="LoginEntry1b">
+              <object class="GtkEntry" id="login_entry_1b">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="input_purpose">alpha</property>
@@ -47,12 +42,12 @@ ZALOGUJ SIĘ DO SYSTEMU:
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="LoginButton3b">
+              <object class="GtkButton" id="login_button_3b">
                 <property name="label" translatable="yes">WEJDŹ</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="LoginButton3b_clicked_cb" swapped="no"/>
+                <signal name="clicked" handler="login_button_3b_clicked_cb" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -60,7 +55,7 @@ ZALOGUJ SIĘ DO SYSTEMU:
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="LoginEntry2b">
+              <object class="GtkEntry" id="login_entry_2b">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="input_purpose">password</property>
@@ -71,7 +66,7 @@ ZALOGUJ SIĘ DO SYSTEMU:
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="LoginLabe2a">
+              <object class="GtkLabel" id="login_label_2a">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">HASŁO</property>
@@ -83,7 +78,7 @@ ZALOGUJ SIĘ DO SYSTEMU:
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="LoginLabel1a">
+              <object class="GtkLabel" id="login_label_1a">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">UŻYTKOWNIK</property>

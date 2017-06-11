@@ -2,23 +2,19 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkWindow" id="MechWindow">
+  <object class="GtkWindow" id="mechanik_window">
     <property name="can_focus">False</property>
-    <signal name="destroy" handler="MechWindow_destroy_cb" swapped="no"/>
+    <signal name="destroy" handler="mechanik_window_destroy_cb" swapped="no"/>
     <child>
-      <object class="GtkBox" id="MechBoxMain">
+      <object class="GtkBox" id="mechanik_box_main">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="MechLabelMain">
+          <object class="GtkLabel" id="mechanik_label_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">
-
-PANEL MECHANIKA
-
-</property>
+            <property name="label" translatable="yes">PANEL MECHANIKA</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -27,16 +23,16 @@ PANEL MECHANIKA
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="MechNotebook">
+          <object class="GtkNotebook" id="mechanik_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkBox" id="MechBoxPage1">
+              <object class="GtkBox" id="mechanik_box_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="MechLabel11a">
+                  <object class="GtkLabel" id="mechanik_label1_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID ZLECENIA</property>
@@ -48,7 +44,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MechComboboxtext11b">
+                  <object class="GtkComboBoxText" id="mechanik_comboboxtext1_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -60,12 +56,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButton11c">
+                  <object class="GtkButton" id="mechanik_button1_1c">
                     <property name="label" translatable="yes">ZAKOŃCZONE!</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButton11c_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="mechanik_button1_1c_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -76,7 +72,7 @@ PANEL MECHANIKA
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MechLabelPage1">
+              <object class="GtkLabel" id="mechanik_label_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">ZAKOŃCZ ZLECENIE</property>
@@ -86,13 +82,13 @@ PANEL MECHANIKA
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="MechGridPage2">
+              <object class="GtkGrid" id="mechanik_grid_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="MechLabel21a">
+                  <object class="GtkLabel" id="mechanik_label2_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID CZĘŚCI</property>
@@ -103,7 +99,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MechLabel22a">
+                  <object class="GtkLabel" id="mechanik_label2_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">USŁUGA</property>
@@ -114,7 +110,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MechComboboxtext21b">
+                  <object class="GtkComboBoxText" id="mechanik_comboboxtext2_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -125,7 +121,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MechComboboxtext22b">
+                  <object class="GtkComboBoxText" id="mechanik_comboboxtext2_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -136,12 +132,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButton24b">
+                  <object class="GtkButton" id="mechanik_button2_4b">
                     <property name="label" translatable="yes">PRZYDZIEL MODEL</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButton24b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="mechanik_button2_4b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -149,12 +145,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButton24a">
+                  <object class="GtkButton" id="mechanik_button2_4a">
                     <property name="label" translatable="yes">DODAJ USŁUGĘ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButton24a_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="mechanik_button2_4a_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -162,7 +158,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MechLabel23a">
+                  <object class="GtkLabel" id="mechanik_label2_3a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">MODEL SAMOCHODU</property>
@@ -173,7 +169,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MechComboboxtext23b">
+                  <object class="GtkComboBoxText" id="mechanik_comboboxtext2_3b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -189,7 +185,7 @@ PANEL MECHANIKA
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MechLabelPage2">
+              <object class="GtkLabel" id="mechanik_label_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">ZARZĄDZAJ CZĘŚCIAMI</property>
@@ -200,13 +196,13 @@ PANEL MECHANIKA
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="MechGridPage3">
+              <object class="GtkGrid" id="mechanik_grid_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="MechLabel31a">
+                  <object class="GtkLabel" id="mechanik_label3_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID CZĘŚCI</property>
@@ -217,7 +213,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="MechLabel32a">
+                  <object class="GtkLabel" id="mechanik_label3_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">UŻYTA ILOŚĆ</property>
@@ -228,7 +224,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="MechEntry32b">
+                  <object class="GtkEntry" id="mechanik_entry3_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">number</property>
@@ -239,12 +235,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButtonP33b">
+                  <object class="GtkButton" id="mechanik_button3_3b">
                     <property name="label" translatable="yes">UŻYJ!</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButtonP33b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="mechanik_button3_3b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -252,7 +248,7 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="MechComboboxtext31b">
+                  <object class="GtkComboBoxText" id="mechanik_comboboxtext3_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -263,12 +259,12 @@ PANEL MECHANIKA
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="MechButtonP33a">
+                  <object class="GtkButton" id="mechanik_button3_3a">
                     <property name="label" translatable="yes">SPRAWDŹ ILOŚĆ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="MechButtonP33a_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="mechanik_button3_3a_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
@@ -281,7 +277,7 @@ PANEL MECHANIKA
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="MechLabelPage3">
+              <object class="GtkLabel" id="mechanik_label_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">1</property>

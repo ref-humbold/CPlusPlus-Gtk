@@ -1,42 +1,47 @@
 # -*- coding: utf-8 -*-
-from psycopg2.extensions import AsIs
+from gi import require_version
+
+require_version('Gtk', '3.0')
+
 from gi.repository import Gtk
 from decimal import Decimal
 from extra import Extra
 
+
 class Magazynier:
     """Klasa odpowiadająca za działanie okna interakcji magazyniera z bazą danych."""
+
     def __init__(self, conndb):
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
 
-        MagBuilder = Gtk.Builder()
-        MagBuilder.add_from_file("magazynier.glade")
+        magazynier_builder = Gtk.Builder()
+        magazynier_builder.add_from_file("magazynier.glade")
 
-        self.MagWindow = MagBuilder.get_object("MagWindow")
+        self.magazynier_window = magazynier_builder.get_object("magazynier_window")
 
-        self.MagEntry11b = MagBuilder.get_object("MagEntry11b")
-        self.MagEntry12b = MagBuilder.get_object("MagEntry12b")
-        self.MagEntry13b = MagBuilder.get_object("MagEntry13b")
-        self.MagComboboxtext14b = MagBuilder.get_object("MagComboboxtext14b")
-        self.MagButton15b = MagBuilder.get_object("MagButton15b")
+        self.magazynier_entry1_1b = magazynier_builder.get_object("magazynier_entry1_1b")
+        self.magazynier_entry1_2b = magazynier_builder.get_object("magazynier_entry1_2b")
+        self.magazynier_entry1_3b = magazynier_builder.get_object("magazynier_entry1_3b")
+        self.magazynier_comboboxtext1_4b = magazynier_builder.get_object("magazynier_comboboxtext1_4b")
+        self.magazynier_button1_5b = magazynier_builder.get_object("magazynier_button1_5b")
 
-        self.MagComboboxtext21b = MagBuilder.get_object("MagComboboxtext21b")
-        self.MagEntry22b = MagBuilder.get_object("MagEntry22b")
-        self.MagEntry23b = MagBuilder.get_object("MagEntry23b")
-        self.MagEntry24b = MagBuilder.get_object("MagEntry24b")
-        self.MagButton25b = MagBuilder.get_object("MagButton25b")
+        self.magazynier_comboboxtext2_1b = magazynier_builder.get_object("magazynier_comboboxtext2_1b")
+        self.magazynier_entry2_2b = magazynier_builder.get_object("magazynier_entry2_2b")
+        self.magazynier_entry2_3b = magazynier_builder.get_object("magazynier_entry2_3b")
+        self.magazynier_entry2_4b = magazynier_builder.get_object("magazynier_entry2_4b")
+        self.magazynier_button2_5b = magazynier_builder.get_object("magazynier_button2_5b")
 
-        self.MagComboboxtext31b = MagBuilder.get_object("MagComboboxtext31b")
-        self.MagButton31c = MagBuilder.get_object("MagButton31c")
+        self.magazynier_comboboxtext3_1b = magazynier_builder.get_object("magazynier_comboboxtext3_1b")
+        self.magazynier_button3_1c = magazynier_builder.get_object("magazynier_button3_1c")
 
-        self.__load_ids(self.MagComboboxtext14b, "czesci")
-        self.__load_ids(self.MagComboboxtext21b, "zamowienia")
-        self.__load_ids(self.MagComboboxtext31b, "zamowienia_unreal")
+        self.__load_ids(self.magazynier_comboboxtext1_4b, "czesci")
+        self.__load_ids(self.magazynier_comboboxtext2_1b, "zamowienia")
+        self.__load_ids(self.magazynier_comboboxtext3_1b, "zamowienia_unreal")
 
-        MagBuilder.connect_signals(self)
+        magazynier_builder.connect_signals(self)
 
-        self.MagWindow.show()
+        self.magazynier_window.show()
 
     def __load_ids(self, comboboxtext, tablename):
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
@@ -74,51 +79,52 @@ class Magazynier:
             except:
                 self.conn.rollback()
                 cur.close()
-                ExtraWindow = Extra()
-                ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                ExtraWindow.show()
                 return False
 
         return True
 
-    def MagWindow_destroy_cb(self, window):
+    def magazynier_window_destroy_cb(self, window):
         """Zamyka okno magazyniera."""
         self.conn.close()
         Gtk.main_quit()
 
-    def MagButton15b_clicked_cb(self, button):
+    def magazynier_button1_5b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wysłania nowego zamówienia."""
-        firma = self.MagEntry11b.get_text() # SQL text
-        ilosc = self.MagEntry12b.get_text() # SQL integer
-        cena = self.MagEntry13b.get_text() # SQL numeric
-        cze_id = self.MagComboboxtext14b.get_active_text() # SQL integer
+        firma = self.magazynier_entry1_1b.get_text()  # SQL text
+        ilosc = self.magazynier_entry1_2b.get_text()  # SQL integer
+        cena = self.magazynier_entry1_3b.get_text()  # SQL numeric
+        cze_id = self.magazynier_comboboxtext1_4b.get_active_text()  # SQL integer
 
         getcontext().prec = 2
         args = [firma, int(ilosc), Decimal(cena), int(cze_id)]
 
         try:
             cur = self.conn.cursor()
-            cur.execute("INSERT INTO zamowienia(data_zamow, firma, ilosc, cena, cze_id) VALUES(now(), %s, %s, %s, %s);", args)
+            cur.execute(
+                "INSERT INTO zamowienia(data_zamow, firma, ilosc, cena, cze_id) VALUES(now(), %s, %s, %s, %s);", args)
             cur.execute("SELECT max(id) FROM zamowienia;")
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            self.MagComboboxtext21b.append_text(str(wyn))
-            self.MagComboboxtext31b.append_text(str(wyn))
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = "+str(wyn))
+            self.magazynier_comboboxtext2_1b.append_text(str(wyn))
+            self.magazynier_comboboxtext3_1b.append_text(str(wyn))
+            ExtraWindow = Extra("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = " + str(wyn))
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def MagButton25b_clicked_cb(self, button):
+    def magazynier_button2_5b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku modyfikacji zamówienia."""
-        ident = self.MagComboboxtext21b.get_active_text() # SQL integer
-        firma = self.MagEntry22b.get_text() # SQL text
-        ilosc = self.MagEntry23b.get_text() # SQL integer
-        cena = self.MagEntry24b.get_text() # SQL numeric
+        ident = self.magazynier_comboboxtext2_1b.get_active_text()  # SQL integer
+        firma = self.magazynier_entry2_2b.get_text()  # SQL text
+        ilosc = self.magazynier_entry2_3b.get_text()  # SQL integer
+        cena = self.magazynier_entry2_4b.get_text()  # SQL numeric
 
         cur = self.conn.cursor()
 
@@ -133,12 +139,12 @@ class Magazynier:
 
         self.conn.commit()
         cur.close()
-        ExtraWindow = Extra()
-        ExtraWindow.show_label("ZAMÓWIENIE NUMER "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        ExtraWindow = Extra("ZAMÓWIENIE NUMER " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        ExtraWindow.show()
 
-    def MagButton31c_clicked_cb(self, button):
+    def magazynier_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku odbioru zamówienia."""
-        ident = self.MagComboboxtext31b.get_active_text() # SQL integer
+        ident = self.magazynier_comboboxtext3_1b.get_active_text()  # SQL integer
 
         args = [int(ident)]
 
@@ -147,12 +153,11 @@ class Magazynier:
             cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER "+str(ident)+".")
+            ExtraWindow = Extra("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER " + str(ident) + ".")
+            ExtraWindow.show()
         finally:
             cur.close()
-

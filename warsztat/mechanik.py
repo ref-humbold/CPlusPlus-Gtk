@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from gi import require_version
 
-import gi
-import psycopg2
-from psycopg2.extensions import AsIs
+require_version('Gtk', '3.0')
+
 from gi.repository import Gtk
 from extra import Extra
 
@@ -12,34 +12,34 @@ class Mechanik:
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
 
-        MechBuilder = Gtk.Builder()
-        MechBuilder.add_from_file("mechanik.glade")
+        mechanik_builder = Gtk.Builder()
+        mechanik_builder.add_from_file("mechanik.glade")
 
-        self.MechWindow = MechBuilder.get_object("MechWindow")
+        self.mechanik_window = mechanik_builder.get_object("mechanik_window")
 
-        self.MechComboboxtext11b = MechBuilder.get_object("MechComboboxtext11b")
-        self.MechButton11c = MechBuilder.get_object("MechButton11c")
+        self.mechanik_comboboxtext1_1b = mechanik_builder.get_object("mechanik_comboboxtext1_1b")
+        self.mechanik_button1_1c = mechanik_builder.get_object("mechanik_button1_1c")
 
-        self.MechComboboxtext21b = MechBuilder.get_object("MechComboboxtext21b")
-        self.MechComboboxtext22b = MechBuilder.get_object("MechComboboxtext22b")
-        self.MechComboboxtext23b = MechBuilder.get_object("MechComboboxtext23b")
-        self.MechButton24a = MechBuilder.get_object("MechButton24a")
-        self.MechButton24b = MechBuilder.get_object("MechButton24b")
+        self.mechanik_comboboxtext2_1b = mechanik_builder.get_object("mechanik_comboboxtext2_1b")
+        self.mechanik_comboboxtext2_2b = mechanik_builder.get_object("mechanik_comboboxtext2_2b")
+        self.mechanik_comboboxtext2_3b = mechanik_builder.get_object("mechanik_comboboxtext2_3b")
+        self.mechanik_button2_4a = mechanik_builder.get_object("mechanik_button2_4a")
+        self.mechanik_button2_4b = mechanik_builder.get_object("mechanik_button2_4b")
 
-        self.MechComboboxtext31b = MechBuilder.get_object("MechComboboxtext31b")
-        self.MechEntry32b = MechBuilder.get_object("MechEntry32b")
-        self.MechButton33a = MechBuilder.get_object("MechButton33a")
-        self.MechButton33b = MechBuilder.get_object("MechButton33b")
+        self.mechanik_comboboxtext3_1b = mechanik_builder.get_object("mechanik_comboboxtext3_1b")
+        self.mechanik_entry3_2b = mechanik_builder.get_object("mechanik_entry3_2b")
+        self.mechanik_button3_3a = mechanik_builder.get_object("mechanik_button3_3a")
+        self.mechanik_button3_3b = mechanik_builder.get_object("mechanik_button3_3b")
 
-        self.__load_ids(self.MechComboboxtext11b, "zlecenia")
-        self.__load_ids(self.MechComboboxtext21b, "czesci")
-        self.__load_ids(self.MechComboboxtext22b, "uslugi")
-        self.__load_ids(self.MechComboboxtext23b, "samochody")
-        self.__load_ids(self.MechComboboxtext31b, "czesci")
+        self.__load_ids(self.mechanik_comboboxtext1_1b, "zlecenia")
+        self.__load_ids(self.mechanik_comboboxtext2_1b, "czesci")
+        self.__load_ids(self.mechanik_comboboxtext2_2b, "uslugi")
+        self.__load_ids(self.mechanik_comboboxtext2_3b, "samochody")
+        self.__load_ids(self.mechanik_comboboxtext3_1b, "czesci")
 
-        MechBuilder.connect_signals(self)
+        mechanik_builder.connect_signals(self)
 
-        self.MechWindow.show()
+        self.mechanik_window.show()
 
     def __load_ids(self, comboboxtext, tablename):
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
@@ -63,14 +63,14 @@ class Mechanik:
 
         comboboxtext.set_active(0)
 
-    def MechWindow_destroy_cb(self, window):
+    def mechanik_window_destroy_cb(self, window):
         """Zamyka okno mechanika."""
         self.conn.close()
         Gtk.main_quit()
 
-    def MechButton11c_clicked_cb(self, button):
+    def mechanik_button1_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zakończenia zlecenia."""
-        ident = self.MechComboboxtext11b.get_active_text() # SQL integer
+        ident = self.mechanik_comboboxtext1_1b.get_active_text() # SQL integer
 
         args = [int(ident)]
 
@@ -79,19 +79,19 @@ class Mechanik:
             cur.execute("UPDATE TABLE zlecenia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
+            ExtraWindow = Extra("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def MechButton24a_clicked_cb(self, button):
+    def mechanik_button2_4a_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku przypisania części samochodowej do usługi."""
-        ident = self.MechComboboxtext21b.get_active_text() # SQL integer
-        nazwa = self.MechComboboxtext22b.get_active_text() # SQL text
+        ident = self.mechanik_comboboxtext2_1b.get_active_text() # SQL integer
+        nazwa = self.mechanik_comboboxtext2_2b.get_active_text() # SQL text
 
         args = [ int(ident), nazwa ]
 
@@ -101,19 +101,19 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
+            ExtraWindow = Extra("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def MechButton24b_clicked_cb(self, button):
+    def mechanik_button2_4b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku przypisania części samochodowej do modelu samochodu."""
-        ident = self.MechComboboxtext21b.get_active_text() # SQL integer
-        model = self.MechComboboxtext23b.get_active_text() # SQL text
+        ident = self.mechanik_comboboxtext2_1b.get_active_text() # SQL integer
+        model = self.mechanik_comboboxtext2_3b.get_active_text() # SQL text
 
         args = [ int(ident), model ]
 
@@ -123,18 +123,18 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
+            ExtraWindow = Extra("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def MechButton33a_clicked_cb(self, button):
+    def mechanik_button3_3a_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyświetlenia ilości części."""
-        ident = self.MechComboboxtext31b.get_active_text() # SQL integer
+        ident = self.mechanik_comboboxtext3_1b.get_active_text() # SQL integer
 
         args = [int(ident)]
 
@@ -145,19 +145,19 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("W MAGAZYNIE ZNAJDUJE SIĘ "+str(wyn)+" CZĘŚCI NUMER "+str(ident)+".")
+            ExtraWindow = Extra("W MAGAZYNIE ZNAJDUJE SIĘ "+str(wyn)+" CZĘŚCI NUMER "+str(ident)+".")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def MechButton33b_clicked_cb(self, button):
+    def mechanik_button3_3b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku pobrania określonej ilości części."""
-        ident = self.MechComboboxtext31b.get_active_text() # SQL integer
-        ilosc = self.MechEntry32b.get_text() # SQL integer
+        ident = self.mechanik_comboboxtext3_1b.get_active_text() # SQL integer
+        ilosc = self.mechanik_entry3_2b.get_text() # SQL integer
 
         args = [int(ilosc), int(ident)]
 
@@ -166,12 +166,12 @@ class Mechanik:
             cur.execute("UPDATE TABLE czesci SET ilosc = ilosc-%s WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("POBRANO "+str(ilosc)+" JEDNOSTEK CZĘŚCI NUMER "+str(ident)+".")
+            ExtraWindow = Extra("POBRANO "+str(ilosc)+" JEDNOSTEK CZĘŚCI NUMER "+str(ident)+".")
+            ExtraWindow.show()
         finally:
             cur.close()
 

@@ -1,44 +1,48 @@
 # -*- coding: utf-8 -*-
+from gi import require_version
 
-from psycopg2.extensions import AsIs
+require_version('Gtk', '3.0')
+
 from gi.repository import Gtk
 from decimal import Decimal
 from extra import Extra
 
+
 class Zlecenia:
     """Klasa odpowiadająca za działanie okna interakcji sprzedawcy z tabelą zleceń."""
+
     def __init__(self, conndb):
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
 
-        ZleceniaBuilder = Gtk.Builder()
-        ZleceniaBuilder.add_from_file("zlecenia.glade")
+        zlecenia_builder = Gtk.Builder()
+        zlecenia_builder.add_from_file("zlecenia.glade")
 
-        self.ZleceniaWindow = ZleceniaBuilder.get_object("ZleceniaWindow")
+        self.zlecenia_window = zlecenia_builder.get_object("zlecenia_window")
 
-        self.ZleceniaEntry11ba = ZleceniaBuilder.get_object("ZleceniaEntry11ba")
-        self.ZleceniaEntry11bc = ZleceniaBuilder.get_object("ZleceniaEntry11bc")
-        self.ZleceniaComboboxtext12b = ZleceniaBuilder.get_object("ZleceniaComboboxtext12b")
-        self.ZleceniaComboboxtext13b = ZleceniaBuilder.get_object("ZleceniaComboboxtext13b")
-        self.ZleceniaComboboxtext14b = ZleceniaBuilder.get_object("ZleceniaComboboxtext14b")
-        self.ZleceniaButton15b = ZleceniaBuilder.get_object("ZleceniaButton15b")
+        self.zlecenia_entry1_1ba = zlecenia_builder.get_object("zlecenia_entry1_1ba")
+        self.zlecenia_entry1_1bc = zlecenia_builder.get_object("zlecenia_entry1_1bc")
+        self.zlecenia_comboboxtext1_2b = zlecenia_builder.get_object("zlecenia_comboboxtext1_2b")
+        self.zlecenia_comboboxtext1_3b = zlecenia_builder.get_object("zlecenia_comboboxtext1_3b")
+        self.zlecenia_comboboxtext1_4b = zlecenia_builder.get_object("zlecenia_comboboxtext1_4b")
+        self.zlecenia_button1_5b = zlecenia_builder.get_object("zlecenia_button1_5b")
 
-        self.ZleceniaComboboxtext21b = ZleceniaBuilder.get_object("ZleceniaComboboxtext21b")
-        self.ZleceniaComboboxtext22b = ZleceniaBuilder.get_object("ZleceniaComboboxtext22b")
-        self.ZleceniaButton23b = ZleceniaBuilder.get_object("ZleceniaButton23b")
+        self.zlecenia_comboboxtext2_1b = zlecenia_builder.get_object("zlecenia_comboboxtext2_1b")
+        self.zlecenia_comboboxtext2_2b = zlecenia_builder.get_object("zlecenia_comboboxtext2_2b")
+        self.zlecenia_button2_3b = zlecenia_builder.get_object("zlecenia_button2_3b")
 
-        self.ZleceniaComboboxtext31b = ZleceniaBuilder.get_object("ZleceniaComboboxtext31b")
-        self.ZleceniaButton31c = ZleceniaBuilder.get_object("ZleceniaButton31c")
+        self.zlecenia_comboboxtext3_1b = zlecenia_builder.get_object("zlecenia_comboboxtext3_1b")
+        self.zlecenia_button3_1c = zlecenia_builder.get_object("zlecenia_button3_1c")
 
-        self.__load_ids(self.ZleceniaComboboxtext13b, "klienci")
-        self.__load_ids(self.ZleceniaComboboxtext14b, "samochody")
-        self.__load_ids(self.ZleceniaComboboxtext21b, "zlecenia")
-        self.__load_ids(self.ZleceniaComboboxtext22b, "uslugi")
-        self.__load_ids(self.ZleceniaComboboxtext31b, "zlecenia")
+        self.__load_ids(self.zlecenia_comboboxtext1_3b, "klienci")
+        self.__load_ids(self.zlecenia_comboboxtext1_4b, "samochody")
+        self.__load_ids(self.zlecenia_comboboxtext2_1b, "zlecenia")
+        self.__load_ids(self.zlecenia_comboboxtext2_2b, "uslugi")
+        self.__load_ids(self.zlecenia_comboboxtext3_1b, "zlecenia")
 
-        ZleceniaBuilder.connect_signals(self)
+        zlecenia_builder.connect_signals(self)
 
-        self.ZleceniaWindow.show()
+        self.zlecenia_window.show()
 
     def __load_ids(self, comboboxtext, tablename):
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
@@ -62,39 +66,40 @@ class Zlecenia:
 
         comboboxtext.set_active(0)
 
-    def ZleceniaButton15b_clicked_cb(self, button):
+    def zlecenia_button1_5b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku dodania nowego zlecenia."""
-        nr_rej = self.ZleceniaEntry11ba.get_text()+":"+self.ZleceniaEntry11bc.get_text() # SQL text
-        faktura = self.ZleceniaComboboxtext12b.get_active_text() # SQL boolean
-        kli_id = self.ZleceniaComboboxtext13b.get_active_text() # SQL integer
-        sam_model = self.ZleceniaComboboxtext14b.get_active_text() # SQL text
+        nr_rej = self.zlecenia_entry1_1ba.get_text() + ":" + self.zlecenia_entry1_1bc.get_text()  # SQL text
+        faktura = self.zlecenia_comboboxtext1_2b.get_active_text()  # SQL boolean
+        kli_id = self.zlecenia_comboboxtext1_3b.get_active_text()  # SQL integer
+        sam_model = self.zlecenia_comboboxtext1_4b.get_active_text()  # SQL text
 
         faktura = True if faktura == "TAK" else False
         args = [nr_rej, faktura, int(kli_id), sam_model]
 
         try:
             cur = self.conn.cursor()
-            cur.execute("INSERT INTO zlecenia(nr_rej, faktura, kli_id, sam_model) VALUES(%s, %s, %s, %s);", args)
+            cur.execute(
+                "INSERT INTO zlecenia(nr_rej, faktura, kli_id, sam_model) VALUES(%s, %s, %s, %s);", args)
             cur.execute("SELECT max(id) FROM zlecenia;")
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
             return
         else:
             self.conn.commit()
-            self.ZleceniaComboboxtext21b.append_text(str(wyn))
-            self.ZleceniaComboboxtext31b.append_text(str(wyn))
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = "+str(wyn))
+            self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
+            self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
+            ExtraWindow = Extra("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = " + str(wyn))
+            ExtraWindow.show()
         finally:
             cur.close()
 
-    def ZleceniaButton23b_clicked_cb(self, button):
+    def zlecenia_button2_3b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku powiązania zlecenia z usługą."""
-        ident = self.ZleceniaComboboxtext21b.get_active_text() # SQL integer
-        nazwa = self.ZleceniaComboboxtext22b.get_active_text() # SQL text
+        ident = self.zlecenia_comboboxtext2_1b.get_active_text()  # SQL integer
+        nazwa = self.zlecenia_comboboxtext2_2b.get_active_text()  # SQL text
 
         args = [int(ident), nazwa]
 
@@ -103,40 +108,40 @@ class Zlecenia:
             cur.execute("INSERT INTO zle_usl(zle_id, usl_nazwa) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
             return
         else:
             self.conn.commit()
-            self.ZleceniaComboboxtext21b.append_text(str(wyn))
-            self.ZleceniaComboboxtext31b.append_text(str(wyn))
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
+            self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
+            self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
+            ExtraWindow = Extra("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
+            ExtraWindow.show()
         finally:
             cur.close()
 
-        ExtraWindow = Extra()
-        ExtraWindow.show_label("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        ExtraWindow = Extra("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        ExtraWindow.show()
 
-    def ZleceniaButton31c_clicked_cb(self, button):
+    def zlecenia_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania zlecenia."""
-        ident = self.ZleceniaComboboxtext31b.get_active_text() # SQL integer
+        ident = self.zlecenia_comboboxtext3_1b.get_active_text()  # SQL integer
 
         args = [int(ident)]
 
         try:
             cur = self.conn.cursor()
-            cur.execute("SELECT id, data_zlec, data_real, nr_rej, faktura, kli_id, sam_model, koszt FROM zlecenia WHERE id = %s", args)
+            cur.execute(
+                "SELECT id, data_zlec, data_real, nr_rej, faktura, kli_id, sam_model, koszt FROM zlecenia WHERE id = %s", args)
             wyn = cur.fetchone()[:]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            ExtraWindow.show()
             return
         else:
             self.conn.commit()
-            ExtraWindow = Extra()
-            ExtraWindow.show_label(", ".join(map(str, wyn)))
+            ExtraWindow = Extra(", ".join(map(str, wyn)))
+            ExtraWindow.show()
         finally:
             cur.close()
-
