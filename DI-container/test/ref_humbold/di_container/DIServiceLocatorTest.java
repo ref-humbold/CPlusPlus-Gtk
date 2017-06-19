@@ -5,22 +5,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-class Provider
-    extends DIContainerProvider
+class TestProvider
+    extends DIContainerBaseProvider
 {
-    private DIContainer container;
-
-    public Provider(DIContainer container)
+    public TestProvider(DIContainer container)
     {
-        super();
-        this.container = container;
-        configureContainer(this.container);
-    }
-
-    @Override
-    public DIContainer getContainer()
-    {
-        return container;
+        super(container);
     }
 
     @Override
@@ -40,13 +30,13 @@ class Provider
 public class DIServiceLocatorTest
 {
     private DIContainer container;
-    private Provider provider;
+    private TestProvider provider;
 
     @Before
     public void setUp()
     {
         container = new DIContainer();
-        provider = new Provider(container);
+        provider = new TestProvider(container);
     }
 
     @After
@@ -57,18 +47,27 @@ public class DIServiceLocatorTest
     }
 
     @Test
-    public void testGetInstance()
+    public void testIsProviderPresentWhenProviderSet()
     {
-        DIServiceLocator instance1 = DIServiceLocator.getInstance();
-        DIServiceLocator instance2 = DIServiceLocator.getInstance();
+        DIServiceLocator.setContainerProvider(provider);
 
-        Assert.assertNotNull(instance1);
-        Assert.assertNotNull(instance2);
-        Assert.assertSame(instance1, instance2);
+        boolean result = DIServiceLocator.isProviderPresent();
+
+        Assert.assertTrue(result);
     }
 
     @Test
-    public void testResolveInstanceWhenAllDependenciesArePresent()
+    public void testIsProviderPresentWhenProviderNotSet()
+    {
+        DIServiceLocator.setContainerProvider(null);
+
+        boolean result = DIServiceLocator.isProviderPresent();
+
+        Assert.assertFalse(result);
+    }
+
+    @Test
+    public void testGetInstanceWhenAllDependenciesArePresent()
     {
         DIServiceLocator.setContainerProvider(provider);
 
@@ -76,7 +75,7 @@ public class DIServiceLocatorTest
 
         try
         {
-            cls = DIServiceLocator.getInstance().resolveType(TestInterfaceComplexDependency.class);
+            cls = DIServiceLocator.getObject(TestInterfaceComplexDependency.class);
         }
         catch(DIException e)
         {
@@ -95,25 +94,25 @@ public class DIServiceLocatorTest
     }
 
     @Test(expected = MissingDependenciesException.class)
-    public void testResolveInstanceWhenMissingDependencies()
+    public void testGetInstanceWhenMissingDependencies()
         throws DIException
     {
         DIServiceLocator.setContainerProvider(provider);
 
-        DIServiceLocator.getInstance().resolveType(TestInterfaceDiamondBase.class);
+        DIServiceLocator.getObject(TestInterfaceDiamondBase.class);
     }
 
     @Test(expected = EmptyContainerProviderException.class)
-    public void testResolveInstanceWhenContainerProviderIsNull()
+    public void testGetInstanceWhenContainerProviderIsNull()
         throws DIException
     {
         DIServiceLocator.setContainerProvider(null);
 
-        DIServiceLocator.getInstance().resolveType(TestInterfaceComplexDependency.class);
+        DIServiceLocator.getObject(TestInterfaceComplexDependency.class);
     }
 
     @Test
-    public void testResolveInstanceWhenContainerType()
+    public void testGetInstanceWhenContainerType()
     {
         DIServiceLocator.setContainerProvider(provider);
 
@@ -121,7 +120,7 @@ public class DIServiceLocatorTest
 
         try
         {
-            cnt = DIServiceLocator.getInstance().resolveType(DIContainer.class);
+            cnt = DIServiceLocator.getObject(DIContainer.class);
         }
         catch(DIException e)
         {

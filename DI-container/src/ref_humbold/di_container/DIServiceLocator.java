@@ -3,26 +3,18 @@ package ref_humbold.di_container;
 public final class DIServiceLocator
 {
     private static DIContainerProvider containerProvider = null;
-    private static DIServiceLocator instance = null;
-
-    private DIServiceLocator()
-    {
-    }
 
     public static void setContainerProvider(DIContainerProvider provider)
     {
         containerProvider = provider;
     }
 
-    public static DIServiceLocator getInstance()
+    public static boolean isProviderPresent()
     {
-        if(instance == null)
-            instance = new DIServiceLocator();
-
-        return instance;
+        return containerProvider != null;
     }
 
-    public <T> T resolveType(Class<T> cls)
+    public static <T> T getObject(Class<T> cls)
         throws DIException
     {
         if(containerProvider == null)
