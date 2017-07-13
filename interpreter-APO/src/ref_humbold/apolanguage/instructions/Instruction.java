@@ -2,61 +2,70 @@ package ref_humbold.apolanguage.instructions;
 
 import java.util.Arrays;
 
+import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.interpret.VariableSet;
+
 /**
- * Klasa przechowujaca pojedyncza instrukcje w liscie rozkazow. Instrukcje skokow sa przechowywane w
- * klasie {@link JumpInstruction}.
+ * Bazowa klasa do przechowywania pojedynczej instrukcji w liście rozkazów.
  */
-public class Instruction
+public abstract class Instruction
+    implements Cloneable
 {
-    /** Numer wiersza programu. */
+    /**
+     * Numer wiersza programu.
+     */
     protected int lineNumber;
 
-    /** Nazwa operacji. */
+    /**
+     * Nazwa operacji.
+     */
     protected String name;
 
-    /** Argumenty operacji. */
+    /**
+     * Argumenty operacji.
+     */
     protected int[] args;
 
-    /** Wskaznik na nastepny element listy. */
-    protected Instruction next;
+    /**
+     * Wskaźnik na następny element listy.
+     */
+    protected Instruction next = null;
 
-    /** Tworzy element odpowiadajacy jednej instrukcji w programie. */
     public Instruction(int lineNumber, String name, int... args)
     {
         this.lineNumber = lineNumber;
         this.name = name;
         this.args = args;
-        this.next = null;
     }
 
     public int getLineNumber()
     {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
     public int getArgsNumber()
     {
-        return args.length;
+        return this.args.length;
     }
 
     public int getArg(int index)
     {
-        return args[index];
+        return this.args[index];
     }
 
     public Instruction getNext(boolean isJump)
     {
-        return next;
+        return this.next;
     }
 
-    public void setNext(Instruction e)
+    public void setNext(Instruction next)
     {
-        next = e;
+        this.next = next;
     }
 
     @Override
@@ -76,11 +85,24 @@ public class Instruction
         if(!Arrays.equals(args, other.args))
             return false;
 
-        if(name == null && other.name != null || !name.equals(other.name))
+        if(name == null)
+            return other.name == null;
+
+        return name.equals(other.name);
+    }
+
+    public boolean equalsLine(Object obj)
+    {
+        if(!equals(obj))
             return false;
 
-        return true;
+        Instruction other = (Instruction)obj;
+
+        return lineNumber == other.lineNumber;
     }
+
+    @Override
+    public abstract Instruction clone();
 
     @Override
     public int hashCode()
@@ -94,5 +116,6 @@ public class Instruction
         return result;
     }
 
-    // public abstract void execute(VariableSet variables) throws LanguageError;
+    public abstract void execute(VariableSet variables)
+        throws LanguageError;
 }

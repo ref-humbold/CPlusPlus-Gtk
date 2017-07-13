@@ -1,62 +1,107 @@
 package ref_humbold.apolanguage.interpret;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 import ref_humbold.apolanguage.instructions.Instruction;
-import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 /**
- * Klasa przechowujaca liste instrukcji programu. Lista zostaje utworzona podczas parsowania.
+ * Klasa przechowująca listę instrukcji programu. Lista zostaje utworzona podczas parsowania.
  * @see Parser#parse
  */
 public class InstructionList
+    implements Iterable<Instruction>
 {
-    /** Iterator przemieszczajacy sie po liscie instrukcji */
-    Instruction it;
-
-    private Instruction beg;
-    private Instruction end;
-
-    /** Tworzy nowa pusta liste rozkazow. */
-    public InstructionList()
+    private class InstructionIterator
+        implements Iterator<Instruction>
     {
-        beg = null;
-        end = null;
+        Instruction current;
+        Instruction previous = null;
+
+        public InstructionIterator(Instruction current)
+        {
+            this.current = current;
+        }
+
+        @Override
+        public boolean hasNext()
+        {
+            return current != null;
+        }
+
+        @Override
+        public Instruction next()
+            throws NoSuchElementException
+        {
+            if(previous != null)
+            {
+                Instruction next = previous.getNext(false);
+
+                if(next != null && !next.equalsLine(current))
+                    current = next;
+            }
+
+            if(!hasNext())
+                throw new NoSuchElementException();
+
+            previous = current.clone();
+            current = current.getNext(false);
+
+            return previous;
+        }
     }
 
     /**
-     * Dodaje nowa instrukcje do listy.
-     * @param cnt numer wiersza
-     * @param n nazwa instrukcji
-     * @param a argumenty instrukcji
-     * @param isLbl czy instrukcje poprzedza etykieta
+     * Iterator przemieszczający sie po liście instrukcji
+     */
+    Instruction it;
+
+    private Instruction begin = null;
+    private Instruction end = null;
+
+    public InstructionList()
+    {
+    }
+
+    @Override
+    public Iterator<Instruction> iterator()
+    {
+        return new InstructionIterator(begin);
+    }
+
+    /**
+     * Dodaje nowa instrukcję do listy.
+     * @param instruction instrukcja
+     * @param isLabeled czy instrukcję poprzedza etykieta
      * @return referencja do utworzonego elementu
      * @see Instruction
      */
-    Instruction addInstr(int cnt, String n, int a[], boolean isLbl)
+    Instruction addInstruction(Instruction instruction, boolean isLabeled)
     {
-        Instruction e = n.startsWith("J") ? new JumpInstruction(cnt, n, a) : new Instruction(cnt, n, a);
-
-        if(beg == null)
-            beg = e;
+        if(begin == null)
+            begin = instruction;
         else
-            end.setNext(e);
+            end.setNext(instruction);
 
-        end = e;
+        end = instruction;
 
-        return isLbl ? e : null;
+        return isLabeled ? instruction : null;
     }
 
-    /** Rozpoczyna iteracje po liscie, ustawiajac iterator na poczatek listy. */
+    /**
+     * Rozpoczyna iterację po liście, ustawiając iterator na początek listy.
+     */
     void startIt()
     {
-        it = beg;
+        it = begin;
     }
 
     /**
      * Bierze kolejny element listy.
-     * @param isJmp czy zostanie wykonany skok
+     * @param isJump czy zostanie wykonany skok
      */
-    void nextIt(boolean isJmp)
+    void nextIt(boolean isJump)
     {
-        it = it.getNext(isJmp);
+        it = it.getNext(isJump);
     }
 }

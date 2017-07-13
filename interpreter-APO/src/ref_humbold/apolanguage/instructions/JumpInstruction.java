@@ -1,57 +1,94 @@
 package ref_humbold.apolanguage.instructions;
 
+import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.interpret.VariableSet;
 
 /**
- * Klasa przechowujaca pojedyncza instrukcje skoku w liscie rozkazow. Stanowi rozszerzenie klasy
- * {@link Instruction}.
+ * Klasa przechowująca pojedynczą instrukcję skoku w liście rozkazów.
+ * @see Instruction
  */
 public class JumpInstruction
     extends Instruction
 {
-    private Instruction link;
+    private Instruction link = null;
+    private boolean isJump = false;
 
-    /** Tworzy element odpowiadajacy jednej instrukcji skoku. */
     public JumpInstruction(int lineNumber, String name, int... args)
     {
         super(lineNumber, name, args);
-        link = null;
     }
 
     /**
-     * Przechodzi do nastepnej instrukcji zaleznej od wykonania skoku. Nadpisana metoda
-     * {@link Instruction#getNext} z klasy nadrzednej.
+     * Przechodzi do następnej instrukcji zależnej od wykonania skoku.
      * @param isJump informuje o wykonaniu skoku
-     * @return nastepna instrukcja do wykonania
+     * @return następna instrukcja do wykonania
      */
     @Override
     public Instruction getNext(boolean isJump)
     {
-        return isJump ? link : super.next;
+        return this.isJump ? this.link : super.next;
+    }
+
+    @Override
+    public Instruction clone()
+    {
+        JumpInstruction instruction = new JumpInstruction(lineNumber, name, args);
+
+        instruction.setLink(link);
+        instruction.setJump(isJump);
+
+        return instruction;
     }
 
     /**
-     * Ustawia wskaznik do instrukcji, do ktorej zostanie wykonany skok, jesli sie powiedzie.
-     * @param e referencja do instrukcji, do ktorej wykonany zostanie skok.
+     * Ustawia wskaźnik do instrukcji, do ktorej może zostać wykonany skok.
+     * @param link referencja do instrukcji
      */
-    public void setLink(Instruction e)
+    public void setLink(Instruction link)
     {
-        link = e;
+        this.link = link;
     }
 
-    /*
-     * public void execute(VariableSet variables)
-     * throws LanguageError
-     * {
-     * case "JUMP":
-     * break;
-     * case "JPEQ":
-     * break;
-     * case "JPNE":
-     * break;
-     * case "JPLT":
-     * break;
-     * case "JPGT":
-     * break;
-     * }
-     */
+    public void setJump(boolean jump)
+    {
+        this.isJump = jump;
+    }
+
+    public void execute(VariableSet variables)
+        throws LanguageError
+    {
+        int argValue0;
+        int argValue1;
+
+        switch(name)
+        {
+            case "JUMP":
+                isJump = true;
+                break;
+
+            case "JPEQ":
+                argValue0 = variables.getValue(args[0]);
+                argValue1 = variables.getValue(args[1]);
+                isJump = argValue0 == argValue1;
+                break;
+
+            case "JPNE":
+                argValue0 = variables.getValue(args[0]);
+                argValue1 = variables.getValue(args[1]);
+                isJump = argValue0 != argValue1;
+                break;
+
+            case "JPLT":
+                argValue0 = variables.getValue(args[0]);
+                argValue1 = variables.getValue(args[1]);
+                isJump = argValue0 < argValue1;
+                break;
+
+            case "JPGT":
+                argValue0 = variables.getValue(args[0]);
+                argValue1 = variables.getValue(args[1]);
+                isJump = argValue0 > argValue1;
+                break;
+        }
+    }
 }

@@ -4,6 +4,7 @@ import java.nio.file.Path;
 
 import ref_humbold.apolanguage.errors.ArithmeticError;
 import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.instructions.InstructionFactory;
 
 /**
  * Klasa kontrolujaca przebieg pracy interpretera. Odpowiada za rozpoczecie parsowania oraz poprawne
@@ -11,34 +12,35 @@ import ref_humbold.apolanguage.errors.LanguageError;
  */
 public class Controler
 {
-    private Parser prs;
-    private VariableSet vrs;
-    private Memory mry;
-    private IOConnector iocon;
-    private InstructionList instr;
+    private Parser parser;
+    private VariableSet variables;
+    private Memory memory;
+    private IOConnector connector;
+    private InstructionList instructions;
 
     /**
      * Rozpoczyna prace interpretera i inicjalizuje jego skladniki.
-     * @param memLen rozmiar pamieci do alokacji
-     * @param p sciezka dostepu do pliku programu
+     * @param memorySize rozmiar pamieci do alokacji
+     * @param path sciezka dostepu do pliku programu
      */
-    public Controler(int memLen, Path p)
+    public Controler(int memorySize, Path path)
     {
-        prs = new Parser(p);
-        vrs = new VariableSet();
-        mry = new Memory(memLen);
-        iocon = new IOConnector();
-        instr = null;
+        this.parser = new Parser(path);
+        this.variables = new VariableSet();
+        this.memory = new Memory(memorySize);
+        this.connector = IOConnector.getInstance();
+        this.instructions = null;
+        InstructionFactory.memory = this.memory;
     }
 
     /**
-     * Dokonuje parsowania programu. Uruchamia parser ({@link Parser}) tworzacy liste instrukcji.
+     * Dokonuje parsowania programu. Uruchamia parser ({@link Parser}) tworzący listę instrukcji.
      */
     public void parse()
-        throws LanguageError, Exception
+        throws Exception
     {
         System.out.print("parsing>> ");
-        instr = prs.parse(vrs);
+        instructions = parser.parse(variables);
         System.out.println("done");
     }
 
@@ -52,241 +54,243 @@ public class Controler
     public void make()
         throws LanguageError
     {
-        instr.startIt();
-        vrs.setValue(0, 0);
+        instructions.startIt();
+        variables.setValue(0, 0);
 
-        while(instr.it != null)
+        while(instructions.it != null)
         {
-            String curInstr = instr.it.getName();
-            int pc = instr.it.getLineNumber();
+            String currentName = instructions.it.getName();
+            int lineCounter = instructions.it.getLineNumber();
             int arg0, arg1, arg2;
 
-            switch(curInstr)
+            switch(currentName)
             {
                 case "ADD":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 + arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 + arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "ADDI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 + arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 + arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "SUB":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 - arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 - arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "SUBI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 - arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 - arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "MUL":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 * arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 * arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "MULI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 * arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 * arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "DIV":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
 
                     if(arg2 == 0)
-                        throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, pc);
+                        throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineCounter);
 
-                    vrs.setValue(instr.it.getArg(0), arg1 / arg2);
-                    instr.nextIt(false);
+                    variables.setValue(instructions.it.getArg(0), arg1 / arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "DIVI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
 
                     if(arg2 == 0)
-                        throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, pc);
+                        throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineCounter);
 
-                    vrs.setValue(instr.it.getArg(0), arg1 / arg2);
-                    instr.nextIt(false);
+                    variables.setValue(instructions.it.getArg(0), arg1 / arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "SHLT":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 << arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 << arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "SHRT":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 >>> arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 >>> arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "SHRS":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 >> arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 >> arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "AND":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 & arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 & arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "ANDI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 & arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 & arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "OR":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 | arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 | arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "ORI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 | arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 | arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "XOR":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), arg1 ^ arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), arg1 ^ arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "XORI":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = instr.it.getArg(2);
-                    vrs.setValue(instr.it.getArg(0), arg1 ^ arg2);
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = instructions.it.getArg(2);
+                    variables.setValue(instructions.it.getArg(0), arg1 ^ arg2);
+                    instructions.nextIt(false);
                     break;
 
                 case "NAND":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), ~(arg1 & arg2));
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), ~(arg1 & arg2));
+                    instructions.nextIt(false);
                     break;
 
                 case "NOR":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    arg2 = vrs.getValue(instr.it.getArg(2));
-                    vrs.setValue(instr.it.getArg(0), ~(arg1 | arg2));
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    arg2 = variables.getValue(instructions.it.getArg(2));
+                    variables.setValue(instructions.it.getArg(0), ~(arg1 | arg2));
+                    instructions.nextIt(false);
                     break;
 
                 case "JUMP":
-                    instr.nextIt(true);
+                    instructions.nextIt(true);
                     break;
 
                 case "JPEQ":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    instr.nextIt(arg0 == arg1);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    instructions.nextIt(arg0 == arg1);
                     break;
 
                 case "JPNE":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    instr.nextIt(arg0 != arg1);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    instructions.nextIt(arg0 != arg1);
                     break;
 
                 case "JPLT":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    instr.nextIt(arg0 < arg1);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    instructions.nextIt(arg0 < arg1);
                     break;
 
                 case "JPGT":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    instr.nextIt(arg0 > arg1);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    instructions.nextIt(arg0 > arg1);
                     break;
 
                 case "LDW":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    vrs.setValue(instr.it.getArg(0), mry.loadWord(arg1, pc));
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    variables.setValue(instructions.it.getArg(0),
+                                       memory.loadWord(arg1, lineCounter));
+                    instructions.nextIt(false);
                     break;
 
                 case "LDB":
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    vrs.setValue(instr.it.getArg(0), mry.loadByte(arg1, pc));
-                    instr.nextIt(false);
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    variables.setValue(instructions.it.getArg(0),
+                                       memory.loadByte(arg1, lineCounter));
+                    instructions.nextIt(false);
                     break;
 
                 case "STW":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    mry.storeWord(arg1, arg0, pc);
-                    instr.nextIt(false);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    memory.storeWord(arg1, arg0, lineCounter);
+                    instructions.nextIt(false);
                     break;
 
                 case "STB":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    arg1 = vrs.getValue(instr.it.getArg(1));
-                    mry.storeByte(arg1, arg0, pc);
-                    instr.nextIt(false);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    arg1 = variables.getValue(instructions.it.getArg(1));
+                    memory.storeByte(arg1, arg0, lineCounter);
+                    instructions.nextIt(false);
                     break;
 
                 case "PTLN":
-                    iocon.printLine();
-                    instr.nextIt(false);
+                    connector.printLine();
+                    instructions.nextIt(false);
                     break;
 
                 case "PTINT":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    iocon.printInt(arg0);
-                    instr.nextIt(false);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    connector.printInt(arg0);
+                    instructions.nextIt(false);
                     break;
 
                 case "PTCHR":
-                    arg0 = vrs.getValue(instr.it.getArg(0));
-                    iocon.printChar(arg0);
-                    instr.nextIt(false);
+                    arg0 = variables.getValue(instructions.it.getArg(0));
+                    connector.printChar(arg0);
+                    instructions.nextIt(false);
                     break;
 
                 case "RDINT":
-                    vrs.setValue(instr.it.getArg(0), iocon.readInt());
-                    instr.nextIt(false);
+                    variables.setValue(instructions.it.getArg(0), connector.readInt());
+                    instructions.nextIt(false);
                     break;
 
                 case "RDCHR":
-                    vrs.setValue(instr.it.getArg(0), iocon.readChar());
-                    instr.nextIt(false);
+                    variables.setValue(instructions.it.getArg(0), connector.readChar());
+                    instructions.nextIt(false);
                     break;
 
                 case "NOP":
-                    instr.nextIt(false);
+                    instructions.nextIt(false);
                     break;
             }
         }

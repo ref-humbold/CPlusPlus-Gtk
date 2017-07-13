@@ -3,7 +3,9 @@ package ref_humbold.apolanguage.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Klasa przechowujaca liste zmiennych wraz z ich wartosciami. */
+/**
+ * Klasa przechowujaca liste zmiennych wraz z ich wartosciami.
+ */
 public class VariableSet
 {
     private static final Integer DEFAULT_VALUE = 0;
@@ -20,7 +22,7 @@ public class VariableSet
      * @param name nazwa zmiennej
      * @return numer zmiennej
      */
-    int getNumber(String name)
+    public int getNumber(String name)
     {
         return variableNumbers.get(name);
     }
@@ -30,7 +32,7 @@ public class VariableSet
      * @param name nazwa zmiennej
      * @return czy zmienna istnieje
      */
-    boolean contains(String name)
+    public boolean contains(String name)
     {
         return variableNumbers.containsKey(name);
     }
@@ -40,7 +42,7 @@ public class VariableSet
      * @param name nazwa zmiennej
      * @return wartosc zmiennej
      */
-    int getValue(String name)
+    public int getValue(String name)
     {
         return variableValues.get(getNumber(name));
     }
@@ -50,16 +52,16 @@ public class VariableSet
      * @param index numer zmiennej
      * @return wartosc zmiennej
      */
-    int getValue(int index)
+    public int getValue(int index)
     {
         return variableValues.get(index);
     }
 
     /**
      * Przypisuje domyslna wartosc do zmiennej okreslona nazwa.
-     * @param indx nazwa zmiennej
+     * @param name nazwa zmiennej
      */
-    void setValue(String name)
+    public void setValue(String name)
     {
         if(!contains(name))
         {
@@ -72,10 +74,10 @@ public class VariableSet
 
     /**
      * Przypisuje nowa wartosc do zmiennej okreslona nazwa.
-     * @param indx nazwa zmiennej
+     * @param name nazwa zmiennej
      * @param value wartosc do zapisu
      */
-    void setValue(String name, int value)
+    public void setValue(String name, int value)
     {
         if(!contains(name))
         {
@@ -91,7 +93,7 @@ public class VariableSet
      * @param index numer zmiennej
      * @param value wartosc do zapisu
      */
-    void setValue(int index, int value)
+    public void setValue(int index, int value)
     {
         if(!variableValues.containsKey(index))
             throw new IndexOutOfBoundsException("Number is not associated to a variable.");

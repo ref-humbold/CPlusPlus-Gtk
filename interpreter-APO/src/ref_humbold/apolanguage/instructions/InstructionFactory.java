@@ -1,29 +1,16 @@
 package ref_humbold.apolanguage.instructions;
 
 import ref_humbold.apolanguage.errors.SymbolError;
-import ref_humbold.apolanguage.interpret.IOConnector;
 import ref_humbold.apolanguage.interpret.Memory;
 
 public class InstructionFactory
 {
-    private static InstructionFactory instance;
+    public static Memory memory;
 
-    private InstructionFactory()
-    {
-    }
-
-    public static InstructionFactory getInstance()
-    {
-        if(instance == null)
-            instance = new InstructionFactory();
-
-        return instance;
-    }
-
-    public Instruction createInstruction(Object helper, int lineNumber, String name, int... args)
+    public static Instruction create(int lineNumber, String name, int... args)
         throws SymbolError
     {
-        Instruction instruction = null;
+        Instruction instruction;
 
         switch(name)
         {
@@ -64,7 +51,7 @@ public class InstructionFactory
             case "LDB":
             case "STW":
             case "STB":
-                instruction = new MemoryInstruction((Memory)helper, lineNumber, name, args);
+                instruction = new MemoryInstruction(memory, lineNumber, name, args);
                 break;
 
             case "PTLN":
@@ -72,11 +59,11 @@ public class InstructionFactory
             case "PTCHR":
             case "RDINT":
             case "RDCHR":
-                instruction = new IOInstruction((IOConnector)helper, lineNumber, name, args);
+                instruction = new IOInstruction(lineNumber, name, args);
                 break;
 
             case "NOP":
-                instruction = new Instruction(lineNumber, name, args);
+                instruction = new NOPInstruction(lineNumber, name);
                 break;
 
             default:

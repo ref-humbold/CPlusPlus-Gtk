@@ -13,12 +13,14 @@ public class MemoryTest
                
      @Before
      public void setUp()
+         throws Exception
      {
           testObject = new Memory(1);
      }
 
      @After
      public void tearDown()
+         throws Exception
      {
           testObject = null;
      }

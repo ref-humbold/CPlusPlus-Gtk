@@ -25,7 +25,7 @@ public class Memory
      * @param address adres do zapisu
      * @param lineNumber numer linii programu
      */
-    int loadWord(int address, int lineNumber)
+    public int loadWord(int address, int lineNumber)
         throws MemoryError
     {
         if(address < 0 || address >= memory.length)
@@ -43,7 +43,7 @@ public class Memory
      * @param value wartosc do zapisu
      * @param lineNumber numer linii programu
      */
-    void storeWord(int address, int value, int lineNumber)
+    public void storeWord(int address, int value, int lineNumber)
         throws MemoryError
     {
         if(address < 0 || address >= memory.length)
@@ -60,7 +60,7 @@ public class Memory
      * @param address adres do odczytu
      * @param lineNumber numer linii programu
      */
-    int loadByte(int address, int lineNumber)
+    public int loadByte(int address, int lineNumber)
         throws MemoryError
     {
         if(address < 0 || address >= memory.length)
@@ -77,7 +77,7 @@ public class Memory
      * @param value wartosc do zapisu
      * @param lineNumber numer linii programu
      */
-    void storeByte(int address, int value, int lineNumber)
+    public void storeByte(int address, int value, int lineNumber)
         throws MemoryError
     {
         if(address < 0 || address >= memory.length)

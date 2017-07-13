@@ -8,15 +8,18 @@ public class MemoryError
     public static final String ADDRESS_NOT_A_WORD = "Address is not alligned to a word.";
     public static final String NUMBER_NOT_IN_BYTE = "Number to store not in a byte.";
 
-    /** @see LanguageError#LanguageError(String, int) */
     public MemoryError(String message, int lineNumber)
     {
         super(message, lineNumber);
     }
 
-    /** @see LanguageError#LanguageError(String) */
     public MemoryError(String message)
     {
         super(message);
+    }
+
+    public MemoryError(String message, Throwable t)
+    {
+        super(message, t);
     }
 }

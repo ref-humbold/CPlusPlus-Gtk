@@ -17,6 +17,7 @@ import ref_humbold.apolanguage.errors.LabelError;
 import ref_humbold.apolanguage.errors.LanguageError;
 import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
+import ref_humbold.apolanguage.instructions.InstructionFactory;
 import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 /**
@@ -27,11 +28,11 @@ import ref_humbold.apolanguage.instructions.JumpInstruction;
  */
 public class Parser
 {
-    private Path plik;
-    private List<String> etnums;
-    private Map<String, Instruction> et;
+    private Path filepath;
+    private List<String> labels = new ArrayList<>();
+    private Map<String, Instruction> labeledInstructions = new HashMap<>();
     private String[] splitted;
-    private VariableSet varies;
+    private VariableSet variables = new VariableSet();
 
     /**
      * Uruchamia parser i tworzy tymczasowe listy etykiet oraz zmiennych.
@@ -39,10 +40,7 @@ public class Parser
      */
     public Parser(Path p)
     {
-        plik = p;
-        etnums = new ArrayList<>();
-        et = new HashMap<>();
-        varies = new VariableSet();
+        filepath = p;
     }
 
     /**
@@ -55,7 +53,7 @@ public class Parser
     InstructionList parse(VariableSet v)
         throws IOException, LanguageError
     {
-        BufferedReader reader = Files.newBufferedReader(plik, StandardCharsets.UTF_8);
+        BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
         InstructionList instr = new InstructionList();
         String line = reader.readLine();
         Instruction elem;
@@ -64,7 +62,7 @@ public class Parser
         int cnt = 0, g = 0;
         boolean isLbl;
 
-        varies.setValue("zero", 0);
+        variables.setValue("zero", 0);
 
         while(line != null)
         {
@@ -89,18 +87,18 @@ public class Parser
                 if(g >= splitted.length)
                 {
                     t = doArgNone();
-                    elem = instr.addInstr(cnt, "NOP", t, isLbl);
-                    et.put(label, elem);
+                    elem = instr.addInstruction(InstructionFactory.create(cnt, "NOP", t), isLbl);
+                    labeledInstructions.put(label, elem);
                     line = reader.readLine();
                     continue;
                 }
             }
 
             t = doInstr(g, cnt);
-            elem = instr.addInstr(cnt, splitted[g], t, isLbl);
+            elem = instr.addInstruction(InstructionFactory.create(cnt, splitted[g], t), isLbl);
 
             if(elem != null)
-                et.put(label, elem);
+                labeledInstructions.put(label, elem);
 
             line = reader.readLine();
         }
@@ -113,10 +111,10 @@ public class Parser
             if(instr.it instanceof JumpInstruction)
             {
                 int lenJ = instr.it.getArgsNumber();
-                String etc = etnums.get(instr.it.getArg(lenJ - 1));
+                String etc = labels.get(instr.it.getArg(lenJ - 1));
 
-                if(et.containsKey(etc))
-                    ((JumpInstruction)instr.it).setLink(et.get(etc));
+                if(labeledInstructions.containsKey(etc))
+                    ((JumpInstruction)instr.it).setLink(labeledInstructions.get(etc));
                 else
                     throw new LabelError(LabelError.LABEL_NOT_FOUND, instr.it.getLineNumber());
             }
@@ -124,7 +122,7 @@ public class Parser
             instr.nextIt(false);
         }
 
-        v = varies;
+        v = variables;
 
         return instr;
     }
@@ -132,7 +130,7 @@ public class Parser
     private void checkVl()
         throws LabelError
     {
-        Set<String> etset = et.keySet();
+        Set<String> etset = labeledInstructions.keySet();
         Iterator<String> sIt = etset.iterator();
         String retIt;
         int ctlbl;
@@ -141,9 +139,9 @@ public class Parser
         {
             retIt = sIt.next();
 
-            if(varies.contains(retIt))
+            if(variables.contains(retIt))
             {
-                ctlbl = et.get(retIt).getLineNumber();
+                ctlbl = labeledInstructions.get(retIt).getLineNumber();
                 throw new LabelError(LabelError.DUPLICATED, ctlbl);
             }
         }
@@ -157,7 +155,7 @@ public class Parser
         if(!allLower(lbName))
             throw new LabelError(LabelError.INVALID_CHARACTERS, cnt);
 
-        if(et.containsKey(lbName))
+        if(labeledInstructions.containsKey(lbName))
             throw new LabelError(LabelError.DUPLICATED, cnt);
 
         return lbName;
@@ -508,9 +506,9 @@ public class Parser
         if(checkZero && splitted[indx] == "zero")
             throw new SymbolError(SymbolError.CHANGE_ZERO, cnt);
 
-        varies.setValue(splitted[indx]);
+        variables.setValue(splitted[indx]);
 
-        return varies.getNumber(splitted[indx]);
+        return variables.getNumber(splitted[indx]);
     }
 
     private int doArgImm(int indx, int cnt)
@@ -552,10 +550,10 @@ public class Parser
         if(!allLower(splitted[indx]))
             throw new LabelError(LabelError.INVALID_CHARACTERS, cnt);
 
-        if(etnums.indexOf(splitted[indx]) < 0)
-            etnums.add(splitted[indx]);
+        if(labels.indexOf(splitted[indx]) < 0)
+            labels.add(splitted[indx]);
 
-        return etnums.indexOf(splitted[indx]);
+        return labels.indexOf(splitted[indx]);
     }
 
     private boolean allLower(String s)

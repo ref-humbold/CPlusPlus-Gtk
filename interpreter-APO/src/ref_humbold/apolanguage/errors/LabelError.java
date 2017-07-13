@@ -9,15 +9,18 @@ public class LabelError
     public static final String SAME_VARIABLE_NAME = "Variables and labels cannot have the same name.";
     public static final String INVALID_CHARACTERS = "Invalid characters in label name.";
 
-    /** @see LanguageError#LanguageError(String, int) */
     public LabelError(String message, int lineNumber)
     {
         super(message, lineNumber);
     }
 
-    /** @see LanguageError#LanguageError(String) */
     public LabelError(String message)
     {
         super(message);
+    }
+
+    public LabelError(String message, Throwable t)
+    {
+        super(message, t);
     }
 }

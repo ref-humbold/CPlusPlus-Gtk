@@ -12,72 +12,87 @@ import ref_humbold.apolanguage.errors.LanguageError;
 public class IOConnector
 {
     private static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in), 1);
+    private static IOConnector instance = null;
 
-    /** Wyswietla na ekranie znak konca linii. */
-    void printLine()
+    private IOConnector()
+    {
+    }
+
+    public static IOConnector getInstance()
+    {
+        if(instance == null)
+            instance = new IOConnector();
+
+        return instance;
+    }
+
+    /**
+     * Wyswietla na ekranie znak konca linii.
+     */
+    public void printLine()
     {
         System.out.println();
     }
 
     /**
-     * Wyswietla liczbe na standardowe wyjscie.
-     * @param a liczba do wyswietlenia
+     * Wyswietla liczbe na standardowe wyjście.
+     * @param number liczba
      */
-    void printInt(int a)
+    public void printInt(int number)
     {
-        System.out.print(a);
+        System.out.print(number);
     }
 
     /**
-     * Wyswietla znak na standardowe wyjscie.
-     * @param a kod znaku do wyswietlenia
+     * Wyswietla znak na standardowe wyjście.
+     * @param code kod znaku
      */
-    void printChar(int a)
+    public void printChar(int code)
     {
-        System.out.print((char)a);
+        System.out.print((char)code);
     }
 
     /**
-     * Wczytuje liczbe w systemie dziesietnym lub szesnastkowym ze standardowego wejecia.
+     * Wczytuje liczbe w systemie dziesiętnym lub szesnastkowym ze standardowego wejścia.
      * @return wczytana liczba
      */
-    int readInt()
+    public int readInt()
         throws LanguageError
     {
-        String stread = new String();
+        String read;
         System.out.print("input>> ");
 
         try
         {
-            stread = stdin.readLine();
+            read = stdin.readLine();
         }
         catch(Exception e)
         {
-            throw new LanguageError("IOException while reading");
+            throw new LanguageError("IOException while reading", e);
         }
 
-        return Integer.parseInt(stread);
+        return Integer.parseInt(read);
     }
 
     /**
-     * Wczytuje znak ze standardowego wejscia.
+     * Wczytuje znak ze standardowego wejścia.
      * @return kod wczytanego znaku
      */
-    int readChar()
+    public int readChar()
         throws LanguageError
     {
-        String stread = new String();
+        String read;
         System.out.print("input>> ");
 
         try
         {
-            stread = stdin.readLine();
+            read = stdin.readLine();
         }
         catch(Exception e)
         {
-            throw new LanguageError("IOException while reading");
+            throw new LanguageError("IOException while reading", e);
         }
 
-        return stread.charAt(0);
+        return read.charAt(0);
     }
 }

@@ -6,11 +6,6 @@ public class LanguageError
     private static final long serialVersionUID = 6805782578123143695L;
     private int line;
 
-    /**
-     * Konstruktor błędu z linii kodu z komunikatem.
-     * @param message treść błędu
-     * @param lineNumber numer wiersza programu
-     */
     public LanguageError(String message, int lineNumber)
         throws IllegalArgumentException
     {
@@ -22,13 +17,15 @@ public class LanguageError
         line = lineNumber;
     }
 
-    /**
-     * Konstruktor błędu z linii kodu z komunikatem.
-     * @param message treść błędu
-     */
     public LanguageError(String message)
     {
         super(message);
+        line = -1;
+    }
+
+    public LanguageError(String message, Throwable t)
+    {
+        super(message, t);
         line = -1;
     }
 

@@ -1,11 +1,15 @@
 package ref_humbold.apolanguage.interpret;
 
+import java.util.Iterator;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
+import ref_humbold.apolanguage.instructions.InstructionFactory;
 import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 public class InstructionListTest
@@ -27,25 +31,50 @@ public class InstructionListTest
     }
 
     @Test
-    public void testAddInstrIfIsLabel()
+    public void testAddInstructionIfIsLabel()
     {
-        int cnt = 1;
+        int count = 1;
         String name = "ADD";
         int[] args = new int[]{10, 20, 30};
-        Instruction e = testObject.addInstr(cnt, name, args, true);
-        Instruction expected = new Instruction(cnt, name, args);
+
+        Instruction instruction = null;
+
+        try
+        {
+            instruction = InstructionFactory.create(count, name, args);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
+
+        Instruction e = testObject.addInstruction(instruction, true);
 
         Assert.assertNotNull(e);
-        Assert.assertEquals(expected, e);
+        Assert.assertEquals(instruction, e);
     }
 
     @Test
-    public void testAddInstrIfIsNoLabel()
+    public void testAddInstructionIfIsNoLabel()
     {
-        int cnt = 1;
+        int count = 1;
         String name = "ADD";
         int[] args = new int[]{10, 20, 30};
-        Instruction e = testObject.addInstr(cnt, name, args, false);
+
+        Instruction instruction = null;
+
+        try
+        {
+            instruction = InstructionFactory.create(count, name, args);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
+
+        Instruction e = testObject.addInstruction(instruction, false);
 
         Assert.assertNull(e);
     }
@@ -53,97 +82,186 @@ public class InstructionListTest
     @Test
     public void testAddInstrIfJumpAndIsLabel()
     {
-        int cnt = 1;
+        int count = 1;
         String name = "JUMP";
         int[] args = new int[]{};
-        Instruction e = testObject.addInstr(cnt, name, args, true);
-        Instruction expected = new JumpInstruction(cnt, name, args);
+        Instruction instruction = null;
+
+        try
+        {
+            instruction = InstructionFactory.create(count, name, args);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
+
+        Instruction e = testObject.addInstruction(instruction, true);
 
         Assert.assertNotNull(e);
-        Assert.assertEquals(expected, e);
+        Assert.assertEquals(instruction, e);
     }
 
     @Test
     public void testAddInstrIfJumpAndIsNoLabel()
     {
-        int cnt = 1;
+        int count = 1;
         String name = "JUMP";
         int[] args = new int[]{};
-        Instruction e = testObject.addInstr(cnt, name, args, false);
+        Instruction instruction = null;
+
+        try
+        {
+            instruction = InstructionFactory.create(count, name, args);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
+
+        Instruction e = testObject.addInstruction(instruction, false);
 
         Assert.assertNull(e);
     }
 
     @Test
-    public void testStartItWithEmptyList()
+    public void testIteratorWithEmptyList()
     {
-        testObject.startIt();
-        Assert.assertNull(testObject.it);
+        Iterator<Instruction> iterator = testObject.iterator();
+
+        Assert.assertFalse(iterator.hasNext());
     }
 
     @Test
-    public void testStartItWithNonEmptyList()
+    public void testIteratorWithNonEmptyList()
     {
-        int cnt = 1;
+        int count = 1;
         String name = "ADD";
         int[] args = new int[]{10, 20, 30};
-        Instruction expected = new Instruction(cnt, name, args);
+        Instruction instruction = null;
 
-        testObject.addInstr(cnt, name, args, false);
-        testObject.startIt();
+        try
+        {
+            instruction = InstructionFactory.create(count, name, args);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
 
-        Assert.assertEquals(expected, testObject.it);
+        testObject.addInstruction(instruction, false);
+
+        Iterator<Instruction> iterator = testObject.iterator();
+
+        Assert.assertTrue(iterator.hasNext());
+
+        Instruction result = iterator.next();
+
+        Assert.assertEquals(instruction, result);
+        Assert.assertFalse(iterator.hasNext());
     }
 
     @Test
-    public void testNextItIfIsJump()
+    public void testIteratorNextIfIsJump()
     {
-        int cnt1 = 1;
+        int count1 = 1;
         String name1 = "JPEQ";
         int[] args1 = new int[]{10, 20, 5};
-        int cnt2 = 2;
+        JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
+        int count2 = 2;
         String name2 = "ADD";
         int[] args2 = new int[]{10, 20, 5};
-        int cnt3 = 2;
-        String name3 = "MULT";
+        Instruction instruction2 = null;
+        int count3 = 2;
+        String name3 = "MUL";
         int[] args3 = new int[]{10, 20, 5};
+        Instruction instruction3 = null;
 
-        testObject.addInstr(cnt1, name1, args1, false);
-        testObject.addInstr(cnt2, name2, args2, false);
+        try
+        {
+            instruction2 = InstructionFactory.create(count2, name2, args2);
+            instruction3 = InstructionFactory.create(count3, name3, args3);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
 
-        Instruction e = testObject.addInstr(cnt3, name3, args3, true);
-        Instruction expected = new Instruction(cnt3, name3, args3);
+        instruction1.setLink(instruction3);
+        instruction1.setJump(true);
 
-        testObject.startIt();
-        ((JumpInstruction)testObject.it).setLink(e);
-        testObject.nextIt(true);
+        testObject.addInstruction(instruction1, false);
+        testObject.addInstruction(instruction2, false);
+        testObject.addInstruction(instruction3, true);
 
-        Assert.assertEquals(expected, testObject.it);
+        Iterator<Instruction> iterator = testObject.iterator();
+
+        Assert.assertTrue(iterator.hasNext());
+
+        Instruction result1 = iterator.next();
+
+        Assert.assertEquals(instruction1, result1);
+
+        Instruction result3 = iterator.next();
+
+        Assert.assertEquals(instruction3, result3);
+        Assert.assertFalse(iterator.hasNext());
     }
 
     @Test
-    public void testNextItIfIsNoJump()
+    public void testIteratorNextIfIsNoJump()
     {
-        int cnt1 = 1;
+        int count1 = 1;
         String name1 = "JPEQ";
         int[] args1 = new int[]{10, 20, 5};
-        int cnt2 = 2;
+        JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
+        int count2 = 2;
         String name2 = "ADD";
         int[] args2 = new int[]{10, 20, 5};
-        int cnt3 = 2;
-        String name3 = "MULT";
+        Instruction instruction2 = null;
+        int count3 = 2;
+        String name3 = "MUL";
         int[] args3 = new int[]{10, 20, 5};
+        Instruction instruction3 = null;
 
-        testObject.addInstr(cnt1, name1, args1, false);
-        testObject.addInstr(cnt2, name2, args2, false);
+        try
+        {
+            instruction2 = InstructionFactory.create(count2, name2, args2);
+            instruction3 = InstructionFactory.create(count3, name3, args3);
+        }
+        catch(SymbolError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected SymbolError was thrown.");
+        }
 
-        Instruction e = testObject.addInstr(cnt3, name3, args3, true);
-        Instruction expected = new Instruction(cnt2, name2, args2);
+        instruction1.setLink(instruction3);
+        instruction1.setJump(false);
 
-        testObject.startIt();
-        ((JumpInstruction)testObject.it).setLink(e);
-        testObject.nextIt(false);
+        testObject.addInstruction(instruction1, false);
+        testObject.addInstruction(instruction2, false);
+        testObject.addInstruction(instruction3, true);
 
-        Assert.assertEquals(expected, testObject.it);
+        Iterator<Instruction> iterator = testObject.iterator();
+
+        Assert.assertTrue(iterator.hasNext());
+
+        Instruction result1 = iterator.next();
+
+        Assert.assertEquals(instruction1, result1);
+
+        Instruction result2 = iterator.next();
+
+        Assert.assertEquals(instruction2, result2);
+        Assert.assertTrue(iterator.hasNext());
+
+        Instruction result3 = iterator.next();
+
+        Assert.assertEquals(instruction3, result3);
+        Assert.assertFalse(iterator.hasNext());
     }
 }
