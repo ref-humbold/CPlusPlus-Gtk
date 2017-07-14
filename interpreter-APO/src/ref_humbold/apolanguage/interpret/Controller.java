@@ -32,7 +32,6 @@ public class Controller
         this.instructions = null;
 
         InstructionFactory.memory = this.memory;
-        this.variables.setValue("zero", 0);
     }
 
     /**

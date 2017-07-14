@@ -26,7 +26,7 @@ public class VariableSetTest
     }
 
     @Test
-    public void testGetSetValueNoArguments()
+    public void testGetSetValueWhenNoArguments()
     {
         String name = "var";
         int result = 1;
@@ -56,7 +56,7 @@ public class VariableSetTest
     }
 
     @Test
-    public void testGetSetValueWithArgument()
+    public void testGetSetValueWhenArgument()
     {
         String name = "var";
         int value = 10;

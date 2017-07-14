@@ -51,11 +51,6 @@ public class InstructionList
         }
     }
 
-    /**
-     * Iterator przemieszczajacy sie po liscie instrukcji
-     */
-    Instruction it;
-
     private Instruction begin = null;
     private Instruction end = null;
 
@@ -76,7 +71,7 @@ public class InstructionList
      * @return referencja do utworzonego elementu
      * @see Instruction
      */
-    Instruction addInstruction(Instruction instruction, boolean isLabeled)
+    Instruction add(Instruction instruction, boolean isLabeled)
     {
         if(begin == null)
             begin = instruction;
@@ -86,22 +81,5 @@ public class InstructionList
         end = instruction;
 
         return isLabeled ? instruction : null;
-    }
-
-    /**
-     * Rozpoczyna iteracje po liscie, ustawiajac iterator na poczatek listy.
-     */
-    void startIt()
-    {
-        it = begin;
-    }
-
-    /**
-     * Bierze kolejny element listy.
-     * @param isJump czy zostanie wykonany skok
-     */
-    void nextIt(boolean isJump)
-    {
-        it = it.getNext(isJump);
     }
 }

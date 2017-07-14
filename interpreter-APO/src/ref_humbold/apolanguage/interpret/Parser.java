@@ -54,6 +54,8 @@ public class Parser
     {
         VariableSet variables = new VariableSet();
 
+        variables.setValue("zero", 0);
+
         BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
 
         return variables;
@@ -69,21 +71,21 @@ public class Parser
     InstructionList parse(VariableSet v)
         throws IOException, LanguageError
     {
+        InstructionList instructionList = new InstructionList();
         BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
-        InstructionList instr = new InstructionList();
         String line = reader.readLine();
         Instruction elem;
         String label = "";
-        int[] t;
-        int cnt = 0, g = 0;
-        boolean isLbl;
+        int[] args;
+        int count = 0, index = 0;
+        boolean isLabel;
 
         variables.setValue("zero", 0);
 
         while(line != null)
         {
-            cnt++;
-            g = 0;
+            ++count;
+            index = 0;
             line = line.trim();
 
             if(line.length() == 0 || line.startsWith("#"))
@@ -93,25 +95,27 @@ public class Parser
             }
 
             splitted = line.split("\\s+");
-            isLbl = splitted[g].endsWith(":");
+            isLabel = splitted[index].endsWith(":");
 
-            if(isLbl)
+            if(isLabel)
             {
-                label = doLabel(splitted[g], cnt);
-                g++;
+                label = doLabel(splitted[index], count);
+                ++index;
 
-                if(g >= splitted.length)
+                if(index >= splitted.length)
                 {
-                    t = doArgNone();
-                    elem = instr.addInstruction(InstructionFactory.create(cnt, "NOP", t), isLbl);
+                    args = doArgNone();
+                    elem = instructionList.add(InstructionFactory.create(count, "NOP", args),
+                                               isLabel);
                     labeledInstructions.put(label, elem);
                     line = reader.readLine();
                     continue;
                 }
             }
 
-            t = doInstr(g, cnt);
-            elem = instr.addInstruction(InstructionFactory.create(cnt, splitted[g], t), isLbl);
+            args = doInstr(index, count);
+            elem = instructionList.add(InstructionFactory.create(count, splitted[index], args),
+                                       isLabel);
 
             if(elem != null)
                 labeledInstructions.put(label, elem);
@@ -119,31 +123,28 @@ public class Parser
             line = reader.readLine();
         }
 
-        checkVl();
-        instr.startIt();
+        checkVariableAndLabelNames();
 
-        while(instr.it != null)
+        for(Instruction instruction : instructionList)
         {
-            if(instr.it instanceof JumpInstruction)
+            if(instruction instanceof JumpInstruction)
             {
-                int lenJ = instr.it.getArgsNumber();
-                String etc = labels.get(instr.it.getArg(lenJ - 1));
+                int lenJ = instruction.getArgsNumber();
+                String etc = labels.get(instruction.getArg(lenJ - 1));
 
                 if(labeledInstructions.containsKey(etc))
-                    ((JumpInstruction)instr.it).setLink(labeledInstructions.get(etc));
+                    ((JumpInstruction)instruction).setLink(labeledInstructions.get(etc));
                 else
-                    throw new LabelError(LabelError.LABEL_NOT_FOUND, instr.it.getLineNumber());
+                    throw new LabelError(LabelError.LABEL_NOT_FOUND, instruction.getLineNumber());
             }
-
-            instr.nextIt(false);
         }
 
         v = variables;
 
-        return instr;
+        return instructionList;
     }
 
-    private void checkVl()
+    private void checkVariableAndLabelNames()
         throws LabelError
     {
         Set<String> etset = labeledInstructions.keySet();
@@ -163,24 +164,24 @@ public class Parser
         }
     }
 
-    private String doLabel(String lbl, int cnt)
+    private String doLabel(String lbl, int count)
         throws LabelError
     {
         String lbName = lbl.substring(0, lbl.length() - 1);
 
-        if(!allLower(lbName))
-            throw new LabelError(LabelError.INVALID_CHARACTERS, cnt);
+        if(!isLowerCase(lbName))
+            throw new LabelError(LabelError.INVALID_CHARACTERS, count);
 
         if(labeledInstructions.containsKey(lbName))
-            throw new LabelError(LabelError.DUPLICATED, cnt);
+            throw new LabelError(LabelError.DUPLICATED, count);
 
         return lbName;
     }
 
-    private int[] doInstr(int indx, int cnt)
+    private int[] doInstr(int index, int count)
         throws LanguageError
     {
-        String op = splitted[indx];
+        String op = splitted[index];
         int[] q = new int[0];
 
         if(op.startsWith("#"))
@@ -189,273 +190,273 @@ public class Parser
         switch(op)
         {
             case "ADD":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "ADDI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "SUB":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "SUBI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
             case "MUL":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "MULI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "DIV":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "DIVI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "SHLT":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "SHRT":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "SHRS":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "AND":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
             case "ANDI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "OR":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "ORI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
 
             case "XOR":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "XORI":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgImm(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgImm(index + 3, count);
                 break;
             case "NAND":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "NOR":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgVar(indx + 3, cnt, false);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgVar(index + 3, count, false);
                 break;
 
             case "JUMP":
-                if(splitted.length < indx + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 1)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
-                q[0] = doArgLbl(indx + 1, cnt);
+                q[0] = doArgLbl(index + 1, count);
                 break;
 
             case "JPEQ":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgLbl(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgLbl(index + 3, count);
                 break;
 
             case "JPNE":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgLbl(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgLbl(index + 3, count);
                 break;
             case "JPLT":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgLbl(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgLbl(index + 3, count);
                 break;
 
             case "JPGT":
-                if(splitted.length < indx + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 3)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, false);
-                q[2] = doArgLbl(indx + 3, cnt);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, false);
+                q[2] = doArgLbl(index + 3, count);
                 break;
 
             case "LDW":
-                if(splitted.length < indx + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 2)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, true);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, true);
                 break;
 
             case "LDB":
-                if(splitted.length < indx + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 2)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
-                q[0] = doArgVar(indx + 1, cnt, true);
-                q[1] = doArgVar(indx + 2, cnt, true);
+                q[0] = doArgVar(index + 1, count, true);
+                q[1] = doArgVar(index + 2, count, true);
                 break;
 
             case "STW":
-                if(splitted.length < indx + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 2)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, true);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, true);
                 break;
 
             case "STB":
-                if(splitted.length < indx + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 2)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
-                q[0] = doArgVar(indx + 1, cnt, false);
-                q[1] = doArgVar(indx + 2, cnt, true);
+                q[0] = doArgVar(index + 1, count, false);
+                q[1] = doArgVar(index + 2, count, true);
                 break;
 
             case "PTLN":
@@ -463,39 +464,39 @@ public class Parser
                 break;
 
             case "PTINT":
-                if(splitted.length < indx + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 1)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
-                q[0] = doArgVar(indx + 1, cnt, false);
+                q[0] = doArgVar(index + 1, count, false);
                 break;
 
             case "PTCHR":
-                if(splitted.length < indx + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 1)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
-                q[0] = doArgVar(indx + 1, cnt, false);
+                q[0] = doArgVar(index + 1, count, false);
                 break;
 
             case "RDINT":
-                if(splitted.length < indx + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 1)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
-                q[0] = doArgVar(indx + 1, cnt, true);
+                q[0] = doArgVar(index + 1, count, true);
                 break;
 
             case "RDCHR":
-                if(splitted.length < indx + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+                if(splitted.length < index + 1)
+                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
-                q[0] = doArgVar(indx + 1, cnt, true);
+                q[0] = doArgVar(index + 1, count, true);
                 break;
 
             default:
-                throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, cnt);
+                throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, count);
         }
 
         return q;
@@ -510,69 +511,69 @@ public class Parser
         return q;
     }
 
-    private int doArgVar(int indx, int cnt, boolean checkZero)
+    private int doArgVar(int index, int count, boolean checkZero)
         throws SymbolError
     {
-        if(splitted[indx].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+        if(splitted[index].startsWith("#"))
+            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
-        if(!allLower(splitted[indx]))
-            throw new SymbolError(SymbolError.INVALID_CHARACTERS, cnt);
+        if(!isLowerCase(splitted[index]))
+            throw new SymbolError(SymbolError.INVALID_CHARACTERS, count);
 
-        if(checkZero && splitted[indx] == "zero")
-            throw new SymbolError(SymbolError.CHANGE_ZERO, cnt);
+        if(checkZero && splitted[index].equals("zero"))
+            throw new SymbolError(SymbolError.CHANGE_ZERO, count);
 
-        variables.setValue(splitted[indx]);
+        variables.setValue(splitted[index]);
 
-        return variables.getNumber(splitted[indx]);
+        return variables.getNumber(splitted[index]);
     }
 
-    private int doArgImm(int indx, int cnt)
+    private int doArgImm(int index, int count)
         throws LanguageError
     {
         int ret = 0;
 
-        if(splitted[indx].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+        if(splitted[index].startsWith("#"))
+            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
-        if(splitted[indx].startsWith("0x"))
+        if(splitted[index].startsWith("0x"))
             try
             {
-                ret = Integer.parseInt(splitted[indx].substring(2, splitted[indx].length()), 16);
+                ret = Integer.parseInt(splitted[index].substring(2, splitted[index].length()), 16);
             }
             catch(NumberFormatException e)
             {
-                throw new ArithmeticError(ArithmeticError.NOT_A_NUMBER, cnt);
+                throw new ArithmeticError(ArithmeticError.INVALID_FORMAT, count);
             }
         else
             try
             {
-                ret = Integer.parseInt(splitted[indx]);
+                ret = Integer.parseInt(splitted[index]);
             }
             catch(NumberFormatException e)
             {
-                throw new ArithmeticError(ArithmeticError.NOT_A_NUMBER, cnt);
+                throw new ArithmeticError(ArithmeticError.INVALID_FORMAT, count);
             }
 
         return ret;
     }
 
-    private int doArgLbl(int indx, int cnt)
+    private int doArgLbl(int index, int count)
         throws LanguageError
     {
-        if(splitted[indx].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, cnt);
+        if(splitted[index].startsWith("#"))
+            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
 
-        if(!allLower(splitted[indx]))
-            throw new LabelError(LabelError.INVALID_CHARACTERS, cnt);
+        if(!isLowerCase(splitted[index]))
+            throw new LabelError(LabelError.INVALID_CHARACTERS, count);
 
-        if(labels.indexOf(splitted[indx]) < 0)
-            labels.add(splitted[indx]);
+        if(labels.indexOf(splitted[index]) < 0)
+            labels.add(splitted[index]);
 
-        return labels.indexOf(splitted[indx]);
+        return labels.indexOf(splitted[index]);
     }
 
-    private boolean allLower(String s)
+    private boolean isLowerCase(String s)
     {
         for(int i = 0; i < s.length(); ++i)
             if(s.charAt(i) < 'a' || s.charAt(i) > 'z')
