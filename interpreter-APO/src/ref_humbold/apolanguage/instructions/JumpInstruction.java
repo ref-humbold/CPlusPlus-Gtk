@@ -1,10 +1,10 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 /**
- * Klasa przechowująca pojedynczą instrukcję skoku w liście rozkazów.
+ * Klasa przechowujaca pojedyncza instrukcje skoku w liscie rozkazow.
  * @see Instruction
  */
 public class JumpInstruction
@@ -19,9 +19,9 @@ public class JumpInstruction
     }
 
     /**
-     * Przechodzi do następnej instrukcji zależnej od wykonania skoku.
+     * Przechodzi do nastepnej instrukcji zaleznej od wykonania skoku.
      * @param isJump informuje o wykonaniu skoku
-     * @return następna instrukcja do wykonania
+     * @return nastepna instrukcja do wykonania
      */
     @Override
     public Instruction getNext(boolean isJump)
@@ -41,7 +41,7 @@ public class JumpInstruction
     }
 
     /**
-     * Ustawia wskaźnik do instrukcji, do ktorej może zostać wykonany skok.
+     * Ustawia wskaznik do instrukcji, do ktorej moze zostac wykonany skok.
      * @param link referencja do instrukcji
      */
     public void setLink(Instruction link)
@@ -49,13 +49,18 @@ public class JumpInstruction
         this.link = link;
     }
 
-    public void setJump(boolean jump)
+    /**
+     * Ustawia mozliwosc wykonania skoku.
+     * @param isJump czy wykonac skok
+     */
+    public void setJump(boolean isJump)
     {
-        this.isJump = jump;
+        this.isJump = isJump;
     }
 
+    @Override
     public void execute(VariableSet variables)
-        throws LanguageError
+        throws SymbolError
     {
         int argValue0;
         int argValue1;
@@ -67,26 +72,66 @@ public class JumpInstruction
                 break;
 
             case "JPEQ":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 isJump = argValue0 == argValue1;
                 break;
 
             case "JPNE":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 isJump = argValue0 != argValue1;
                 break;
 
             case "JPLT":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 isJump = argValue0 < argValue1;
                 break;
 
             case "JPGT":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 isJump = argValue0 > argValue1;
                 break;
         }

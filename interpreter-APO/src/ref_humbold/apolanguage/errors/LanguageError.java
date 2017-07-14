@@ -4,7 +4,7 @@ public class LanguageError
     extends Exception
 {
     private static final long serialVersionUID = 6805782578123143695L;
-    private int line;
+    private int lineNumber;
 
     public LanguageError(String message, int lineNumber)
         throws IllegalArgumentException
@@ -12,31 +12,34 @@ public class LanguageError
         super(message);
 
         if(lineNumber < 0)
-            throw new IllegalArgumentException("Line number has to be nonnegative.");
+            throw new IllegalArgumentException("Line number has to be non-negative.");
 
-        line = lineNumber;
+        this.lineNumber = lineNumber;
     }
 
     public LanguageError(String message)
     {
-        super(message);
-        line = -1;
+        this(message, null);
     }
 
     public LanguageError(String message, Throwable t)
     {
         super(message, t);
-        line = -1;
+        this.lineNumber = -1;
     }
 
-    /** Wyświetla treść błędu na ekranie. */
-    public void printError()
+    @Override
+    public String toString()
     {
-        if(line >= 0)
-            System.err.println("error>> " + this.getClass().getSimpleName() + " at line " + line
-                               + "\t" + super.getMessage());
-        else
-            System.err.println("error>> " + this.getClass().getSimpleName() + "\t"
-                               + super.getMessage());
+        return lineNumber >= 0 ? getClass().getSimpleName() + " at line " + lineNumber + ": "
+                                 + getMessage() : getClass().getSimpleName() + ": " + getMessage();
+    }
+
+    public void setLineNumber(int lineNumber)
+    {
+        if(lineNumber < 0)
+            throw new IllegalArgumentException("Line number has to be non-negative.");
+
+        this.lineNumber = lineNumber;
     }
 }

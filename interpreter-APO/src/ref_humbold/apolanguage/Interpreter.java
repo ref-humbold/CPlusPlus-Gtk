@@ -3,8 +3,7 @@ package ref_humbold.apolanguage;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import ref_humbold.apolanguage.errors.*;
-import ref_humbold.apolanguage.interpret.*;
+import ref_humbold.apolanguage.interpret.Controller;
 
 /**
  * Glowna klasa, ktora pozwala na uruchomienie interpretera przez uzytkownika. Odpowiada ona za
@@ -15,65 +14,54 @@ import ref_humbold.apolanguage.interpret.*;
 public class Interpreter
 {
     /**
-     * Pobiera plik i uruchamia jego interpretacje w {@link Controler}.
+     * Pobiera plik i uruchamia jego interpretacje w {@link Controller}.
      * @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo
      * oraz (opcjonalnie) rozmiar pamieci do alokacji
      */
-    public static void main(String args[]) throws Exception
+    public static void main(String args[])
     {
-        int memLen = 1;
-        String adr = args[0];
+        int memorySize = 1;
+        String address = args[0];
 
         if(args.length > 1)
         {
             try
             {
-                memLen = Integer.parseInt(args[1]);
+                memorySize = Integer.parseInt(args[1]);
             }
             catch(Exception e)
             {
-                System.err.println("Memory not allocated. Execution stopped.");
+                System.err.println("Memory could not be allocated.\n\tExecution stopped.");
                 return;
             }
         }
 
-        if(!adr.endsWith(".apo"))
+        if(!address.endsWith(".apo"))
         {
-            System.err.println("Wrong filename extension. Execution stopped.");
+            System.err.println("Wrong filename extension.\n\tExecution stopped.");
             return;
         }
 
-        Path p = Paths.get(adr);
-        Controler ct = new Controler(memLen, p);
+        Path path = Paths.get(address);
+        Controller controller = new Controller(memorySize, path);
 
         try
         {
-            ct.parse();
-        }
-        catch(LanguageError e)
-        {
-            e.printError();
-            return;
+            controller.parse();
         }
         catch(Exception e)
         {
-            System.err.println("Exception while parsing: " + e.getMessage()
-                + ". Execution stopped.");
+            System.err.println("\nparser error>> " + e.toString() + "\n\tExecution stopped.");
             return;
         }
 
         try
         {
-            ct.make();
-        }
-        catch(LanguageError e)
-        {
-            e.printError();
+            controller.make();
         }
         catch(Exception e)
         {
-            System.err.println("Exception while interpreting: " + e.getMessage()
-                + ". Execution stopped.");
+            System.err.println("\ninterpreter error>> " + e.toString() + "\n\tExecution stopped.");
         }
     }
 }

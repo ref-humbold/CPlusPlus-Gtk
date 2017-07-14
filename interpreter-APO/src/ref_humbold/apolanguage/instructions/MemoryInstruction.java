@@ -1,6 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
 import ref_humbold.apolanguage.errors.MemoryError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.interpret.Memory;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
@@ -25,35 +26,78 @@ public class MemoryInstruction
         return instruction;
     }
 
+    @Override
     public void execute(VariableSet variables)
-        throws MemoryError
+        throws MemoryError, SymbolError
     {
         int argValue0;
         int argValue1;
+        int result;
 
         switch(name)
         {
             case "LDW":
-                argValue1 = variables.getValue(args[1]);
-                variables.setValue(args[0], memory.loadWord(argValue1, lineNumber));
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    result = memory.loadWord(argValue1);
+                    variables.setValue(args[0], result);
+                }
+                catch(SymbolError | MemoryError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "LDB":
-                argValue1 = variables.getValue(args[1]);
-                variables.setValue(args[0], memory.loadByte(argValue1, lineNumber));
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    result = memory.loadByte(argValue1);
+                    variables.setValue(args[0], result);
+                }
+                catch(SymbolError | MemoryError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "STW":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
-                memory.storeWord(argValue1, argValue0, lineNumber);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                    memory.storeWord(argValue1, argValue0);
+                }
+                catch(SymbolError | MemoryError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
 
                 break;
 
             case "STB":
-                argValue0 = variables.getValue(args[0]);
-                argValue1 = variables.getValue(args[1]);
-                memory.storeByte(argValue1, argValue0, lineNumber);
+                try
+                {
+                    argValue0 = variables.getValue(args[0]);
+                    argValue1 = variables.getValue(args[1]);
+                    memory.storeByte(argValue1, argValue0);
+                }
+                catch(SymbolError | MemoryError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
         }
     }

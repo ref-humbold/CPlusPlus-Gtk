@@ -1,6 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
 import ref_humbold.apolanguage.errors.ArithmeticError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 public class LogicalInstruction
@@ -21,8 +22,9 @@ public class LogicalInstruction
         return instruction;
     }
 
+    @Override
     public void execute(VariableSet variables)
-        throws ArithmeticError
+        throws ArithmeticError, SymbolError
     {
         int argValue1;
         int argValue2;
@@ -30,83 +32,212 @@ public class LogicalInstruction
         switch(name)
         {
             case "SHLT":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
 
                 if(args[2] < 0)
                     throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
 
-                variables.setValue(args[0], argValue1 << args[2]);
+                try
+                {
+                    variables.setValue(args[0], argValue1 << args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "SHRT":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
 
                 if(args[2] < 0)
                     throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
 
-                variables.setValue(args[0], argValue1 >>> args[2]);
+                try
+                {
+                    variables.setValue(args[0], argValue1 >>> args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "SHRS":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
 
                 if(args[2] < 0)
                     throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
 
-                variables.setValue(args[0], argValue1 >> args[2]);
+                try
+                {
+                    variables.setValue(args[0], argValue1 >> args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "AND":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 & argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 & argValue2);
+                    throw e;
+                }
+
                 break;
 
             case "ANDI":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 & args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 & args[2]);
+                    throw e;
+                }
+
                 break;
 
             case "OR":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 | argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 | argValue2);
+                    throw e;
+                }
+
                 break;
 
             case "ORI":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 | args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 | args[2]);
+                    throw e;
+                }
+
                 break;
 
             case "XOR":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 ^ argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 ^ argValue2);
+                    throw e;
+                }
+
                 break;
 
             case "XORI":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 ^ args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], argValue1 ^ args[2]);
+                    throw e;
+                }
+
                 break;
 
             case "NAND":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], ~(argValue1 & argValue2));
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], ~(argValue1 & argValue2));
+                    throw e;
+                }
+
                 break;
 
             case "NOR":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], ~(argValue1 | argValue2));
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
 
-                variables.setValue(args[0], ~(argValue1 | argValue2));
+                    throw e;
+                }
+
                 break;
         }
     }

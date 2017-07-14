@@ -6,7 +6,7 @@ import ref_humbold.apolanguage.errors.LanguageError;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 /**
- * Bazowa klasa do przechowywania pojedynczej instrukcji w liście rozkazów.
+ * Bazowa klasa do przechowywania pojedynczej instrukcji w liscie rozkazow.
  */
 public abstract class Instruction
     implements Cloneable
@@ -27,7 +27,7 @@ public abstract class Instruction
     protected int[] args;
 
     /**
-     * Wskaźnik na następny element listy.
+     * Wskaznik na nastepny element listy.
      */
     protected Instruction next = null;
 

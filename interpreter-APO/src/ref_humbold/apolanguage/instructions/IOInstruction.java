@@ -1,6 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
 import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.interpret.IOConnector;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
@@ -25,6 +26,7 @@ public class IOInstruction
         return instruction;
     }
 
+    @Override
     public void execute(VariableSet variables)
         throws LanguageError
     {
@@ -37,23 +39,65 @@ public class IOInstruction
                 break;
 
             case "PTINT":
-                argValue = variables.getValue(args[0]);
+                try
+                {
+                    argValue = variables.getValue(args[0]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 connector.printInt(argValue);
                 break;
 
             case "PTCHR":
-                argValue = variables.getValue(args[0]);
+                try
+                {
+                    argValue = variables.getValue(args[0]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 connector.printChar(argValue);
                 break;
 
             case "RDINT":
                 argValue = connector.readInt();
-                variables.setValue(args[0], argValue);
+
+                try
+                {
+                    variables.setValue(args[0], argValue);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "RDCHR":
                 argValue = connector.readChar();
-                variables.setValue(args[0], argValue);
+
+                try
+                {
+                    variables.setValue(args[0], argValue);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
         }
     }

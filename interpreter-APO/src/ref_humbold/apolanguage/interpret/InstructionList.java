@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import ref_humbold.apolanguage.instructions.Instruction;
 
 /**
- * Klasa przechowująca listę instrukcji programu. Lista zostaje utworzona podczas parsowania.
+ * Klasa przechowujaca liste instrukcji programu. Lista zostaje utworzona podczas parsowania.
  * @see Parser#parse
  */
 public class InstructionList
@@ -52,7 +52,7 @@ public class InstructionList
     }
 
     /**
-     * Iterator przemieszczający sie po liście instrukcji
+     * Iterator przemieszczajacy sie po liscie instrukcji
      */
     Instruction it;
 
@@ -70,9 +70,9 @@ public class InstructionList
     }
 
     /**
-     * Dodaje nowa instrukcję do listy.
+     * Dodaje nowa instrukcje do listy.
      * @param instruction instrukcja
-     * @param isLabeled czy instrukcję poprzedza etykieta
+     * @param isLabeled czy instrukcje poprzedza etykieta
      * @return referencja do utworzonego elementu
      * @see Instruction
      */
@@ -89,7 +89,7 @@ public class InstructionList
     }
 
     /**
-     * Rozpoczyna iterację po liście, ustawiając iterator na początek listy.
+     * Rozpoczyna iteracje po liscie, ustawiajac iterator na poczatek listy.
      */
     void startIt()
     {

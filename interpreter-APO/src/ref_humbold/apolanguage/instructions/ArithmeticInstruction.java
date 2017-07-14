@@ -1,6 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
 import ref_humbold.apolanguage.errors.ArithmeticError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 public class ArithmeticInstruction
@@ -21,8 +22,9 @@ public class ArithmeticInstruction
         return instruction;
     }
 
+    @Override
     public void execute(VariableSet variables)
-        throws ArithmeticError
+        throws ArithmeticError, SymbolError
     {
         int argValue1;
         int argValue2;
@@ -30,41 +32,110 @@ public class ArithmeticInstruction
         switch(name)
         {
             case "ADD":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
-                variables.setValue(args[0], argValue1 + argValue2);
+
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 + argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "ADDI":
-                argValue1 = variables.getValue(args[1]);
-                variables.setValue(args[0], argValue1 + args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 + args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "SUB":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
-                variables.setValue(args[0], argValue1 - argValue2);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 - argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "SUBI":
-                argValue1 = variables.getValue(args[1]);
-                variables.setValue(args[0], argValue1 - args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 - args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "MUL":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
-                variables.setValue(args[0], argValue1 * argValue2);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                    variables.setValue(args[0], argValue1 * argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "MULI":
-                argValue1 = variables.getValue(args[1]);
-                variables.setValue(args[0], argValue1 * args[2]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    variables.setValue(args[0], argValue1 * args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    e.setLineNumber(lineNumber);
+
+                    throw e;
+                }
+
                 break;
 
             case "DIV":
-                argValue1 = variables.getValue(args[1]);
-                argValue2 = variables.getValue(args[2]);
+
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                    argValue2 = variables.getValue(args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    throw new SymbolError(e.getMessage(), lineNumber);
+                }
 
                 if(argValue2 == 0)
                 {
@@ -74,11 +145,26 @@ public class ArithmeticInstruction
                     throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineNumber);
                 }
 
-                variables.setValue(args[0], argValue1 / argValue2);
+                try
+                {
+                    variables.setValue(args[0], argValue1 / argValue2);
+                }
+                catch(SymbolError e)
+                {
+                    throw new SymbolError(e.getMessage(), lineNumber);
+                }
+
                 break;
 
             case "DIVI":
-                argValue1 = variables.getValue(args[1]);
+                try
+                {
+                    argValue1 = variables.getValue(args[1]);
+                }
+                catch(SymbolError e)
+                {
+                    throw new SymbolError(e.getMessage(), lineNumber);
+                }
 
                 if(args[2] == 0)
                 {
@@ -88,7 +174,15 @@ public class ArithmeticInstruction
                     throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineNumber);
                 }
 
-                variables.setValue(args[0], argValue1 / args[2]);
+                try
+                {
+                    variables.setValue(args[0], argValue1 / args[2]);
+                }
+                catch(SymbolError e)
+                {
+                    throw new SymbolError(e.getMessage(), lineNumber);
+                }
+
                 break;
         }
     }

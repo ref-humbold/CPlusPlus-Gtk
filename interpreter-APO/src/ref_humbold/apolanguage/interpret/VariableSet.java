@@ -3,6 +3,8 @@ package ref_humbold.apolanguage.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
+import ref_humbold.apolanguage.errors.SymbolError;
+
 /**
  * Klasa przechowujaca liste zmiennych wraz z ich wartosciami.
  */
@@ -29,6 +31,16 @@ public class VariableSet
 
     /**
      * Sprawdzanie, czy zmienna o okreslonej nazwie juz istnieje.
+     * @param index numer zmiennej
+     * @return czy zmienna istnieje
+     */
+    public boolean contains(int index)
+    {
+        return variableValues.containsKey(index);
+    }
+
+    /**
+     * Sprawdzanie, czy zmienna o okreslonej nazwie juz istnieje.
      * @param name nazwa zmiennej
      * @return czy zmienna istnieje
      */
@@ -43,8 +55,12 @@ public class VariableSet
      * @return wartosc zmiennej
      */
     public int getValue(String name)
+        throws SymbolError
     {
-        return variableValues.get(getNumber(name));
+        if(!contains(name))
+            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
+
+        return getValue(getNumber(name));
     }
 
     /**
@@ -53,7 +69,11 @@ public class VariableSet
      * @return wartosc zmiennej
      */
     public int getValue(int index)
+        throws SymbolError
     {
+        if(!contains(index))
+            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
+
         return variableValues.get(index);
     }
 
@@ -63,13 +83,7 @@ public class VariableSet
      */
     public void setValue(String name)
     {
-        if(!contains(name))
-        {
-            ++variableCount;
-            variableNumbers.put(name, variableCount);
-        }
-
-        variableValues.put(getNumber(name), DEFAULT_VALUE);
+        setValue(name, DEFAULT_VALUE);
     }
 
     /**
@@ -81,8 +95,8 @@ public class VariableSet
     {
         if(!contains(name))
         {
-            ++variableCount;
             variableNumbers.put(name, variableCount);
+            ++variableCount;
         }
 
         variableValues.put(getNumber(name), value);
@@ -94,9 +108,10 @@ public class VariableSet
      * @param value wartosc do zapisu
      */
     public void setValue(int index, int value)
+        throws SymbolError
     {
-        if(!variableValues.containsKey(index))
-            throw new IndexOutOfBoundsException("Number is not associated to a variable.");
+        if(!contains(index))
+            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
 
         variableValues.put(index, value);
     }

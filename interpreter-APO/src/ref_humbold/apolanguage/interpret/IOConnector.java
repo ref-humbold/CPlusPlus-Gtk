@@ -35,7 +35,7 @@ public class IOConnector
     }
 
     /**
-     * Wyswietla liczbe na standardowe wyjście.
+     * Wyswietla liczbe na standardowe wyjscie.
      * @param number liczba
      */
     public void printInt(int number)
@@ -44,7 +44,7 @@ public class IOConnector
     }
 
     /**
-     * Wyswietla znak na standardowe wyjście.
+     * Wyswietla znak na standardowe wyjscie.
      * @param code kod znaku
      */
     public void printChar(int code)
@@ -53,7 +53,7 @@ public class IOConnector
     }
 
     /**
-     * Wczytuje liczbe w systemie dziesiętnym lub szesnastkowym ze standardowego wejścia.
+     * Wczytuje liczbe w systemie dziesietnym lub szesnastkowym ze standardowego wejscia.
      * @return wczytana liczba
      */
     public int readInt()
@@ -75,7 +75,7 @@ public class IOConnector
     }
 
     /**
-     * Wczytuje znak ze standardowego wejścia.
+     * Wczytuje znak ze standardowego wejscia.
      * @return kod wczytanego znaku
      */
     public int readChar()

@@ -22,7 +22,7 @@ import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 /**
  * Klasa wykonujaca parsowanie programu. Wczytuje kolejne linie programu, przetwarza je i tworzy
- * liste instrukcji przechowywana w {@link InstructionList}. Sprawdza poprawnosc składniowa programu
+ * liste instrukcji przechowywana w {@link InstructionList}. Sprawdza poprawnosc skladniowa programu
  * oraz poprawnosc zapisu nazw operacji, zmiennych i etykiet. Rowniez wykrywa komentarze w
  * programie.
  */
@@ -36,17 +36,33 @@ public class Parser
 
     /**
      * Uruchamia parser i tworzy tymczasowe listy etykiet oraz zmiennych.
-     * @param p sciezka dostepu do pliku programu
+     * @param path sciezka dostepu do pliku programu
      */
-    public Parser(Path p)
+    public Parser(Path path)
     {
-        filepath = p;
+        filepath = path;
+    }
+
+    /**
+     * Inicjalizuje zmienne znalezione w programie. Kolejno wczytuje linie z pliku programu,
+     * analizuje ich zawartosc i zapisuje zmienne w zbiorze.
+     * @return zbiór zmiennych programu
+     * @see VariableSet
+     */
+    VariableSet initVariables()
+        throws IOException
+    {
+        VariableSet variables = new VariableSet();
+
+        BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
+
+        return variables;
     }
 
     /**
      * Wykonuje parsowanie programu. Kolejno wczytuje linie z pliku programu, analizuje ich
      * zawartosc i tworzy elementy listy instrukcji.
-     * @param v referencja do listy zmiennych utworzonej poczatkowo w {@link Controler}.
+     * @param v lista zmiennych
      * @return lista instrukcji programu
      * @see Instruction
      */
