@@ -5,7 +5,7 @@ import ref_humbold.apolanguage.interpret.VariableSet;
 public class NOPInstruction
     extends Instruction
 {
-    public NOPInstruction(int lineNumber, String name)
+    public NOPInstruction(int lineNumber, InstructionName name)
     {
         super(lineNumber, name);
     }
@@ -16,6 +16,7 @@ public class NOPInstruction
         return new NOPInstruction(super.lineNumber, super.name);
     }
 
+    @Override
     public void execute(VariableSet variables)
     {
     }

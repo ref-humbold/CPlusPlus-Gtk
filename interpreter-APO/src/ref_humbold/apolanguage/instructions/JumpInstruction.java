@@ -13,18 +13,17 @@ public class JumpInstruction
     private Instruction link = null;
     private boolean isJump = false;
 
-    public JumpInstruction(int lineNumber, String name, int... args)
+    public JumpInstruction(int lineNumber, InstructionName name, int... args)
     {
         super(lineNumber, name, args);
     }
 
     /**
      * Przechodzi do nastepnej instrukcji zaleznej od wykonania skoku.
-     * @param isJump informuje o wykonaniu skoku
      * @return nastepna instrukcja do wykonania
      */
     @Override
-    public Instruction getNext(boolean isJump)
+    public Instruction getNext()
     {
         return this.isJump ? this.link : super.next;
     }
@@ -67,11 +66,11 @@ public class JumpInstruction
 
         switch(name)
         {
-            case "JUMP":
+            case JUMP:
                 isJump = true;
                 break;
 
-            case "JPEQ":
+            case JPEQ:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);
@@ -87,7 +86,7 @@ public class JumpInstruction
                 isJump = argValue0 == argValue1;
                 break;
 
-            case "JPNE":
+            case JPNE:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);
@@ -103,7 +102,7 @@ public class JumpInstruction
                 isJump = argValue0 != argValue1;
                 break;
 
-            case "JPLT":
+            case JPLT:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);
@@ -119,7 +118,7 @@ public class JumpInstruction
                 isJump = argValue0 < argValue1;
                 break;
 
-            case "JPGT":
+            case JPGT:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);

@@ -22,7 +22,7 @@ public class InstructionFactory
             case "MULI":
             case "DIV":
             case "DIVI":
-                instruction = new ArithmeticInstruction(lineNumber, name, args);
+                instruction = new ArithmeticInstruction(lineNumber, toName(name), args);
                 break;
 
             case "SHLT":
@@ -36,7 +36,7 @@ public class InstructionFactory
             case "XORI":
             case "NAND":
             case "NOR":
-                instruction = new LogicalInstruction(lineNumber, name, args);
+                instruction = new LogicalInstruction(lineNumber, toName(name), args);
                 break;
 
             case "JUMP":
@@ -44,14 +44,14 @@ public class InstructionFactory
             case "JPNE":
             case "JPLT":
             case "JPGT":
-                instruction = new JumpInstruction(lineNumber, name, args);
+                instruction = new JumpInstruction(lineNumber, toName(name), args);
                 break;
 
             case "LDW":
             case "LDB":
             case "STW":
             case "STB":
-                instruction = new MemoryInstruction(memory, lineNumber, name, args);
+                instruction = new MemoryInstruction(memory, lineNumber, toName(name), args);
                 break;
 
             case "PTLN":
@@ -59,11 +59,11 @@ public class InstructionFactory
             case "PTCHR":
             case "RDINT":
             case "RDCHR":
-                instruction = new IOInstruction(lineNumber, name, args);
+                instruction = new IOInstruction(lineNumber, toName(name), args);
                 break;
 
             case "NOP":
-                instruction = new NOPInstruction(lineNumber, name);
+                instruction = new NOPInstruction(lineNumber, toName(name));
                 break;
 
             default:
@@ -71,5 +71,112 @@ public class InstructionFactory
         }
 
         return instruction;
+    }
+
+    private static InstructionName toName(String name)
+    {
+        switch(name)
+        {
+            case "ADD":
+                return InstructionName.ADD;
+
+            case "ADDI":
+                return InstructionName.ADDI;
+
+            case "SUB":
+                return InstructionName.SUB;
+
+            case "SUBI":
+                return InstructionName.SUBI;
+
+            case "MUL":
+                return InstructionName.MUL;
+
+            case "MULI":
+                return InstructionName.MULI;
+
+            case "DIV":
+                return InstructionName.DIV;
+
+            case "DIVI":
+                return InstructionName.DIVI;
+
+            case "SHLT":
+                return InstructionName.SHLT;
+
+            case "SHRT":
+                return InstructionName.SHRT;
+
+            case "SHRS":
+                return InstructionName.SHRS;
+
+            case "AND":
+                return InstructionName.AND;
+
+            case "ANDI":
+                return InstructionName.ANDI;
+
+            case "OR":
+                return InstructionName.OR;
+
+            case "ORI":
+                return InstructionName.ORI;
+
+            case "XOR":
+                return InstructionName.XOR;
+
+            case "XORI":
+                return InstructionName.XORI;
+
+            case "NAND":
+                return InstructionName.NAND;
+
+            case "NOR":
+                return InstructionName.NOR;
+
+            case "JUMP":
+                return InstructionName.JUMP;
+
+            case "JPEQ":
+                return InstructionName.JPEQ;
+
+            case "JPNE":
+                return InstructionName.JPNE;
+
+            case "JPLT":
+                return InstructionName.JPLT;
+
+            case "JPGT":
+                return InstructionName.JPGT;
+
+            case "LDW":
+                return InstructionName.LDW;
+
+            case "LDB":
+                return InstructionName.LDB;
+
+            case "STW":
+                return InstructionName.STW;
+
+            case "STB":
+                return InstructionName.STB;
+
+            case "PTLN":
+                return InstructionName.PTLN;
+
+            case "PTINT":
+                return InstructionName.PTINT;
+
+            case "PTCHR":
+                return InstructionName.PTCHR;
+
+            case "RDINT":
+                return InstructionName.RDINT;
+
+            case "RDCHR":
+                return InstructionName.RDCHR;
+        }
+
+        return InstructionName.NOP;
     }
 }

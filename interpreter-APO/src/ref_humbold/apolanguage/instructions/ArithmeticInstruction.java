@@ -7,7 +7,7 @@ import ref_humbold.apolanguage.interpret.VariableSet;
 public class ArithmeticInstruction
     extends Instruction
 {
-    public ArithmeticInstruction(int lineNumber, String name, int... args)
+    public ArithmeticInstruction(int lineNumber, InstructionName name, int... args)
     {
         super(lineNumber, name, args);
     }
@@ -31,7 +31,7 @@ public class ArithmeticInstruction
 
         switch(name)
         {
-            case "ADD":
+            case ADD:
 
                 try
                 {
@@ -48,7 +48,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "ADDI":
+            case ADDI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -63,7 +63,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "SUB":
+            case SUB:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -79,7 +79,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "SUBI":
+            case SUBI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -94,7 +94,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "MUL":
+            case MUL:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -110,7 +110,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "MULI":
+            case MULI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -125,7 +125,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "DIV":
+            case DIV:
 
                 try
                 {
@@ -156,7 +156,7 @@ public class ArithmeticInstruction
 
                 break;
 
-            case "DIVI":
+            case DIVI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);

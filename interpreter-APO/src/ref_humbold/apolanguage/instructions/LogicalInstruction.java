@@ -7,7 +7,7 @@ import ref_humbold.apolanguage.interpret.VariableSet;
 public class LogicalInstruction
     extends Instruction
 {
-    public LogicalInstruction(int lineNumber, String name, int... args)
+    public LogicalInstruction(int lineNumber, InstructionName name, int... args)
     {
         super(lineNumber, name, args);
     }
@@ -31,7 +31,7 @@ public class LogicalInstruction
 
         switch(name)
         {
-            case "SHLT":
+            case SHLT:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -59,7 +59,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "SHRT":
+            case SHRT:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -87,7 +87,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "SHRS":
+            case SHRS:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -115,7 +115,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "AND":
+            case AND:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -131,7 +131,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "ANDI":
+            case ANDI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -146,7 +146,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "OR":
+            case OR:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -162,7 +162,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "ORI":
+            case ORI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -177,7 +177,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "XOR":
+            case XOR:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -193,7 +193,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "XORI":
+            case XORI:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -208,7 +208,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "NAND":
+            case NAND:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -224,7 +224,7 @@ public class LogicalInstruction
 
                 break;
 
-            case "NOR":
+            case NOR:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);

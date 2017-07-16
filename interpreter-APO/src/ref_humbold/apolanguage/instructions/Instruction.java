@@ -19,7 +19,7 @@ public abstract class Instruction
     /**
      * Nazwa operacji.
      */
-    protected String name;
+    protected InstructionName name;
 
     /**
      * Argumenty operacji.
@@ -31,7 +31,7 @@ public abstract class Instruction
      */
     protected Instruction next = null;
 
-    public Instruction(int lineNumber, String name, int... args)
+    public Instruction(int lineNumber, InstructionName name, int... args)
     {
         this.lineNumber = lineNumber;
         this.name = name;
@@ -43,7 +43,7 @@ public abstract class Instruction
         return this.lineNumber;
     }
 
-    public String getName()
+    public InstructionName getName()
     {
         return this.name;
     }
@@ -58,7 +58,7 @@ public abstract class Instruction
         return this.args[index];
     }
 
-    public Instruction getNext(boolean isJump)
+    public Instruction getNext()
     {
         return this.next;
     }

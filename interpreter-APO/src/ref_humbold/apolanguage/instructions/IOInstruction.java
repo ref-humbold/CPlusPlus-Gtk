@@ -10,7 +10,7 @@ public class IOInstruction
 {
     IOConnector connector;
 
-    public IOInstruction(int lineNumber, String name, int[] args)
+    public IOInstruction(int lineNumber, InstructionName name, int[] args)
     {
         super(lineNumber, name, args);
         this.connector = IOConnector.getInstance();
@@ -34,11 +34,11 @@ public class IOInstruction
 
         switch(name)
         {
-            case "PTLN":
+            case PTLN:
                 connector.printLine();
                 break;
 
-            case "PTINT":
+            case PTINT:
                 try
                 {
                     argValue = variables.getValue(args[0]);
@@ -53,7 +53,7 @@ public class IOInstruction
                 connector.printInt(argValue);
                 break;
 
-            case "PTCHR":
+            case PTCHR:
                 try
                 {
                     argValue = variables.getValue(args[0]);
@@ -68,7 +68,7 @@ public class IOInstruction
                 connector.printChar(argValue);
                 break;
 
-            case "RDINT":
+            case RDINT:
                 argValue = connector.readInt();
 
                 try
@@ -84,7 +84,7 @@ public class IOInstruction
 
                 break;
 
-            case "RDCHR":
+            case RDCHR:
                 argValue = connector.readChar();
 
                 try

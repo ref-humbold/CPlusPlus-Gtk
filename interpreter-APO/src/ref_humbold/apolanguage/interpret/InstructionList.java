@@ -35,7 +35,7 @@ public class InstructionList
         {
             if(previous != null)
             {
-                Instruction next = previous.getNext(false);
+                Instruction next = previous.getNext();
 
                 if(next != null && !next.equalsLine(current))
                     current = next;
@@ -45,7 +45,7 @@ public class InstructionList
                 throw new NoSuchElementException();
 
             previous = current.clone();
-            current = current.getNext(false);
+            current = current.getNext();
 
             return previous;
         }

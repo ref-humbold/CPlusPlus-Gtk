@@ -10,7 +10,7 @@ public class MemoryInstruction
 {
     private Memory memory;
 
-    public MemoryInstruction(Memory memory, int lineNumber, String name, int... args)
+    public MemoryInstruction(Memory memory, int lineNumber, InstructionName name, int... args)
     {
         super(lineNumber, name, args);
         this.memory = memory;
@@ -36,7 +36,7 @@ public class MemoryInstruction
 
         switch(name)
         {
-            case "LDW":
+            case LDW:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -52,7 +52,7 @@ public class MemoryInstruction
 
                 break;
 
-            case "LDB":
+            case LDB:
                 try
                 {
                     argValue1 = variables.getValue(args[1]);
@@ -68,7 +68,7 @@ public class MemoryInstruction
 
                 break;
 
-            case "STW":
+            case STW:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);
@@ -84,7 +84,7 @@ public class MemoryInstruction
 
                 break;
 
-            case "STB":
+            case STB:
                 try
                 {
                     argValue0 = variables.getValue(args[0]);

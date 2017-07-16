@@ -10,6 +10,7 @@ import org.junit.Test;
 import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
+import ref_humbold.apolanguage.instructions.InstructionName;
 import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 public class InstructionListTest
@@ -168,7 +169,7 @@ public class InstructionListTest
     public void testIteratorNextWhenJump()
     {
         int count1 = 1;
-        String name1 = "JPEQ";
+        InstructionName name1 = InstructionName.JPEQ;
         int[] args1 = new int[]{10, 20, 5};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
@@ -216,7 +217,7 @@ public class InstructionListTest
     public void testIteratorNextWhenNoJump()
     {
         int count1 = 1;
-        String name1 = "JPEQ";
+        InstructionName name1 = InstructionName.JPEQ;
         int[] args1 = new int[]{10, 20, 5};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
