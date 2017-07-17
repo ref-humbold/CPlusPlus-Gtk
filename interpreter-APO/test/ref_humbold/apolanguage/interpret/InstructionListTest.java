@@ -32,7 +32,7 @@ public class InstructionListTest
     }
 
     @Test
-    public void testAddWhenLabel()
+    public void testAddWhenEmpty()
     {
         int count = 1;
         InstructionName name = InstructionName.ADD;
@@ -50,24 +50,32 @@ public class InstructionListTest
             Assert.fail("Unexpected SymbolError was thrown.");
         }
 
-        Instruction e = testObject.add(instruction, true);
+        testObject.add(instruction);
 
-        Assert.assertNotNull(e);
-        Assert.assertEquals(instruction, e);
+        Iterator it = testObject.iterator();
+
+        Assert.assertTrue(it.hasNext());
+        Assert.assertEquals(instruction, it.next());
+        Assert.assertFalse(it.hasNext());
     }
 
     @Test
-    public void testAddWhenNoLabel()
+    public void testAddWhenNotEmpty()
     {
-        int count = 1;
-        InstructionName name = InstructionName.ADD;
-        int[] args = new int[]{10, 20, 30};
+        int count1 = 1;
+        InstructionName name1 = InstructionName.ADD;
+        int[] args1 = new int[]{10, 20, 30};
+        int count2 = 1;
+        InstructionName name2 = InstructionName.MUL;
+        int[] args2 = new int[]{10, 20, 30};
 
-        Instruction instruction = null;
+        Instruction instruction1 = null;
+        Instruction instruction2 = null;
 
         try
         {
-            instruction = InstructionFactory.create(count, name, args);
+            instruction1 = InstructionFactory.create(count1, name1, args1);
+            instruction2 = InstructionFactory.create(count2, name2, args2);
         }
         catch(SymbolError e)
         {
@@ -75,56 +83,16 @@ public class InstructionListTest
             Assert.fail("Unexpected SymbolError was thrown.");
         }
 
-        Instruction e = testObject.add(instruction, false);
+        testObject.add(instruction1);
+        testObject.add(instruction2);
 
-        Assert.assertNull(e);
-    }
+        Iterator it = testObject.iterator();
 
-    @Test
-    public void testAddWhenJumpAndLabel()
-    {
-        int count = 1;
-        InstructionName name = InstructionName.JUMP;
-        int[] args = new int[]{};
-        Instruction instruction = null;
-
-        try
-        {
-            instruction = InstructionFactory.create(count, name, args);
-        }
-        catch(SymbolError e)
-        {
-            e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
-        }
-
-        Instruction e = testObject.add(instruction, true);
-
-        Assert.assertNotNull(e);
-        Assert.assertEquals(instruction, e);
-    }
-
-    @Test
-    public void testAddWhenJumpAndNoLabel()
-    {
-        int count = 1;
-        InstructionName name = InstructionName.JUMP;
-        int[] args = new int[]{};
-        Instruction instruction = null;
-
-        try
-        {
-            instruction = InstructionFactory.create(count, name, args);
-        }
-        catch(SymbolError e)
-        {
-            e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
-        }
-
-        Instruction e = testObject.add(instruction, false);
-
-        Assert.assertNull(e);
+        Assert.assertTrue(it.hasNext());
+        Assert.assertEquals(instruction1, it.next());
+        Assert.assertTrue(it.hasNext());
+        Assert.assertEquals(instruction2, it.next());
+        Assert.assertFalse(it.hasNext());
     }
 
     @Test
@@ -153,7 +121,7 @@ public class InstructionListTest
             Assert.fail("Unexpected SymbolError was thrown.");
         }
 
-        testObject.add(instruction, false);
+        testObject.add(instruction);
 
         Iterator<Instruction> iterator = testObject.iterator();
 
@@ -195,9 +163,9 @@ public class InstructionListTest
         instruction1.setLink(instruction3);
         instruction1.setJump(true);
 
-        testObject.add(instruction1, false);
-        testObject.add(instruction2, false);
-        testObject.add(instruction3, true);
+        testObject.add(instruction1);
+        testObject.add(instruction2);
+        testObject.add(instruction3);
 
         Iterator<Instruction> iterator = testObject.iterator();
 
@@ -243,9 +211,9 @@ public class InstructionListTest
         instruction1.setLink(instruction3);
         instruction1.setJump(false);
 
-        testObject.add(instruction1, false);
-        testObject.add(instruction2, false);
-        testObject.add(instruction3, true);
+        testObject.add(instruction1);
+        testObject.add(instruction2);
+        testObject.add(instruction3);
 
         Iterator<Instruction> iterator = testObject.iterator();
 

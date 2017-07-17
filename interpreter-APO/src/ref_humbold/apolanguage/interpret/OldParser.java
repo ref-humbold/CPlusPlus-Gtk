@@ -87,10 +87,8 @@ public class OldParser
 
                 if(index >= splitted.length)
                 {
-                    args = doArgNone();
-                    elem = instructionList.add(
-                        InstructionFactory.create(count, Instruction.convertToName("NOP"), args),
-                        isLabel);
+                    elem = InstructionFactory.create(count, Instruction.convertToName("NOP"));
+                    instructionList.add(elem);
                     labeledInstructions.put(label, elem);
                     line = reader.readLine();
                     continue;
@@ -111,9 +109,10 @@ public class OldParser
             }
 
             args = doInstr(index, count);
-            elem = instructionList.add(InstructionFactory.create(count, name, args), isLabel);
+            elem = InstructionFactory.create(count, name, args);
+            instructionList.add(elem);
 
-            if(elem != null)
+            if(isLabel)
                 labeledInstructions.put(label, elem);
 
             line = reader.readLine();
@@ -181,7 +180,7 @@ public class OldParser
         int[] q = new int[0];
 
         if(op.startsWith("#"))
-            return doArgNone();
+            return null;
 
         switch(op)
         {
@@ -456,7 +455,7 @@ public class OldParser
                 break;
 
             case "PTLN":
-                q = doArgNone();
+                q = null;
                 break;
 
             case "PTINT":
@@ -495,15 +494,6 @@ public class OldParser
                 throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, count);
         }
 
-        return q;
-    }
-
-    private int[] doArgNone()
-    {
-        int[] q = new int[3];
-        q[0] = -1;
-        q[1] = -1;
-        q[2] = -1;
         return q;
     }
 

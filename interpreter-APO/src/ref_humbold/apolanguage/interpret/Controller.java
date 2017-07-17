@@ -12,6 +12,7 @@ import ref_humbold.apolanguage.instructions.InstructionFactory;
  */
 public class Controller
 {
+    //TODO replace OldParser with Parser
     private OldParser oldParser;
     private VariableSet variables;
     private InstructionList instructions;

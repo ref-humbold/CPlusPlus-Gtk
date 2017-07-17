@@ -67,11 +67,9 @@ public class InstructionList
     /**
      * Dodaje nowa instrukcje do listy.
      * @param instruction instrukcja
-     * @param isLabeled czy instrukcje poprzedza etykieta
-     * @return referencja do utworzonego elementu
      * @see Instruction
      */
-    Instruction add(Instruction instruction, boolean isLabeled)
+    void add(Instruction instruction)
     {
         if(begin == null)
             begin = instruction;
@@ -79,7 +77,5 @@ public class InstructionList
             end.setNext(instruction);
 
         end = instruction;
-
-        return isLabeled ? instruction : null;
     }
 }
