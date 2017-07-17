@@ -35,7 +35,7 @@ public class InstructionListTest
     public void testAddWhenLabel()
     {
         int count = 1;
-        String name = "ADD";
+        InstructionName name = InstructionName.ADD;
         int[] args = new int[]{10, 20, 30};
 
         Instruction instruction = null;
@@ -60,7 +60,7 @@ public class InstructionListTest
     public void testAddWhenNoLabel()
     {
         int count = 1;
-        String name = "ADD";
+        InstructionName name = InstructionName.ADD;
         int[] args = new int[]{10, 20, 30};
 
         Instruction instruction = null;
@@ -84,7 +84,7 @@ public class InstructionListTest
     public void testAddWhenJumpAndLabel()
     {
         int count = 1;
-        String name = "JUMP";
+        InstructionName name = InstructionName.JUMP;
         int[] args = new int[]{};
         Instruction instruction = null;
 
@@ -108,7 +108,7 @@ public class InstructionListTest
     public void testAddWhenJumpAndNoLabel()
     {
         int count = 1;
-        String name = "JUMP";
+        InstructionName name = InstructionName.JUMP;
         int[] args = new int[]{};
         Instruction instruction = null;
 
@@ -139,7 +139,7 @@ public class InstructionListTest
     public void testIteratorWhenNonEmptyList()
     {
         int count = 1;
-        String name = "ADD";
+        InstructionName name = InstructionName.ADD;
         int[] args = new int[]{10, 20, 30};
         Instruction instruction = null;
 
@@ -173,11 +173,11 @@ public class InstructionListTest
         int[] args1 = new int[]{10, 20, 5};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
-        String name2 = "ADD";
+        InstructionName name2 = InstructionName.ADD;
         int[] args2 = new int[]{10, 20, 5};
         Instruction instruction2 = null;
         int count3 = 2;
-        String name3 = "MUL";
+        InstructionName name3 = InstructionName.MUL;
         int[] args3 = new int[]{10, 20, 5};
         Instruction instruction3 = null;
 
@@ -221,11 +221,11 @@ public class InstructionListTest
         int[] args1 = new int[]{10, 20, 5};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
-        String name2 = "ADD";
+        InstructionName name2 = InstructionName.ADD;
         int[] args2 = new int[]{10, 20, 5};
         Instruction instruction2 = null;
         int count3 = 2;
-        String name3 = "MUL";
+        InstructionName name3 = InstructionName.MUL;
         int[] args3 = new int[]{10, 20, 5};
         Instruction instruction3 = null;
 

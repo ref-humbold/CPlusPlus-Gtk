@@ -7,7 +7,7 @@ import ref_humbold.apolanguage.instructions.Instruction;
 
 /**
  * Klasa przechowujaca liste instrukcji programu. Lista zostaje utworzona podczas parsowania.
- * @see Parser#parse
+ * @see OldParser#parse
  */
 public class InstructionList
     implements Iterable<Instruction>

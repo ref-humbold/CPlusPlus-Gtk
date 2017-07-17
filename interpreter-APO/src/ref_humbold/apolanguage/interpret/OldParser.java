@@ -18,6 +18,7 @@ import ref_humbold.apolanguage.errors.LanguageError;
 import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
+import ref_humbold.apolanguage.instructions.InstructionName;
 import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 /**
@@ -26,7 +27,7 @@ import ref_humbold.apolanguage.instructions.JumpInstruction;
  * oraz poprawnosc zapisu nazw operacji, zmiennych i etykiet. Rowniez wykrywa komentarze w
  * programie.
  */
-public class Parser
+public class OldParser
 {
     private Path filepath;
     private List<String> labels = new ArrayList<>();
@@ -38,27 +39,9 @@ public class Parser
      * Uruchamia parser i tworzy tymczasowe listy etykiet oraz zmiennych.
      * @param path sciezka dostepu do pliku programu
      */
-    public Parser(Path path)
+    public OldParser(Path path)
     {
         filepath = path;
-    }
-
-    /**
-     * Inicjalizuje zmienne znalezione w programie. Kolejno wczytuje linie z pliku programu,
-     * analizuje ich zawartosc i zapisuje zmienne w zbiorze.
-     * @return zbiór zmiennych programu
-     * @see VariableSet
-     */
-    VariableSet initVariables()
-        throws IOException
-    {
-        VariableSet variables = new VariableSet();
-
-        variables.setValue("zero", 0);
-
-        BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
-
-        return variables;
     }
 
     /**
@@ -105,17 +88,30 @@ public class Parser
                 if(index >= splitted.length)
                 {
                     args = doArgNone();
-                    elem = instructionList.add(InstructionFactory.create(count, "NOP", args),
-                                               isLabel);
+                    elem = instructionList.add(
+                        InstructionFactory.create(count, Instruction.convertToName("NOP"), args),
+                        isLabel);
                     labeledInstructions.put(label, elem);
                     line = reader.readLine();
                     continue;
                 }
             }
 
+            InstructionName name;
+
+            try
+            {
+                name = Instruction.convertToName(splitted[index]);
+            }
+            catch(SymbolError e)
+            {
+                e.setLineNumber(count);
+
+                throw e;
+            }
+
             args = doInstr(index, count);
-            elem = instructionList.add(InstructionFactory.create(count, splitted[index], args),
-                                       isLabel);
+            elem = instructionList.add(InstructionFactory.create(count, name, args), isLabel);
 
             if(elem != null)
                 labeledInstructions.put(label, elem);
