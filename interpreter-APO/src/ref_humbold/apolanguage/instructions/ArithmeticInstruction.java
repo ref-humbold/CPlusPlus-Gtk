@@ -13,16 +13,6 @@ public class ArithmeticInstruction
     }
 
     @Override
-    public ArithmeticInstruction clone()
-    {
-        ArithmeticInstruction instruction = new ArithmeticInstruction(lineNumber, name, args);
-
-        instruction.setNext(next);
-
-        return instruction;
-    }
-
-    @Override
     public void execute(VariableSet variables)
         throws ArithmeticError, SymbolError
     {

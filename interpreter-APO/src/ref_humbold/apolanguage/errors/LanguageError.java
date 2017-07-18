@@ -7,14 +7,10 @@ public class LanguageError
     private int lineNumber;
 
     public LanguageError(String message, int lineNumber)
-        throws IllegalArgumentException
     {
         super(message);
 
-        if(lineNumber < 0)
-            throw new IllegalArgumentException("Line number has to be non-negative.");
-
-        this.lineNumber = lineNumber;
+        setLineNumber(lineNumber);
     }
 
     public LanguageError(String message)

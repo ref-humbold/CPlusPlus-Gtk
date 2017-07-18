@@ -10,7 +10,6 @@ import ref_humbold.apolanguage.interpret.VariableSet;
  * Bazowa klasa do przechowywania pojedynczej instrukcji w liscie rozkazow.
  */
 public abstract class Instruction
-    implements Cloneable
 {
     /**
      * Numer wiersza programu.
@@ -34,6 +33,9 @@ public abstract class Instruction
 
     public Instruction(int lineNumber, InstructionName name, int... args)
     {
+        if(name == null)
+            throw new IllegalArgumentException("Instruction name is null.");
+
         this.lineNumber = lineNumber;
         this.name = name;
         this.args = args;
@@ -199,27 +201,9 @@ public abstract class Instruction
 
         Instruction other = (Instruction)obj;
 
-        if(!Arrays.equals(args, other.args))
-            return false;
-
-        if(name == null)
-            return other.name == null;
-
-        return name.equals(other.name);
+        return lineNumber == other.lineNumber && name.equals(other.name) && Arrays.equals(args,
+                                                                                          other.args);
     }
-
-    public boolean equalsLine(Object obj)
-    {
-        if(!equals(obj))
-            return false;
-
-        Instruction other = (Instruction)obj;
-
-        return lineNumber == other.lineNumber;
-    }
-
-    @Override
-    public abstract Instruction clone();
 
     @Override
     public int hashCode()

@@ -37,14 +37,14 @@ public class InstructionList
             {
                 Instruction next = previous.getNext();
 
-                if(next != null && !next.equalsLine(current))
+                if(next != null && !next.equals(current))
                     current = next;
             }
 
             if(!hasNext())
                 throw new NoSuchElementException();
 
-            previous = current.clone();
+            previous = current;
             current = current.getNext();
 
             return previous;
@@ -56,6 +56,44 @@ public class InstructionList
 
     public InstructionList()
     {
+    }
+
+    public InstructionList(Iterable<Instruction> instructions)
+    {
+        for(Instruction instruction : instructions)
+            add(instruction);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(this == obj)
+            return true;
+
+        if(obj == null)
+            return false;
+
+        if(!(obj instanceof InstructionList))
+            return false;
+
+        InstructionList other = (InstructionList)obj;
+
+        if(begin == null)
+            return other.begin == null;
+
+        Instruction thisIter = begin;
+        Instruction otherIter = other.begin;
+
+        while(thisIter != null && otherIter != null)
+        {
+            if(!thisIter.equals(otherIter))
+                return false;
+
+            thisIter = thisIter.getNext();
+            otherIter = otherIter.getNext();
+        }
+
+        return thisIter == null && otherIter == null;
     }
 
     @Override
@@ -71,6 +109,9 @@ public class InstructionList
      */
     public void add(Instruction instruction)
     {
+        if(instruction == null)
+            throw new IllegalArgumentException("Instruction in list is null.");
+
         if(begin == null)
             begin = instruction;
         else

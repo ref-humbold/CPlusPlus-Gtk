@@ -17,16 +17,6 @@ public class MemoryInstruction
     }
 
     @Override
-    public MemoryInstruction clone()
-    {
-        MemoryInstruction instruction = new MemoryInstruction(memory, lineNumber, name, args);
-
-        instruction.setNext(next);
-
-        return instruction;
-    }
-
-    @Override
     public void execute(VariableSet variables)
         throws MemoryError, SymbolError
     {

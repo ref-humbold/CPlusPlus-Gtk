@@ -29,14 +29,28 @@ public class JumpInstruction
     }
 
     @Override
-    public Instruction clone()
+    public boolean equals(Object obj)
     {
-        JumpInstruction instruction = new JumpInstruction(lineNumber, name, args);
+        if(this == obj)
+            return true;
 
-        instruction.setLink(link);
-        instruction.isJump = false;
+        if(obj == null)
+            return false;
 
-        return instruction;
+        if(!(obj instanceof JumpInstruction))
+            return false;
+
+        JumpInstruction other = (JumpInstruction)obj;
+
+        return super.equals(other) && (link == null ? other.link == null : link.equals(other.link));
+    }
+
+    @Override
+    public int hashCode()
+    {
+        final int prime = 37;
+
+        return prime * super.hashCode() + (link == null ? 0 : link.hashCode());
     }
 
     /**

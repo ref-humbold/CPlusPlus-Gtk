@@ -6,7 +6,7 @@ public class LabelError
     private static final long serialVersionUID = 7536066731780429351L;
     public static final String LABEL_NOT_FOUND = "Label not found.";
     public static final String DUPLICATED = "Duplicated label.";
-    public static final String SAME_VARIABLE_NAME = "Variables and labels cannot have the same name.";
+    public static final String SAME_VARIABLE_NAME = "Label has the same name as variable.";
     public static final String INVALID_CHARACTERS = "Invalid characters in label name.";
 
     public LabelError(String message, int lineNumber)

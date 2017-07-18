@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Set;
 
+import ref_humbold.apolanguage.errors.LabelError;
 import ref_humbold.apolanguage.errors.LanguageError;
 import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionName;
+import ref_humbold.apolanguage.instructions.NOPInstruction;
 
 /**
  * Klasa wykonujaca parsowanie programu. Wczytuje kolejne linie programu, przetwarza je i tworzy
@@ -52,22 +56,28 @@ public class Parser
     {
         InstructionList instructions = new InstructionList();
         String line = reader.readLine();
-        int lineNumber = 1;
+        int lineNumber = 0;
 
         while(line != null)
-
         {
-            String[] splittedLine = split(removeComment(line));
+            ++lineNumber;
+            line = removeComment(line.trim());
 
-            if(splittedLine.length == 0)
+            if(line.equals(""))
+            {
+                line = reader.readLine();
                 continue;
+            }
 
-            Instruction instruction = hasLabel(splittedLine) ? parseLineWithLabel(splittedLine)
-                                                             : parseLineWithoutLabel(splittedLine);
+            String[] splittedLine = split(line);
+
+            Instruction instruction = parseLine(splittedLine, lineNumber);
 
             instructions.add(instruction);
-            ++lineNumber;
+            line = reader.readLine();
         }
+
+        setLinksForJumps();
 
         return instructions;
     }
@@ -88,17 +98,38 @@ public class Parser
         throws IOException, LanguageError
     {
         VariableSet variables = new VariableSet();
+        Set<String> labels = new HashSet<>();
         String line = reader.readLine();
+        int lineNumber = 0;
 
         variables.setValue("zero", 0);
 
         while(line != null)
         {
-            String[] splittedLine = split(removeComment(line));
-            int index = hasLabel(splittedLine) ? 2 : 1;
+            ++lineNumber;
+            line = removeComment(line.trim());
 
-            if(splittedLine.length > index && isAllLowerCase(splittedLine[index]))
+            if(line.equals(""))
             {
+                line = reader.readLine();
+                continue;
+            }
+
+            String[] splittedLine = split(line);
+            String label = exractLabel(splittedLine);
+            int index = 1;
+
+            if(!label.equals(""))
+            {
+                index = 2;
+                labels.add(label + "@" + Integer.toString(lineNumber));
+            }
+
+            if(splittedLine.length > index)
+            {
+                if(!isAllLowerCase(splittedLine[index]))
+                    throw new SymbolError(SymbolError.INVALID_CHARACTERS);
+
                 InstructionName name = Instruction.convertToName(splittedLine[index - 1]);
 
                 if(isValueSet(name) && !variables.contains(splittedLine[index]))
@@ -108,19 +139,41 @@ public class Parser
             line = reader.readLine();
         }
 
+        for(String label : labels)
+        {
+            String[] labelSplitted = label.split("@");
+
+            lineNumber = Integer.parseInt(labelSplitted[1]);
+
+            if(variables.contains(labelSplitted[0]))
+                throw new LabelError(LabelError.SAME_VARIABLE_NAME, lineNumber);
+        }
+
         return variables;
     }
 
-    private Instruction parseLineWithoutLabel(String[] splittedLine)
+    private Instruction parseLine(String[] splittedLine, int lineNumber)
+        throws LabelError
     {
-        //TODO write parser for single line without label
-        return null;
+        //TODO write parser for single line
+        Instruction instruction = new NOPInstruction(lineNumber);
+        String label = exractLabel(splittedLine);
+
+        if(!label.equals(""))
+        {
+            if(labelSet.contains(label))
+                throw new LabelError(LabelError.DUPLICATED, lineNumber);
+
+            labelSet.setInstruction(label, instruction);
+        }
+
+        return instruction;
     }
 
-    private Instruction parseLineWithLabel(String[] splittedLine)
+    private void setLinksForJumps()
+        throws LabelError
     {
-        //TODO write parser for single line with label
-        return null;
+        //TODO write setting links for jumps
     }
 
     private String removeComment(String line)
@@ -131,6 +184,12 @@ public class Parser
     private String[] split(String line)
     {
         return line.split("\\s+");
+    }
+
+    private String exractLabel(String[] splittedLine)
+    {
+        return hasLabel(splittedLine) ? splittedLine[0].substring(0, splittedLine[0].length() - 1)
+                                      : "";
     }
 
     private boolean hasLabel(String[] splittedLine)

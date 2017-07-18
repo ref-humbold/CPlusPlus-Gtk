@@ -11,12 +11,6 @@ public class NOPInstruction
     }
 
     @Override
-    public NOPInstruction clone()
-    {
-        return new NOPInstruction(super.lineNumber);
-    }
-
-    @Override
     public void execute(VariableSet variables)
     {
     }

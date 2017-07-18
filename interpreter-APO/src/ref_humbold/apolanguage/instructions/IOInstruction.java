@@ -8,22 +8,12 @@ import ref_humbold.apolanguage.interpret.VariableSet;
 public class IOInstruction
     extends Instruction
 {
-    IOConnector connector;
+    private IOConnector connector;
 
-    public IOInstruction(int lineNumber, InstructionName name, int[] args)
+    public IOInstruction(int lineNumber, InstructionName name, int... args)
     {
         super(lineNumber, name, args);
         this.connector = IOConnector.getInstance();
-    }
-
-    @Override
-    public IOInstruction clone()
-    {
-        IOInstruction instruction = new IOInstruction(lineNumber, name, args);
-
-        instruction.setNext(next);
-
-        return instruction;
     }
 
     @Override
