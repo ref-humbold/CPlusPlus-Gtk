@@ -155,57 +155,6 @@ public abstract class Instruction
         throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
     }
 
-    /**
-     * Okresla, czy instrukcja zapisuje wynik swojej operacji do zmiennej.
-     * @param name nazwa instrukcji
-     * @return czy zapisuje do zmiennej
-     */
-    public static boolean setsValue(InstructionName name)
-        throws SymbolError
-    {
-        switch(name)
-        {
-            case ADD:
-            case ADDI:
-            case SUB:
-            case SUBI:
-            case MUL:
-            case MULI:
-            case DIV:
-            case DIVI:
-            case SHLT:
-            case SHRT:
-            case SHRS:
-            case AND:
-            case ANDI:
-            case OR:
-            case ORI:
-            case XOR:
-            case XORI:
-            case NAND:
-            case NOR:
-            case RDINT:
-            case RDCHR:
-            case LDW:
-            case LDB:
-                return true;
-
-            case JUMP:
-            case JPEQ:
-            case JPLT:
-            case JPGT:
-            case STW:
-            case STB:
-            case PTLN:
-            case PTINT:
-            case PTCHR:
-            case NOP:
-                return false;
-        }
-
-        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
-    }
-
     public int getLineNumber()
     {
         return this.lineNumber;

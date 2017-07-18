@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionName;
 
@@ -21,6 +22,7 @@ public class Parser
     private static final String COMMENT_SIGN = "#";
     private static final String LABEL_END_SIGN = ":";
     private Path filepath;
+    private LabelSet labelSet;
 
     /**
      * Uruchamia parser i tworzy tymczasowe listy etykiet oraz zmiennych.
@@ -28,7 +30,8 @@ public class Parser
      */
     public Parser(Path path)
     {
-        filepath = path;
+        this.filepath = path;
+        this.labelSet = new LabelSet();
     }
 
     /**
@@ -41,12 +44,18 @@ public class Parser
     public InstructionList parse()
         throws IOException, LanguageError
     {
+        return parse(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
+    }
+
+    InstructionList parse(BufferedReader reader)
+        throws IOException, LanguageError
+    {
         InstructionList instructions = new InstructionList();
-        BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
         String line = reader.readLine();
         int lineNumber = 1;
 
         while(line != null)
+
         {
             String[] splittedLine = split(removeComment(line));
 
@@ -57,6 +66,7 @@ public class Parser
                                                              : parseLineWithoutLabel(splittedLine);
 
             instructions.add(instruction);
+            ++lineNumber;
         }
 
         return instructions;
@@ -71,8 +81,13 @@ public class Parser
     public VariableSet initVariables()
         throws IOException, LanguageError
     {
+        return initVariables(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
+    }
+
+    VariableSet initVariables(BufferedReader reader)
+        throws IOException, LanguageError
+    {
         VariableSet variables = new VariableSet();
-        BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
         String line = reader.readLine();
 
         variables.setValue("zero", 0);
@@ -86,7 +101,7 @@ public class Parser
             {
                 InstructionName name = Instruction.convertToName(splittedLine[index - 1]);
 
-                if(Instruction.setsValue(name) && !variables.contains(splittedLine[index]))
+                if(isValueSet(name) && !variables.contains(splittedLine[index]))
                     variables.setValue(splittedLine[index]);
             }
 
@@ -130,5 +145,101 @@ public class Parser
                 return false;
 
         return true;
+    }
+
+    private boolean isValueSet(InstructionName name)
+        throws SymbolError
+    {
+        switch(name)
+        {
+            case ADD:
+            case ADDI:
+            case SUB:
+            case SUBI:
+            case MUL:
+            case MULI:
+            case DIV:
+            case DIVI:
+            case SHLT:
+            case SHRT:
+            case SHRS:
+            case AND:
+            case ANDI:
+            case OR:
+            case ORI:
+            case XOR:
+            case XORI:
+            case NAND:
+            case NOR:
+            case RDINT:
+            case RDCHR:
+            case LDW:
+            case LDB:
+                return true;
+
+            case JUMP:
+            case JPEQ:
+            case JPLT:
+            case JPGT:
+            case STW:
+            case STB:
+            case PTLN:
+            case PTINT:
+            case PTCHR:
+            case NOP:
+                return false;
+        }
+
+        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
+    }
+
+    private int getArgsNumber(InstructionName name)
+        throws SymbolError
+    {
+        switch(name)
+        {
+            case PTLN:
+            case NOP:
+                return 0;
+
+            case LDW:
+            case LDB:
+            case PTINT:
+            case PTCHR:
+            case RDINT:
+            case RDCHR:
+                return 1;
+
+            case STW:
+            case STB:
+                return 2;
+
+            case JUMP:
+            case JPEQ:
+            case JPLT:
+            case JPGT:
+            case ADD:
+            case ADDI:
+            case SUB:
+            case SUBI:
+            case MUL:
+            case MULI:
+            case DIV:
+            case DIVI:
+            case SHLT:
+            case SHRT:
+            case SHRS:
+            case AND:
+            case ANDI:
+            case OR:
+            case ORI:
+            case XOR:
+            case XORI:
+            case NAND:
+            case NOR:
+                return 3;
+        }
+
+        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
     }
 }

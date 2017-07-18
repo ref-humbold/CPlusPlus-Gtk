@@ -80,11 +80,16 @@ public class VariableSetTest
     @Test
     public void testContains()
     {
-        String name = "var";
+        String name1 = "var1";
+        String name2 = "var2";
 
-        testObject.setValue(name);
+        testObject.setValue(name1);
 
-        Assert.assertTrue(testObject.contains(name));
+        boolean result1 = testObject.contains(name1);
+        boolean result2 = testObject.contains(name2);
+
+        Assert.assertTrue(result1);
+        Assert.assertFalse(result2);
     }
 
     @Test

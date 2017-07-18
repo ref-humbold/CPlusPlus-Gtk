@@ -5,15 +5,15 @@ import ref_humbold.apolanguage.interpret.VariableSet;
 public class NOPInstruction
     extends Instruction
 {
-    public NOPInstruction(int lineNumber, InstructionName name)
+    public NOPInstruction(int lineNumber)
     {
-        super(lineNumber, name);
+        super(lineNumber, InstructionName.NOP);
     }
 
     @Override
     public NOPInstruction clone()
     {
-        return new NOPInstruction(super.lineNumber, super.name);
+        return new NOPInstruction(super.lineNumber);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class InstructionFactory
                 return new IOInstruction(lineNumber, name, args);
 
             case NOP:
-                return new NOPInstruction(lineNumber, name);
+                return new NOPInstruction(lineNumber);
         }
 
         throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, lineNumber);

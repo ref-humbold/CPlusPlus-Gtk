@@ -32,7 +32,7 @@ public class Controller
     }
 
     /**
-     * Dokonuje parsowania programu. Uruchamia oldParser ({@link OldParser}) tworzacy liste
+     * Dokonuje parsowania programu. Uruchamia parser {@link OldParser} tworzacy liste
      * instrukcji.
      */
     public void parse()

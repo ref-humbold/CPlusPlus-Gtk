@@ -69,7 +69,7 @@ public class InstructionList
      * @param instruction instrukcja
      * @see Instruction
      */
-    void add(Instruction instruction)
+    public void add(Instruction instruction)
     {
         if(begin == null)
             begin = instruction;

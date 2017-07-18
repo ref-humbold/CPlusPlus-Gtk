@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ref_humbold.apolanguage.errors.LanguageError;
 import ref_humbold.apolanguage.errors.SymbolError;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
@@ -15,13 +16,20 @@ import ref_humbold.apolanguage.instructions.JumpInstruction;
 
 public class InstructionListTest
 {
+    private static final String[] vars = new String[]{"zero", "one", "two", "tree", "res"};
     private InstructionList testObject;
+    private VariableSet variableSet;
 
     @Before
+
     public void setUp()
         throws Exception
     {
         testObject = new InstructionList();
+        variableSet = new VariableSet();
+
+        for(int i = 0; i < vars.length; ++i)
+            variableSet.setValue(vars[i], i);
     }
 
     @After
@@ -29,6 +37,7 @@ public class InstructionListTest
         throws Exception
     {
         testObject = null;
+        variableSet = null;
     }
 
     @Test
@@ -36,7 +45,7 @@ public class InstructionListTest
     {
         int count = 1;
         InstructionName name = InstructionName.ADD;
-        int[] args = new int[]{10, 20, 30};
+        int[] args = new int[]{4, 1, 2};
 
         Instruction instruction = null;
 
@@ -52,7 +61,7 @@ public class InstructionListTest
 
         testObject.add(instruction);
 
-        Iterator it = testObject.iterator();
+        Iterator<Instruction> it = testObject.iterator();
 
         Assert.assertTrue(it.hasNext());
         Assert.assertEquals(instruction, it.next());
@@ -64,10 +73,10 @@ public class InstructionListTest
     {
         int count1 = 1;
         InstructionName name1 = InstructionName.ADD;
-        int[] args1 = new int[]{10, 20, 30};
+        int[] args1 = new int[]{4, 1, 2};
         int count2 = 1;
         InstructionName name2 = InstructionName.MUL;
-        int[] args2 = new int[]{10, 20, 30};
+        int[] args2 = new int[]{4, 1, 2};
 
         Instruction instruction1 = null;
         Instruction instruction2 = null;
@@ -86,7 +95,7 @@ public class InstructionListTest
         testObject.add(instruction1);
         testObject.add(instruction2);
 
-        Iterator it = testObject.iterator();
+        Iterator<Instruction> it = testObject.iterator();
 
         Assert.assertTrue(it.hasNext());
         Assert.assertEquals(instruction1, it.next());
@@ -108,7 +117,7 @@ public class InstructionListTest
     {
         int count = 1;
         InstructionName name = InstructionName.ADD;
-        int[] args = new int[]{10, 20, 30};
+        int[] args = new int[]{4, 1, 2};
         Instruction instruction = null;
 
         try
@@ -137,16 +146,16 @@ public class InstructionListTest
     public void testIteratorNextWhenJump()
     {
         int count1 = 1;
-        InstructionName name1 = InstructionName.JPEQ;
-        int[] args1 = new int[]{10, 20, 5};
+        InstructionName name1 = InstructionName.JPNE;
+        int[] args1 = new int[]{1, 2};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
         InstructionName name2 = InstructionName.ADD;
-        int[] args2 = new int[]{10, 20, 5};
+        int[] args2 = new int[]{4, 1, 3};
         Instruction instruction2 = null;
         int count3 = 2;
         InstructionName name3 = InstructionName.MUL;
-        int[] args3 = new int[]{10, 20, 5};
+        int[] args3 = new int[]{4, 1, 3};
         Instruction instruction3 = null;
 
         try
@@ -161,7 +170,6 @@ public class InstructionListTest
         }
 
         instruction1.setLink(instruction3);
-        instruction1.setJump(true);
 
         testObject.add(instruction1);
         testObject.add(instruction2);
@@ -174,6 +182,17 @@ public class InstructionListTest
         Instruction result1 = iterator.next();
 
         Assert.assertEquals(instruction1, result1);
+        Assert.assertTrue(iterator.hasNext());
+
+        try
+        {
+            result1.execute(variableSet);
+        }
+        catch(LanguageError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected LanguageError was thrown.");
+        }
 
         Instruction result3 = iterator.next();
 
@@ -186,15 +205,15 @@ public class InstructionListTest
     {
         int count1 = 1;
         InstructionName name1 = InstructionName.JPEQ;
-        int[] args1 = new int[]{10, 20, 5};
+        int[] args1 = new int[]{1, 2};
         JumpInstruction instruction1 = new JumpInstruction(count1, name1, args1);
         int count2 = 2;
         InstructionName name2 = InstructionName.ADD;
-        int[] args2 = new int[]{10, 20, 5};
+        int[] args2 = new int[]{4, 1, 3};
         Instruction instruction2 = null;
         int count3 = 2;
         InstructionName name3 = InstructionName.MUL;
-        int[] args3 = new int[]{10, 20, 5};
+        int[] args3 = new int[]{4, 1, 3};
         Instruction instruction3 = null;
 
         try
@@ -209,7 +228,6 @@ public class InstructionListTest
         }
 
         instruction1.setLink(instruction3);
-        instruction1.setJump(false);
 
         testObject.add(instruction1);
         testObject.add(instruction2);
@@ -222,6 +240,17 @@ public class InstructionListTest
         Instruction result1 = iterator.next();
 
         Assert.assertEquals(instruction1, result1);
+        Assert.assertTrue(iterator.hasNext());
+
+        try
+        {
+            result1.execute(variableSet);
+        }
+        catch(LanguageError e)
+        {
+            e.printStackTrace();
+            Assert.fail("Unexpected LanguageError was thrown.");
+        }
 
         Instruction result2 = iterator.next();
 

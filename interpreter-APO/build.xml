@@ -31,7 +31,8 @@
     </copy>
   </target>
   <target name="build" depends="init">
-    <javac debug="true" debuglevel="${debuglevel}" destdir="${build.dir}" includeantruntime="false" source="${source}" target="${target}">
+    <javac debug="true" debuglevel="${debuglevel}" destdir="${build.dir}" includeantruntime="false"
+           source="${source}" target="${target}">
       <src path="${src.dir}" />
       <src path="${test.dir}" />
       <compilerarg line="-Xlint" />
@@ -43,8 +44,11 @@
     <mkdir dir="${junit.output.dir}" />
     <junit fork="yes" printsummary="withOutAndErr">
       <formatter type="xml" />
-      <test name="ref_humbold.apolanguage.interpret.InstructionListTest" todir="${junit.output.dir}" />
+      <test name="ref_humbold.apolanguage.interpret.InstructionListTest"
+            todir="${junit.output.dir}" />
+      <test name="ref_humbold.apolanguage.interpret.LabelSetTest" todir="${junit.output.dir}" />
       <test name="ref_humbold.apolanguage.interpret.MemoryTest" todir="${junit.output.dir}" />
+      <test name="ref_humbold.apolanguage.interpret.ParserTest" todir="${junit.output.dir}" />
       <test name="ref_humbold.apolanguage.interpret.VariableSetTest" todir="${junit.output.dir}" />
       <classpath refid="interpreter-APO.classpath" />
     </junit>
@@ -56,7 +60,7 @@
     </junitreport>
   </target>
   <target name="javadoc" depends="build">
-    <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="package">
+    <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="public">
       <package name="ref_humbold.apolanguage.*" />
       <package name="ref_humbold.apolanguage.interpret.*" />
       <package name="ref_humbold.apolanguage.errors.*" />

@@ -34,7 +34,7 @@ public class JumpInstruction
         JumpInstruction instruction = new JumpInstruction(lineNumber, name, args);
 
         instruction.setLink(link);
-        instruction.setJump(isJump);
+        instruction.isJump = false;
 
         return instruction;
     }
@@ -46,15 +46,6 @@ public class JumpInstruction
     public void setLink(Instruction link)
     {
         this.link = link;
-    }
-
-    /**
-     * Ustawia mozliwosc wykonania skoku.
-     * @param isJump czy wykonac skok
-     */
-    public void setJump(boolean isJump)
-    {
-        this.isJump = isJump;
     }
 
     @Override
