@@ -5,28 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-class TestProvider
-    extends DIContainerBaseProvider
-{
-    public TestProvider(DIContainer container)
-    {
-        super(container);
-    }
-
-    @Override
-    protected void configureContainer(DIContainer container)
-    {
-        container.registerType(TestInterfaceComplexDependency.class,
-                               TestClassComplexDependency.class);
-        container.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
-        container.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
-        container.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
-        container.registerType(TestInterfaceWithString.class, TestClassWithString.class);
-
-        container.registerInstance(String.class, "string");
-    }
-}
-
 public class DIServiceLocatorTest
 {
     private DIContainer container;
@@ -34,6 +12,7 @@ public class DIServiceLocatorTest
 
     @Before
     public void setUp()
+        throws Exception
     {
         container = new DIContainer();
         provider = new TestProvider(container);
@@ -41,6 +20,7 @@ public class DIServiceLocatorTest
 
     @After
     public void tearDown()
+        throws Exception
     {
         container = null;
         provider = null;

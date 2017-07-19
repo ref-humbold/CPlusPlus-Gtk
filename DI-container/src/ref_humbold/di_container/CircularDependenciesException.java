@@ -24,10 +24,4 @@ public class CircularDependenciesException
     {
         super(s, t);
     }
-
-    public CircularDependenciesException(String s, Throwable t, boolean b1, boolean b2)
-    {
-        super(s, t, b1, b2);
-    }
-
 }

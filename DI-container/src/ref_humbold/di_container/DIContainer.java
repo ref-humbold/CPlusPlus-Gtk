@@ -189,7 +189,7 @@ public final class DIContainer
             if(m.isAnnotationPresent(DependencyMethod.class))
             {
                 if(!isCorrectAnnotatedMethod(m))
-                    throw new IncorrectDependencyMethodSignature();
+                    throw new IncorrectDependencyMethodException();
 
                 methods.add(m);
             }

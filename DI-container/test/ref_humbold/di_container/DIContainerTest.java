@@ -11,12 +11,14 @@ public class DIContainerTest
 
     @Before
     public void setUp()
+        throws Exception
     {
         testObject = new DIContainer();
     }
 
     @After
     public void tearDown()
+        throws Exception
     {
         testObject = null;
     }
@@ -875,14 +877,14 @@ public class DIContainerTest
         Assert.assertTrue(cls instanceof TestClassCircularDependency);
     }
 
-    @Test(expected = IncorrectDependencyMethodSignature.class)
+    @Test(expected = IncorrectDependencyMethodException.class)
     public void testResolveWhenDependencyMethodHasReturnType()
         throws DIException
     {
         testObject.resolve(TestClassWithIncorrectDependencyMethod1.class);
     }
 
-    @Test(expected = IncorrectDependencyMethodSignature.class)
+    @Test(expected = IncorrectDependencyMethodException.class)
     public void testResolveWhenDependencyMethodHasNoParameters()
         throws DIException
     {

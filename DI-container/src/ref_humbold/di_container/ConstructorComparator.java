@@ -21,12 +21,6 @@ final class ConstructorComparator
         int ctorParams0 = ctor0.getParameterCount();
         int ctorParams1 = ctor1.getParameterCount();
 
-        if(ctorParams0 > ctorParams1)
-            return -1;
-
-        if(ctorParams0 < ctorParams1)
-            return 1;
-
-        return 0;
+        return -Integer.compare(ctorParams0 , ctorParams1);
     }
 }

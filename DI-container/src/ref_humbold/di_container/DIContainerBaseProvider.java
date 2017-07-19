@@ -15,6 +15,6 @@ public abstract class DIContainerBaseProvider
     @Override
     public DIContainer getContainer()
     {
-        return container;
+        return this.container;
     }
 }
