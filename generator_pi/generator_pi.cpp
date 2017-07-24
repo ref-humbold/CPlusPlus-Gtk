@@ -2,40 +2,45 @@
 #include <cstdio>
 #include <cmath>
 #include <ctime>
-#include <iostream>
-#include <unistd.h>
 
-double gen()
+double pi()
 {
-    int traf = 0, number = 1LL<<24;
+    long long int shot = 0;
+    const long long int NUMBER = 1LL << 24;
+    const int SIZE = 32750;
 
-    srand(time(NULL));
-
-    for(long long int i = 0; i < number; ++i)
+    for(long long int i = 0LL; i < NUMBER; ++i)
     {
-        double x = (rand()%32750)/32750.0, y = (rand()%32750)/32750.0;
-        double odl = sqrt(x*x+y*y);
+        double pos_x = (rand() % SIZE) / (1.0 * SIZE);
+        double pos_y = (rand() % SIZE) / (1.0 * SIZE);
+        double radius = sqrt(pos_x * pos_x + pos_y * pos_y);
 
-        if(odl <= 1)
-            ++traf;
+        if(radius <= 1.0)
+            ++shot;
     }
 
-    return (4.0*traf)/number;
+    return (4.0 * shot) / NUMBER;
 }
 
 int main()
 {
-    double pi;
+    char read = ' ';
 
-    std::cout << "\t(C) by Rafał Kaleta, Wrocław, Poland\n" << "\t\tAll rights reserved\n\n\n";
-    std::cout << "\t\tGENERATOR LICZBY PI\n";
+    printf("\t\tGENERATOR LICZBY PI\n");
+    srand(time(nullptr));
 
-    while(true)
+    do
     {
-        pi = gen();
-        std::cout << "\n\n" << "PI = " << pi << "\n" << "odchylenie wynosi " << pi-3.141592 << "\n";
-        sleep(3);
-    }
+        double pi_value = pi();
+
+        printf("    PI = %lf  (absolute error = %lf)\n\n", pi_value, pi_value - M_PI);
+
+        do
+        {
+            printf("  Write Q to exit, C to continue and press ENTER\n");
+            scanf("%c\n", &read);
+        } while(read != 'q' && read != 'Q' && read != 'c' && read != 'C');
+    } while(read != 'q' && read != 'Q');
 
     return 0;
 }

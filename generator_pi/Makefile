@@ -3,5 +3,10 @@ CXXFLAGS = -Wall -Wextra
 
 all : generator_pi
 
+clean :
+	rm -f *.o
+
+refresh : clean all
+
 generator_pi : generator_pi.cpp
-	$(CXX) $(CXXFLAGS) generator_pi.cpp -o generator_pi
+	$(CXX) $(CXXFLAGS) -Wall -Wextra generator_pi.cpp -o generator_pi
