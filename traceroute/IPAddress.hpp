@@ -15,11 +15,11 @@ using addr_t = unsigned int;
 class IPAddressException : public std::runtime_error
 {
 public:
-    IPAddressException(const std::string & s) : std::runtime_error(s)
+    explicit IPAddressException(const std::string & s) : std::runtime_error(s)
     {
     }
 
-    IPAddressException(const char * s) : std::runtime_error(s)
+    explicit IPAddressException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -34,11 +34,11 @@ public:
     {
     }
 
-    IPAddress(addr_t address) : address{address}
+    explicit IPAddress(addr_t address) : address{address}
     {
     }
 
-    IPAddress(const std::string & address);
+    explicit IPAddress(const std::string & address);
 
     friend bool operator==(const IPAddress & addr1, const IPAddress & addr2);
     friend bool operator<(const IPAddress & addr1, const IPAddress & addr2);

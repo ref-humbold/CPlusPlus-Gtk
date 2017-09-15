@@ -2,13 +2,13 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
-#include <string>
 #include <set>
+#include <string>
 #include <unistd.h>
 
+#include "ICMPController.hpp"
 #include "IPAddress.hpp"
 #include "RawSocket.hpp"
-#include "ICMPController.hpp"
 
 void print_results(int ttl, const std::set<IPAddress> & recvaddr, int avg_time)
 {
@@ -57,16 +57,16 @@ bool send_message(ICMPController & sck, const IPAddress & addr, int ttl)
     print_results(ttl, recvaddr, avg_time);
 
     return std::any_of(recvaddr.begin(), recvaddr.end(),
-        [addr](const IPAddress & a){ return a == addr; });
+                       [addr](const IPAddress & a) { return a == addr; });
 }
 
 int main(int argc, char * argv[])
 {
-    std::shared_ptr<RawSocket> socket = std::make_shared<RawSocket>(IPPROTO_ICMP);
+    RawSocket socket = RawSocket(IPPROTO_ICMP);
     ICMPController socket_ctrl = ICMPController(socket);
 
     if(argc < 2)
-        throw std::invalid_argument("No destination IP specified");
+        throw std::logic_error("No destination IP specified");
 
     IPAddress addr(argv[1]);
 

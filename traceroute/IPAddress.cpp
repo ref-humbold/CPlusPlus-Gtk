@@ -1,7 +1,6 @@
 #include "IPAddress.hpp"
 
-IPAddress::IPAddress(const std::string & address) :
-    address{parse(address)}
+IPAddress::IPAddress(const std::string & address) : address{parse(address)}
 {
 }
 
@@ -45,16 +44,16 @@ addr_t IPAddress::parse(const std::string & addr)
         throw IPAddressException("Parameter is not a valid IP adress.");
 
     for(const auto & s : splitted)
-        if(s == "" || std::any_of(s.begin(), s.end(), [](char c){ return c < '0' || c > '9'; }))
+        if(s == "" || std::any_of(s.begin(), s.end(), [](char c) { return c < '0' || c > '9'; }))
             throw IPAddressException("Parameter is not a valid IP adress.");
 
     addr_bytes.resize(splitted.size());
     std::transform(splitted.begin(), splitted.end(), addr_bytes.begin(),
-                   [](const std::string & s){ return stoul(s); });
+                   [](const std::string & s) { return stoul(s); });
 
-    if(std::any_of(addr_bytes.begin(), addr_bytes.end(), [](addr_t p){ return p > 255; }))
+    if(std::any_of(addr_bytes.begin(), addr_bytes.end(), [](addr_t p) { return p > 255; }))
         throw IPAddressException("Parameter is not a valid IP adress.");
 
     return std::accumulate(addr_bytes.begin(), addr_bytes.end(), 0,
-                           [](addr_t acc, addr_t b){ return (acc << 8) | b; });
+                           [](addr_t acc, addr_t b) { return (acc << 8) | b; });
 }

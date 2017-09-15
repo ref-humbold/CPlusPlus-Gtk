@@ -2,13 +2,12 @@
 #define ICMP_SENDER_HPP
 
 #include <cstdlib>
-#include <cstring>
 #include <cerrno>
-#include <memory>
+#include <cstring>
 #include <string>
+#include <arpa/inet.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
-#include <arpa/inet.h>
 
 #include "IPAddress.hpp"
 #include "RawSocket.hpp"
@@ -16,12 +15,11 @@
 class ICMPSender
 {
 private:
-    std::shared_ptr<RawSocket> socket;
+    const RawSocket & socket;
     sockaddr_in receiver_address;
 
 public:
-    ICMPSender(std::shared_ptr<RawSocket> s) :
-        socket{s}
+    explicit ICMPSender(RawSocket & s) : socket{s}
     {
     }
 

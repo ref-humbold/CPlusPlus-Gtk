@@ -2,16 +2,15 @@
 #define ICMP_RECEIVER_HPP
 
 #include <cstdlib>
-#include <cstring>
 #include <cerrno>
-#include <memory>
+#include <cstring>
+#include <algorithm>
 #include <string>
 #include <tuple>
 #include <vector>
-#include <algorithm>
+#include <arpa/inet.h>
 #include <netinet/ip.h>
 #include <netinet/ip_icmp.h>
-#include <arpa/inet.h>
 
 #include "IPAddress.hpp"
 #include "RawSocket.hpp"
@@ -19,12 +18,11 @@
 class ICMPReceiver
 {
 private:
-    std::shared_ptr<RawSocket> socket;
+    const RawSocket & socket;
     sockaddr_in sender_address;
 
 public:
-    ICMPReceiver(std::shared_ptr<RawSocket> s) :
-        socket{s}
+    explicit ICMPReceiver(RawSocket & s) : socket{s}
     {
     }
 

@@ -5,8 +5,8 @@ std::vector<uint8_t> ICMPReceiver::receive()
     socklen_t sender_size = sizeof(sender_address);
     uint8_t msg_buf[IP_MAXPACKET];
 
-    ssize_t msg_size = recvfrom(socket->get_descriptor(), msg_buf, IP_MAXPACKET, MSG_DONTWAIT,
-        (sockaddr *)&sender_address, &sender_size);
+    ssize_t msg_size = recvfrom(socket.get_descriptor(), msg_buf, IP_MAXPACKET, MSG_DONTWAIT,
+                                (sockaddr *)&sender_address, &sender_size);
 
     if(msg_size < 0)
         throw SocketException(strerror(errno));
@@ -20,8 +20,8 @@ IPAddress ICMPReceiver::take_address()
 
     const char * result = inet_ntop(AF_INET, &(sender_address.sin_addr), ip_str, sizeof(ip_str));
 
-    if(result == NULL)
+    if(result == nullptr)
         throw SocketException(strerror(errno));
 
-    return std::string(ip_str);
+    return IPAddress(std::string(ip_str));
 }

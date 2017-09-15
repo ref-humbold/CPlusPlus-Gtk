@@ -2,11 +2,10 @@
 #define ICMP_CONTROLLER_HPP
 
 #include <cstdlib>
-#include <cstring>
 #include <cerrno>
+#include <cstring>
 #include <exception>
 #include <stdexcept>
-#include <memory>
 #include <set>
 #include <string>
 #include <tuple>
@@ -23,11 +22,11 @@
 class NotMyReplyException : public std::runtime_error
 {
 public:
-    NotMyReplyException(const std::string & s) : std::runtime_error(s)
+    explicit NotMyReplyException(const std::string & s) : std::runtime_error(s)
     {
     }
 
-    NotMyReplyException(const char * s) : std::runtime_error(s)
+    explicit NotMyReplyException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -35,24 +34,24 @@ public:
 class TimeExceededException : public std::runtime_error
 {
 public:
-    TimeExceededException(const std::string & s) : std::runtime_error(s)
+    explicit TimeExceededException(const std::string & s) : std::runtime_error(s)
     {
     }
 
-    TimeExceededException(const char * s) : std::runtime_error(s)
+    explicit TimeExceededException(const char * s) : std::runtime_error(s)
     {
     }
 };
 
 class ICMPController
 {
-    std::shared_ptr<RawSocket> socket;
+    const RawSocket & socket;
     ICMPSender sender;
     ICMPReceiver receiver;
 
 public:
-    ICMPController(std::shared_ptr<RawSocket> s)
-        : socket{s}, sender{ICMPSender(socket)}, receiver{ICMPReceiver(socket)}
+    explicit ICMPController(RawSocket & s)
+        : socket{s}, sender{ICMPSender(s)}, receiver{ICMPReceiver(s)}
     {
     }
 

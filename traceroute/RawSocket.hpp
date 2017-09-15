@@ -13,11 +13,11 @@
 class SocketException : public std::runtime_error
 {
 public:
-    SocketException(const std::string & s) : std::runtime_error(s)
+    explicit SocketException(const std::string & s) : std::runtime_error(s)
     {
     }
 
-    SocketException(const char * s) : std::runtime_error(s)
+    explicit SocketException(const char * s) : std::runtime_error(s)
     {
     }
 };
@@ -28,7 +28,7 @@ private:
     int descriptor;
 
 public:
-    RawSocket(int protocol) : descriptor{socket(AF_INET, SOCK_RAW, protocol)}
+    explicit RawSocket(int protocol) : descriptor{socket(AF_INET, SOCK_RAW, protocol)}
     {
         if(descriptor < 0)
             throw SocketException(strerror(errno));
@@ -44,7 +44,7 @@ public:
     RawSocket & operator=(const RawSocket & raw_sck) = delete;
     RawSocket & operator=(RawSocket && raw_sck) = default;
 
-    int get_descriptor()
+    int get_descriptor() const
     {
         return descriptor;
     }

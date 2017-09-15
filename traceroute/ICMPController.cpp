@@ -4,7 +4,7 @@ void ICMPController::echo_request(const IPAddress & addr, uint16_t id, uint16_t 
 {
     for(int i = 0; i < 3; ++i)
     {
-        icmphdr header = sender.prepare_icmp(id, 3*seq+i);
+        icmphdr header = sender.prepare_icmp(id, 3 * seq + i);
 
         sender.set_receiver(addr);
         sender.send(&header, sizeof(header), ttl);
@@ -20,13 +20,13 @@ std::tuple<std::set<IPAddress>, int> ICMPController::echo_reply(uint16_t id, uin
     int recvnum = 0;
 
     FD_ZERO(&fd);
-    FD_SET(socket->get_descriptor(), &fd);
+    FD_SET(socket.get_descriptor(), &fd);
     timer.tv_sec = 1;
     timer.tv_usec = 0;
 
     do
     {
-        int ready = select(socket->get_descriptor()+1, &fd, nullptr, nullptr, &timer);
+        int ready = select(socket.get_descriptor() + 1, &fd, nullptr, nullptr, &timer);
 
         if(ready < 0)
             throw SocketException(strerror(errno));
@@ -51,8 +51,7 @@ std::tuple<std::set<IPAddress>, int> ICMPController::echo_reply(uint16_t id, uin
         recvaddr.insert(address);
         avg_time = (avg_time + 1000000 - timer.tv_usec) / 2;
         ++recvnum;
-    }
-    while(recvnum < 3);
+    } while(recvnum < 3);
 
     return std::make_tuple(recvaddr, avg_time);
 }
@@ -89,7 +88,7 @@ std::tuple<iphdr *, icmphdr *, uint8_t *> ICMPController::take_headers(uint8_t *
 {
     iphdr * hIP = (iphdr *)ptr;
     icmphdr * hICMP = (icmphdr *)(ptr + 4 * hIP->ihl);
-    uint8_t * rest = ptr + 4 * hIP->ihl+sizeof(icmphdr);
+    uint8_t * rest = ptr + 4 * hIP->ihl + sizeof(icmphdr);
 
     return std::make_tuple(hIP, hICMP, rest);
 }
