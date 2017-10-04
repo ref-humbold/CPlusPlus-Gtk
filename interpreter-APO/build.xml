@@ -17,7 +17,8 @@
     <path refid="JUnit4.userclasspath" />
     <pathelement location="${build.dir}" />
   </path>
-  <target name="all" depends="clean, build, junit, javadoc" />
+  <target name="all" depends="make, junit, javadoc" />
+  <target name="make" depends="clean, build" />
   <target name="clean">
     <delete dir="${build.dir}" />
   </target>
@@ -31,21 +32,19 @@
     </copy>
   </target>
   <target name="build" depends="init">
-    <javac debug="true" debuglevel="${debuglevel}" destdir="${build.dir}" includeantruntime="false"
-           source="${source}" target="${target}">
+    <javac debug="true" debuglevel="${debuglevel}" destdir="${build.dir}" includeantruntime="false" source="${source}" target="${target}">
       <src path="${src.dir}" />
       <src path="${test.dir}" />
       <compilerarg line="-Xlint" />
       <classpath refid="interpreter-APO.classpath" />
     </javac>
   </target>
-  <target name="junit">
+  <target name="junit" depends="build">
     <delete dir="${junit.output.dir}" />
     <mkdir dir="${junit.output.dir}" />
     <junit fork="yes" printsummary="withOutAndErr">
       <formatter type="xml" />
-      <test name="ref_humbold.apolanguage.interpret.InstructionListTest"
-            todir="${junit.output.dir}" />
+      <test name="ref_humbold.apolanguage.interpret.InstructionListTest" todir="${junit.output.dir}" />
       <test name="ref_humbold.apolanguage.interpret.LabelSetTest" todir="${junit.output.dir}" />
       <test name="ref_humbold.apolanguage.interpret.MemoryTest" todir="${junit.output.dir}" />
       <test name="ref_humbold.apolanguage.interpret.ParserTest" todir="${junit.output.dir}" />
@@ -60,6 +59,8 @@
     </junitreport>
   </target>
   <target name="javadoc" depends="build">
+    <delete dir="${javadoc.output.dir}" />
+    <mkdir dir="${javadoc.output.dir}" />
     <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="public">
       <package name="ref_humbold.apolanguage.*" />
       <package name="ref_humbold.apolanguage.interpret.*" />

@@ -17,7 +17,8 @@
     <path refid="JUnit4.userclasspath" />
     <pathelement location="${build.dir}" />
   </path>
-  <target name="all" depends="clean, build, junit" />
+  <target name="all" depends="make, junit, javadoc" />
+  <target name="make" depends="clean, build" />
   <target name="clean">
     <delete dir="${build.dir}" />
   </target>
@@ -52,5 +53,12 @@
       <fileset dir="${junit.output.dir}" includes="TEST-*.xml" />
       <report format="frames" todir="${junit.report.dir}" />
     </junitreport>
+  </target>
+  <target name="javadoc" depends="build">
+    <delete dir="${javadoc.output.dir}" />
+    <mkdir dir="${javadoc.output.dir}" />
+    <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="public">
+      <package name="ref_humbold.di_container.*" />
+    </javadoc>
   </target>
 </project>
