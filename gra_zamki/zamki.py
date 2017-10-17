@@ -1,5 +1,6 @@
 #! /bin/python3
 # -*- coding: utf-8 -*-
+
 import pygame
 from pygame.locals import *
 import dbm.ndbm
@@ -48,10 +49,10 @@ class Game:
 
             y = intervalize(54, y + 16 * d, 586)
 
-        castle_imgs = [pygame.image.load("zamek_bronze.jpg").convert(),
-                       pygame.image.load("zamek_green.jpg").convert(),
-                       pygame.image.load("zamek_red.jpg").convert(),
-                       pygame.image.load("zamek_violet.jpg").convert()]
+        castle_imgs = [pygame.image.load("castles/images/zamek_bronze.jpg").convert(),
+                       pygame.image.load("castles/images/zamek_green.jpg").convert(),
+                       pygame.image.load("castles/images/zamek_red.jpg").convert(),
+                       pygame.image.load("castles/images/zamek_violet.jpg").convert()]
 
         for i, ply in enumerate(self.list_players):
             for j in range(3):
@@ -74,10 +75,7 @@ class Game:
                 armata, arm_pos = self.list_players[i].make_armat(j)
                 self.screen.blit(armata, arm_pos)
 
-        self.screen.blit(self.angle_label, (10, 10))
-        self.screen.blit(self.speed_label, (10, 40))
-        self.screen.blit(self.text_angle, (110, 10))
-        self.screen.blit(self.text_speed, (110, 40))
+        self.blit_names()
         self.list_players[0].draw_castle_sign(self.act_castle[0])
 
         for i in self.list_players[1:]:
@@ -250,7 +248,7 @@ class Player:
     def make_armat(self, cpos):
         """Tworzy obraz armaty dla zamku
         :param cpos: pozycja zamku gracza"""
-        img = pygame.image.load("armata.jpg").convert_alpha()
+        img = pygame.image.load("castles/images/armata.jpg").convert_alpha()
         pos = (cpos[0] + 11, cpos[1] + 7)
         self.armat_img = img
         self.armat_pos.append(pos)
