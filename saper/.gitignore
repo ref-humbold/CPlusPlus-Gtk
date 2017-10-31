@@ -1,0 +1,9 @@
+# ignore JQuery
+
+jquery.d.ts
+jquery-3.1.1.js
+
+# ignore TypeScript configuration
+
+tsconfig.json
+
