@@ -1,0 +1,5 @@
+# OCaml object files
+*.cmi
+*.cmx
+*.cmo
+*.o
