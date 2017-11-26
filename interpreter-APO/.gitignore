@@ -1,16 +1,13 @@
-# ignore sample APO files
-
+# sample APO files
 *.apo
 
-# ignore Java output
+# Java output
+bin
+junit_results
+junit_reports
 
-/bin
-
-# ignore JUnit output
-
-/junit_results
-/junit_reports
-
-# ignore IntelliJ files
-
+# IntelliJ project files
 *.iml
+.idea
+out
+gen
