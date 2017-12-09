@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.apolanguage.errors.LabelError;
+import ref_humbold.apolanguage.errors.LabelException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.NOPInstruction;
 
@@ -40,10 +40,10 @@ public class LabelSetTest
         {
             result = testObject.getInstruction(name);
         }
-        catch(LabelError e)
+        catch(LabelException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LabelError was thrown.");
+            Assert.fail("Unexpected LabelException was thrown.");
         }
 
         Assert.assertEquals(value, result);
@@ -84,19 +84,19 @@ public class LabelSetTest
             result1 = testObject.getInstruction(name);
             result2 = testObject.getInstruction(number);
         }
-        catch(LabelError e)
+        catch(LabelException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LabelError was thrown.");
+            Assert.fail("Unexpected LabelException was thrown.");
         }
 
         Assert.assertEquals(value2, result1);
         Assert.assertEquals(value2, result2);
     }
 
-    @Test(expected = LabelError.class)
+    @Test(expected = LabelException.class)
     public void testGetSetValueByNumberWhenVariableNotSet()
-        throws LabelError
+        throws LabelException
     {
         Instruction value = new NOPInstruction(1);
         int number = 1;

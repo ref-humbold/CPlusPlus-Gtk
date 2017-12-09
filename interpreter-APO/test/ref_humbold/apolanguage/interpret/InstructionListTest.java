@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
 import ref_humbold.apolanguage.instructions.InstructionName;
@@ -53,10 +53,10 @@ public class InstructionListTest
         {
             instruction = InstructionFactory.create(count, name, args);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         testObject.add(instruction);
@@ -86,10 +86,10 @@ public class InstructionListTest
             instruction1 = InstructionFactory.create(count1, name1, args1);
             instruction2 = InstructionFactory.create(count2, name2, args2);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         testObject.add(instruction1);
@@ -124,10 +124,10 @@ public class InstructionListTest
         {
             instruction = InstructionFactory.create(count, name, args);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         testObject.add(instruction);
@@ -163,10 +163,10 @@ public class InstructionListTest
             instruction2 = InstructionFactory.create(count2, name2, args2);
             instruction3 = InstructionFactory.create(count3, name3, args3);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         instruction1.setLink(instruction3);
@@ -188,10 +188,10 @@ public class InstructionListTest
         {
             result1.execute(variableSet);
         }
-        catch(LanguageError e)
+        catch(LanguageException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LanguageError was thrown.");
+            Assert.fail("Unexpected LanguageException was thrown.");
         }
 
         Instruction result3 = iterator.next();
@@ -221,10 +221,10 @@ public class InstructionListTest
             instruction2 = InstructionFactory.create(count2, name2, args2);
             instruction3 = InstructionFactory.create(count3, name3, args3);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         instruction1.setLink(instruction3);
@@ -246,10 +246,10 @@ public class InstructionListTest
         {
             result1.execute(variableSet);
         }
-        catch(LanguageError e)
+        catch(LanguageException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LanguageError was thrown.");
+            Assert.fail("Unexpected LanguageException was thrown.");
         }
 
         Instruction result2 = iterator.next();

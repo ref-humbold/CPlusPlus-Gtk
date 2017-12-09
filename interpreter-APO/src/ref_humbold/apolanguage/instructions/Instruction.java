@@ -2,8 +2,8 @@ package ref_humbold.apolanguage.instructions;
 
 import java.util.Arrays;
 
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 /**
@@ -47,7 +47,7 @@ public abstract class Instruction
      * @return symbol instrukcji
      */
     public static InstructionName convertToName(String name)
-        throws SymbolError
+        throws SymbolException
     {
         switch(name)
         {
@@ -154,7 +154,7 @@ public abstract class Instruction
                 return InstructionName.NOP;
         }
 
-        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
+        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION);
     }
 
     public int getLineNumber()
@@ -208,7 +208,7 @@ public abstract class Instruction
     @Override
     public int hashCode()
     {
-        final int prime = 37;
+        int prime = 37;
         int result = 1;
 
         result = prime * result + Arrays.hashCode(args);
@@ -218,5 +218,5 @@ public abstract class Instruction
     }
 
     public abstract void execute(VariableSet variables)
-        throws LanguageError;
+        throws LanguageException;
 }

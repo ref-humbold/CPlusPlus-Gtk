@@ -1,7 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.MemoryError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.MemoryException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.Memory;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
@@ -18,7 +18,7 @@ public class MemoryInstruction
 
     @Override
     public void execute(VariableSet variables)
-        throws MemoryError, SymbolError
+        throws MemoryException, SymbolException
     {
         int argValue0;
         int argValue1;
@@ -33,7 +33,7 @@ public class MemoryInstruction
                     result = memory.loadWord(argValue1);
                     variables.setValue(args[0], result);
                 }
-                catch(SymbolError | MemoryError e)
+                catch(SymbolException | MemoryException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -49,7 +49,7 @@ public class MemoryInstruction
                     result = memory.loadByte(argValue1);
                     variables.setValue(args[0], result);
                 }
-                catch(SymbolError | MemoryError e)
+                catch(SymbolException | MemoryException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -65,7 +65,7 @@ public class MemoryInstruction
                     argValue1 = variables.getValue(args[1]);
                     memory.storeWord(argValue1, argValue0);
                 }
-                catch(SymbolError | MemoryError e)
+                catch(SymbolException | MemoryException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -81,7 +81,7 @@ public class MemoryInstruction
                     argValue1 = variables.getValue(args[1]);
                     memory.storeByte(argValue1, argValue0);
                 }
-                catch(SymbolError | MemoryError e)
+                catch(SymbolException | MemoryException e)
                 {
                     e.setLineNumber(lineNumber);
 

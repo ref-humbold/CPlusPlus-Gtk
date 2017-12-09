@@ -1,6 +1,6 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.Memory;
 
 public class InstructionFactory
@@ -8,7 +8,7 @@ public class InstructionFactory
     public static Memory memory;
 
     public static Instruction create(int lineNumber, InstructionName name, int... args)
-        throws SymbolError
+        throws SymbolException
     {
         switch(name)
         {
@@ -58,6 +58,6 @@ public class InstructionFactory
                 return new NOPInstruction(lineNumber);
         }
 
-        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, lineNumber);
+        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION, lineNumber);
     }
 }

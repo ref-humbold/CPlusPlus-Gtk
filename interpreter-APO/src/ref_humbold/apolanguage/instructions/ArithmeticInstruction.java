@@ -1,7 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.ArithmeticError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.ArithmeticException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 public class ArithmeticInstruction
@@ -14,7 +14,7 @@ public class ArithmeticInstruction
 
     @Override
     public void execute(VariableSet variables)
-        throws ArithmeticError, SymbolError
+        throws ArithmeticException, SymbolException
     {
         int argValue1;
         int argValue2;
@@ -29,7 +29,7 @@ public class ArithmeticInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 + argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -44,7 +44,7 @@ public class ArithmeticInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 + args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -60,7 +60,7 @@ public class ArithmeticInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 - argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -75,7 +75,7 @@ public class ArithmeticInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 - args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -91,7 +91,7 @@ public class ArithmeticInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 * argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -106,7 +106,7 @@ public class ArithmeticInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 * args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -122,26 +122,26 @@ public class ArithmeticInstruction
                     argValue1 = variables.getValue(args[1]);
                     argValue2 = variables.getValue(args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
-                    throw new SymbolError(e.getMessage(), lineNumber);
+                    throw new SymbolException(e.getMessage(), lineNumber);
                 }
 
                 if(argValue2 == 0)
                 {
                     if(argValue1 == 0)
-                        throw new ArithmeticError(ArithmeticError.NOT_A_NUMBER, lineNumber);
+                        throw new ArithmeticException(ArithmeticException.NOT_A_NUMBER, lineNumber);
 
-                    throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineNumber);
+                    throw new ArithmeticException(ArithmeticException.ZERO_DIVISION, lineNumber);
                 }
 
                 try
                 {
                     variables.setValue(args[0], argValue1 / argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
-                    throw new SymbolError(e.getMessage(), lineNumber);
+                    throw new SymbolException(e.getMessage(), lineNumber);
                 }
 
                 break;
@@ -151,26 +151,26 @@ public class ArithmeticInstruction
                 {
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
-                    throw new SymbolError(e.getMessage(), lineNumber);
+                    throw new SymbolException(e.getMessage(), lineNumber);
                 }
 
                 if(args[2] == 0)
                 {
                     if(argValue1 == 0)
-                        throw new ArithmeticError(ArithmeticError.NOT_A_NUMBER, lineNumber);
+                        throw new ArithmeticException(ArithmeticException.NOT_A_NUMBER, lineNumber);
 
-                    throw new ArithmeticError(ArithmeticError.ZERO_DIVISION, lineNumber);
+                    throw new ArithmeticException(ArithmeticException.ZERO_DIVISION, lineNumber);
                 }
 
                 try
                 {
                     variables.setValue(args[0], argValue1 / args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
-                    throw new SymbolError(e.getMessage(), lineNumber);
+                    throw new SymbolException(e.getMessage(), lineNumber);
                 }
 
                 break;

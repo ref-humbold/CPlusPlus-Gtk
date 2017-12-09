@@ -1,7 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.IOConnector;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
@@ -18,7 +18,7 @@ public class IOInstruction
 
     @Override
     public void execute(VariableSet variables)
-        throws LanguageError
+        throws LanguageException
     {
         int argValue;
 
@@ -33,7 +33,7 @@ public class IOInstruction
                 {
                     argValue = variables.getValue(args[0]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -48,7 +48,7 @@ public class IOInstruction
                 {
                     argValue = variables.getValue(args[0]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -65,7 +65,7 @@ public class IOInstruction
                 {
                     variables.setValue(args[0], argValue);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -81,7 +81,7 @@ public class IOInstruction
                 {
                     variables.setValue(args[0], argValue);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 

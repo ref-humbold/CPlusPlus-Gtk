@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.SymbolException;
 
 /**
  * Klasa przechowujaca liste zmiennych wraz z ich wartosciami.
@@ -55,10 +55,10 @@ public class VariableSet
      * @return wartosc zmiennej
      */
     public int getValue(String name)
-        throws SymbolError
+        throws SymbolException
     {
         if(!contains(name))
-            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
+            throw new SymbolException(SymbolException.VARIABLE_NOT_INIT);
 
         return getValue(getNumber(name));
     }
@@ -69,10 +69,10 @@ public class VariableSet
      * @return wartosc zmiennej
      */
     public int getValue(int index)
-        throws SymbolError
+        throws SymbolException
     {
         if(!contains(index))
-            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
+            throw new SymbolException(SymbolException.VARIABLE_NOT_INIT);
 
         return variableValues.get(index);
     }
@@ -108,10 +108,10 @@ public class VariableSet
      * @param value wartosc do zapisu
      */
     public void setValue(int index, int value)
-        throws SymbolError
+        throws SymbolException
     {
         if(!contains(index))
-            throw new SymbolError(SymbolError.VARIABLE_NOT_INIT);
+            throw new SymbolException(SymbolException.VARIABLE_NOT_INIT);
 
         variableValues.put(index, value);
     }

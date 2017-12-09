@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret;
 import java.util.HashMap;
 import java.util.Map;
 
-import ref_humbold.apolanguage.errors.LabelError;
+import ref_humbold.apolanguage.errors.LabelException;
 import ref_humbold.apolanguage.instructions.Instruction;
 
 /**
@@ -55,10 +55,10 @@ public class LabelSet
      * @return wartosc etykiety
      */
     public Instruction getInstruction(String name)
-        throws LabelError
+        throws LabelException
     {
         if(!contains(name))
-            throw new LabelError(LabelError.LABEL_NOT_FOUND);
+            throw new LabelException(LabelException.LABEL_NOT_FOUND);
 
         return getInstruction(getNumber(name));
     }
@@ -69,10 +69,10 @@ public class LabelSet
      * @return wartosc etykiety
      */
     public Instruction getInstruction(int index)
-        throws LabelError
+        throws LabelException
     {
         if(!contains(index))
-            throw new LabelError(LabelError.LABEL_NOT_FOUND);
+            throw new LabelException(LabelException.LABEL_NOT_FOUND);
 
         return labelInstructions.get(index);
     }
@@ -99,10 +99,10 @@ public class LabelSet
      * @param value wartosc do zapisu
      */
     public void setInstruction(int index, Instruction value)
-        throws LabelError
+        throws LabelException
     {
         if(!contains(index))
-            throw new LabelError(LabelError.LABEL_NOT_FOUND);
+            throw new LabelException(LabelException.LABEL_NOT_FOUND);
 
         labelInstructions.put(index, value);
     }

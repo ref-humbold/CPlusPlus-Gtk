@@ -2,7 +2,7 @@ package ref_humbold.apolanguage.interpret;
 
 import java.nio.file.Path;
 
-import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.errors.LanguageException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
 
@@ -51,7 +51,7 @@ public class Controller
      * @see IOConnector
      */
     public void make()
-        throws LanguageError
+        throws LanguageException
     {
         for(Instruction instr : instructions)
             instr.execute(variables);

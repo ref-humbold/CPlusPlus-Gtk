@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.SymbolException;
 
 public class VariableSetTest
 {
@@ -37,18 +37,18 @@ public class VariableSetTest
         {
             result = testObject.getValue(name);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         Assert.assertEquals(0, result);
     }
 
-    @Test(expected = SymbolError.class)
+    @Test(expected = SymbolException.class)
     public void testGetValueWhenVariableNotSet()
-        throws SymbolError
+        throws SymbolException
     {
         String name = "var";
 
@@ -68,10 +68,10 @@ public class VariableSetTest
         {
             result = testObject.getValue(name);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         Assert.assertEquals(value, result);
@@ -110,19 +110,19 @@ public class VariableSetTest
             result1 = testObject.getValue(name);
             result2 = testObject.getValue(number);
         }
-        catch(SymbolError e)
+        catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolError was thrown.");
+            Assert.fail("Unexpected SymbolException was thrown.");
         }
 
         Assert.assertEquals(value, result1);
         Assert.assertEquals(value, result2);
     }
 
-    @Test(expected = SymbolError.class)
+    @Test(expected = SymbolException.class)
     public void testGetSetValueByNumberWhenVariableNotSet()
-        throws SymbolError
+        throws SymbolException
     {
         int value = 10;
         int number = 1;

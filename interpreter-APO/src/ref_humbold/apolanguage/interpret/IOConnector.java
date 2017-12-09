@@ -3,7 +3,7 @@ package ref_humbold.apolanguage.interpret;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import ref_humbold.apolanguage.errors.LanguageError;
+import ref_humbold.apolanguage.errors.LanguageException;
 
 /**
  * Klasa odpowiadajaca za interakcje programu z uzytkownikiem. Wykonuje operacje wejscia / wyjscia
@@ -57,7 +57,7 @@ public class IOConnector
      * @return wczytana liczba
      */
     public int readInt()
-        throws LanguageError
+        throws LanguageException
     {
         String read;
         System.out.print("input>> ");
@@ -68,7 +68,7 @@ public class IOConnector
         }
         catch(Exception e)
         {
-            throw new LanguageError("IOException while reading", e);
+            throw new LanguageException("IOException while reading", e);
         }
 
         return Integer.parseInt(read);
@@ -79,7 +79,7 @@ public class IOConnector
      * @return kod wczytanego znaku
      */
     public int readChar()
-        throws LanguageError
+        throws LanguageException
     {
         String read;
         System.out.print("input>> ");
@@ -90,7 +90,7 @@ public class IOConnector
         }
         catch(Exception e)
         {
-            throw new LanguageError("IOException while reading", e);
+            throw new LanguageException("IOException while reading", e);
         }
 
         return read.charAt(0);

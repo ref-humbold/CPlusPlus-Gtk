@@ -10,9 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.apolanguage.errors.LabelError;
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.LabelException;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.instructions.ArithmeticInstruction;
 import ref_humbold.apolanguage.instructions.IOInstruction;
 import ref_humbold.apolanguage.instructions.Instruction;
@@ -29,7 +29,8 @@ public class ParserTest
         throws Exception
     {
         testObject = new Parser(null);
-        program = "#test\nADDI var zero 16\nJPGT var zero label # var > 0\nMULI res var var\nlabel: PTINT res\n";
+        program =
+            "#test\nADDI var zero 16\nJPGT var zero label # var > 0\nMULI res var var\nlabel: PTINT res\n";
     }
 
     @After
@@ -40,7 +41,7 @@ public class ParserTest
     }
 
     @Test
-    public void parse()
+    public void testParse()
     {
         BufferedReader reader = new BufferedReader(new StringReader(program));
         InstructionList result = null;
@@ -49,7 +50,7 @@ public class ParserTest
         {
             result = testObject.parse(reader);
         }
-        catch(IOException | LanguageError e)
+        catch(IOException | LanguageException e)
         {
             e.printStackTrace();
             Assert.fail("Unexpected " + e.getClass() + " was thrown.");
@@ -68,9 +69,9 @@ public class ParserTest
         Assert.assertEquals(expected, result);
     }
 
-    @Test(expected = LabelError.class)
-    public void parseWhenNotExistingLabel()
-        throws LanguageError
+    @Test(expected = LabelException.class)
+    public void testParseWhenNotExistingLabel()
+        throws LanguageException
     {
         program += "JPEQ var zero none\n";
         BufferedReader reader = new BufferedReader(new StringReader(program));
@@ -86,9 +87,9 @@ public class ParserTest
         }
     }
 
-    @Test(expected = SymbolError.class)
-    public void parseWhenNotExistingInstruction()
-        throws LanguageError
+    @Test(expected = SymbolException.class)
+    public void testParseWhenNotExistingInstruction()
+        throws LanguageException
     {
         program += "NONE vb zero zero\n";
         BufferedReader reader = new BufferedReader(new StringReader(program));
@@ -105,7 +106,7 @@ public class ParserTest
     }
 
     @Test
-    public void initVariables()
+    public void testInitVariables()
     {
         BufferedReader reader = new BufferedReader(new StringReader(program));
         VariableSet result = null;
@@ -118,7 +119,7 @@ public class ParserTest
             values[1] = result.getValue("var");
             values[2] = result.getValue("res");
         }
-        catch(IOException | LanguageError e)
+        catch(IOException | LanguageException e)
         {
             e.printStackTrace();
             Assert.fail("Unexpected " + e.getClass() + " was thrown.");
@@ -128,9 +129,9 @@ public class ParserTest
         Assert.assertArrayEquals(new int[]{0, 0, 0}, values);
     }
 
-    @Test(expected = LabelError.class)
-    public void initVariablesWhenLabelHasTheSameName()
-        throws LanguageError
+    @Test(expected = LabelException.class)
+    public void testInitVariablesWhenLabelHasTheSameName()
+        throws LanguageException
     {
         program += "var: DIVI res res 2\n";
         BufferedReader reader = new BufferedReader(new StringReader(program));

@@ -8,9 +8,9 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
-import ref_humbold.apolanguage.errors.LabelError;
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.LabelException;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionName;
 import ref_humbold.apolanguage.instructions.NOPInstruction;
@@ -46,13 +46,13 @@ public class Parser
      * @see Instruction
      */
     public InstructionList parse()
-        throws IOException, LanguageError
+        throws IOException, LanguageException
     {
         return parse(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
     }
 
     InstructionList parse(BufferedReader reader)
-        throws IOException, LanguageError
+        throws IOException, LanguageException
     {
         InstructionList instructions = new InstructionList();
         String line = reader.readLine();
@@ -89,13 +89,13 @@ public class Parser
      * @see VariableSet
      */
     public VariableSet initVariables()
-        throws IOException, LanguageError
+        throws IOException, LanguageException
     {
         return initVariables(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
     }
 
     VariableSet initVariables(BufferedReader reader)
-        throws IOException, LanguageError
+        throws IOException, LanguageException
     {
         VariableSet variables = new VariableSet();
         Set<String> labels = new HashSet<>();
@@ -128,7 +128,7 @@ public class Parser
             if(splittedLine.length > index)
             {
                 if(!isAllLowerCase(splittedLine[index]))
-                    throw new SymbolError(SymbolError.INVALID_CHARACTERS);
+                    throw new SymbolException(SymbolException.INVALID_CHARACTERS);
 
                 InstructionName name = Instruction.convertToName(splittedLine[index - 1]);
 
@@ -146,14 +146,14 @@ public class Parser
             lineNumber = Integer.parseInt(labelSplitted[1]);
 
             if(variables.contains(labelSplitted[0]))
-                throw new LabelError(LabelError.SAME_VARIABLE_NAME, lineNumber);
+                throw new LabelException(LabelException.SAME_VARIABLE_NAME, lineNumber);
         }
 
         return variables;
     }
 
     private Instruction parseLine(String[] splittedLine, int lineNumber)
-        throws LabelError
+        throws LabelException
     {
         //TODO write parser for single line
         Instruction instruction = new NOPInstruction(lineNumber);
@@ -162,7 +162,7 @@ public class Parser
         if(!label.equals(""))
         {
             if(labelSet.contains(label))
-                throw new LabelError(LabelError.DUPLICATED, lineNumber);
+                throw new LabelException(LabelException.DUPLICATED, lineNumber);
 
             labelSet.setInstruction(label, instruction);
         }
@@ -171,7 +171,7 @@ public class Parser
     }
 
     private void setLinksForJumps()
-        throws LabelError
+        throws LabelException
     {
         //TODO write setting links for jumps
     }
@@ -207,7 +207,7 @@ public class Parser
     }
 
     private boolean isValueSet(InstructionName name)
-        throws SymbolError
+        throws SymbolException
     {
         switch(name)
         {
@@ -249,11 +249,11 @@ public class Parser
                 return false;
         }
 
-        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
+        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION);
     }
 
     private int getArgsNumber(InstructionName name)
-        throws SymbolError
+        throws SymbolException
     {
         switch(name)
         {
@@ -299,6 +299,6 @@ public class Parser
                 return 3;
         }
 
-        throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION);
+        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION);
     }
 }

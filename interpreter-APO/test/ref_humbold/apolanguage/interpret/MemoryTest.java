@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import ref_humbold.apolanguage.errors.MemoryError;
+import ref_humbold.apolanguage.errors.MemoryException;
 
 public class MemoryTest
 {
@@ -25,9 +25,9 @@ public class MemoryTest
         testObject = null;
     }
 
-    @Test(expected = MemoryError.class)
+    @Test(expected = MemoryException.class)
     public void testStoreWordWhenInvalidAddress()
-        throws MemoryError
+        throws MemoryException
     {
         int value = 0x01ABCDEF;
         int address = 7;
@@ -49,10 +49,10 @@ public class MemoryTest
 
             Assert.assertEquals(value, result);
         }
-        catch(MemoryError e)
+        catch(MemoryException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected MemoryError was thrown.");
+            Assert.fail("Unexpected MemoryException was thrown.");
         }
     }
 
@@ -70,10 +70,10 @@ public class MemoryTest
 
             Assert.assertEquals(value, result);
         }
-        catch(MemoryError e)
+        catch(MemoryException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected MemoryError was thrown.");
+            Assert.fail("Unexpected MemoryException was thrown.");
         }
     }
 
@@ -93,18 +93,18 @@ public class MemoryTest
             testObject.storeByte(address + 3, values[3]);
             result = testObject.loadWord(address);
         }
-        catch(MemoryError e)
+        catch(MemoryException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected MemoryError was thrown.");
+            Assert.fail("Unexpected MemoryException was thrown.");
         }
 
         Assert.assertEquals(expected, result);
     }
 
-    @Test(expected = MemoryError.class)
+    @Test(expected = MemoryException.class)
     public void testStoreByteThenLoadWordWhenInvalidAddress()
-        throws MemoryError
+        throws MemoryException
     {
         int[] values = new int[]{0x78, 0xED, 0x40, 0x9C};
         int address = 23;
@@ -116,10 +116,10 @@ public class MemoryTest
             testObject.storeByte(address + 2, values[2]);
             testObject.storeByte(address + 3, values[3]);
         }
-        catch(MemoryError e)
+        catch(MemoryException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected MemoryError was thrown.");
+            Assert.fail("Unexpected MemoryException was thrown.");
         }
 
         testObject.loadWord(address);
@@ -146,9 +146,9 @@ public class MemoryTest
             Assert.assertEquals(values[2], results[2]);
             Assert.assertEquals(values[3], results[3]);
         }
-        catch(MemoryError e)
+        catch(MemoryException e)
         {
-            Assert.fail("Unexpected MemoryError was thrown: " + e.getMessage());
+            Assert.fail("Unexpected MemoryException was thrown: " + e.getMessage());
         }
     }
 }

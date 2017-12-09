@@ -1,24 +1,24 @@
 package ref_humbold.apolanguage.errors;
 
-public class LanguageError
+public class LanguageException
     extends Exception
 {
     private static final long serialVersionUID = 6805782578123143695L;
     private int lineNumber;
 
-    public LanguageError(String message, int lineNumber)
+    public LanguageException(String message, int lineNumber)
     {
         super(message);
 
         setLineNumber(lineNumber);
     }
 
-    public LanguageError(String message)
+    public LanguageException(String message)
     {
         this(message, null);
     }
 
-    public LanguageError(String message, Throwable t)
+    public LanguageException(String message, Throwable t)
     {
         super(message, t);
         this.lineNumber = -1;
@@ -28,7 +28,7 @@ public class LanguageError
     public String toString()
     {
         return lineNumber >= 0 ? getClass().getSimpleName() + " at line " + lineNumber + ": "
-                                 + getMessage() : getClass().getSimpleName() + ": " + getMessage();
+            + getMessage() : getClass().getSimpleName() + ": " + getMessage();
     }
 
     public void setLineNumber(int lineNumber)

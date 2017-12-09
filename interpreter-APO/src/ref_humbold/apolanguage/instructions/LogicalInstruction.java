@@ -1,7 +1,7 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.ArithmeticError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.ArithmeticException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 public class LogicalInstruction
@@ -14,7 +14,7 @@ public class LogicalInstruction
 
     @Override
     public void execute(VariableSet variables)
-        throws ArithmeticError, SymbolError
+        throws ArithmeticException, SymbolException
     {
         int argValue1;
         int argValue2;
@@ -26,7 +26,7 @@ public class LogicalInstruction
                 {
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -34,13 +34,13 @@ public class LogicalInstruction
                 }
 
                 if(args[2] < 0)
-                    throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
+                    throw new ArithmeticException(ArithmeticException.NEGATIVE_SHIFT, lineNumber);
 
                 try
                 {
                     variables.setValue(args[0], argValue1 << args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -54,7 +54,7 @@ public class LogicalInstruction
                 {
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -62,13 +62,13 @@ public class LogicalInstruction
                 }
 
                 if(args[2] < 0)
-                    throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
+                    throw new ArithmeticException(ArithmeticException.NEGATIVE_SHIFT, lineNumber);
 
                 try
                 {
                     variables.setValue(args[0], argValue1 >>> args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -82,7 +82,7 @@ public class LogicalInstruction
                 {
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -90,13 +90,13 @@ public class LogicalInstruction
                 }
 
                 if(args[2] < 0)
-                    throw new ArithmeticError(ArithmeticError.NEGATIVE_SHIFT, lineNumber);
+                    throw new ArithmeticException(ArithmeticException.NEGATIVE_SHIFT, lineNumber);
 
                 try
                 {
                     variables.setValue(args[0], argValue1 >> args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -112,7 +112,7 @@ public class LogicalInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 & argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -127,7 +127,7 @@ public class LogicalInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 & args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -143,7 +143,7 @@ public class LogicalInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 | argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -158,7 +158,7 @@ public class LogicalInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 | args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -174,7 +174,7 @@ public class LogicalInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], argValue1 ^ argValue2);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -189,7 +189,7 @@ public class LogicalInstruction
                     argValue1 = variables.getValue(args[1]);
                     variables.setValue(args[0], argValue1 ^ args[2]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -205,7 +205,7 @@ public class LogicalInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], ~(argValue1 & argValue2));
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -221,7 +221,7 @@ public class LogicalInstruction
                     argValue2 = variables.getValue(args[2]);
                     variables.setValue(args[0], ~(argValue1 | argValue2));
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 

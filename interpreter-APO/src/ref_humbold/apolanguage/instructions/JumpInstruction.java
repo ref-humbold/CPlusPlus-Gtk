@@ -1,6 +1,6 @@
 package ref_humbold.apolanguage.instructions;
 
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.interpret.VariableSet;
 
 /**
@@ -48,7 +48,7 @@ public class JumpInstruction
     @Override
     public int hashCode()
     {
-        final int prime = 37;
+        int prime = 37;
 
         return prime * super.hashCode() + (link == null ? 0 : link.hashCode());
     }
@@ -64,7 +64,7 @@ public class JumpInstruction
 
     @Override
     public void execute(VariableSet variables)
-        throws SymbolError
+        throws SymbolException
     {
         int argValue0;
         int argValue1;
@@ -81,7 +81,7 @@ public class JumpInstruction
                     argValue0 = variables.getValue(args[0]);
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -97,7 +97,7 @@ public class JumpInstruction
                     argValue0 = variables.getValue(args[0]);
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -113,7 +113,7 @@ public class JumpInstruction
                     argValue0 = variables.getValue(args[0]);
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 
@@ -129,7 +129,7 @@ public class JumpInstruction
                     argValue0 = variables.getValue(args[0]);
                     argValue1 = variables.getValue(args[1]);
                 }
-                catch(SymbolError e)
+                catch(SymbolException e)
                 {
                     e.setLineNumber(lineNumber);
 

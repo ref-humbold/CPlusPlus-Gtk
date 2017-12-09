@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ref_humbold.apolanguage.errors.ArithmeticError;
-import ref_humbold.apolanguage.errors.LabelError;
-import ref_humbold.apolanguage.errors.LanguageError;
-import ref_humbold.apolanguage.errors.SymbolError;
+import ref_humbold.apolanguage.errors.ArithmeticException;
+import ref_humbold.apolanguage.errors.LabelException;
+import ref_humbold.apolanguage.errors.LanguageException;
+import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionFactory;
 import ref_humbold.apolanguage.instructions.InstructionName;
@@ -52,7 +52,7 @@ public class OldParser
      * @see Instruction
      */
     InstructionList parse(VariableSet v)
-        throws IOException, LanguageError
+        throws IOException, LanguageException
     {
         InstructionList instructionList = new InstructionList();
         BufferedReader reader = Files.newBufferedReader(filepath, StandardCharsets.UTF_8);
@@ -101,7 +101,7 @@ public class OldParser
             {
                 name = Instruction.convertToName(splitted[index]);
             }
-            catch(SymbolError e)
+            catch(SymbolException e)
             {
                 e.setLineNumber(count);
 
@@ -130,7 +130,8 @@ public class OldParser
                 if(labeledInstructions.containsKey(etc))
                     ((JumpInstruction)instruction).setLink(labeledInstructions.get(etc));
                 else
-                    throw new LabelError(LabelError.LABEL_NOT_FOUND, instruction.getLineNumber());
+                    throw new LabelException(LabelException.LABEL_NOT_FOUND,
+                                             instruction.getLineNumber());
             }
         }
 
@@ -140,7 +141,7 @@ public class OldParser
     }
 
     private void checkVariableAndLabelNames()
-        throws LabelError
+        throws LabelException
     {
         Set<String> etset = labeledInstructions.keySet();
         Iterator<String> sIt = etset.iterator();
@@ -154,27 +155,27 @@ public class OldParser
             if(variables.contains(retIt))
             {
                 ctlbl = labeledInstructions.get(retIt).getLineNumber();
-                throw new LabelError(LabelError.DUPLICATED, ctlbl);
+                throw new LabelException(LabelException.DUPLICATED, ctlbl);
             }
         }
     }
 
     private String doLabel(String lbl, int count)
-        throws LabelError
+        throws LabelException
     {
         String lbName = lbl.substring(0, lbl.length() - 1);
 
         if(!isLowerCase(lbName))
-            throw new LabelError(LabelError.INVALID_CHARACTERS, count);
+            throw new LabelException(LabelException.INVALID_CHARACTERS, count);
 
         if(labeledInstructions.containsKey(lbName))
-            throw new LabelError(LabelError.DUPLICATED, count);
+            throw new LabelException(LabelException.DUPLICATED, count);
 
         return lbName;
     }
 
     private int[] doInstr(int index, int count)
-        throws LanguageError
+        throws LanguageException
     {
         String op = splitted[index];
         int[] q = new int[0];
@@ -186,7 +187,7 @@ public class OldParser
         {
             case "ADD":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -196,7 +197,7 @@ public class OldParser
 
             case "ADDI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -206,7 +207,7 @@ public class OldParser
 
             case "SUB":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -216,7 +217,7 @@ public class OldParser
 
             case "SUBI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -225,7 +226,7 @@ public class OldParser
                 break;
             case "MUL":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -235,7 +236,7 @@ public class OldParser
 
             case "MULI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -245,7 +246,7 @@ public class OldParser
 
             case "DIV":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -255,7 +256,7 @@ public class OldParser
 
             case "DIVI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -265,7 +266,7 @@ public class OldParser
 
             case "SHLT":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -275,7 +276,7 @@ public class OldParser
 
             case "SHRT":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -285,7 +286,7 @@ public class OldParser
 
             case "SHRS":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -295,7 +296,7 @@ public class OldParser
 
             case "AND":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -304,7 +305,7 @@ public class OldParser
                 break;
             case "ANDI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -314,7 +315,7 @@ public class OldParser
 
             case "OR":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -324,7 +325,7 @@ public class OldParser
 
             case "ORI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -334,7 +335,7 @@ public class OldParser
 
             case "XOR":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -344,7 +345,7 @@ public class OldParser
 
             case "XORI":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -353,7 +354,7 @@ public class OldParser
                 break;
             case "NAND":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -363,7 +364,7 @@ public class OldParser
 
             case "NOR":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, true);
@@ -373,7 +374,7 @@ public class OldParser
 
             case "JUMP":
                 if(splitted.length < index + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
                 q[0] = doArgLbl(index + 1, count);
@@ -381,7 +382,7 @@ public class OldParser
 
             case "JPEQ":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, false);
@@ -391,7 +392,7 @@ public class OldParser
 
             case "JPNE":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, false);
@@ -400,7 +401,7 @@ public class OldParser
                 break;
             case "JPLT":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, false);
@@ -410,7 +411,7 @@ public class OldParser
 
             case "JPGT":
                 if(splitted.length < index + 3)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[3];
                 q[0] = doArgVar(index + 1, count, false);
@@ -420,7 +421,7 @@ public class OldParser
 
             case "LDW":
                 if(splitted.length < index + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
                 q[0] = doArgVar(index + 1, count, true);
@@ -429,7 +430,7 @@ public class OldParser
 
             case "LDB":
                 if(splitted.length < index + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
                 q[0] = doArgVar(index + 1, count, true);
@@ -438,7 +439,7 @@ public class OldParser
 
             case "STW":
                 if(splitted.length < index + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
                 q[0] = doArgVar(index + 1, count, false);
@@ -447,7 +448,7 @@ public class OldParser
 
             case "STB":
                 if(splitted.length < index + 2)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[2];
                 q[0] = doArgVar(index + 1, count, false);
@@ -460,7 +461,7 @@ public class OldParser
 
             case "PTINT":
                 if(splitted.length < index + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
                 q[0] = doArgVar(index + 1, count, false);
@@ -468,7 +469,7 @@ public class OldParser
 
             case "PTCHR":
                 if(splitted.length < index + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
                 q[0] = doArgVar(index + 1, count, false);
@@ -476,7 +477,7 @@ public class OldParser
 
             case "RDINT":
                 if(splitted.length < index + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
                 q[0] = doArgVar(index + 1, count, true);
@@ -484,30 +485,30 @@ public class OldParser
 
             case "RDCHR":
                 if(splitted.length < index + 1)
-                    throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+                    throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
                 q = new int[1];
                 q[0] = doArgVar(index + 1, count, true);
                 break;
 
             default:
-                throw new SymbolError(SymbolError.NO_SUCH_INSTRUCTION, count);
+                throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION, count);
         }
 
         return q;
     }
 
     private int doArgVar(int index, int count, boolean checkZero)
-        throws SymbolError
+        throws SymbolException
     {
         if(splitted[index].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+            throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
         if(!isLowerCase(splitted[index]))
-            throw new SymbolError(SymbolError.INVALID_CHARACTERS, count);
+            throw new SymbolException(SymbolException.INVALID_CHARACTERS, count);
 
         if(checkZero && splitted[index].equals("zero"))
-            throw new SymbolError(SymbolError.CHANGE_ZERO, count);
+            throw new SymbolException(SymbolException.CHANGE_ZERO, count);
 
         variables.setValue(splitted[index]);
 
@@ -515,12 +516,12 @@ public class OldParser
     }
 
     private int doArgImm(int index, int count)
-        throws LanguageError
+        throws LanguageException
     {
         int ret = 0;
 
         if(splitted[index].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+            throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
         if(splitted[index].startsWith("0x"))
             try
@@ -529,7 +530,7 @@ public class OldParser
             }
             catch(NumberFormatException e)
             {
-                throw new ArithmeticError(ArithmeticError.INVALID_FORMAT, count);
+                throw new ArithmeticException(ArithmeticException.INVALID_FORMAT, count);
             }
         else
             try
@@ -538,20 +539,20 @@ public class OldParser
             }
             catch(NumberFormatException e)
             {
-                throw new ArithmeticError(ArithmeticError.INVALID_FORMAT, count);
+                throw new ArithmeticException(ArithmeticException.INVALID_FORMAT, count);
             }
 
         return ret;
     }
 
     private int doArgLbl(int index, int count)
-        throws LanguageError
+        throws LanguageException
     {
         if(splitted[index].startsWith("#"))
-            throw new SymbolError(SymbolError.TOO_FEW_ARGUMENTS, count);
+            throw new SymbolException(SymbolException.TOO_FEW_ARGUMENTS, count);
 
         if(!isLowerCase(splitted[index]))
-            throw new LabelError(LabelError.INVALID_CHARACTERS, count);
+            throw new LabelException(LabelException.INVALID_CHARACTERS, count);
 
         if(labels.indexOf(splitted[index]) < 0)
             labels.add(splitted[index]);
