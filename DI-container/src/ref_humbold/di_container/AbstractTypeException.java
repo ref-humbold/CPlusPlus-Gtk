@@ -5,19 +5,9 @@ public class AbstractTypeException
 {
     private static final long serialVersionUID = 5573956461991224741L;
 
-    public AbstractTypeException()
-    {
-        super();
-    }
-
     public AbstractTypeException(String s)
     {
         super(s);
-    }
-
-    public AbstractTypeException(Throwable t)
-    {
-        super(t);
     }
 
     public AbstractTypeException(String s, Throwable t)

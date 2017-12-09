@@ -30,7 +30,7 @@ public final class DIContainer
         throws AbstractTypeException
     {
         if(isAbstractType(cls))
-            throw new AbstractTypeException();
+            throw new AbstractTypeException("Type " + cls.getSimpleName() + " is abstract.");
 
         registerType(cls, cls, isSingleton);
     }
@@ -53,7 +53,7 @@ public final class DIContainer
     public <T> void registerInstance(Class<T> cls, T instance)
     {
         if(instance == null)
-            throw new IllegalArgumentException("Instance is null.");
+            throw new NullInstanceException("Given instance is null.");
 
         instances.put(changeToReferenceType(cls), instance);
     }
@@ -63,13 +63,13 @@ public final class DIContainer
     {
         lastException = null;
 
-        return resolveType(cls, new ArrayDeque<Class<?>>());
+        return resolveType(cls, new ArrayDeque<>());
     }
 
     public <T> void buildUp(T obj)
         throws DIException
     {
-        buildUpObject(obj, new ArrayDeque<Class<?>>());
+        buildUpObject(obj, new ArrayDeque<>());
     }
 
     private boolean isAbstractType(Class<?> cls)
@@ -79,9 +79,6 @@ public final class DIContainer
 
     private boolean isCorrectAnnotatedMethod(Method method)
     {
-        if(!method.isAnnotationPresent(DependencyMethod.class))
-            throw new IllegalArgumentException();
-
         return method.getReturnType() == void.class && method.getParameterCount() > 0;
     }
 
@@ -113,7 +110,7 @@ public final class DIContainer
         T object = null;
 
         if(instances.containsKey(changeToReferenceType(cls))
-           && instances.get(changeToReferenceType(cls)) != null)
+            && instances.get(changeToReferenceType(cls)) != null)
             object = (T)instances.get(changeToReferenceType(cls));
         else
             object = resolveConstructor(cls, resolved);
@@ -135,7 +132,8 @@ public final class DIContainer
 
         if(constructors.length > 1)
             if(constructors[1].isAnnotationPresent(DependencyConstructor.class))
-                throw new MultipleAnnotatedConstructorsException();
+                throw new MultipleAnnotatedConstructorsException(
+                    "Only one constructor can be annotated as dependency.");
 
         T object = null;
 
@@ -176,7 +174,7 @@ public final class DIContainer
         }
         catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
-            throw new DIException(e);
+            throw new DIException(e.getMessage(), e);
         }
     }
 
@@ -189,7 +187,8 @@ public final class DIContainer
             if(m.isAnnotationPresent(DependencyMethod.class))
             {
                 if(!isCorrectAnnotatedMethod(m))
-                    throw new IncorrectDependencyMethodException();
+                    throw new IncorrectDependencyMethodException(
+                        "Dependency method must have at least one argument and void return type.");
 
                 methods.add(m);
             }
@@ -199,7 +198,6 @@ public final class DIContainer
     }
 
     private <T> T createInstance(Constructor<? extends T> ctor, ArrayDeque<Class<?>> resolved)
-        throws DIException
     {
         T instance = null;
         ArrayList<Object> params = new ArrayList<>();
@@ -208,15 +206,17 @@ public final class DIContainer
         {
             if(resolved.contains(cls))
             {
-                lastException = new CircularDependenciesException();
+                lastException =
+                    new CircularDependenciesException("Dependencies resolving detected a cycle.");
 
                 return null;
             }
 
-            if(!instances.containsKey(changeToReferenceType(cls))
-               && !classes.containsKey(changeToReferenceType(cls)))
+            if(!instances.containsKey(changeToReferenceType(cls)) && !classes.containsKey(
+                changeToReferenceType(cls)))
             {
-                lastException = new MissingDependenciesException();
+                lastException =
+                    new MissingDependenciesException("No dependency found when resolving.");
 
                 return null;
             }
@@ -237,10 +237,9 @@ public final class DIContainer
         {
             instance = ctor.newInstance(params.toArray());
         }
-        catch(InstantiationException | IllegalAccessException | IllegalArgumentException
-              | InvocationTargetException e)
+        catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
         {
-            lastException = new DIException(e);
+            lastException = new DIException(e.getMessage(), e);
         }
 
         return instance;
@@ -255,14 +254,14 @@ public final class DIContainer
         {
             if(!classes.containsKey(changeToReferenceType(mappedClass)))
                 if(isAbstractType(mappedClass))
-                    throw new AbstractTypeException();
+                    throw new AbstractTypeException(
+                        "Type " + mappedClass.getSimpleName() + " is abstract.");
                 else
                     classes.put(changeToReferenceType(mappedClass),
                                 changeToReferenceType(mappedClass));
 
             mappedClass = (Class<? extends T>)classes.get(changeToReferenceType(mappedClass));
-        }
-        while(isAbstractType(mappedClass));
+        } while(isAbstractType(mappedClass));
 
         return mappedClass;
     }
@@ -270,7 +269,7 @@ public final class DIContainer
     private <T> Constructor<? extends T>[] getConstructors(Class<? extends T> cls)
         throws NoSuitableConstructorException
     {
-        Constructor<?>[] constructors = null;
+        Constructor<?>[] constructors;
 
         try
         {
@@ -278,11 +277,13 @@ public final class DIContainer
         }
         catch(SecurityException e)
         {
-            throw new NoSuitableConstructorException(e);
+            throw new NoSuitableConstructorException(
+                "No dependency constructor found for class " + cls.getSimpleName(), e);
         }
 
         if(constructors == null || constructors.length == 0)
-            throw new NoSuitableConstructorException();
+            throw new NoSuitableConstructorException(
+                "No dependency constructor found for class " + cls.getSimpleName());
 
         return (Constructor<? extends T>[])constructors;
     }

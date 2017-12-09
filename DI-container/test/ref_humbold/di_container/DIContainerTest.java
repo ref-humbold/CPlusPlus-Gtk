@@ -164,7 +164,8 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterface()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
 
         TestInterfaceBasic cls1 = null;
         TestInterfaceBasic cls2 = null;
@@ -190,8 +191,8 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceAsSingleton()
     {
-        testObject.registerType(TestInterfaceBasic.class,
-                                TestClassWithDefaultConstructorOnly.class, true);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class,
+                                true);
 
         TestInterfaceBasic cls1 = null;
         TestInterfaceBasic cls2 = null;
@@ -217,8 +218,8 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceChangesSingleton()
     {
-        testObject.registerType(TestInterfaceBasic.class,
-                                TestClassWithDefaultConstructorOnly.class, true);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class,
+                                true);
 
         TestInterfaceBasic cls11 = null;
         TestInterfaceBasic cls12 = null;
@@ -240,8 +241,8 @@ public class DIContainerTest
         Assert.assertTrue(cls11 instanceof TestClassWithDefaultConstructorOnly);
         Assert.assertTrue(cls12 instanceof TestClassWithDefaultConstructorOnly);
 
-        testObject.registerType(TestInterfaceBasic.class,
-                                TestClassWithDefaultConstructorOnly.class, false);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class,
+                                false);
 
         TestInterfaceBasic cls21 = null;
         TestInterfaceBasic cls22 = null;
@@ -267,7 +268,8 @@ public class DIContainerTest
     @Test
     public void testRegisterWhenInheritanceFromInterfaceChangesClass()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
 
         TestInterfaceBasic cls1 = null;
 
@@ -419,7 +421,8 @@ public class DIContainerTest
     @Test
     public void testRegisterInstanceWhenSameConcreteClass()
     {
-        TestClassWithDefaultAndParameterConstructor obj = new TestClassWithDefaultAndParameterConstructor();
+        TestClassWithDefaultAndParameterConstructor obj =
+            new TestClassWithDefaultAndParameterConstructor();
 
         testObject.registerInstance(TestClassWithDefaultAndParameterConstructor.class, obj);
 
@@ -444,7 +447,8 @@ public class DIContainerTest
     @Test
     public void testRegisterInstanceWhenDerivedConcreteClass()
     {
-        TestClassInheritsFromClassWithParameterConstructorOnly obj = new TestClassInheritsFromClassWithParameterConstructorOnly();
+        TestClassInheritsFromClassWithParameterConstructorOnly obj =
+            new TestClassInheritsFromClassWithParameterConstructorOnly();
 
         testObject.registerInstance(TestClassWithParameterConstructorOnly.class, obj);
 
@@ -466,7 +470,7 @@ public class DIContainerTest
         Assert.assertEquals(obj.getNumber(), cls.getNumber());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullInstanceException.class)
     public void testRegisterInstanceWhenInstanceIsNull()
         throws IllegalArgumentException
     {
@@ -649,7 +653,8 @@ public class DIContainerTest
         String string = "String";
 
         testObject.registerInstance(String.class, string);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
         testObject.registerType(TestInterfaceSimpleDependency.class,
@@ -679,7 +684,8 @@ public class DIContainerTest
     @Test
     public void testResolveDependenciesWithoutAnnotatedConstructorsWithAllDependencies()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
         testObject.registerType(TestInterfaceSimpleDependency.class,
@@ -709,7 +715,8 @@ public class DIContainerTest
     @Test
     public void testResolveDependenciesWithoutAnnotatedConstructorsWithoutSomeDependencies()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceSimpleDependency.class,
                                 TestClassSimpleDependencyWithoutAnnotation.class);
@@ -736,7 +743,8 @@ public class DIContainerTest
     @Test
     public void testResolveDependenciesWithAnnotatedConstructor()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
         testObject.registerType(TestInterfaceSimpleDependency.class,
@@ -778,7 +786,8 @@ public class DIContainerTest
     @Test
     public void testResolveDiamondDependenciesWithoutSingleton()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceDiamond2.class, TestClassDiamond2.class);
         testObject.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
@@ -807,8 +816,8 @@ public class DIContainerTest
     @Test
     public void testResolveDiamondDependenciesWithSingleton()
     {
-        testObject.registerType(TestInterfaceBasic.class,
-                                TestClassWithDefaultConstructorOnly.class, true);
+        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class,
+                                true);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceDiamond2.class, TestClassDiamond2.class);
         testObject.registerType(TestInterfaceDiamondBase.class, TestClassDiamondBase.class);
@@ -896,7 +905,8 @@ public class DIContainerTest
     {
         testObject.registerType(TestInterfaceDependencySetter.class,
                                 TestClassWithDependencySetterOnly.class);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
 
         TestInterfaceDependencySetter cls = null;
 
@@ -920,7 +930,8 @@ public class DIContainerTest
     {
         testObject.registerType(TestInterfaceDependencySetter.class,
                                 TestClassWithDependencySetterAndConstructor.class);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
 
         TestInterfaceDependencySetter cls = null;
 
@@ -946,7 +957,8 @@ public class DIContainerTest
 
         testObject.registerType(TestInterfaceComplexDependency.class,
                                 TestClassComplexDependency.class);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 
@@ -981,7 +993,8 @@ public class DIContainerTest
 
         testObject.registerType(TestInterfaceDoubleDependencySetter.class,
                                 TestClassWithDoubleDependencySetter.class);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 
         testObject.registerInstance(String.class, string);
@@ -1013,7 +1026,8 @@ public class DIContainerTest
 
         testObject.registerType(TestInterfaceMultipleDependencySetters.class,
                                 TestClassWithMultipleDependencySetters.class);
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 
         testObject.registerInstance(String.class, string);
@@ -1041,7 +1055,8 @@ public class DIContainerTest
     @Test
     public void testBuildUpWhenDependencySetterOnly()
     {
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
 
         TestInterfaceDependencySetter cls = new TestClassWithDependencySetterOnly();
 
@@ -1064,7 +1079,8 @@ public class DIContainerTest
     {
         String string = "string";
 
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 
         testObject.registerInstance(String.class, string);
@@ -1094,7 +1110,8 @@ public class DIContainerTest
     {
         String string = "string";
 
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 
         testObject.registerInstance(String.class, string);
@@ -1124,7 +1141,8 @@ public class DIContainerTest
     {
         String string = "string";
 
-        testObject.registerType(TestInterfaceBasic.class, TestClassWithDefaultConstructorOnly.class);
+        testObject.registerType(TestInterfaceBasic.class,
+                                TestClassWithDefaultConstructorOnly.class);
         testObject.registerType(TestInterfaceDiamond1.class, TestClassDiamond1.class);
         testObject.registerType(TestInterfaceWithString.class, TestClassWithString.class);
 

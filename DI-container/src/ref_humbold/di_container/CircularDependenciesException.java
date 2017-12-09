@@ -5,19 +5,9 @@ public class CircularDependenciesException
 {
     private static final long serialVersionUID = 607229069481348756L;
 
-    public CircularDependenciesException()
-    {
-        super();
-    }
-
     public CircularDependenciesException(String s)
     {
         super(s);
-    }
-
-    public CircularDependenciesException(Throwable t)
-    {
-        super(t);
     }
 
     public CircularDependenciesException(String s, Throwable t)

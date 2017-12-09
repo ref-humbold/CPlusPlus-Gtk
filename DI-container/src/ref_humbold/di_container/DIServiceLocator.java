@@ -18,7 +18,7 @@ public final class DIServiceLocator
         throws DIException
     {
         if(containerProvider == null)
-            throw new EmptyContainerProviderException();
+            throw new EmptyContainerProviderException("Container provider is empty.");
 
         if(cls == DIContainer.class)
             return (T)containerProvider.getContainer();

@@ -5,19 +5,9 @@ public class DIException
 {
     private static final long serialVersionUID = -3019200382390630637L;
 
-    public DIException()
-    {
-        super();
-    }
-
     public DIException(String s)
     {
         super(s);
-    }
-
-    public DIException(Throwable t)
-    {
-        super(t);
     }
 
     public DIException(String s, Throwable t)

@@ -5,19 +5,9 @@ public class IncorrectDependencyMethodException
 {
     private static final long serialVersionUID = 3707239480399538423L;
 
-    public IncorrectDependencyMethodException()
-    {
-        super();
-    }
-
     public IncorrectDependencyMethodException(String s)
     {
         super(s);
-    }
-
-    public IncorrectDependencyMethodException(Throwable t)
-    {
-        super(t);
     }
 
     public IncorrectDependencyMethodException(String s, Throwable t)
