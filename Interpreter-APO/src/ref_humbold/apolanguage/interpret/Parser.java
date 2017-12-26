@@ -5,14 +5,19 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import ref_humbold.apolanguage.errors.LabelException;
 import ref_humbold.apolanguage.errors.LanguageException;
 import ref_humbold.apolanguage.errors.SymbolException;
 import ref_humbold.apolanguage.instructions.Instruction;
 import ref_humbold.apolanguage.instructions.InstructionName;
+import ref_humbold.apolanguage.instructions.Instructions;
 import ref_humbold.apolanguage.instructions.NOPInstruction;
 
 /**
@@ -25,17 +30,23 @@ public class Parser
 {
     private static final String COMMENT_SIGN = "#";
     private static final String LABEL_END_SIGN = ":";
-    private Path filepath;
-    private LabelSet labelSet;
+    private List<List<String>> numberedLines = new ArrayList<>();
+    private LabelSet labelSet = new LabelSet();
 
     /**
      * Uruchamia parser i tworzy tymczasowe listy etykiet oraz zmiennych.
      * @param path sciezka dostepu do pliku programu
      */
     public Parser(Path path)
+        throws IOException
     {
-        this.filepath = path;
-        this.labelSet = new LabelSet();
+        this(Files.newBufferedReader(path, StandardCharsets.UTF_8));
+    }
+
+    public Parser(BufferedReader reader)
+        throws IOException
+    {
+        readLines(reader);
     }
 
     /**
@@ -45,36 +56,16 @@ public class Parser
      * @see InstructionList
      * @see Instruction
      */
-    public InstructionList parse()
-        throws IOException, LanguageException
-    {
-        return parse(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
-    }
-
-    InstructionList parse(BufferedReader reader)
-        throws IOException, LanguageException
+    public InstructionList parse(BufferedReader reader)
+        throws LanguageException
     {
         InstructionList instructions = new InstructionList();
-        String line = reader.readLine();
-        int lineNumber = 0;
 
-        while(line != null)
+        for(List<String> line : numberedLines)
         {
-            ++lineNumber;
-            line = removeComment(line.trim());
-
-            if(line.equals(""))
-            {
-                line = reader.readLine();
-                continue;
-            }
-
-            String[] splittedLine = split(line);
-
-            Instruction instruction = parseLine(splittedLine, lineNumber);
+            Instruction instruction = parseLine(line);
 
             instructions.add(instruction);
-            line = reader.readLine();
         }
 
         setLinksForJumps();
@@ -88,81 +79,87 @@ public class Parser
      * @return zbiór zmiennych programu
      * @see VariableSet
      */
-    public VariableSet initVariables()
-        throws IOException, LanguageException
-    {
-        return initVariables(Files.newBufferedReader(filepath, StandardCharsets.UTF_8));
-    }
-
-    VariableSet initVariables(BufferedReader reader)
-        throws IOException, LanguageException
+    public VariableSet initVariables(BufferedReader reader)
+        throws LanguageException
     {
         VariableSet variables = new VariableSet();
         Set<String> labels = new HashSet<>();
-        String line = reader.readLine();
-        int lineNumber = 0;
 
         variables.setValue("zero", 0);
 
-        while(line != null)
+        for(List<String> line : numberedLines)
         {
-            ++lineNumber;
-            line = removeComment(line.trim());
-
-            if(line.equals(""))
-            {
-                line = reader.readLine();
-                continue;
-            }
-
-            String[] splittedLine = split(line);
-            String label = exractLabel(splittedLine);
-            int index = 1;
+            String label = extractLabel(line);
+            int index = 2;
 
             if(!label.equals(""))
             {
-                index = 2;
-                labels.add(label + "@" + Integer.toString(lineNumber));
+                index = 3;
+                labels.add(label + "@" + Integer.toString(getLineNumber(line)));
             }
 
-            if(splittedLine.length > index)
+            if(line.size() > index)
             {
-                if(!isAllLowerCase(splittedLine[index]))
+                if(!isAllLowerCase(line.get(index)))
                     throw new SymbolException(SymbolException.INVALID_CHARACTERS);
 
-                InstructionName name = Instruction.convertToName(splittedLine[index - 1]);
+                InstructionName name = Instructions.convertToName(line.get(index - 1));
 
-                if(isValueSet(name) && !variables.contains(splittedLine[index]))
-                    variables.setValue(splittedLine[index]);
+                if(Instructions.isValueSet(name) && !variables.contains(line.get(index)))
+                    variables.setValue(line.get(index));
             }
-
-            line = reader.readLine();
         }
 
         for(String label : labels)
         {
-            String[] labelSplitted = label.split("@");
+            String[] labelSplit = label.split("@");
+            int lineNumber = Integer.parseInt(labelSplit[1]);
 
-            lineNumber = Integer.parseInt(labelSplitted[1]);
-
-            if(variables.contains(labelSplitted[0]))
+            if(variables.contains(labelSplit[0]))
                 throw new LabelException(LabelException.SAME_VARIABLE_NAME, lineNumber);
         }
 
         return variables;
     }
 
-    private Instruction parseLine(String[] splittedLine, int lineNumber)
+    private int getLineNumber(List<String> line)
+    {
+        return Integer.parseInt(line.get(0));
+    }
+
+    private void readLines(BufferedReader reader)
+        throws IOException
+    {
+        Integer lineNumber = 0;
+        String line = reader.readLine();
+
+        while(line != null)
+        {
+            ++lineNumber;
+            line = line.trim().split(COMMENT_SIGN, 2)[0];
+
+            if(!line.equals(""))
+            {
+                String[] splitLine = (lineNumber.toString() + " " + line).split("\\s+");
+
+                numberedLines.add(Arrays.asList(splitLine));
+            }
+
+            line = reader.readLine();
+        }
+    }
+
+    private Instruction parseLine(List<String> line)
         throws LabelException
     {
         //TODO write parser for single line
-        Instruction instruction = new NOPInstruction(lineNumber);
-        String label = exractLabel(splittedLine);
+        Instruction instruction = new NOPInstruction(getLineNumber(line));
+        String label = extractLabel(line);
 
         if(!label.equals(""))
         {
             if(labelSet.contains(label))
-                throw new LabelException(LabelException.DUPLICATED, lineNumber);
+                throw new LabelException(LabelException.DUPLICATED, getLineNumber(line));
 
             labelSet.setInstruction(label, instruction);
         }
@@ -171,134 +168,22 @@ public class Parser
     }
 
     private void setLinksForJumps()
-        throws LabelException
     {
         //TODO write setting links for jumps
     }
 
-    private String removeComment(String line)
+    private String extractLabel(List<String> line)
     {
-        return line.split(COMMENT_SIGN, 2)[0];
+        return hasLabel(line) ? line.get(1).substring(0, line.get(1).length() - 1) : "";
     }
 
-    private String[] split(String line)
+    private boolean hasLabel(List<String> line)
     {
-        return line.split("\\s+");
-    }
-
-    private String exractLabel(String[] splittedLine)
-    {
-        return hasLabel(splittedLine) ? splittedLine[0].substring(0, splittedLine[0].length() - 1)
-                                      : "";
-    }
-
-    private boolean hasLabel(String[] splittedLine)
-    {
-        return splittedLine[0].endsWith(LABEL_END_SIGN);
+        return line.get(1).endsWith(LABEL_END_SIGN);
     }
 
     private boolean isAllLowerCase(String s)
     {
-        for(int i = 0; i < s.length(); ++i)
-            if(s.charAt(i) < 'a' || s.charAt(i) > 'z')
-                return false;
-
-        return true;
-    }
-
-    private boolean isValueSet(InstructionName name)
-        throws SymbolException
-    {
-        switch(name)
-        {
-            case ADD:
-            case ADDI:
-            case SUB:
-            case SUBI:
-            case MUL:
-            case MULI:
-            case DIV:
-            case DIVI:
-            case SHLT:
-            case SHRT:
-            case SHRS:
-            case AND:
-            case ANDI:
-            case OR:
-            case ORI:
-            case XOR:
-            case XORI:
-            case NAND:
-            case NOR:
-            case RDINT:
-            case RDCHR:
-            case LDW:
-            case LDB:
-                return true;
-
-            case JUMP:
-            case JPEQ:
-            case JPLT:
-            case JPGT:
-            case STW:
-            case STB:
-            case PTLN:
-            case PTINT:
-            case PTCHR:
-            case NOP:
-                return false;
-        }
-
-        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION);
-    }
-
-    private int getArgsNumber(InstructionName name)
-        throws SymbolException
-    {
-        switch(name)
-        {
-            case PTLN:
-            case NOP:
-                return 0;
-
-            case LDW:
-            case LDB:
-            case PTINT:
-            case PTCHR:
-            case RDINT:
-            case RDCHR:
-                return 1;
-
-            case STW:
-            case STB:
-                return 2;
-
-            case JUMP:
-            case JPEQ:
-            case JPLT:
-            case JPGT:
-            case ADD:
-            case ADDI:
-            case SUB:
-            case SUBI:
-            case MUL:
-            case MULI:
-            case DIV:
-            case DIVI:
-            case SHLT:
-            case SHRT:
-            case SHRS:
-            case AND:
-            case ANDI:
-            case OR:
-            case ORI:
-            case XOR:
-            case XORI:
-            case NAND:
-            case NOR:
-                return 3;
-        }
-
-        throw new SymbolException(SymbolException.NO_SUCH_INSTRUCTION);
+        return Pattern.matches("[a-z]+", s);
     }
 }

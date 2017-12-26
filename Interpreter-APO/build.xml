@@ -10,13 +10,12 @@
   <property name="target" value="1.8" />
   <property name="source" value="1.8" />
 
-  <path id="JUnit4.userclasspath">
+  <path id="JUnit4.libraryclasspath">
     <pathelement location="/usr/share/java/hamcrest-core.jar" />
     <pathelement location="/usr/share/java/junit4.jar" />
   </path>
-
   <path id="interpreter-APO.classpath">
-    <path refid="JUnit4.userclasspath" />
+    <path refid="JUnit4.libraryclasspath" />
     <pathelement location="${build.dir}" />
   </path>
 

@@ -15,14 +15,12 @@ public class LabelSetTest
 
     @Before
     public void setUp()
-        throws Exception
     {
         testObject = new LabelSet();
     }
 
     @After
     public void tearDown()
-        throws Exception
     {
         testObject = null;
     }
@@ -43,7 +41,7 @@ public class LabelSetTest
         catch(LabelException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LabelException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Assert.assertEquals(value, result);
@@ -87,7 +85,7 @@ public class LabelSetTest
         catch(LabelException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LabelException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Assert.assertEquals(value2, result1);

@@ -1,7 +1,6 @@
 package ref_humbold.apolanguage.interpret;
 
 import java.util.Iterator;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +22,6 @@ public class InstructionListTest
     @Before
 
     public void setUp()
-        throws Exception
     {
         testObject = new InstructionList();
         variableSet = new VariableSet();
@@ -34,7 +32,6 @@ public class InstructionListTest
 
     @After
     public void tearDown()
-        throws Exception
     {
         testObject = null;
         variableSet = null;
@@ -56,7 +53,7 @@ public class InstructionListTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         testObject.add(instruction);
@@ -89,7 +86,7 @@ public class InstructionListTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         testObject.add(instruction1);
@@ -102,6 +99,12 @@ public class InstructionListTest
         Assert.assertTrue(it.hasNext());
         Assert.assertEquals(instruction2, it.next());
         Assert.assertFalse(it.hasNext());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddWhenInstructionNull()
+    {
+        testObject.add(null);
     }
 
     @Test
@@ -127,7 +130,7 @@ public class InstructionListTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         testObject.add(instruction);
@@ -166,7 +169,7 @@ public class InstructionListTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         instruction1.setLink(instruction3);
@@ -191,7 +194,7 @@ public class InstructionListTest
         catch(LanguageException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LanguageException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Instruction result3 = iterator.next();
@@ -224,7 +227,7 @@ public class InstructionListTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         instruction1.setLink(instruction3);
@@ -249,7 +252,7 @@ public class InstructionListTest
         catch(LanguageException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected LanguageException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Instruction result2 = iterator.next();

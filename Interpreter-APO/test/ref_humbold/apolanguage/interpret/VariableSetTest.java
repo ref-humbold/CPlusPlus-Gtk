@@ -13,14 +13,12 @@ public class VariableSetTest
 
     @Before
     public void setUp()
-        throws Exception
     {
         testObject = new VariableSet();
     }
 
     @After
     public void tearDown()
-        throws Exception
     {
         testObject = null;
     }
@@ -40,7 +38,7 @@ public class VariableSetTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Assert.assertEquals(0, result);
@@ -71,7 +69,7 @@ public class VariableSetTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Assert.assertEquals(value, result);
@@ -113,7 +111,7 @@ public class VariableSetTest
         catch(SymbolException e)
         {
             e.printStackTrace();
-            Assert.fail("Unexpected SymbolException was thrown.");
+            Assert.fail("Unexpected exception " + e.getClass().getSimpleName());
         }
 
         Assert.assertEquals(value, result1);
