@@ -1,44 +1,30 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <sys/types.h>
-#include <pthread.h>
-#include <unistd.h>
+#include "pthread_semaphore.h"
 
-struct thread_sem
+void sem_init(struct pthread_semaphore * semaphore, int init_count)
 {
-    int counter;
-    pthread_cond_t waiting;
-    pthread_mutex_t crit;
-};
-
-void thr_sem_init(struct thread_sem* semphr, int init_count)
-{
-    semphr->counter = init_count;
-    pthread_cond_init(&semphr->waiting, NULL);
-    pthread_mutex_init(&semphr->crit, NULL);
+    semaphore->counter = init_count;
+    pthread_cond_init(&semaphore->waiting, NULL);
+    pthread_mutex_init(&semaphore->crit, NULL);
 }
 
-void thr_sem_wait(struct thread_sem* semphr)
+void sem_wait(struct pthread_semaphore * semaphore)
 {
-    pthread_mutex_lock(&semphr->crit);
-    semphr->counter--;
+    pthread_mutex_lock(&semaphore->crit);
+    semaphore->counter--;
 
-     if(semphr->counter < 0)
-         pthread_cond_wait(&semphr->waiting, &semphr->crit);
+    if(semaphore->counter < 0)
+        pthread_cond_wait(&semaphore->waiting, &semaphore->crit);
 
-    pthread_mutex_unlock(&semphr->crit);
+    pthread_mutex_unlock(&semaphore->crit);
 }
 
-void thr_sem_signal(struct thread_sem* semphr)
+void sem_signal(struct pthread_semaphore * semaphore)
 {
-    pthread_mutex_lock(&semphr->crit);
+    pthread_mutex_lock(&semaphore->crit);
 
-     if(semphr->counter < 0)
-         pthread_cond_signal(&semphr->waiting);
+    if(semaphore->counter < 0)
+        pthread_cond_signal(&semaphore->waiting);
 
-    semphr->counter++;
-    pthread_mutex_unlock(&semphr->crit);
+    semaphore->counter++;
+    pthread_mutex_unlock(&semaphore->crit);
 }
-
