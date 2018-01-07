@@ -1,4 +1,4 @@
-module gain_hex(input[3:0] gain, output reg[6:0] hex);
+module gain_hex(output reg[6:0] hex, input[3:0] gain);
 	always @*
 	case(gain)
 		4'b1000: hex = 7'b0110110;
