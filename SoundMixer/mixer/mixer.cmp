@@ -7,6 +7,7 @@
 			audio_external_BCLK      : in    std_logic                    := 'X';             -- BCLK
 			audio_external_DACDAT    : out   std_logic;                                       -- DACDAT
 			audio_external_DACLRCK   : in    std_logic                    := 'X';             -- DACLRCK
+			audio_pll_clk_clk        : out   std_logic;                                       -- clk
 			clk_clk                  : in    std_logic                    := 'X';             -- clk
 			gain_hex_new_signal      : out   std_logic_vector(6 downto 0);                    -- new_signal
 			gain_key_new_signal      : in    std_logic_vector(1 downto 0) := (others => 'X'); -- new_signal

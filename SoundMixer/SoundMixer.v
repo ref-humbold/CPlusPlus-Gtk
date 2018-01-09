@@ -4,7 +4,7 @@
 
 module SoundMixer(
 	//////////// Audio //////////
-	input  AUD_ADCDAT,
+	input AUD_ADCDAT,
 	inout AUD_ADCLRCK,
 	inout AUD_BCLK,
 	output AUD_DACDAT,
@@ -46,5 +46,24 @@ module SoundMixer(
 //=======================================================
 //  Structural coding
 //=======================================================
-
+	assign HEX5 = 7'b1111111;
+	assign HEX4 = 7'b1111111;
+	assign HEX3 = 7'b1111111;
+	assign HEX2 = 7'b1111111;
+	assign HEX1 = 7'b1111111;
+	
+	mixer m (
+		.audio_config_extern_SDAT (FPGA_I2C_SDAT),
+		.audio_config_extern_SCLK (FPGA_I2C_SCLK),
+		.audio_external_ADCDAT    (AUD_ADCDAT),
+		.audio_external_ADCLRCK   (AUD_ADCLRCK),
+		.audio_external_BCLK      (AUD_BCLK),
+		.audio_external_DACDAT    (AUD_DACDAT),
+		.audio_external_DACLRCK   (AUD_DACLRCK),
+		.clk_clk                  (CLOCK_50),
+		.gain_hex_new_signal      (HEX0),
+		.gain_key_new_signal      (KEY[1:0]),
+		.reset_reset_n            (1),
+		.audio_pll_clk_clk        (AUD_XCK)
+	);
 endmodule

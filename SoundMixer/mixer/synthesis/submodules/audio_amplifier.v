@@ -30,10 +30,10 @@ module audio_amplifier #(parameter BITS = 24) (
 	wire[3:0] gain;
 	wire change_up, change_down;
 	
-	assign avalon_left_sink_ready = 1'b1;
-	assign avalon_right_sink_ready = 1'b1;
-	assign avalon_left_source_valid = 1'b1;
-	assign avalon_right_source_valid = 1'b1;
+	assign avalon_left_sink_ready = avalon_left_source_ready;
+	assign avalon_right_sink_ready = avalon_right_source_ready;
+	assign avalon_left_source_valid = avalon_left_sink_valid;
+	assign avalon_right_source_valid = avalon_right_sink_valid;
 	
 	gain_key key_up(change_up, clock_clk, key_signal[0]);
 	gain_key key_down(change_down, clock_clk, key_signal[1]);

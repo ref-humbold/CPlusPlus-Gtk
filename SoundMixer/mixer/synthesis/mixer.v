@@ -11,6 +11,7 @@ module mixer (
 		input  wire       audio_external_BCLK,      //                    .BCLK
 		output wire       audio_external_DACDAT,    //                    .DACDAT
 		input  wire       audio_external_DACLRCK,   //                    .DACLRCK
+		output wire       audio_pll_clk_clk,        //       audio_pll_clk.clk
 		input  wire       clk_clk,                  //                 clk.clk
 		output wire [6:0] gain_hex_new_signal,      //            gain_hex.new_signal
 		input  wire [1:0] gain_key_new_signal,      //            gain_key.new_signal
@@ -104,10 +105,10 @@ module mixer (
 	);
 
 	mixer_audio_pll_0 audio_pll_0 (
-		.ref_clk_clk        (clk_clk),        //      ref_clk.clk
-		.ref_reset_reset    (~reset_reset_n), //    ref_reset.reset
-		.audio_clk_clk      (),               //    audio_clk.clk
-		.reset_source_reset ()                // reset_source.reset
+		.ref_clk_clk        (clk_clk),           //      ref_clk.clk
+		.ref_reset_reset    (~reset_reset_n),    //    ref_reset.reset
+		.audio_clk_clk      (audio_pll_clk_clk), //    audio_clk.clk
+		.reset_source_reset ()                   // reset_source.reset
 	);
 
 	mixer_master_0 #(
