@@ -50,9 +50,8 @@ module SoundMixer(
 	assign HEX4 = 7'b1111111;
 	assign HEX3 = 7'b1111111;
 	assign HEX2 = 7'b1111111;
-	assign HEX1 = 7'b1111111;
 	
-	mixer m (
+	mixer mix (
 		.audio_config_extern_SDAT (FPGA_I2C_SDAT),
 		.audio_config_extern_SCLK (FPGA_I2C_SCLK),
 		.audio_external_ADCDAT    (AUD_ADCDAT),
@@ -60,10 +59,11 @@ module SoundMixer(
 		.audio_external_BCLK      (AUD_BCLK),
 		.audio_external_DACDAT    (AUD_DACDAT),
 		.audio_external_DACLRCK   (AUD_DACLRCK),
+		.audio_pll_clk_clk        (AUD_XCK),
 		.clk_clk                  (CLOCK_50),
-		.gain_hex_new_signal      (HEX0),
-		.gain_key_new_signal      (KEY[1:0]),
-		.reset_reset_n            (1),
-		.audio_pll_clk_clk        (AUD_XCK)
+		.hex_hex_signal_0         (HEX0),
+		.hex_hex_signal_1         (HEX1),
+		.key_key_signal           (KEY[1:0]),
+		.reset_reset_n            (~SW[9])
 	);
 endmodule

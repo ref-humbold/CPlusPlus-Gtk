@@ -7,11 +7,12 @@
 			audio_external_BCLK      : in    std_logic                    := 'X';             -- BCLK
 			audio_external_DACDAT    : out   std_logic;                                       -- DACDAT
 			audio_external_DACLRCK   : in    std_logic                    := 'X';             -- DACLRCK
+			audio_pll_clk_clk        : out   std_logic;                                       -- clk
 			clk_clk                  : in    std_logic                    := 'X';             -- clk
-			gain_hex_new_signal      : out   std_logic_vector(6 downto 0);                    -- new_signal
-			gain_key_new_signal      : in    std_logic_vector(1 downto 0) := (others => 'X'); -- new_signal
-			reset_reset_n            : in    std_logic                    := 'X';             -- reset_n
-			audio_pll_clk_clk        : out   std_logic                                        -- clk
+			hex_hex_signal_0         : out   std_logic_vector(6 downto 0);                    -- hex_signal_0
+			hex_hex_signal_1         : out   std_logic_vector(6 downto 0);                    -- hex_signal_1
+			key_key_signal           : in    std_logic_vector(1 downto 0) := (others => 'X'); -- key_signal
+			reset_reset_n            : in    std_logic                    := 'X'              -- reset_n
 		);
 	end component mixer;
 
@@ -24,10 +25,11 @@
 			audio_external_BCLK      => CONNECTED_TO_audio_external_BCLK,      --                    .BCLK
 			audio_external_DACDAT    => CONNECTED_TO_audio_external_DACDAT,    --                    .DACDAT
 			audio_external_DACLRCK   => CONNECTED_TO_audio_external_DACLRCK,   --                    .DACLRCK
+			audio_pll_clk_clk        => CONNECTED_TO_audio_pll_clk_clk,        --       audio_pll_clk.clk
 			clk_clk                  => CONNECTED_TO_clk_clk,                  --                 clk.clk
-			gain_hex_new_signal      => CONNECTED_TO_gain_hex_new_signal,      --            gain_hex.new_signal
-			gain_key_new_signal      => CONNECTED_TO_gain_key_new_signal,      --            gain_key.new_signal
-			reset_reset_n            => CONNECTED_TO_reset_reset_n,            --               reset.reset_n
-			audio_pll_clk_clk        => CONNECTED_TO_audio_pll_clk_clk         --       audio_pll_clk.clk
+			hex_hex_signal_0         => CONNECTED_TO_hex_hex_signal_0,         --                 hex.hex_signal_0
+			hex_hex_signal_1         => CONNECTED_TO_hex_hex_signal_1,         --                    .hex_signal_1
+			key_key_signal           => CONNECTED_TO_key_key_signal,           --                 key.key_signal
+			reset_reset_n            => CONNECTED_TO_reset_reset_n             --               reset.reset_n
 		);
 

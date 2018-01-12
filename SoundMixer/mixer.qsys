@@ -89,6 +89,46 @@
          type = "String";
       }
    }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
@@ -126,16 +166,10 @@
    type="clock"
    dir="start" />
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
- <interface
-   name="gain_hex"
-   internal="audio_amplifier_0.gain_hex"
-   type="conduit"
-   dir="end" />
- <interface
-   name="gain_key"
-   internal="audio_amplifier_0.gain_key"
-   type="conduit"
-   dir="end" />
+ <interface name="gain_hex" internal="audio_amplifier_0.gain_hex" />
+ <interface name="gain_key" internal="audio_amplifier_0.gain_key" />
+ <interface name="hex" internal="audio_amplifier_0.hex" type="conduit" dir="end" />
+ <interface name="key" internal="audio_amplifier_0.key" type="conduit" dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
  <module
    name="audio_0"
@@ -153,9 +187,7 @@
    name="audio_amplifier_0"
    kind="audio_amplifier"
    version="1.0"
-   enabled="1">
-  <parameter name="BITS" value="24" />
- </module>
+   enabled="1" />
  <module
    name="audio_and_video_config_0"
    kind="altera_up_avalon_audio_and_video_config"
@@ -163,7 +195,7 @@
    enabled="1">
   <parameter name="AUTO_CLK_CLOCK_RATE" value="50000000" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
-  <parameter name="audio_in" value="Microphone to ADC" />
+  <parameter name="audio_in" value="Line In to ADC" />
   <parameter name="bit_length" value="24" />
   <parameter name="board" value="DE1-SoC" />
   <parameter name="d5m_resolution" value="2592 x 1944" />
