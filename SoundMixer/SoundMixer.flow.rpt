@@ -1,5 +1,5 @@
 Flow report for SoundMixer
-Fri Jan 12 13:00:23 2018
+Mon Jan 15 10:36:17 2018
 Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 
 
@@ -40,19 +40,19 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Fri Jan 12 13:00:09 2018       ;
+; Flow Status                     ; Successful - Mon Jan 15 10:36:04 2018       ;
 ; Quartus Prime Version           ; 17.1.0 Build 590 10/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; SoundMixer                                  ;
 ; Top-level Entity Name           ; SoundMixer                                  ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CSEMA5F31C6                                ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 704 / 32,070 ( 2 % )                        ;
-; Total registers                 ; 999                                         ;
+; Logic utilization (in ALMs)     ; 702 / 32,070 ( 2 % )                        ;
+; Total registers                 ; 992                                         ;
 ; Total pins                      ; 78 / 457 ( 17 % )                           ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 12,800 / 4,065,280 ( < 1 % )                ;
-; Total DSP Blocks                ; 4 / 87 ( 5 % )                              ;
+; Total DSP Blocks                ; 2 / 87 ( 2 % )                              ;
 ; Total HSSI RX PCSs              ; 0                                           ;
 ; Total HSSI PMA RX Deserializers ; 0                                           ;
 ; Total HSSI TX PCSs              ; 0                                           ;
@@ -67,7 +67,7 @@ refer to the applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 01/12/2018 12:57:35 ;
+; Start date & time ; 01/15/2018 10:33:43 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; SoundMixer          ;
 +-------------------+---------------------+
@@ -78,7 +78,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 180454973110657.151575825523100        ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 180454973110657.151600882311174        ; --            ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
 ; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
@@ -94,11 +94,11 @@ refer to the applicable agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:01:09     ; 1.0                     ; 1105 MB             ; 00:02:15                           ;
-; Fitter                    ; 00:01:10     ; 1.1                     ; 2255 MB             ; 00:01:58                           ;
-; Assembler                 ; 00:00:08     ; 1.0                     ; 976 MB              ; 00:00:08                           ;
-; TimeQuest Timing Analyzer ; 00:00:13     ; 1.2                     ; 1244 MB             ; 00:00:13                           ;
-; Total                     ; 00:02:40     ; --                      ; --                  ; 00:04:34                           ;
+; Analysis & Synthesis      ; 00:00:58     ; 1.0                     ; 1111 MB             ; 00:02:03                           ;
+; Fitter                    ; 00:01:10     ; 1.1                     ; 2260 MB             ; 00:02:00                           ;
+; Assembler                 ; 00:00:08     ; 1.0                     ; 974 MB              ; 00:00:08                           ;
+; TimeQuest Timing Analyzer ; 00:00:12     ; 1.2                     ; 1245 MB             ; 00:00:13                           ;
+; Total                     ; 00:02:28     ; --                      ; --                  ; 00:04:24                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

@@ -1,5 +1,5 @@
 Analysis & Synthesis report for SoundMixer
-Fri Jan 12 12:58:46 2018
+Mon Jan 15 10:34:42 2018
 Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 
 
@@ -124,9 +124,8 @@ Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 116. Port Connectivity Checks: "mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init:AV_Config_Auto_Init"
 117. Port Connectivity Checks: "mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0"
 118. Post-Synthesis Netlist Statistics for Top Partition
-119. Post-Synthesis Netlist Statistics for Partition sld_hub:auto_hub
-120. Elapsed Time Per Partition
-121. Analysis & Synthesis Messages
+119. Elapsed Time Per Partition
+120. Analysis & Synthesis Messages
 
 
 
@@ -152,17 +151,17 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Fri Jan 12 12:58:46 2018       ;
+; Analysis & Synthesis Status     ; Successful - Mon Jan 15 10:34:42 2018       ;
 ; Quartus Prime Version           ; 17.1.0 Build 590 10/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; SoundMixer                                  ;
 ; Top-level Entity Name           ; SoundMixer                                  ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 924                                         ;
+; Total registers                 ; 925                                         ;
 ; Total pins                      ; 78                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 12,800                                      ;
-; Total DSP Blocks                ; 4                                           ;
+; Total DSP Blocks                ; 2                                           ;
 ; Total HSSI RX PCSs              ; 0                                           ;
 ; Total HSSI PMA RX Deserializers ; 0                                           ;
 ; Total HSSI TX PCSs              ; 0                                           ;
@@ -373,30 +372,30 @@ refer to the applicable agreement for further details.
 +---------------------------------------------+----------------+
 ; Resource                                    ; Usage          ;
 +---------------------------------------------+----------------+
-; Estimate of Logic utilization (ALMs needed) ; 725            ;
+; Estimate of Logic utilization (ALMs needed) ; 730            ;
 ;                                             ;                ;
-; Combinational ALUT usage for logic          ; 1179           ;
+; Combinational ALUT usage for logic          ; 1174           ;
 ;     -- 7 input functions                    ; 11             ;
-;     -- 6 input functions                    ; 221            ;
+;     -- 6 input functions                    ; 237            ;
 ;     -- 5 input functions                    ; 209            ;
-;     -- 4 input functions                    ; 223            ;
-;     -- <=3 input functions                  ; 515            ;
+;     -- 4 input functions                    ; 206            ;
+;     -- <=3 input functions                  ; 511            ;
 ;                                             ;                ;
-; Dedicated logic registers                   ; 924            ;
+; Dedicated logic registers                   ; 925            ;
 ;                                             ;                ;
 ; I/O pins                                    ; 78             ;
 ; Total MLAB memory bits                      ; 0              ;
 ; Total block memory bits                     ; 12800          ;
 ;                                             ;                ;
-; Total DSP Blocks                            ; 4              ;
+; Total DSP Blocks                            ; 2              ;
 ;                                             ;                ;
 ; Total PLLs                                  ; 1              ;
 ;     -- PLLs                                 ; 1              ;
 ;                                             ;                ;
 ; Maximum fan-out node                        ; CLOCK_50~input ;
-; Maximum fan-out                             ; 733            ;
-; Total fan-out                               ; 9685           ;
-; Average fan-out                             ; 4.07           ;
+; Maximum fan-out                             ; 734            ;
+; Total fan-out                               ; 9612           ;
+; Average fan-out                             ; 4.05           ;
 +---------------------------------------------+----------------+
 
 
@@ -405,17 +404,17 @@ refer to the applicable agreement for further details.
 +-----------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------+--------------+
 ; Compilation Hierarchy Node                                                                                                              ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                                                                                                                                                                                                                    ; Entity Name                               ; Library Name ;
 +-----------------------------------------------------------------------------------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------+--------------+
-; |SoundMixer                                                                                                                             ; 1179 (2)            ; 924 (0)                   ; 12800             ; 4          ; 78   ; 0            ; |SoundMixer                                                                                                                                                                                                                                                                                                                                            ; SoundMixer                                ; work         ;
-;    |mixer:mix|                                                                                                                          ; 1086 (0)            ; 846 (0)                   ; 12800             ; 4          ; 0    ; 0            ; |SoundMixer|mixer:mix                                                                                                                                                                                                                                                                                                                                  ; mixer                                     ; mixer        ;
+; |SoundMixer                                                                                                                             ; 1174 (2)            ; 925 (0)                   ; 12800             ; 2          ; 78   ; 0            ; |SoundMixer                                                                                                                                                                                                                                                                                                                                            ; SoundMixer                                ; work         ;
+;    |mixer:mix|                                                                                                                          ; 1081 (0)            ; 847 (0)                   ; 12800             ; 2          ; 0    ; 0            ; |SoundMixer|mixer:mix                                                                                                                                                                                                                                                                                                                                  ; mixer                                     ; mixer        ;
 ;       |altera_reset_controller:rst_controller|                                                                                          ; 0 (0)               ; 3 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|altera_reset_controller:rst_controller                                                                                                                                                                                                                                                                                           ; altera_reset_controller                   ; mixer        ;
 ;          |altera_reset_synchronizer:alt_rst_sync_uq1|                                                                                   ; 0 (0)               ; 3 (3)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1                                                                                                                                                                                                                                                ; altera_reset_synchronizer                 ; mixer        ;
-;       |audio_amplifier:audio_amplifier_0|                                                                                               ; 120 (0)             ; 57 (0)                    ; 0                 ; 4          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0                                                                                                                                                                                                                                                                                                ; audio_amplifier                           ; mixer        ;
-;          |amplifier:amp_left|                                                                                                           ; 50 (50)             ; 25 (25)                   ; 0                 ; 2          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_left                                                                                                                                                                                                                                                                             ; amplifier                                 ; mixer        ;
-;          |amplifier:amp_right|                                                                                                          ; 53 (53)             ; 24 (24)                   ; 0                 ; 2          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right                                                                                                                                                                                                                                                                            ; amplifier                                 ; mixer        ;
+;       |audio_amplifier:audio_amplifier_0|                                                                                               ; 115 (0)             ; 58 (0)                    ; 0                 ; 2          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0                                                                                                                                                                                                                                                                                                ; audio_amplifier                           ; mixer        ;
+;          |amplifier:amp_left|                                                                                                           ; 49 (49)             ; 25 (25)                   ; 0                 ; 1          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_left                                                                                                                                                                                                                                                                             ; amplifier                                 ; mixer        ;
+;          |amplifier:amp_right|                                                                                                          ; 51 (51)             ; 25 (25)                   ; 0                 ; 1          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right                                                                                                                                                                                                                                                                            ; amplifier                                 ; mixer        ;
 ;          |gain_hex:ghex|                                                                                                                ; 7 (7)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|gain_hex:ghex                                                                                                                                                                                                                                                                                  ; gain_hex                                  ; mixer        ;
 ;          |gain_key:key_down|                                                                                                            ; 2 (2)               ; 2 (2)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|gain_key:key_down                                                                                                                                                                                                                                                                              ; gain_key                                  ; mixer        ;
 ;          |gain_key:key_up|                                                                                                              ; 2 (2)               ; 2 (2)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|gain_key:key_up                                                                                                                                                                                                                                                                                ; gain_key                                  ; mixer        ;
-;          |get_gain:get|                                                                                                                 ; 6 (6)               ; 4 (4)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|get_gain:get                                                                                                                                                                                                                                                                                   ; get_gain                                  ; mixer        ;
+;          |get_gain:get|                                                                                                                 ; 4 (4)               ; 4 (4)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|get_gain:get                                                                                                                                                                                                                                                                                   ; get_gain                                  ; mixer        ;
 ;       |mixer_audio_0:audio_0|                                                                                                           ; 270 (14)            ; 228 (2)                   ; 12288             ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0                                                                                                                                                                                                                                                                                                            ; mixer_audio_0                             ; mixer        ;
 ;          |altera_up_audio_in_deserializer:Audio_In_Deserializer|                                                                        ; 108 (5)             ; 112 (40)                  ; 6144              ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer                                                                                                                                                                                                                                                      ; altera_up_audio_in_deserializer           ; mixer        ;
 ;             |altera_up_audio_bit_counter:Audio_Out_Bit_Counter|                                                                         ; 9 (9)               ; 6 (6)                     ; 0                 ; 0          ; 0    ; 0            ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer|altera_up_audio_bit_counter:Audio_Out_Bit_Counter                                                                                                                                                                                                    ; altera_up_audio_bit_counter               ; mixer        ;
@@ -520,16 +519,16 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+------+------------------+--------------+--------------+--------------+--------------+------+------+
 
 
-+-----------------------------------------------+
-; Analysis & Synthesis DSP Block Usage Summary  ;
-+---------------------------------+-------------+
-; Statistic                       ; Number Used ;
-+---------------------------------+-------------+
-; Independent 27x27               ; 4           ;
-; Total number of DSP blocks      ; 4           ;
-;                                 ;             ;
-; Fixed Point Unsigned Multiplier ; 4           ;
-+---------------------------------+-------------+
++----------------------------------------------+
+; Analysis & Synthesis DSP Block Usage Summary ;
++-------------------------------+--------------+
+; Statistic                     ; Number Used  ;
++-------------------------------+--------------+
+; Independent 27x27             ; 2            ;
+; Total number of DSP blocks    ; 2            ;
+;                               ;              ;
+; Fixed Point Signed Multiplier ; 2            ;
++-------------------------------+--------------+
 
 
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -722,7 +721,6 @@ Encoding Type:  One-Hot
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|stored_channel[7]                                                                                                               ; Merged with mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|stored_channel[0]                                        ;
 ; mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[10..15,18..31]                                                                                                               ; Merged with mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[9]                                                    ;
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|read_data_buffer[1..7,10..22]                                                                         ; Merged with mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|read_data_buffer[23]           ;
-; mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right|out_valid                                                                                                                               ; Merged with mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_left|out_valid                                                         ;
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|channel_needs_esc                                                                                                               ; Stuck at GND due to stuck port data_in                                                                                                       ;
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_info[10]   ; Stuck at GND due to stuck port data_in                                                                                                       ;
 ; mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[9]                                                                                                                           ; Stuck at GND due to stuck port data_in                                                                                                       ;
@@ -744,7 +742,7 @@ Encoding Type:  One-Hot
 ; mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|s_serial_protocol~3                                                   ; Lost fanout                                                                                                                                  ;
 ; mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|s_serial_protocol~4                                                   ; Lost fanout                                                                                                                                  ;
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[4..31]                                                                                        ; Lost fanout                                                                                                                                  ;
-; Total Number of Removed Registers = 158                                                                                                                                                                 ;                                                                                                                                              ;
+; Total Number of Removed Registers = 157                                                                                                                                                                 ;                                                                                                                                              ;
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------+
 
 
@@ -792,10 +790,10 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 924   ;
+; Total registers                              ; 925   ;
 ; Number of registers using Synchronous Clear  ; 377   ;
 ; Number of registers using Synchronous Load   ; 50    ;
-; Number of registers using Asynchronous Clear ; 301   ;
+; Number of registers using Asynchronous Clear ; 302   ;
 ; Number of registers using Asynchronous Load  ; 0     ;
 ; Number of registers using Clock Enable       ; 560   ;
 ; Number of registers using Preset             ; 0     ;
@@ -807,7 +805,7 @@ Encoding Type:  One-Hot
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
 ; Inverted Register                                                                                                                                                                                                                                                                                                               ; Fan out ;
 +---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------+
-; mixer:mix|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain_out                                                                                                                                                                                             ; 276     ;
+; mixer:mix|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain_out                                                                                                                                                                                             ; 277     ;
 ; mixer:mix|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain[0]                                                                                                                                                                                              ; 1       ;
 ; mixer:mix|mixer_master_0:master_0|altera_reset_controller:rst_controller|altera_reset_synchronizer:alt_rst_sync_uq1|altera_reset_synchronizer_int_chain_out                                                                                                                                                                     ; 170     ;
 ; mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|stored_channel[0]                                                                                                                                                                                                                                       ; 2       ;
@@ -832,74 +830,63 @@ Encoding Type:  One-Hot
 +-----------------------------------------------------------------------------------------+------------------------------------------------------------------------+------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                                                                                                                                                                                                                                                                     ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                                                                                                                                                                                                                                                           ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; 3:1                ; 18 bits   ; 36 LEs        ; 18 LEs               ; 18 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_control[6]                                                                                                                                                  ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_debug[0]                                                                                                                                                    ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|header_out_bit_counter[3]                                                                                                                                      ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|bypass_bit_counter[3]                                                                                                                                          ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|read_data_bit_counter[0]                                                                                                                                       ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_data_bit_counter[0]                                                                                                                                      ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 0 LEs                ; 6 LEs                  ; Yes        ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|get_gain:get|gain[3]                                                                                                                                                                                                                                                                                         ;
-; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init:AV_Config_Auto_Init|rom_address[5]                                                                                                                                                                                                                       ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|control_reg[17]                                                                                                                                                                                                                                                                        ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|address_reg[1]                                                                                                                                                                                                                                                                         ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|control_reg[2]                                                                                                                                                                                                                                                                         ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|device_for_transfer[0]                                                                                                                                                                                                                                                                 ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|data_reg[6]                                                                                                                                                                                                                                                                            ;
-; 3:1                ; 24 bits   ; 48 LEs        ; 0 LEs                ; 48 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer|data_in_shift_reg[20]                                                                                                                                                                                                                                              ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|header_in_bit_counter[0]                                                                                                                                       ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[18]                                                                                                                                   ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[16]                                                                                                                                   ;
-; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|address_for_transfer[5]                                                                                                                                                                                                                                                                ;
-; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer|altera_up_audio_bit_counter:Audio_Out_Bit_Counter|bit_counter[1]                                                                                                                                                                                                   ;
-; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[17]                                                                                                                                                                                                                                                                           ;
-; 5:1                ; 2 bits    ; 6 LEs         ; 4 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|start_external_transfer                                                                                                                                                                                                                                                                ;
-; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|unshifted_byteenable[2]                                                                                                                                                                                                                                ;
-; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|valid_write_data_length_byte_counter[3]                                                                                                                        ;
-; 4:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|valid_write_data_length_byte_counter[15]                                                                                                                       ;
-; 5:1                ; 35 bits   ; 105 LEs       ; 70 LEs               ; 35 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_mask[23]                                                                                                                                                                                                      ;
-; 4:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[4]                                                                                                                                    ;
-; 10:1               ; 24 bits   ; 144 LEs       ; 24 LEs               ; 120 LEs                ; Yes        ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right|out_data[2]                                                                                                                                                                                                                                                                              ;
-; 10:1               ; 24 bits   ; 144 LEs       ; 24 LEs               ; 120 LEs                ; Yes        ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_left|out_data[5]                                                                                                                                                                                                                                                                               ;
-; 6:1                ; 5 bits    ; 20 LEs        ; 15 LEs               ; 5 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[6]                                                                                                                                                                                                                                                                            ;
-; 6:1                ; 12 bits   ; 48 LEs        ; 24 LEs               ; 24 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_data[21]                                                                                                                                                                                                      ;
-; 6:1                ; 23 bits   ; 92 LEs        ; 46 LEs               ; 46 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|data_out_shift_reg[12]                                                                                                                                                                                                                                               ;
-; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|counter[8]                                                                                                                                                                                                                                             ;
-; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|counter[4]                                                                                                                                                                                                                                             ;
-; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[25]                                                                                                                                                                                                                                            ;
-; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[16]                                                                                                                                                                                                                                            ;
-; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[9]                                                                                                                                                                                                                                             ;
-; 6:1                ; 6 bits    ; 24 LEs        ; 6 LEs                ; 18 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[4]                                                                                                                                                                                                                                             ;
-; 7:1                ; 7 bits    ; 28 LEs        ; 28 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|out_data[1]                                                                                                                                                                                                                                                                      ;
-; 7:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_data[10]                                                                                                                                                                                                      ;
-; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|padded_bit_counter[0]                                                                                                                                          ;
-; 5:1                ; 5 bits    ; 15 LEs        ; 10 LEs               ; 5 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|padded_bit_counter[3]                                                                                                                                          ;
-; 9:1                ; 2 bits    ; 12 LEs        ; 4 LEs                ; 8 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|current_byte[1]                                                                                                                                                                                                                                        ;
-; 13:1               ; 5 bits    ; 40 LEs        ; 20 LEs               ; 20 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|out_data[4]                                                                                                                                                                                                                                            ;
-; 12:1               ; 5 bits    ; 40 LEs        ; 25 LEs               ; 15 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_data_out[3]                                                                                                                                                 ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_read_data_length[14]                                                                                                                                   ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_read_data_length[9]                                                                                                                                    ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_write_data_length[14]                                                                                                                                  ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_write_data_length[8]                                                                                                                                   ;
-; 14:1               ; 48 bits   ; 432 LEs       ; 48 LEs               ; 384 LEs                ; No         ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right|Add0                                                                                                                                                                                                                                                                                     ;
-; 7:1                ; 48 bits   ; 192 LEs       ; 0 LEs                ; 192 LEs                ; No         ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_right|Add0                                                                                                                                                                                                                                                                                     ;
-; 5:1                ; 2 bits    ; 6 LEs         ; 4 LEs                ; 2 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|read_state                                                                                                                                                     ;
-; 6:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_state                                                                                                                                                    ;
-; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_state                                                                                                                                                    ;
-; 14:1               ; 2 bits    ; 18 LEs        ; 8 LEs                ; 10 LEs                 ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|state                                                                                                                                                                                                                                                  ;
-; 15:1               ; 2 bits    ; 20 LEs        ; 8 LEs                ; 12 LEs                 ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|state                                                                                                                                                                                                                                                  ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|irsr_reg[2]                             ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|hub_minor_ver_reg[2]                    ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|hub_minor_ver_reg[3]                    ;
-; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|mixer_addr_reg_internal[4]              ;
-; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_rom_sr:hub_info_reg|word_counter[1] ;
-; 34:1               ; 4 bits    ; 88 LEs        ; 56 LEs               ; 32 LEs                 ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|design_hash_reg[1]                      ;
-; 20:1               ; 4 bits    ; 52 LEs        ; 36 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|sld_hub:auto_hub|alt_sld_fab_with_jtag_input:\instrumentation_fabric_with_node_gen:fabric_gen_new_way:with_jtag_input_gen:instrumentation_fabric|alt_sld_fab:instrumentation_fabric|alt_sld_fab_alt_sld_fab:alt_sld_fab|alt_sld_fab_alt_sld_fab_sldfabric:sldfabric|sld_jtag_hub:\jtag_hub_gen:real_sld_jtag_hub|sld_rom_sr:hub_info_reg|WORD_SR[1]      ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                                                                                                                                               ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                                                                                                                                     ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; 3:1                ; 18 bits   ; 36 LEs        ; 18 LEs               ; 18 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_info[3]                               ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_debug[1]                              ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|header_out_bit_counter[0]                ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|bypass_bit_counter[1]                    ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|read_data_bit_counter[0]                 ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_data_bit_counter[1]                ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 0 LEs                ; 6 LEs                  ; Yes        ; |SoundMixer|mixer:mix|audio_amplifier:audio_amplifier_0|get_gain:get|gain[3]                                                                                                                                                                   ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init:AV_Config_Auto_Init|rom_address[1]                                                                                                 ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|control_reg[17]                                                                                                                                                  ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|address_reg[6]                                                                                                                                                   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|control_reg[1]                                                                                                                                                   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|device_for_transfer[1]                                                                                                                                           ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|data_reg[6]                                                                                                                                                      ;
+; 3:1                ; 24 bits   ; 48 LEs        ; 0 LEs                ; 48 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer|data_in_shift_reg[10]                                                                                                                        ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|header_in_bit_counter[0]                 ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[18]             ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[14]             ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|address_for_transfer[3]                                                                                                                                          ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_in_deserializer:Audio_In_Deserializer|altera_up_audio_bit_counter:Audio_Out_Bit_Counter|bit_counter[1]                                                                             ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[16]                                                                                                                                                     ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 4 LEs                ; 2 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|start_external_transfer                                                                                                                                          ;
+; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|unshifted_byteenable[2]                                                                                                          ;
+; 4:1                ; 7 bits    ; 14 LEs        ; 14 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|valid_write_data_length_byte_counter[5]  ;
+; 4:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|valid_write_data_length_byte_counter[13] ;
+; 5:1                ; 35 bits   ; 105 LEs       ; 70 LEs               ; 35 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_data[18]                                                                                ;
+; 4:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|scan_length_byte_counter[6]              ;
+; 6:1                ; 5 bits    ; 20 LEs        ; 15 LEs               ; 5 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|readdata[4]                                                                                                                                                      ;
+; 6:1                ; 12 bits   ; 48 LEs        ; 24 LEs               ; 24 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_data[7]                                                                                 ;
+; 6:1                ; 23 bits   ; 92 LEs        ; 46 LEs               ; 46 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_0:audio_0|altera_up_audio_out_serializer:Audio_Out_Serializer|data_out_shift_reg[2]                                                                                                                          ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|counter[12]                                                                                                                      ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|counter[7]                                                                                                                       ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[30]                                                                                                                      ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[23]                                                                                                                      ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 0 LEs                ; 32 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[14]                                                                                                                      ;
+; 6:1                ; 6 bits    ; 24 LEs        ; 6 LEs                ; 18 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|address[4]                                                                                                                       ;
+; 7:1                ; 7 bits    ; 28 LEs        ; 28 LEs               ; 0 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_packets_to_bytes:p2b|out_data[0]                                                                                                                                                ;
+; 7:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_serial_bus_controller:Serial_Bus_Controller|shiftreg_data[11]                                                                                ;
+; 5:1                ; 3 bits    ; 9 LEs         ; 6 LEs                ; 3 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|padded_bit_counter[2]                    ;
+; 5:1                ; 5 bits    ; 15 LEs        ; 10 LEs               ; 5 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|padded_bit_counter[4]                    ;
+; 9:1                ; 2 bits    ; 12 LEs        ; 4 LEs                ; 8 LEs                  ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|current_byte[0]                                                                                                                  ;
+; 13:1               ; 5 bits    ; 40 LEs        ; 20 LEs               ; 20 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|out_data[2]                                                                                                                      ;
+; 12:1               ; 5 bits    ; 40 LEs        ; 25 LEs               ; 15 LEs                 ; Yes        ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|dr_data_out[4]                           ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_read_data_length[14]             ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_read_data_length[9]              ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_write_data_length[13]            ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|decoded_write_data_length[7]             ;
+; 5:1                ; 2 bits    ; 6 LEs         ; 4 LEs                ; 2 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|read_state                               ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_state                              ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_st_jtag_interface:jtag_phy_embedded_in_jtag_master|altera_jtag_dc_streaming:normal.jtag_dc_streaming|altera_jtag_streaming:jtag_streaming|write_state                              ;
+; 14:1               ; 2 bits    ; 18 LEs        ; 8 LEs                ; 10 LEs                 ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|state                                                                                                                            ;
+; 15:1               ; 2 bits    ; 20 LEs        ; 8 LEs                ; 12 LEs                 ; No         ; |SoundMixer|mixer:mix|mixer_master_0:master_0|altera_avalon_packets_to_master:transacto|packets_to_master:p2m|state                                                                                                                            ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 +------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -2796,8 +2783,8 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 846                         ;
-;     CLR               ; 102                         ;
+; arriav_ff             ; 847                         ;
+;     CLR               ; 103                         ;
 ;     CLR SCLR          ; 48                          ;
 ;     ENA               ; 127                         ;
 ;     ENA CLR           ; 102                         ;
@@ -2807,67 +2794,38 @@ Note: In order to hide this table in the UI and the text report file, please set
 ;     SCLR              ; 93                          ;
 ;     plain             ; 95                          ;
 ; arriav_io_obuf        ; 4                           ;
-; arriav_lcell_comb     ; 1093                        ;
-;     arith             ; 256                         ;
+; arriav_lcell_comb     ; 1084                        ;
+;     arith             ; 254                         ;
 ;         0 data inputs ; 1                           ;
-;         1 data inputs ; 181                         ;
-;         2 data inputs ; 26                          ;
-;         4 data inputs ; 48                          ;
+;         1 data inputs ; 179                         ;
+;         2 data inputs ; 74                          ;
 ;     extend            ; 11                          ;
 ;         7 data inputs ; 11                          ;
-;     normal            ; 826                         ;
+;     normal            ; 819                         ;
 ;         0 data inputs ; 2                           ;
-;         1 data inputs ; 9                           ;
-;         2 data inputs ; 119                         ;
-;         3 data inputs ; 141                         ;
-;         4 data inputs ; 159                         ;
+;         1 data inputs ; 5                           ;
+;         2 data inputs ; 118                         ;
+;         3 data inputs ; 92                          ;
+;         4 data inputs ; 190                         ;
 ;         5 data inputs ; 187                         ;
-;         6 data inputs ; 209                         ;
-; arriav_mac            ; 4                           ;
+;         6 data inputs ; 225                         ;
+; arriav_mac            ; 2                           ;
 ; boundary_port         ; 107                         ;
 ; generic_pll           ; 1                           ;
 ; stratixv_ram_block    ; 104                         ;
 ;                       ;                             ;
 ; Max LUT depth         ; 5.00                        ;
-; Average LUT depth     ; 2.27                        ;
+; Average LUT depth     ; 2.24                        ;
 +-----------------------+-----------------------------+
 
 
-+------------------------------------------------------------------+
-; Post-Synthesis Netlist Statistics for Partition sld_hub:auto_hub ;
-+-----------------------+------------------------------------------+
-; Type                  ; Count                                    ;
-+-----------------------+------------------------------------------+
-; arriav_ff             ; 78                                       ;
-;     CLR               ; 3                                        ;
-;     ENA               ; 30                                       ;
-;     ENA CLR           ; 22                                       ;
-;     SCLR              ; 7                                        ;
-;     plain             ; 16                                       ;
-; arriav_lcell_comb     ; 91                                       ;
-;     normal            ; 91                                       ;
-;         0 data inputs ; 1                                        ;
-;         1 data inputs ; 4                                        ;
-;         2 data inputs ; 19                                       ;
-;         3 data inputs ; 17                                       ;
-;         4 data inputs ; 16                                       ;
-;         5 data inputs ; 22                                       ;
-;         6 data inputs ; 12                                       ;
-; boundary_port         ; 93                                       ;
-;                       ;                                          ;
-; Max LUT depth         ; 3.00                                     ;
-; Average LUT depth     ; 1.46                                     ;
-+-----------------------+------------------------------------------+
-
-
-+---------------------------------+
-; Elapsed Time Per Partition      ;
-+------------------+--------------+
-; Partition Name   ; Elapsed Time ;
-+------------------+--------------+
-; Top              ; 00:00:06     ;
-; sld_hub:auto_hub ; 00:00:01     ;
-+------------------+--------------+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:03     ;
++----------------+--------------+
 
 
 +-------------------------------+
@@ -2876,29 +2834,29 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
-    Info: Processing started: Fri Jan 12 12:57:35 2018
+    Info: Processing started: Mon Jan 15 10:33:42 2018
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off SoundMixer -c SoundMixer
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 2 of the 2 processors detected
 Info (12248): Elaborating Platform Designer system entity "mixer.qsys"
-Info (12250): 2018.01.12.12:57:55 Progress: Loading SoundMixer/mixer.qsys
-Info (12250): 2018.01.12.12:57:55 Progress: Reading input file
-Info (12250): 2018.01.12.12:57:55 Progress: Adding audio_0 [altera_up_avalon_audio 17.1]
-Info (12250): 2018.01.12.12:57:56 Progress: Parameterizing module audio_0
-Info (12250): 2018.01.12.12:57:56 Progress: Adding audio_amplifier_0 [audio_amplifier 1.0]
-Info (12250): 2018.01.12.12:57:57 Progress: Parameterizing module audio_amplifier_0
-Info (12250): 2018.01.12.12:57:57 Progress: Adding audio_and_video_config_0 [altera_up_avalon_audio_and_video_config 17.1]
-Info (12250): 2018.01.12.12:57:58 Progress: Parameterizing module audio_and_video_config_0
-Info (12250): 2018.01.12.12:57:58 Progress: Adding audio_pll_0 [altera_up_avalon_audio_pll 17.1]
-Info (12250): 2018.01.12.12:57:58 Progress: Parameterizing module audio_pll_0
-Info (12250): 2018.01.12.12:57:58 Progress: Adding clk_0 [clock_source 17.1]
-Info (12250): 2018.01.12.12:57:58 Progress: Parameterizing module clk_0
-Info (12250): 2018.01.12.12:57:58 Progress: Adding master_0 [altera_jtag_avalon_master 17.1]
-Info (12250): 2018.01.12.12:57:58 Progress: Parameterizing module master_0
-Info (12250): 2018.01.12.12:57:58 Progress: Building connections
-Info (12250): 2018.01.12.12:57:58 Progress: Parameterizing connections
-Info (12250): 2018.01.12.12:57:58 Progress: Validating
-Info (12250): 2018.01.12.12:58:02 Progress: Done reading input file
+Info (12250): 2018.01.15.10:34:03 Progress: Loading SoundMixer/mixer.qsys
+Info (12250): 2018.01.15.10:34:03 Progress: Reading input file
+Info (12250): 2018.01.15.10:34:04 Progress: Adding audio_0 [altera_up_avalon_audio 17.1]
+Info (12250): 2018.01.15.10:34:05 Progress: Parameterizing module audio_0
+Info (12250): 2018.01.15.10:34:05 Progress: Adding audio_amplifier_0 [audio_amplifier 1.0]
+Info (12250): 2018.01.15.10:34:06 Progress: Parameterizing module audio_amplifier_0
+Info (12250): 2018.01.15.10:34:06 Progress: Adding audio_and_video_config_0 [altera_up_avalon_audio_and_video_config 17.1]
+Info (12250): 2018.01.15.10:34:06 Progress: Parameterizing module audio_and_video_config_0
+Info (12250): 2018.01.15.10:34:06 Progress: Adding audio_pll_0 [altera_up_avalon_audio_pll 17.1]
+Info (12250): 2018.01.15.10:34:06 Progress: Parameterizing module audio_pll_0
+Info (12250): 2018.01.15.10:34:06 Progress: Adding clk_0 [clock_source 17.1]
+Info (12250): 2018.01.15.10:34:07 Progress: Parameterizing module clk_0
+Info (12250): 2018.01.15.10:34:07 Progress: Adding master_0 [altera_jtag_avalon_master 17.1]
+Info (12250): 2018.01.15.10:34:07 Progress: Parameterizing module master_0
+Info (12250): 2018.01.15.10:34:07 Progress: Building connections
+Info (12250): 2018.01.15.10:34:07 Progress: Parameterizing connections
+Info (12250): 2018.01.15.10:34:07 Progress: Validating
+Info (12250): 2018.01.15.10:34:11 Progress: Done reading input file
 Info (12250): Mixer: Generating mixer "mixer" for QUARTUS_SYNTH
 Info (12250): Interconnect is inserted between master master_0.master and slave audio_and_video_config_0.avalon_av_config_slave because the master has address signal 32 bit wide, but the slave is 2 bit wide.
 Info (12250): Interconnect is inserted between master master_0.master and slave audio_and_video_config_0.avalon_av_config_slave because the master has readdatavalid signal 1 bit wide, but the slave is 0 bit wide.
@@ -2925,6 +2883,8 @@ Info (12250): Master_0_master_translator: "mm_interconnect_0" instantiated alter
 Info (12250): Audio_and_video_config_0_avalon_av_config_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "audio_and_video_config_0_avalon_av_config_slave_translator"
 Info (12250): Mixer: Done "mixer" with 20 modules, 57 files
 Info (12249): Finished elaborating Platform Designer system entity "mixer.qsys"
+Info (12021): Found 1 design units, including 1 entities, in source file delay.v
+    Info (12023): Found entity 1: delay File: /home/i272655/Dokumenty/SoundMixer/delay.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file amplifier.v
     Info (12023): Found entity 1: amplifier File: /home/i272655/Dokumenty/SoundMixer/amplifier.v Line: 1
 Info (12021): Found 1 design units, including 1 entities, in source file audio_amplifier.v
@@ -3108,8 +3068,6 @@ Info (12128): Elaborating entity "get_gain" for hierarchy "mixer:mix|audio_ampli
 Info (12128): Elaborating entity "gain_hex" for hierarchy "mixer:mix|audio_amplifier:audio_amplifier_0|gain_hex:ghex" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/audio_amplifier.v Line: 41
 Info (12128): Elaborating entity "status_hex" for hierarchy "mixer:mix|audio_amplifier:audio_amplifier_0|status_hex:shex" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/audio_amplifier.v Line: 42
 Info (12128): Elaborating entity "amplifier" for hierarchy "mixer:mix|audio_amplifier:audio_amplifier_0|amplifier:amp_left" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/audio_amplifier.v Line: 43
-Warning (10935): Verilog HDL Casex/Casez warning at amplifier.v(13): casex/casez item expression overlaps with a previous casex/casez item expression File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/amplifier.v Line: 13
-Warning (10935): Verilog HDL Casex/Casez warning at amplifier.v(14): casex/casez item expression overlaps with a previous casex/casez item expression File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/amplifier.v Line: 14
 Info (12128): Elaborating entity "mixer_audio_and_video_config_0" for hierarchy "mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/mixer.v Line: 105
 Info (12128): Elaborating entity "altera_up_av_config_auto_init" for hierarchy "mixer:mix|mixer_audio_and_video_config_0:audio_and_video_config_0|altera_up_av_config_auto_init:AV_Config_Auto_Init" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/mixer_audio_and_video_config_0.v Line: 412
 Warning (10230): Verilog HDL assignment warning at altera_up_av_config_auto_init.v(137): truncated value with size 32 to match size of target (6) File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/altera_up_av_config_auto_init.v Line: 137
@@ -3242,7 +3200,7 @@ Info (12128): Elaborating entity "mixer_mm_interconnect_0" for hierarchy "mixer:
 Info (12128): Elaborating entity "altera_merlin_master_translator" for hierarchy "mixer:mix|mixer_mm_interconnect_0:mm_interconnect_0|altera_merlin_master_translator:master_0_master_translator" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/mixer_mm_interconnect_0.v Line: 100
 Info (12128): Elaborating entity "altera_merlin_slave_translator" for hierarchy "mixer:mix|mixer_mm_interconnect_0:mm_interconnect_0|altera_merlin_slave_translator:audio_and_video_config_0_avalon_av_config_slave_translator" File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/mixer_mm_interconnect_0.v Line: 164
 Info (11170): Starting IP generation for the debug fabric: alt_sld_fab.
-Info (11172): 2018.01.12.12:58:23 Progress: Loading sld722d7275/alt_sld_fab_wrapper_hw.tcl
+Info (11172): 2018.01.15.10:34:29 Progress: Loading sld722d7275/alt_sld_fab_wrapper_hw.tcl
 Info (11172): Alt_sld_fab.alt_sld_fab: SLD fabric agents which did not specify prefer_host were connected to JTAG
 Info (11172): Alt_sld_fab: Generating alt_sld_fab "alt_sld_fab" for QUARTUS_SYNTH
 Info (11172): Alt_sld_fab: "alt_sld_fab" instantiated alt_sld_fab "alt_sld_fab"
@@ -3354,7 +3312,6 @@ Warning (332009): The launch and latch times for the relationship between source
 Warning (332009): The launch and latch times for the relationship between source clock: clk_audbck and destination clock: CLOCK_50 are outside of the legal time range. The relationship difference is correct, however the launch time is set to 0.
 Info (286031): Timing-Driven Synthesis is running on partition "Top"
 Info (17049): 41 registers lost all their fanouts during netlist optimizations.
-Info (286031): Timing-Driven Synthesis is running on partition "sld_hub:auto_hub"
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 16 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
 Warning (21074): Design contains 14 input pin(s) that do not drive logic
@@ -3372,18 +3329,18 @@ Warning (21074): Design contains 14 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "SW[6]" File: /home/i272655/Dokumenty/SoundMixer/SoundMixer.v Line: 40
     Warning (15610): No output dependent on input pin "SW[7]" File: /home/i272655/Dokumenty/SoundMixer/SoundMixer.v Line: 40
     Warning (15610): No output dependent on input pin "SW[8]" File: /home/i272655/Dokumenty/SoundMixer/SoundMixer.v Line: 40
-Info (21057): Implemented 1666 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 1660 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 22 input pins
     Info (21059): Implemented 56 output pins
     Info (21060): Implemented 4 bidirectional pins
-    Info (21061): Implemented 1474 logic cells
+    Info (21061): Implemented 1470 logic cells
     Info (21064): Implemented 104 RAM segments
     Info (21065): Implemented 1 PLLs
-    Info (21062): Implemented 4 DSP elements
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 77 warnings
-    Info: Peak virtual memory: 1131 megabytes
-    Info: Processing ended: Fri Jan 12 12:58:47 2018
-    Info: Elapsed time: 00:01:12
-    Info: Total CPU time (on all processors): 00:02:17
+    Info (21062): Implemented 2 DSP elements
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 75 warnings
+    Info: Peak virtual memory: 1117 megabytes
+    Info: Processing ended: Mon Jan 15 10:34:43 2018
+    Info: Elapsed time: 00:01:01
+    Info: Total CPU time (on all processors): 00:02:05
 
 

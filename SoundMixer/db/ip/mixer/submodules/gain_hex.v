@@ -18,5 +18,4 @@ module gain_hex(output reg[6:0] hex, input[3:0] gain);
 		4'h9: hex = 7'b1000010;
 		4'h8: hex = 7'b0111111;
 	endcase
-	/**/
 endmodule

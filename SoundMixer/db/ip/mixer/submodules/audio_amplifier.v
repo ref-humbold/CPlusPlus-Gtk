@@ -9,7 +9,7 @@
 // to your version control system if you want to keep it.
 
 `timescale 1 ps / 1 ps
-module audio_amplifier (
+module audio_amplifier(
 		input  wire        clock_clk,                 //               clock.clk
 		input  wire        reset_reset,               //               reset.reset
 		input  wire [23:0] avalon_left_sink_data,     //    avalon_left_sink.data
