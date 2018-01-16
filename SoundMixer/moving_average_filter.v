@@ -27,16 +27,15 @@ module moving_average_filter (
 	);
 
 	// TODO: Auto-generated HDL template
-
-	assign avalon_left_sink_ready = 1'b0;
-
-	assign avalon_right_sink_ready = 1'b0;
+	
+	assign avalon_left_sink_ready = avalon_left_source_ready;
+	assign avalon_right_sink_ready = avalon_right_source_ready;
 
 	assign avalon_right_source_valid = 1'b0;
 
-	assign avalon_right_source_data = 24'b000000000000000000000000;
-
 	assign avalon_left_source_valid = 1'b0;
+
+	assign avalon_right_source_data = 24'b000000000000000000000000;
 
 	assign avalon_left_source_data = 24'b000000000000000000000000;
 

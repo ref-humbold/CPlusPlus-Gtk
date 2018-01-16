@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="mixer" kind="mixer" version="1.0" fabric="QSYS">
  <!-- Format version 17.1 590 (Future versions may contain additional information.) -->
- <!-- 2018.01.15.11:12:03 -->
+ <!-- 2018.01.16.13:25:19 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1516011123</value>
+  <value>1516105519</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
