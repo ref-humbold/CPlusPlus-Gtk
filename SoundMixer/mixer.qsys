@@ -129,6 +129,30 @@
          type = "String";
       }
    }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element moving_average_filter_0
+   {
+      datum _sortIndex
+      {
+         value = "6";
+         type = "int";
+      }
+   }
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
@@ -168,9 +192,27 @@
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
  <interface name="gain_hex" internal="audio_amplifier_0.gain_hex" />
  <interface name="gain_key" internal="audio_amplifier_0.gain_key" />
- <interface name="hex" internal="audio_amplifier_0.hex" type="conduit" dir="end" />
- <interface name="key" internal="audio_amplifier_0.key" type="conduit" dir="end" />
+ <interface
+   name="hex_amplif"
+   internal="audio_amplifier_0.hex"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="key_amplif"
+   internal="audio_amplifier_0.key"
+   type="conduit"
+   dir="end" />
+ <interface
+   name="led_amplif"
+   internal="audio_amplifier_0.led"
+   type="conduit"
+   dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <interface
+   name="switch_avg"
+   internal="moving_average_filter_0.switch"
+   type="conduit"
+   dir="end" />
  <module
    name="audio_0"
    kind="altera_up_avalon_audio"
@@ -241,6 +283,11 @@
   <parameter name="PLI_PORT" value="50000" />
   <parameter name="USE_PLI" value="0" />
  </module>
+ <module
+   name="moving_average_filter_0"
+   kind="moving_average_filter"
+   version="1.0"
+   enabled="1" />
  <connection
    kind="avalon"
    version="17.1"
@@ -254,7 +301,7 @@
    kind="avalon_streaming"
    version="17.1"
    start="audio_0.avalon_left_channel_source"
-   end="audio_amplifier_0.avalon_left_sink" />
+   end="moving_average_filter_0.avalon_left_sink" />
  <connection
    kind="avalon_streaming"
    version="17.1"
@@ -263,13 +310,23 @@
  <connection
    kind="avalon_streaming"
    version="17.1"
+   start="moving_average_filter_0.avalon_left_source"
+   end="audio_amplifier_0.avalon_left_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="17.1"
    start="audio_0.avalon_right_channel_source"
-   end="audio_amplifier_0.avalon_right_sink" />
+   end="moving_average_filter_0.avalon_right_sink" />
  <connection
    kind="avalon_streaming"
    version="17.1"
    start="audio_amplifier_0.avalon_right_source"
    end="audio_0.avalon_right_channel_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="17.1"
+   start="moving_average_filter_0.avalon_right_source"
+   end="audio_amplifier_0.avalon_right_sink" />
  <connection kind="clock" version="17.1" start="clk_0.clk" end="master_0.clk" />
  <connection
    kind="clock"
@@ -282,6 +339,11 @@
    version="17.1"
    start="clk_0.clk"
    end="audio_amplifier_0.clock" />
+ <connection
+   kind="clock"
+   version="17.1"
+   start="clk_0.clk"
+   end="moving_average_filter_0.clock" />
  <connection
    kind="clock"
    version="17.1"
@@ -312,6 +374,11 @@
    version="17.1"
    start="clk_0.clk_reset"
    end="audio_amplifier_0.reset" />
+ <connection
+   kind="reset"
+   version="17.1"
+   start="clk_0.clk_reset"
+   end="moving_average_filter_0.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

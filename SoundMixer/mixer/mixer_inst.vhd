@@ -9,10 +9,11 @@
 			audio_external_DACLRCK   : in    std_logic                    := 'X';             -- DACLRCK
 			audio_pll_clk_clk        : out   std_logic;                                       -- clk
 			clk_clk                  : in    std_logic                    := 'X';             -- clk
-			hex_hex_signal_0         : out   std_logic_vector(6 downto 0);                    -- hex_signal_0
-			hex_hex_signal_1         : out   std_logic_vector(6 downto 0);                    -- hex_signal_1
-			key_key_signal           : in    std_logic_vector(1 downto 0) := (others => 'X'); -- key_signal
-			reset_reset_n            : in    std_logic                    := 'X'              -- reset_n
+			hex_amplif_hex_signal    : out   std_logic_vector(6 downto 0);                    -- hex_signal
+			key_amplif_key_signal    : in    std_logic_vector(1 downto 0) := (others => 'X'); -- key_signal
+			led_amplif_led_signal    : out   std_logic_vector(9 downto 0);                    -- led_signal
+			reset_reset_n            : in    std_logic                    := 'X';             -- reset_n
+			switch_avg_switch_signal : in    std_logic                    := 'X'              -- switch_signal
 		);
 	end component mixer;
 
@@ -27,9 +28,10 @@
 			audio_external_DACLRCK   => CONNECTED_TO_audio_external_DACLRCK,   --                    .DACLRCK
 			audio_pll_clk_clk        => CONNECTED_TO_audio_pll_clk_clk,        --       audio_pll_clk.clk
 			clk_clk                  => CONNECTED_TO_clk_clk,                  --                 clk.clk
-			hex_hex_signal_0         => CONNECTED_TO_hex_hex_signal_0,         --                 hex.hex_signal_0
-			hex_hex_signal_1         => CONNECTED_TO_hex_hex_signal_1,         --                    .hex_signal_1
-			key_key_signal           => CONNECTED_TO_key_key_signal,           --                 key.key_signal
-			reset_reset_n            => CONNECTED_TO_reset_reset_n             --               reset.reset_n
+			hex_amplif_hex_signal    => CONNECTED_TO_hex_amplif_hex_signal,    --          hex_amplif.hex_signal
+			key_amplif_key_signal    => CONNECTED_TO_key_amplif_key_signal,    --          key_amplif.key_signal
+			led_amplif_led_signal    => CONNECTED_TO_led_amplif_led_signal,    --          led_amplif.led_signal
+			reset_reset_n            => CONNECTED_TO_reset_reset_n,            --               reset.reset_n
+			switch_avg_switch_signal => CONNECTED_TO_switch_avg_switch_signal  --          switch_avg.switch_signal
 		);
 

@@ -1,4 +1,4 @@
-module gain_key(output reg out, input clk, input data);
+module key_sync(output reg out, input clk, input data);
 	reg old = 0;
 	
 	always @(posedge clk)

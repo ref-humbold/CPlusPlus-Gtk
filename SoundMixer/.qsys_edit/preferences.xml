@@ -3,8 +3,9 @@
  <debug showDebugMenu="0" />
  <systemtable filter="Default">
   <columns>
-   <connections preferredWidth="191" />
+   <connections preferredWidth="223" />
    <irq preferredWidth="34" />
+   <name preferredWidth="237" />
   </columns>
  </systemtable>
  <clocktable>
@@ -14,6 +15,6 @@
    <frequency preferredWidth="245" />
   </columns>
  </clocktable>
- <library expandedCategories="Project,Library" />
+ <library expandedCategories="Library,Project" />
  <window width="1375" height="848" x="65" y="52" />
 </preferences>

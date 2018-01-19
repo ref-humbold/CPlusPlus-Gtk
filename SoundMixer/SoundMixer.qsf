@@ -214,11 +214,11 @@ set_global_assignment -name VERILOG_FILE delay.v
 set_global_assignment -name QSYS_FILE mixer.qsys
 set_global_assignment -name VERILOG_FILE amplifier.v
 set_global_assignment -name VERILOG_FILE audio_amplifier.v
-set_global_assignment -name VERILOG_FILE gain_key.v
 set_global_assignment -name VERILOG_FILE get_gain.v
-set_global_assignment -name VERILOG_FILE gain_hex.v
 set_global_assignment -name VERILOG_FILE SoundMixer.v
 set_global_assignment -name SDC_FILE SoundMixer.sdc
 set_global_assignment -name VERILOG_FILE status_hex.v
 set_global_assignment -name VERILOG_FILE move_avg.v
+set_global_assignment -name VERILOG_FILE gain_led.v
+set_global_assignment -name VERILOG_FILE key_sync.v
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

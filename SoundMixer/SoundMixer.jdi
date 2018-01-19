@@ -1,6 +1,6 @@
 <sld_project_info>
   <project>
-    <hash md5_digest_80b="aea7092767770066e1d8"/>
+    <hash md5_digest_80b="ec28f5eb79508189e87d"/>
   </project>
   <file_info>
     <file device="5CSEMA5F31C6" path="SoundMixer.sof" usercode="0xFFFFFFFF"/>
@@ -89,7 +89,7 @@
   <sld_infos>
     <sld_info hpath="mixer:mix" name="mix">
       <assignment_values>
-        <assignment_value text="QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516105230"/>
+        <assignment_value text="QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516358742"/>
       </assignment_values>
       <parameters/>
     </sld_info>
