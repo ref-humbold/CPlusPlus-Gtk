@@ -1,12 +1,12 @@
-Fitter Status : Successful - Fri Jan 19 11:47:52 2018
+Fitter Status : Successful - Mon Jan 22 11:39:54 2018
 Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 Revision Name : SoundMixer
 Top-level Entity Name : SoundMixer
 Family : Cyclone V
 Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 1,230 / 32,070 ( 4 % )
-Total registers : 1636
+Logic utilization (in ALMs) : 1,359 / 32,070 ( 4 % )
+Total registers : 1408
 Total pins : 78 / 457 ( 17 % )
 Total virtual pins : 0
 Total block memory bits : 12,800 / 4,065,280 ( < 1 % )
