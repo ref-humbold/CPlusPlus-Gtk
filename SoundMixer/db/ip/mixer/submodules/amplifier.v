@@ -1,11 +1,11 @@
-module amplifier(output reg[23:0] out_data, output reg out_valid, input out_ready, input[23:0] in_data, input in_valid, input clk, input reset, input[3:0] gain);
+module amplifier(output reg[23:0] out_data, output reg out_valid, input[23:0] in_data, input wren, input clk, input reset, input[3:0] gain);
 	always @(posedge clk or posedge reset)
 	if(reset)
 	begin
 		out_data <= 0;
 		out_valid <= 1'b0;
 	end
-	else if(in_valid & out_ready)
+	else if(wren)
 	begin
 		casez(gain)
 			4'b1000: out_data <= 0;

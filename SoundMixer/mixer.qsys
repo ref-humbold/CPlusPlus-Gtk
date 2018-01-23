@@ -49,12 +49,36 @@
          type = "int";
       }
    }
+   element delay_effect_0
+   {
+      datum _sortIndex
+      {
+         value = "7";
+         type = "int";
+      }
+   }
    element master_0
    {
       datum _sortIndex
       {
          value = "1";
          type = "int";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element mixer
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
       }
    }
    element mixer
@@ -213,6 +237,11 @@
    internal="moving_average_filter_0.switch"
    type="conduit"
    dir="end" />
+ <interface
+   name="switch_delay"
+   internal="delay_effect_0.switch"
+   type="conduit"
+   dir="end" />
  <module
    name="audio_0"
    kind="altera_up_avalon_audio"
@@ -269,6 +298,7 @@
   <parameter name="inputClockFrequency" value="0" />
   <parameter name="resetSynchronousEdges" value="NONE" />
  </module>
+ <module name="delay_effect_0" kind="delay_effect" version="1.0" enabled="1" />
  <module
    name="master_0"
    kind="altera_jtag_avalon_master"
@@ -311,6 +341,11 @@
    kind="avalon_streaming"
    version="17.1"
    start="moving_average_filter_0.avalon_left_source"
+   end="delay_effect_0.avalon_left_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="17.1"
+   start="delay_effect_0.avalon_left_source"
    end="audio_amplifier_0.avalon_left_sink" />
  <connection
    kind="avalon_streaming"
@@ -326,6 +361,11 @@
    kind="avalon_streaming"
    version="17.1"
    start="moving_average_filter_0.avalon_right_source"
+   end="delay_effect_0.avalon_right_sink" />
+ <connection
+   kind="avalon_streaming"
+   version="17.1"
+   start="delay_effect_0.avalon_right_source"
    end="audio_amplifier_0.avalon_right_sink" />
  <connection kind="clock" version="17.1" start="clk_0.clk" end="master_0.clk" />
  <connection
@@ -344,6 +384,11 @@
    version="17.1"
    start="clk_0.clk"
    end="moving_average_filter_0.clock" />
+ <connection
+   kind="clock"
+   version="17.1"
+   start="clk_0.clk"
+   end="delay_effect_0.clock" />
  <connection
    kind="clock"
    version="17.1"
@@ -379,6 +424,11 @@
    version="17.1"
    start="clk_0.clk_reset"
    end="moving_average_filter_0.reset" />
+ <connection
+   kind="reset"
+   version="17.1"
+   start="clk_0.clk_reset"
+   end="delay_effect_0.reset" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />

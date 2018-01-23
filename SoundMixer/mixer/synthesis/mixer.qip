@@ -2,7 +2,7 @@ set_global_assignment -entity "mixer" -library "mixer" -name IP_TOOL_NAME "Qsys"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_TOOL_VERSION "17.1"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "mixer" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../mixer.sopcinfo"]
-set_global_assignment -entity "mixer" -library "mixer" -name SLD_INFO "QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516355347"
+set_global_assignment -entity "mixer" -library "mixer" -name SLD_INFO "QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516710730"
 set_global_assignment -library "mixer" -name MISC_FILE [file join $::quartus(qip_path) "../mixer.cmp"]
 set_global_assignment -library "mixer" -name SLD_FILE [file join $::quartus(qip_path) "mixer.debuginfo"]
 set_global_assignment -entity "mixer" -library "mixer" -name IP_TARGETED_DEVICE_FAMILY "Cyclone V"
@@ -15,7 +15,7 @@ set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_DISPLA
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTUxNjM1NTM0Nw==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTUxNjcxMDczMA==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBW::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::NUNTRU1BNUYzMUM2::QXV0byBERVZJQ0U="
 set_global_assignment -entity "mixer" -library "mixer" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Ng==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
@@ -314,6 +314,11 @@ set_global_assignment -entity "altera_avalon_st_jtag_interface" -library "mixer"
 set_global_assignment -entity "altera_avalon_st_jtag_interface" -library "mixer" -name IP_COMPONENT_PARAMETER "VVNFX0RPV05TVFJFQU1fUkVBRFk=::MA==::VVNFX0RPV05TVFJFQU1fUkVBRFk="
 set_global_assignment -entity "altera_avalon_st_jtag_interface" -library "mixer" -name IP_COMPONENT_PARAMETER "Q09NUE9ORU5UX0NMT0NL::MA==::Q09NUE9ORU5UX0NMT0NL"
 set_global_assignment -entity "altera_avalon_st_jtag_interface" -library "mixer" -name IP_COMPONENT_PARAMETER "RkFCUklD::Mi4w::RkFCUklD"
+set_global_assignment -entity "delay_effect" -library "mixer" -name IP_COMPONENT_NAME "ZGVsYXlfZWZmZWN0"
+set_global_assignment -entity "delay_effect" -library "mixer" -name IP_COMPONENT_DISPLAY_NAME "ZGVsYXlfZWZmZWN0"
+set_global_assignment -entity "delay_effect" -library "mixer" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
+set_global_assignment -entity "delay_effect" -library "mixer" -name IP_COMPONENT_INTERNAL "Off"
+set_global_assignment -entity "delay_effect" -library "mixer" -name IP_COMPONENT_VERSION "MS4w"
 set_global_assignment -entity "mixer_audio_pll_0" -library "mixer" -name IP_COMPONENT_NAME "bWl4ZXJfYXVkaW9fcGxsXzA="
 set_global_assignment -entity "mixer_audio_pll_0" -library "mixer" -name IP_COMPONENT_DISPLAY_NAME "QXVkaW8gQ2xvY2sgZm9yIERFLXNlcmllcyBCb2FyZHM="
 set_global_assignment -entity "mixer_audio_pll_0" -library "mixer" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
@@ -697,8 +702,9 @@ set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(
 set_global_assignment -library "mixer" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_merlin_slave_translator.sv"]
 set_global_assignment -library "mixer" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_merlin_master_translator.sv"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/moving_average_filter.v"]
-set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/delay.v"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/move_avg.v"]
+set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/switch_sync.v"]
+set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/delay_signal.v"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/mixer_master_0.v"]
 set_global_assignment -library "mixer" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/mixer_master_0_p2b_adapter.sv"]
 set_global_assignment -library "mixer" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/mixer_master_0_b2p_adapter.sv"]
@@ -718,6 +724,8 @@ set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_avalon_st_idle_inserter.v"]
 set_global_assignment -library "mixer" -name SYSTEMVERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_avalon_st_pipeline_stage.sv"]
 set_global_assignment -library "mixer" -name SDC_FILE [file join $::quartus(qip_path) "submodules/altera_avalon_st_jtag_interface.sdc"]
+set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/delay_effect.v"]
+set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/delay.v"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/mixer_audio_pll_0.v"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/altera_up_avalon_reset_from_locked_signal.v"]
 set_global_assignment -library "mixer" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/mixer_audio_pll_0_audio_pll.v"]

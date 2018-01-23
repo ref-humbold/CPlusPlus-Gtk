@@ -40,7 +40,7 @@ module audio_amplifier (
 	get_gain get(gain, clock_clk, change_up, change_down);
 	gain_led gled(led_signal, gain);
 	status_hex shex(hex_signal, avalon_left_source_ready, avalon_right_source_ready, avalon_left_sink_valid, avalon_right_sink_valid);
-	amplifier amp_left(avalon_left_source_data, avalon_left_source_valid, avalon_left_source_ready, avalon_left_sink_data, avalon_left_sink_valid, clock_clk, reset_reset, gain);
-	amplifier amp_right(avalon_right_source_data, avalon_right_source_valid, avalon_right_source_ready, avalon_right_sink_data, avalon_right_sink_valid, clock_clk, reset_reset, gain);
+	amplifier amp_left(avalon_left_source_data, avalon_left_source_valid, avalon_left_sink_data, avalon_left_sink_valid & avalon_left_source_ready, clock_clk, reset_reset, gain);
+	amplifier amp_right(avalon_right_source_data, avalon_right_source_valid, avalon_right_sink_data, avalon_right_sink_valid & avalon_right_source_ready, clock_clk, reset_reset, gain);
 
 endmodule

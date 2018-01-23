@@ -13,7 +13,8 @@ module mixer (
 	key_amplif_key_signal,
 	led_amplif_led_signal,
 	reset_reset_n,
-	switch_avg_switch_signal);	
+	switch_avg_switch_signal,
+	switch_delay_switch_signal);	
 
 	inout		audio_config_extern_SDAT;
 	output		audio_config_extern_SCLK;
@@ -29,4 +30,5 @@ module mixer (
 	output	[9:0]	led_amplif_led_signal;
 	input		reset_reset_n;
 	input		switch_avg_switch_signal;
+	input		switch_delay_switch_signal;
 endmodule

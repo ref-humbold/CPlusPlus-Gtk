@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Mon Jan 22 11:37:56 2018
+Analysis & Synthesis Status : Successful - Tue Jan 23 14:05:33 2018
 Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 Revision Name : SoundMixer
 Top-level Entity Name : SoundMixer
 Family : Cyclone V
 Logic utilization (in ALMs) : N/A
-Total registers : 1264
+Total registers : 1427
 Total pins : 78
 Total virtual pins : 0
-Total block memory bits : 12,800
+Total block memory bits : 13,504
 Total DSP Blocks : 2
 Total HSSI RX PCSs : 0
 Total HSSI PMA RX Deserializers : 0
