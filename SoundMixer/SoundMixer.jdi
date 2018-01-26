@@ -89,7 +89,7 @@
   <sld_infos>
     <sld_info hpath="mixer:m" name="m">
       <assignment_values>
-        <assignment_value text="QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516712699"/>
+        <assignment_value text="QSYS_NAME mixer HAS_SOPCINFO 1 GENERATION_ID 1516963162"/>
       </assignment_values>
       <parameters/>
     </sld_info>
