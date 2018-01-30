@@ -32,6 +32,6 @@ module delay_effect (
 	wire on;
 	
 	switch_sync sw(on, clock_clk, switch_signal);
-	delay ldelay(avalon_left_source_data, avalon_left_source_valid, avalon_left_source_ready, avalon_left_sink_data, avalon_left_sink_valid, clock_clk, reset_reset, filter_on);
-	delay rdelay(avalon_right_source_data, avalon_right_source_valid, avalon_right_source_ready, avalon_right_sink_data, avalon_right_sink_valid, clock_clk, reset_reset, filter_on);
+	delay ldelay(avalon_left_source_data, avalon_left_source_valid, avalon_left_sink_data, avalon_left_sink_valid & avalon_left_source_ready, clock_clk, reset_reset, on);
+	delay rdelay(avalon_right_source_data, avalon_right_source_valid, avalon_right_sink_data, avalon_right_sink_valid & avalon_right_source_ready, clock_clk, reset_reset, on);
 endmodule

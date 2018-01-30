@@ -18,7 +18,8 @@ module mixer (
 		output wire [9:0] led_amplif_led_signal,      //          led_amplif.led_signal
 		input  wire       reset_reset_n,              //               reset.reset_n
 		input  wire       switch_avg_switch_signal,   //          switch_avg.switch_signal
-		input  wire       switch_delay_switch_signal  //        switch_delay.switch_signal
+		input  wire       switch_delay_switch_signal, //        switch_delay.switch_signal
+		input  wire       switch_noise_switch_signal  //        switch_noise.switch_signal
 	);
 
 	wire         audio_0_avalon_left_channel_source_valid;                                      // audio_0:from_adc_left_channel_valid -> moving_average_filter_0:avalon_left_sink_valid
@@ -30,9 +31,12 @@ module mixer (
 	wire         moving_average_filter_0_avalon_left_source_valid;                              // moving_average_filter_0:avalon_left_source_valid -> delay_effect_0:avalon_left_sink_valid
 	wire  [23:0] moving_average_filter_0_avalon_left_source_data;                               // moving_average_filter_0:avalon_left_source_data -> delay_effect_0:avalon_left_sink_data
 	wire         moving_average_filter_0_avalon_left_source_ready;                              // delay_effect_0:avalon_left_sink_ready -> moving_average_filter_0:avalon_left_source_ready
-	wire         delay_effect_0_avalon_left_source_valid;                                       // delay_effect_0:avalon_left_source_valid -> audio_amplifier_0:avalon_left_sink_valid
-	wire  [23:0] delay_effect_0_avalon_left_source_data;                                        // delay_effect_0:avalon_left_source_data -> audio_amplifier_0:avalon_left_sink_data
-	wire         delay_effect_0_avalon_left_source_ready;                                       // audio_amplifier_0:avalon_left_sink_ready -> delay_effect_0:avalon_left_source_ready
+	wire         delay_effect_0_avalon_left_source_valid;                                       // delay_effect_0:avalon_left_source_valid -> noise_effect_0:avalon_left_sink_valid
+	wire  [23:0] delay_effect_0_avalon_left_source_data;                                        // delay_effect_0:avalon_left_source_data -> noise_effect_0:avalon_left_sink_data
+	wire         delay_effect_0_avalon_left_source_ready;                                       // noise_effect_0:avalon_left_sink_ready -> delay_effect_0:avalon_left_source_ready
+	wire         noise_effect_0_avalon_left_source_valid;                                       // noise_effect_0:avalon_left_source_valid -> audio_amplifier_0:avalon_left_sink_valid
+	wire  [23:0] noise_effect_0_avalon_left_source_data;                                        // noise_effect_0:avalon_left_source_data -> audio_amplifier_0:avalon_left_sink_data
+	wire         noise_effect_0_avalon_left_source_ready;                                       // audio_amplifier_0:avalon_left_sink_ready -> noise_effect_0:avalon_left_source_ready
 	wire         audio_0_avalon_right_channel_source_valid;                                     // audio_0:from_adc_right_channel_valid -> moving_average_filter_0:avalon_right_sink_valid
 	wire  [23:0] audio_0_avalon_right_channel_source_data;                                      // audio_0:from_adc_right_channel_data -> moving_average_filter_0:avalon_right_sink_data
 	wire         audio_0_avalon_right_channel_source_ready;                                     // moving_average_filter_0:avalon_right_sink_ready -> audio_0:from_adc_right_channel_ready
@@ -42,9 +46,12 @@ module mixer (
 	wire         moving_average_filter_0_avalon_right_source_valid;                             // moving_average_filter_0:avalon_right_source_valid -> delay_effect_0:avalon_right_sink_valid
 	wire  [23:0] moving_average_filter_0_avalon_right_source_data;                              // moving_average_filter_0:avalon_right_source_data -> delay_effect_0:avalon_right_sink_data
 	wire         moving_average_filter_0_avalon_right_source_ready;                             // delay_effect_0:avalon_right_sink_ready -> moving_average_filter_0:avalon_right_source_ready
-	wire         delay_effect_0_avalon_right_source_valid;                                      // delay_effect_0:avalon_right_source_valid -> audio_amplifier_0:avalon_right_sink_valid
-	wire  [23:0] delay_effect_0_avalon_right_source_data;                                       // delay_effect_0:avalon_right_source_data -> audio_amplifier_0:avalon_right_sink_data
-	wire         delay_effect_0_avalon_right_source_ready;                                      // audio_amplifier_0:avalon_right_sink_ready -> delay_effect_0:avalon_right_source_ready
+	wire         delay_effect_0_avalon_right_source_valid;                                      // delay_effect_0:avalon_right_source_valid -> noise_effect_0:avalon_right_sink_valid
+	wire  [23:0] delay_effect_0_avalon_right_source_data;                                       // delay_effect_0:avalon_right_source_data -> noise_effect_0:avalon_right_sink_data
+	wire         delay_effect_0_avalon_right_source_ready;                                      // noise_effect_0:avalon_right_sink_ready -> delay_effect_0:avalon_right_source_ready
+	wire         noise_effect_0_avalon_right_source_valid;                                      // noise_effect_0:avalon_right_source_valid -> audio_amplifier_0:avalon_right_sink_valid
+	wire  [23:0] noise_effect_0_avalon_right_source_data;                                       // noise_effect_0:avalon_right_source_data -> audio_amplifier_0:avalon_right_sink_data
+	wire         noise_effect_0_avalon_right_source_ready;                                      // audio_amplifier_0:avalon_right_sink_ready -> noise_effect_0:avalon_right_source_ready
 	wire  [31:0] master_0_master_readdata;                                                      // mm_interconnect_0:master_0_master_readdata -> master_0:master_readdata
 	wire         master_0_master_waitrequest;                                                   // mm_interconnect_0:master_0_master_waitrequest -> master_0:master_waitrequest
 	wire  [31:0] master_0_master_address;                                                       // master_0:master_address -> mm_interconnect_0:master_0_master_address
@@ -60,7 +67,7 @@ module mixer (
 	wire   [3:0] mm_interconnect_0_audio_and_video_config_0_avalon_av_config_slave_byteenable;  // mm_interconnect_0:audio_and_video_config_0_avalon_av_config_slave_byteenable -> audio_and_video_config_0:byteenable
 	wire         mm_interconnect_0_audio_and_video_config_0_avalon_av_config_slave_write;       // mm_interconnect_0:audio_and_video_config_0_avalon_av_config_slave_write -> audio_and_video_config_0:write
 	wire  [31:0] mm_interconnect_0_audio_and_video_config_0_avalon_av_config_slave_writedata;   // mm_interconnect_0:audio_and_video_config_0_avalon_av_config_slave_writedata -> audio_and_video_config_0:writedata
-	wire         rst_controller_reset_out_reset;                                                // rst_controller:reset_out -> [audio_0:reset, audio_amplifier_0:reset_reset, audio_and_video_config_0:reset, delay_effect_0:reset_reset, mm_interconnect_0:audio_and_video_config_0_reset_reset_bridge_in_reset_reset, mm_interconnect_0:master_0_clk_reset_reset_bridge_in_reset_reset, moving_average_filter_0:reset_reset]
+	wire         rst_controller_reset_out_reset;                                                // rst_controller:reset_out -> [audio_0:reset, audio_amplifier_0:reset_reset, audio_and_video_config_0:reset, delay_effect_0:reset_reset, mm_interconnect_0:audio_and_video_config_0_reset_reset_bridge_in_reset_reset, mm_interconnect_0:master_0_clk_reset_reset_bridge_in_reset_reset, moving_average_filter_0:reset_reset, noise_effect_0:reset_reset]
 
 	mixer_audio_0 audio_0 (
 		.clk                          (clk_clk),                                     //                         clk.clk
@@ -87,12 +94,12 @@ module mixer (
 	audio_amplifier audio_amplifier_0 (
 		.clock_clk                 (clk_clk),                                     //               clock.clk
 		.reset_reset               (rst_controller_reset_out_reset),              //               reset.reset
-		.avalon_left_sink_data     (delay_effect_0_avalon_left_source_data),      //    avalon_left_sink.data
-		.avalon_left_sink_ready    (delay_effect_0_avalon_left_source_ready),     //                    .ready
-		.avalon_left_sink_valid    (delay_effect_0_avalon_left_source_valid),     //                    .valid
-		.avalon_right_sink_data    (delay_effect_0_avalon_right_source_data),     //   avalon_right_sink.data
-		.avalon_right_sink_ready   (delay_effect_0_avalon_right_source_ready),    //                    .ready
-		.avalon_right_sink_valid   (delay_effect_0_avalon_right_source_valid),    //                    .valid
+		.avalon_left_sink_data     (noise_effect_0_avalon_left_source_data),      //    avalon_left_sink.data
+		.avalon_left_sink_ready    (noise_effect_0_avalon_left_source_ready),     //                    .ready
+		.avalon_left_sink_valid    (noise_effect_0_avalon_left_source_valid),     //                    .valid
+		.avalon_right_sink_data    (noise_effect_0_avalon_right_source_data),     //   avalon_right_sink.data
+		.avalon_right_sink_ready   (noise_effect_0_avalon_right_source_ready),    //                    .ready
+		.avalon_right_sink_valid   (noise_effect_0_avalon_right_source_valid),    //                    .valid
 		.avalon_left_source_data   (audio_amplifier_0_avalon_left_source_data),   //  avalon_left_source.data
 		.avalon_left_source_ready  (audio_amplifier_0_avalon_left_source_ready),  //                    .ready
 		.avalon_left_source_valid  (audio_amplifier_0_avalon_left_source_valid),  //                    .valid
@@ -177,6 +184,24 @@ module mixer (
 		.avalon_left_source_ready  (moving_average_filter_0_avalon_left_source_ready),  //                    .ready
 		.avalon_left_source_valid  (moving_average_filter_0_avalon_left_source_valid),  //                    .valid
 		.switch_signal             (switch_avg_switch_signal)                           //              switch.switch_signal
+	);
+
+	noise_effect noise_effect_0 (
+		.clock_clk                 (clk_clk),                                  //               clock.clk
+		.reset_reset               (rst_controller_reset_out_reset),           //               reset.reset
+		.avalon_left_sink_data     (delay_effect_0_avalon_left_source_data),   //    avalon_left_sink.data
+		.avalon_left_sink_ready    (delay_effect_0_avalon_left_source_ready),  //                    .ready
+		.avalon_left_sink_valid    (delay_effect_0_avalon_left_source_valid),  //                    .valid
+		.avalon_right_sink_data    (delay_effect_0_avalon_right_source_data),  //   avalon_right_sink.data
+		.avalon_right_sink_ready   (delay_effect_0_avalon_right_source_ready), //                    .ready
+		.avalon_right_sink_valid   (delay_effect_0_avalon_right_source_valid), //                    .valid
+		.avalon_right_source_data  (noise_effect_0_avalon_right_source_data),  // avalon_right_source.data
+		.avalon_right_source_ready (noise_effect_0_avalon_right_source_ready), //                    .ready
+		.avalon_right_source_valid (noise_effect_0_avalon_right_source_valid), //                    .valid
+		.avalon_left_source_data   (noise_effect_0_avalon_left_source_data),   //  avalon_left_source.data
+		.avalon_left_source_ready  (noise_effect_0_avalon_left_source_ready),  //                    .ready
+		.avalon_left_source_valid  (noise_effect_0_avalon_left_source_valid),  //                    .valid
+		.switch_signal             (switch_noise_switch_signal)                //              switch.switch_signal
 	);
 
 	mixer_mm_interconnect_0 mm_interconnect_0 (

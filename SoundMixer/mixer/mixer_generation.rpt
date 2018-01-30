@@ -18,6 +18,8 @@ Progress: Adding master_0 [altera_jtag_avalon_master 17.1]
 Progress: Parameterizing module master_0
 Progress: Adding moving_average_filter_0 [moving_average_filter 1.0]
 Progress: Parameterizing module moving_average_filter_0
+Progress: Adding noise_effect_0 [noise_effect 1.0]
+Progress: Parameterizing module noise_effect_0
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -45,6 +47,8 @@ Progress: Adding master_0 [altera_jtag_avalon_master 17.1]
 Progress: Parameterizing module master_0
 Progress: Adding moving_average_filter_0 [moving_average_filter 1.0]
 Progress: Parameterizing module moving_average_filter_0
+Progress: Adding noise_effect_0 [noise_effect 1.0]
+Progress: Parameterizing module noise_effect_0
 Progress: Building connections
 Progress: Parameterizing connections
 Progress: Validating
@@ -63,6 +67,9 @@ Info: master_0: "mixer" instantiated altera_jtag_avalon_master "master_0"
 Info: moving_average_filter_0: "mixer" instantiated moving_average_filter "moving_average_filter_0"
 Info: Reusing file /home/i272655/Dokumenty/SoundMixer/mixer/synthesis/submodules/switch_sync.v
 Info: Reusing file /home/i272655/Dokumenty/SoundMixer/mixer/synthesis/submodules/delay_signal.v
+Info: noise_effect_0: "mixer" instantiated noise_effect "noise_effect_0"
+Info: Reusing file /home/i272655/Dokumenty/SoundMixer/mixer/synthesis/submodules/delay_signal.v
+Info: Reusing file /home/i272655/Dokumenty/SoundMixer/mixer/synthesis/submodules/switch_sync.v
 Info: mm_interconnect_0: "mixer" instantiated altera_mm_interconnect "mm_interconnect_0"
 Info: rst_controller: "mixer" instantiated altera_reset_controller "rst_controller"
 Info: audio_pll: "audio_pll_0" instantiated altera_pll "audio_pll"
@@ -77,6 +84,6 @@ Info: b2p_adapter: "master_0" instantiated channel_adapter "b2p_adapter"
 Info: p2b_adapter: "master_0" instantiated channel_adapter "p2b_adapter"
 Info: master_0_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "master_0_master_translator"
 Info: audio_and_video_config_0_avalon_av_config_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "audio_and_video_config_0_avalon_av_config_slave_translator"
-Info: mixer: Done "mixer" with 22 modules, 63 files
+Info: mixer: Done "mixer" with 23 modules, 65 files
 Info: qsys-generate succeeded.
 Info: Finished: Create HDL design files for synthesis

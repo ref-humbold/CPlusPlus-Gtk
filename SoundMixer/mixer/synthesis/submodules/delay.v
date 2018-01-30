@@ -1,14 +1,15 @@
-module delay (output reg[23:0] out_data, output reg out_valid, input out_ready, input[23:0] in_data, input in_valid, input clk, input reset, input on);
-	wire[23:0] conn[8:0];
+module delay(output reg[23:0] out_data, output reg out_valid, input[23:0] in_data, input wren, input clk, input reset, input on);
+	localparam D = 1024;
+	wire[23:0] conn[D:0];
+	assign conn[0] = in_data;
+	genvar i;
 	
-	delay_signal d0(conn[0], clk, in_data);
-	delay_signal d1(conn[1], clk, conn[0]);
-	delay_signal d2(conn[2], clk, conn[1]);
-	delay_signal d3(conn[3], clk, conn[2]);
-	delay_signal d4(conn[4], clk, conn[3]);
-	delay_signal d5(conn[5], clk, conn[4]);
-	delay_signal d6(conn[6], clk, conn[5]);
-	delay_signal d7(conn[7], clk, conn[6]);
+	generate
+		for(i = 0; i < D; i = i + 1)
+		begin: delay_gen
+			delay_signal d(conn[i + 1], clk, conn[i], wren);
+		end
+	endgenerate
 	
 	always @(posedge clk)
 	if(reset)
@@ -16,11 +17,11 @@ module delay (output reg[23:0] out_data, output reg out_valid, input out_ready, 
 		out_data <= 0;
 		out_valid <= 1'b0;
 	end
-	else if(in_valid & out_ready)
+	else if(wren)
 	begin
 		if(on)
 		begin
-			out_data <= $signed(in_data) - ($signed(in_data) >>> 3) + $signed(conn[7]) >>> 3;
+			out_data <= $signed(in_data) - ($signed(in_data) >>> 1) + ($signed(conn[D]) >>> 1);
 			out_valid <= 1'b1;
 		end
 		else

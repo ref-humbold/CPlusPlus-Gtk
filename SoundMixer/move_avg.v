@@ -1,5 +1,5 @@
-module move_avg (output reg[23:0] out_data, output reg out_valid, input[23:0] in_data, input wren, input clk, input reset, input on);
-	wire[23:0] conn[8:0];
+module move_avg(output reg[23:0] out_data, output reg out_valid, input[23:0] in_data, input wren, input clk, input reset, input on);
+	wire[23:0] conn[7:0];
 	
 	delay_signal d0(conn[0], clk, in_data, wren);
 	delay_signal d1(conn[1], clk, conn[0], wren);
@@ -28,13 +28,13 @@ module move_avg (output reg[23:0] out_data, output reg out_valid, input[23:0] in
 		end
 		else
 		begin
-			out_data <= $signed(in_data);
+			out_data <= $signed(conn[0]);
 			out_valid <= 1'b1;
 		end
 	end
 	else
 	begin
-		out_data <= 0;
+		out_data <= $signed(in_data);
 		out_valid <= 1'b0;
 	end
 endmodule

@@ -66,8 +66,9 @@ module SoundMixer(
 		.key_amplif_key_signal    (KEY[1:0]),
 		.led_amplif_led_signal    (LEDR),
 		.reset_reset_n            (~SW[9]),
-		.switch_avg_switch_signal (SW[8]),
-		.switch_delay_switch_signal (SW[7])
+		.switch_avg_switch_signal (SW[0]),
+		.switch_delay_switch_signal (SW[1]),
+		.switch_noise_switch_signal (SW[2])
 	);
 
 endmodule

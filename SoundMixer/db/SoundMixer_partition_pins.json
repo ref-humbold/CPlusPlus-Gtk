@@ -100,11 +100,15 @@
 					"strict" : false
 				},
 				{
-					"name" : "SW[7]",
+					"name" : "SW[2]",
 					"strict" : false
 				},
 				{
-					"name" : "SW[8]",
+					"name" : "SW[1]",
+					"strict" : false
+				},
+				{
+					"name" : "SW[0]",
 					"strict" : false
 				},
 				{

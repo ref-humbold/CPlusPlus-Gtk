@@ -14,7 +14,8 @@
 			led_amplif_led_signal      : out   std_logic_vector(9 downto 0);                    -- led_signal
 			reset_reset_n              : in    std_logic                    := 'X';             -- reset_n
 			switch_avg_switch_signal   : in    std_logic                    := 'X';             -- switch_signal
-			switch_delay_switch_signal : in    std_logic                    := 'X'              -- switch_signal
+			switch_delay_switch_signal : in    std_logic                    := 'X';             -- switch_signal
+			switch_noise_switch_signal : in    std_logic                    := 'X'              -- switch_signal
 		);
 	end component mixer;
 
@@ -34,6 +35,7 @@
 			led_amplif_led_signal      => CONNECTED_TO_led_amplif_led_signal,      --          led_amplif.led_signal
 			reset_reset_n              => CONNECTED_TO_reset_reset_n,              --               reset.reset_n
 			switch_avg_switch_signal   => CONNECTED_TO_switch_avg_switch_signal,   --          switch_avg.switch_signal
-			switch_delay_switch_signal => CONNECTED_TO_switch_delay_switch_signal  --        switch_delay.switch_signal
+			switch_delay_switch_signal => CONNECTED_TO_switch_delay_switch_signal, --        switch_delay.switch_signal
+			switch_noise_switch_signal => CONNECTED_TO_switch_noise_switch_signal  --        switch_noise.switch_signal
 		);
 

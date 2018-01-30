@@ -13,6 +13,7 @@
 		.led_amplif_led_signal      (<connected-to-led_amplif_led_signal>),      //          led_amplif.led_signal
 		.reset_reset_n              (<connected-to-reset_reset_n>),              //               reset.reset_n
 		.switch_avg_switch_signal   (<connected-to-switch_avg_switch_signal>),   //          switch_avg.switch_signal
-		.switch_delay_switch_signal (<connected-to-switch_delay_switch_signal>)  //        switch_delay.switch_signal
+		.switch_delay_switch_signal (<connected-to-switch_delay_switch_signal>), //        switch_delay.switch_signal
+		.switch_noise_switch_signal (<connected-to-switch_noise_switch_signal>)  //        switch_noise.switch_signal
 	);
 
