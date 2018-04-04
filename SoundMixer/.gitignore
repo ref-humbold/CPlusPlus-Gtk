@@ -1,4 +1,4 @@
-# Quartus generated folders
+# Quartus output folders
 *_sim
 db
 greybox_tmp
@@ -7,7 +7,7 @@ simulation
 testbench
 timing
 
-# Quartus generated files
+# Quartus output files
 *~
 *_generation_script*
 *_inst.vhd
@@ -32,7 +32,6 @@ timing
 *.sopc_builder
 *.summary
 *.tcl
-*.txt # Explicitly add any text files used
+*.txt
 *example*
 *sopc_*
-

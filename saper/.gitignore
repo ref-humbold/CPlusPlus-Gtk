@@ -1,9 +1,6 @@
-# ignore JQuery
-
+# JQuery files
 jquery.d.ts
 jquery-3.1.1.js
 
-# ignore TypeScript configuration
-
+# TypeScript configuration files
 tsconfig.json
-
