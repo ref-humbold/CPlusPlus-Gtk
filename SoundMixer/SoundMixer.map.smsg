@@ -1,2 +1,0 @@
-Warning (10268): Verilog HDL information at move_avg.v(18): always construct contains both blocking and non-blocking assignments File: /home/i272655/Dokumenty/SoundMixer/move_avg.v Line: 18
-Warning (10268): Verilog HDL information at move_avg.v(18): always construct contains both blocking and non-blocking assignments File: /home/i272655/Dokumenty/SoundMixer/db/ip/mixer/submodules/move_avg.v Line: 18
