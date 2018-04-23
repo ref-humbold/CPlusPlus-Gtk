@@ -1,5 +1,3 @@
-/// <reference path="jquery.d.ts"/>
-
 let board: Board = null;
 let troll: Troll = null;
 
@@ -72,7 +70,7 @@ class Board {
         for (let i = 0; i < 40; ++i) {
             do
                 p = Math.floor(Math.random() * 255);
-            while (lst.indexOf(p) >= 0 || this.isNeib(pos, p));
+            while (lst.indexOf(p) >= 0 || this.isNeighbour(pos, p));
 
             lst.push(p);
         }
@@ -80,7 +78,7 @@ class Board {
         return lst;
     }
 
-    isNeib(pos1: number, pos2: number) {
+    isNeighbour(pos1: number, pos2: number) {
         let w: number = Math.floor(pos1 / 16);
         let k: number = pos1 % 16;
 
@@ -264,7 +262,7 @@ function showBombsNormal() {
             return board.isBomb(parseInt(em.id, 10));
         })
         .css({
-            "background-image": "url(\"bomba.jpg\")",
+            "background-image": "url(\"images/bomba.jpg\")",
             "background-size": "100% 100%",
             "border-style": "solid"
         });
@@ -287,7 +285,7 @@ function showBombsTroll(pos: number) {
             return lst.indexOf(parseInt(em.id, 10)) >= 0;
         })
         .css({
-            "background-image": "url(\"bomba.jpg\")",
+            "background-image": "url(\"images/bomba.jpg\")",
             "background-size": "100% 100%",
             "border-style": "solid"
         });
@@ -341,21 +339,21 @@ function middleClickOnFieldTroll(element: Element) {
     $("div#flags").html(String(troll.flagsLeft));
 }
 
-function checkMouseOnFieldNormal(event: JQueryMouseEventObject) {
+function checkMouseOnFieldNormal(t: any, event: JQueryMouseEventObject) {
     if (event.which == 1)
         leftClickOnFieldNormal(event.target);
     else if (event.which == 2)
         middleClickOnFieldNormal(event.target);
 }
 
-function checkMouseOnFieldTroll(event: JQueryMouseEventObject) {
+function checkMouseOnFieldTroll(t: any, event: JQueryMouseEventObject) {
     if (event.which == 1)
         leftClickOnFieldTroll(event.target);
     else if (event.which == 2)
         middleClickOnFieldTroll(event.target);
 }
 
-function checkMouseOnFieldNone(event: JQueryMouseEventObject) {
+function checkMouseOnFieldNone(t: any, event: JQueryMouseEventObject) {
 }
 
 function startNormal() {
@@ -371,7 +369,7 @@ function startNormal() {
             "border-color": "black"
         })
         .html("");
-    $("div.face").css({ "background-image": "url(\"epicface.jpg\")" }).on("click", startNormal);
+    $("div.face").css({ "background-image": "url(\"images/epicface.jpg\")" }).on("click", startNormal);
     $("div#clicks").html(String(board.clicks));
     $("div#flags").html(String(board.flagsLeft));
     $("div.counter").on("click", startTroll);
@@ -390,7 +388,7 @@ function startTroll() {
             "border-color": "black"
         })
         .html("");
-    $("div.face").css({ "background-image": "url(\"trollface.jpg\")" }).on("click", startNormal);
+    $("div.face").css({ "background-image": "url(\"images/trollface.jpg\")" }).on("click", startNormal);
     $("div#clicks").html("0");
     $("div#flags").html(String(troll.flagsLeft));
     $("div.counter").on("click", startTroll);
@@ -401,9 +399,9 @@ function endGame(correct: boolean) {
     $("div.field").on("mousedown", checkMouseOnFieldNone);
 
     if (correct)
-        $("div.face").css({ "background-image": "url(\"winface.jpg\")" });
+        $("div.face").css({ "background-image": "url(\"images/winface.jpg\")" });
     else
-        $("div.face").css({ "background-image": "url(\"sadface.jpg\")" });
+        $("div.face").css({ "background-image": "url(\"images/sadface.jpg\")" });
 }
 
 function beginning() {

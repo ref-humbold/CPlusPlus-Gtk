@@ -1,6 +1,2 @@
-# JQuery files
-jquery.d.ts
-jquery-3.1.1.js
-
-# TypeScript configuration files
-tsconfig.json
+# node.js modules
+node_modules
