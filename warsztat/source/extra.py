@@ -12,7 +12,7 @@ class Extra:
     def __init__(self, text):
         """Tworzy nowe okno."""
         extra_builder = Gtk.Builder()
-        extra_builder.add_from_file("extra.glade")
+        extra_builder.add_from_file("glade/extra.glade")
 
         self.__extra_window = extra_builder.get_object("extra_window")
         self.__extra_label = extra_builder.get_object("extra_label")

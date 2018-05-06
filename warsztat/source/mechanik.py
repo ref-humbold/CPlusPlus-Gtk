@@ -4,7 +4,7 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from extra import Extra
+from .extra import Extra
 
 class Mechanik:
     """Klasa odpowiadająca za działanie okna interakcji mechanika z bazą danych."""
@@ -13,7 +13,7 @@ class Mechanik:
         self.conn = conndb
 
         mechanik_builder = Gtk.Builder()
-        mechanik_builder.add_from_file("mechanik.glade")
+        mechanik_builder.add_from_file("glade/mechanik.glade")
 
         self.mechanik_window = mechanik_builder.get_object("mechanik_window")
 

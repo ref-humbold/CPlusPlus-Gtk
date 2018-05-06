@@ -1,6 +1,6 @@
 # Java output folders and files
 bin
-# docs
+docs
 junit_results
 junit_reports
 

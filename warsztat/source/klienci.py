@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from psycopg2.extensions import AsIs
-from extra import Extra
+from .extra import Extra
 
 
 class Klienci:
@@ -16,7 +16,7 @@ class Klienci:
         self.conn = conndb
 
         klienci_builder = Gtk.Builder()
-        klienci_builder.add_from_file("klienci.glade")
+        klienci_builder.add_from_file("glade/klienci.glade")
 
         self.klienci_window = klienci_builder.get_object("klienci_window")
 

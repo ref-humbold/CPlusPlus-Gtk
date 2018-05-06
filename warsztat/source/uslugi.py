@@ -4,7 +4,7 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from extra import Extra
+from .extra import Extra
 
 
 class Uslugi:
@@ -15,7 +15,7 @@ class Uslugi:
         self.conn = conndb
 
         uslugi_builder = Gtk.Builder()
-        uslugi_builder.add_from_file("uslugi.glade")
+        uslugi_builder.add_from_file("glade/uslugi.glade")
 
         self.uslugi_window = uslugi_builder.get_object("uslugi_window")
 

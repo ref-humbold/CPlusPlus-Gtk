@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from decimal import Decimal
-from extra import Extra
+from .extra import Extra
 
 
 class Zlecenia:
@@ -16,7 +16,7 @@ class Zlecenia:
         self.conn = conndb
 
         zlecenia_builder = Gtk.Builder()
-        zlecenia_builder.add_from_file("zlecenia.glade")
+        zlecenia_builder.add_from_file("glade/zlecenia.glade")
 
         self.zlecenia_window = zlecenia_builder.get_object("zlecenia_window")
 

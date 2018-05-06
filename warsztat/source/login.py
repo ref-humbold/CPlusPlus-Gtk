@@ -6,10 +6,10 @@ require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from psycopg2 import connect
 from re import match
-from sprzedawca import Sprzedawca
-from mechanik import Mechanik
-from magazynier import Magazynier
-from extra import Extra
+from .sprzedawca import Sprzedawca
+from .mechanik import Mechanik
+from .magazynier import Magazynier
+from .extra import Extra
 
 
 class Login:
@@ -20,7 +20,7 @@ class Login:
         self.is_logged = False
 
         login_builder = Gtk.Builder()
-        login_builder.add_from_file("login.glade")
+        login_builder.add_from_file("glade/login.glade")
 
         self.__login_window = login_builder.get_object("login_window")
 

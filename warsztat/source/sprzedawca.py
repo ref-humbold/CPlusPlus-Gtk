@@ -4,9 +4,9 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from klienci import Klienci
-from uslugi import Uslugi
-from zlecenia import Zlecenia
+from .klienci import Klienci
+from .uslugi import Uslugi
+from .zlecenia import Zlecenia
 
 
 class Sprzedawca:
@@ -17,7 +17,7 @@ class Sprzedawca:
         self.conn = conndb
 
         sprzedawca_builder = Gtk.Builder()
-        sprzedawca_builder.add_from_file("sprzedawca.glade")
+        sprzedawca_builder.add_from_file("glade/sprzedawca.glade")
 
         self.__sprzedawca_window = sprzedawca_builder.get_object("sprzedawca_window")
 

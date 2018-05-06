@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from decimal import Decimal
-from extra import Extra
+from .extra import Extra
 
 
 class Magazynier:
@@ -16,7 +16,7 @@ class Magazynier:
         self.conn = conndb
 
         magazynier_builder = Gtk.Builder()
-        magazynier_builder.add_from_file("magazynier.glade")
+        magazynier_builder.add_from_file("glade/magazynier.glade")
 
         self.magazynier_window = magazynier_builder.get_object("magazynier_window")
 
