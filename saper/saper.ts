@@ -1,3 +1,5 @@
+/// <reference path="jquery.d.ts"/>
+
 let board: Board = null;
 let troll: Troll = null;
 

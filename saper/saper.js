@@ -1,3 +1,5 @@
+/// <reference path="jquery.d.ts"/>
+// import { $ } from './node_modules/jquery/dist/jquery'
 var board = null;
 var troll = null;
 var Board = /** @class */ (function () {
@@ -315,3 +317,4 @@ function beginning() {
     startNormal();
 }
 $(document).ready(beginning);
+//# sourceMappingURL=saper.js.map
