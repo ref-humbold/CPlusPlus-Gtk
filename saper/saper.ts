@@ -341,21 +341,21 @@ function middleClickOnFieldTroll(element: Element) {
     $("div#flags").html(String(troll.flagsLeft));
 }
 
-function checkMouseOnFieldNormal(t: any, event: JQueryMouseEventObject) {
+function checkMouseOnFieldNormal(event: JQuery.Event<Element>) {
     if (event.which == 1)
         leftClickOnFieldNormal(event.target);
     else if (event.which == 2)
         middleClickOnFieldNormal(event.target);
 }
 
-function checkMouseOnFieldTroll(t: any, event: JQueryMouseEventObject) {
+function checkMouseOnFieldTroll(event: JQuery.Event<Element>) {
     if (event.which == 1)
         leftClickOnFieldTroll(event.target);
     else if (event.which == 2)
         middleClickOnFieldTroll(event.target);
 }
 
-function checkMouseOnFieldNone(t: any, event: JQueryMouseEventObject) {
+function checkMouseOnFieldNone(event: JQuery.Event<Element>) {
 }
 
 function startNormal() {

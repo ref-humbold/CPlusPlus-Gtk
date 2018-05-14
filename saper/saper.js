@@ -1,5 +1,4 @@
 /// <reference path="jquery.d.ts"/>
-// import { $ } from './node_modules/jquery/dist/jquery'
 var board = null;
 var troll = null;
 var Board = /** @class */ (function () {
@@ -255,19 +254,19 @@ function middleClickOnFieldTroll(element) {
     troll.flagSetting(pos);
     $("div#flags").html(String(troll.flagsLeft));
 }
-function checkMouseOnFieldNormal(t, event) {
+function checkMouseOnFieldNormal(event) {
     if (event.which == 1)
         leftClickOnFieldNormal(event.target);
     else if (event.which == 2)
         middleClickOnFieldNormal(event.target);
 }
-function checkMouseOnFieldTroll(t, event) {
+function checkMouseOnFieldTroll(event) {
     if (event.which == 1)
         leftClickOnFieldTroll(event.target);
     else if (event.which == 2)
         middleClickOnFieldTroll(event.target);
 }
-function checkMouseOnFieldNone(t, event) {
+function checkMouseOnFieldNone(event) {
 }
 function startNormal() {
     $("div.field").off("mousedown");
