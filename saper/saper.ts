@@ -1,18 +1,70 @@
 /// <reference path="jquery.d.ts"/>
 
+//#region
+
 let board: Board = null;
-let troll: Troll = null;
 
-class Board {
-    private fields: Array<number>;
-    private visible: Array<number>;
-
+abstract class Board {
+    private static readonly LEFT_MOUSE: number = 1;
+    private static readonly MIDDLE_MOUSE: number = 2;
     flagsLeft: number;
     clicks: number;
     shots: number;
-    generated: boolean;
+    isReady: boolean;
+    protected lastClickPos: number;
 
     constructor() {
+        this.restart();
+    }
+
+    abstract restart(): void;
+
+    showBombs(): void {
+        this.getFieldsWithBombs()
+            .css({
+                "background-image": "url(\"images/bomba.jpg\")",
+                "background-size": "100% 100%",
+                "border-style": "solid"
+            });
+    }
+
+    mouseClicked(event: JQuery.Event<Element>) {
+        if (event.which == Board.LEFT_MOUSE)
+            this.leftClick(event.target);
+        else if (event.which == Board.MIDDLE_MOUSE)
+            this.middleClick(event.target);
+    }
+
+    leftClick(element: Element): void {
+        this.lastClickPos = parseInt(element.id, 10);
+    }
+
+    middleClick(element: Element): void {
+        this.lastClickPos = parseInt(element.id, 10);
+    }
+
+    endGame(isWinner: boolean) {
+        $("div.field").off("mousedown");
+        $("div.field").on("mousedown", this.clickNothing);
+
+        if (isWinner)
+            $("div.face").css({ "background-image": "url(\"images/winface.jpg\")" });
+        else
+            $("div.face").css({ "background-image": "url(\"images/sadface.jpg\")" });
+    }
+
+    protected abstract getFieldsWithBombs(): JQuery<HTMLElement>;
+
+    private clickNothing(event: JQuery.Event<Element>): void {
+    }
+}
+
+class NormalBoard extends Board {
+    private fields: Array<number>;
+    private visible: Array<number>;
+
+    constructor() {
+        super();
     }
 
     restart() {
@@ -21,7 +73,102 @@ class Board {
         this.flagsLeft = 40;
         this.clicks = 0;
         this.shots = 0;
-        this.generated = false;
+        this.isReady = false;
+
+        for (let i = 0; i < 256; ++i) {
+            this.fields.push(0);
+            this.visible.push(0);
+        }
+    }
+
+    getFieldsWithBombs(): JQuery<HTMLElement> {
+        return $("div.field")
+            .filter((index: number, elem: Element) =>
+                this.isBomb(parseInt(elem.id, 10))
+            );
+    }
+
+    leftClick(element: Element): void {
+        throw new Error("Method not implemented.");
+    }
+
+    middleClick(element: Element): void {
+        throw new Error("Method not implemented.");
+    }
+
+    private isBomb(pos: number) {
+        return this.fields[pos] == -1;
+    }
+
+    private isEmpty(pos: number) {
+        return this.fields[pos] == 0;
+    }
+
+    private isNotVisible(pos: number) {
+        return this.visible[pos] == 0;
+    }
+}
+
+class TrollBoard extends Board {
+    constructor() {
+        super();
+    }
+
+    restart(): void {
+        throw new Error("Method not implemented.");
+    }
+
+    getFieldsWithBombs(): JQuery<HTMLElement> {
+        let randPos: number = 0;
+        let bombs: Array<number> = [this.lastClickPos];
+
+        for (let i = 0; i < 39; ++i) {
+            do
+                randPos = Math.floor(Math.random() * 255);
+            while (bombs.indexOf(randPos) >= 0);
+
+            bombs.push(randPos);
+        }
+
+        return $("div.field")
+            .filter((index: number, elem: Element) =>
+                bombs.indexOf(parseInt(elem.id, 10)) >= 0
+            );
+    }
+
+    leftClick(element: Element): void {
+        throw new Error("Method not implemented.");
+    }
+
+    middleClick(element: Element): void {
+        throw new Error("Method not implemented.");
+    }
+}
+
+//#endregion
+
+let normal: NormalGame = null;
+let troll: TrollGame = null;
+
+class NormalGame {
+    flagsLeft: number;
+    clicks: number;
+    shots: number;
+    isReady: boolean;
+    private fields: Array<number>;
+    private visible: Array<number>;
+
+    constructor() {
+        this.restart();
+    }
+
+    restart() {
+        this.fields = [];
+        this.visible = [];
+        this.flagsLeft = 40;
+        this.clicks = 0;
+        this.shots = 0;
+        this.isReady = false;
 
         for (let i = 0; i < 256; ++i) {
             this.fields.push(0);
@@ -31,36 +178,36 @@ class Board {
 
     prepare(pos: number) {
         let bombs = this.randBombs(pos);
-        this.generated = true;
+        this.isReady = true;
 
         for (let i = 0; i < bombs.length; ++i) {
-            let w: number = Math.floor(bombs[i] / 16);
-            let k: number = bombs[i] % 16;
+            let row: number = Math.floor(bombs[i] / 16);
+            let column: number = bombs[i] % 16;
 
             this.fields[bombs[i]] = -1;
 
-            if (w > 0 && k > 0 && this.fields[bombs[i] - 16 - 1] >= 0)
+            if (row > 0 && column > 0 && this.fields[bombs[i] - 16 - 1] >= 0)
                 ++this.fields[bombs[i] - 16 - 1];
 
-            if (w > 0 && this.fields[bombs[i] - 16] >= 0)
+            if (row > 0 && this.fields[bombs[i] - 16] >= 0)
                 ++this.fields[bombs[i] - 16];
 
-            if (w > 0 && k < 15 && this.fields[bombs[i] - 16 + 1] >= 0)
+            if (row > 0 && column < 15 && this.fields[bombs[i] - 16 + 1] >= 0)
                 ++this.fields[bombs[i] - 16 + 1];
 
-            if (k > 0 && this.fields[bombs[i] - 1] >= 0)
+            if (column > 0 && this.fields[bombs[i] - 1] >= 0)
                 ++this.fields[bombs[i] - 1];
 
-            if (k < 15 && this.fields[bombs[i] + 1] >= 0)
+            if (column < 15 && this.fields[bombs[i] + 1] >= 0)
                 ++this.fields[bombs[i] + 1];
 
-            if (w < 15 && k > 0 && this.fields[bombs[i] + 16 - 1] >= 0)
+            if (row < 15 && column > 0 && this.fields[bombs[i] + 16 - 1] >= 0)
                 ++this.fields[bombs[i] + 16 - 1];
 
-            if (w < 15 && this.fields[bombs[i] + 16] >= 0)
+            if (row < 15 && this.fields[bombs[i] + 16] >= 0)
                 ++this.fields[bombs[i] + 16];
 
-            if (w < 15 && k < 15 && this.fields[bombs[i] + 16 + 1] >= 0)
+            if (row < 15 && column < 15 && this.fields[bombs[i] + 16 + 1] >= 0)
                 ++this.fields[bombs[i] + 16 + 1];
         }
     }
@@ -81,34 +228,34 @@ class Board {
     }
 
     isNeighbour(pos1: number, pos2: number) {
-        let w: number = Math.floor(pos1 / 16);
-        let k: number = pos1 % 16;
+        let row: number = Math.floor(pos1 / 16);
+        let column: number = pos1 % 16;
 
         if (pos2 == pos1)
             return true;
 
-        if (w > 0 && k > 0 && pos2 == pos1 - 16 - 1)
+        if (row > 0 && column > 0 && pos2 == pos1 - 16 - 1)
             return true;
 
-        if (w > 0 && pos2 == pos1 - 16)
+        if (row > 0 && pos2 == pos1 - 16)
             return true;
 
-        if (w > 0 && k < 15 && pos2 == pos1 - 16 + 1)
+        if (row > 0 && column < 15 && pos2 == pos1 - 16 + 1)
             return true;
 
-        if (k > 0 && pos2 == pos1 - 1)
+        if (column > 0 && pos2 == pos1 - 1)
             return true;
 
-        if (k < 15 && pos2 == pos1 + 1)
+        if (column < 15 && pos2 == pos1 + 1)
             return true;
 
-        if (w < 15 && k > 0 && pos2 == pos1 + 16 - 1)
+        if (row < 15 && column > 0 && pos2 == pos1 + 16 - 1)
             return true;
 
-        if (w < 15 && pos2 == pos1 + 16)
+        if (row < 15 && pos2 == pos1 + 16)
             return true;
 
-        if (w < 15 && k < 15 && pos2 == pos1 + 16 + 1)
+        if (row < 15 && column < 15 && pos2 == pos1 + 16 + 1)
             return true;
 
         return false;
@@ -120,60 +267,60 @@ class Board {
 
         while (queue.length > 0) {
             let pos: number = queue.shift();
-            let w: number = Math.floor(pos / 16);
-            let k: number = pos % 16;
+            let row: number = Math.floor(pos / 16);
+            let column: number = pos % 16;
 
             if (this.fields[pos] == 0) {
-                if (w > 0 && k > 0 && this.visible[pos - 16 - 1] == 0) {
+                if (row > 0 && column > 0 && this.visible[pos - 16 - 1] == 0) {
                     this.setVisible(pos - 16 - 1);
 
                     if (this.fields[pos - 16 - 1] >= 0)
                         queue.push(pos - 16 - 1);
                 }
 
-                if (w > 0 && this.visible[pos - 16] == 0) {
+                if (row > 0 && this.visible[pos - 16] == 0) {
                     this.setVisible(pos - 16);
 
                     if (this.fields[pos - 16] >= 0)
                         queue.push(pos - 16);
                 }
 
-                if (w > 0 && k < 15 && this.visible[pos - 16 + 1] == 0) {
+                if (row > 0 && column < 15 && this.visible[pos - 16 + 1] == 0) {
                     this.setVisible(pos - 16 + 1);
 
                     if (this.fields[pos - 16 + 1] >= 0)
                         queue.push(pos - 16 + 1);
                 }
 
-                if (k > 0 && this.visible[pos - 1] == 0) {
+                if (column > 0 && this.visible[pos - 1] == 0) {
                     this.setVisible(pos - 1);
 
                     if (this.fields[pos - 1] >= 0)
                         queue.push(pos - 1);
                 }
 
-                if (k < 15 && this.visible[pos + 1] == 0) {
+                if (column < 15 && this.visible[pos + 1] == 0) {
                     this.setVisible(pos + 1);
 
                     if (this.fields[pos + 1] >= 0)
                         queue.push(pos + 1);
                 }
 
-                if (w < 15 && k > 0 && this.visible[pos + 16 - 1] == 0) {
+                if (row < 15 && column > 0 && this.visible[pos + 16 - 1] == 0) {
                     this.setVisible(pos + 16 - 1);
 
                     if (this.fields[pos + 16 - 1] >= 0)
                         queue.push(pos + 16 - 1);
                 }
 
-                if (w < 15 && this.visible[pos + 16] == 0) {
+                if (row < 15 && this.visible[pos + 16] == 0) {
                     this.setVisible(pos + 16);
 
                     if (this.fields[pos + 16] >= 0)
                         queue.push(pos + 16);
                 }
 
-                if (w < 15 && k < 15 && this.visible[pos + 16 + 1] == 0) {
+                if (row < 15 && column < 15 && this.visible[pos + 16 + 1] == 0) {
                     this.setVisible(pos + 16 + 1);
 
                     if (this.fields[pos + 16 + 1] >= 0)
@@ -223,7 +370,7 @@ class Board {
     }
 }
 
-class Troll {
+class TrollGame {
     private flags: Array<boolean>;
     flagsLeft: number;
 
@@ -261,7 +408,7 @@ class Troll {
 function showBombsNormal() {
     $("div.field")
         .filter(function (ix: number, em: Element) {
-            return board.isBomb(parseInt(em.id, 10));
+            return normal.isBomb(parseInt(em.id, 10));
         })
         .css({
             "background-image": "url(\"images/bomba.jpg\")",
@@ -296,21 +443,21 @@ function showBombsTroll(pos: number) {
 function leftClickOnFieldNormal(element: Element) {
     let pos: number = parseInt(element.id, 10);
 
-    if (board.isNotVisible(pos)) {
-        ++board.clicks;
-        $("div#clicks").html(String(board.clicks));
+    if (normal.isNotVisible(pos)) {
+        ++normal.clicks;
+        $("div#clicks").html(String(normal.clicks));
 
-        if (!board.generated)
-            board.prepare(pos);
+        if (!normal.isReady)
+            normal.prepare(pos);
 
-        if (board.isBomb(pos)) {
+        if (normal.isBomb(pos)) {
             showBombsNormal();
             endGame(false);
         }
-        else if (board.isEmpty(pos))
-            board.bfs(pos);
+        else if (normal.isEmpty(pos))
+            normal.bfs(pos);
         else
-            board.setVisible(pos);
+            normal.setVisible(pos);
     }
 }
 
@@ -327,10 +474,10 @@ function leftClickOnFieldTroll(element: Element) {
 function middleClickOnFieldNormal(element: Element) {
     let pos: number = parseInt(element.id, 10);
 
-    board.flagSetting(pos);
-    $("div#flags").html(String(board.flagsLeft));
+    normal.flagSetting(pos);
+    $("div#flags").html(String(normal.flagsLeft));
 
-    if (board.shots == 40)
+    if (normal.shots == 40)
         endGame(true);
 }
 
@@ -360,7 +507,7 @@ function checkMouseOnFieldNone(event: JQuery.Event<Element>) {
 
 function startNormal() {
     $("div.field").off("mousedown");
-    board.restart();
+    normal.restart();
 
     $("div.field")
         .on("mousedown", checkMouseOnFieldNormal)
@@ -372,8 +519,8 @@ function startNormal() {
         })
         .html("");
     $("div.face").css({ "background-image": "url(\"images/epicface.jpg\")" }).on("click", startNormal);
-    $("div#clicks").html(String(board.clicks));
-    $("div#flags").html(String(board.flagsLeft));
+    $("div#clicks").html(String(normal.clicks));
+    $("div#flags").html(String(normal.flagsLeft));
     $("div.counter").on("click", startTroll);
 }
 
@@ -406,10 +553,10 @@ function endGame(correct: boolean) {
         $("div.face").css({ "background-image": "url(\"images/sadface.jpg\")" });
 }
 
-function beginning() {
-    board = new Board();
-    troll = new Troll();
+function startNewGame() {
+    normal = new NormalGame();
+    troll = new TrollGame();
     startNormal();
 }
 
-$(document).ready(beginning);
+$(document).ready(startNewGame);

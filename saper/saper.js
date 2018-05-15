@@ -1,47 +1,170 @@
 /// <reference path="jquery.d.ts"/>
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+//#region
 var board = null;
-var troll = null;
 var Board = /** @class */ (function () {
     function Board() {
+        this.restart();
     }
-    Board.prototype.restart = function () {
+    Board.prototype.showBombs = function () {
+        this.getFieldsWithBombs()
+            .css({
+            "background-image": "url(\"images/bomba.jpg\")",
+            "background-size": "100% 100%",
+            "border-style": "solid"
+        });
+    };
+    Board.prototype.mouseClicked = function (event) {
+        if (event.which == Board.LEFT_MOUSE)
+            this.leftClick(event.target);
+        else if (event.which == Board.MIDDLE_MOUSE)
+            this.middleClick(event.target);
+    };
+    Board.prototype.leftClick = function (element) {
+        this.lastClickPos = parseInt(element.id, 10);
+    };
+    Board.prototype.middleClick = function (element) {
+        this.lastClickPos = parseInt(element.id, 10);
+    };
+    Board.prototype.endGame = function (isWinner) {
+        $("div.field").off("mousedown");
+        $("div.field").on("mousedown", this.clickNothing);
+        if (isWinner)
+            $("div.face").css({ "background-image": "url(\"images/winface.jpg\")" });
+        else
+            $("div.face").css({ "background-image": "url(\"images/sadface.jpg\")" });
+    };
+    Board.prototype.clickNothing = function (event) {
+    };
+    Board.LEFT_MOUSE = 1;
+    Board.MIDDLE_MOUSE = 2;
+    return Board;
+}());
+var NormalBoard = /** @class */ (function (_super) {
+    __extends(NormalBoard, _super);
+    function NormalBoard() {
+        return _super.call(this) || this;
+    }
+    NormalBoard.prototype.restart = function () {
         this.fields = [];
         this.visible = [];
         this.flagsLeft = 40;
         this.clicks = 0;
         this.shots = 0;
-        this.generated = false;
+        this.isReady = false;
         for (var i = 0; i < 256; ++i) {
             this.fields.push(0);
             this.visible.push(0);
         }
     };
-    Board.prototype.prepare = function (pos) {
+    NormalBoard.prototype.getFieldsWithBombs = function () {
+        var _this = this;
+        return $("div.field")
+            .filter(function (index, elem) {
+            return _this.isBomb(parseInt(elem.id, 10));
+        });
+    };
+    NormalBoard.prototype.leftClick = function (element) {
+        throw new Error("Method not implemented.");
+    };
+    NormalBoard.prototype.middleClick = function (element) {
+        throw new Error("Method not implemented.");
+    };
+    NormalBoard.prototype.isBomb = function (pos) {
+        return this.fields[pos] == -1;
+    };
+    NormalBoard.prototype.isEmpty = function (pos) {
+        return this.fields[pos] == 0;
+    };
+    NormalBoard.prototype.isNotVisible = function (pos) {
+        return this.visible[pos] == 0;
+    };
+    return NormalBoard;
+}(Board));
+var TrollBoard = /** @class */ (function (_super) {
+    __extends(TrollBoard, _super);
+    function TrollBoard() {
+        return _super.call(this) || this;
+    }
+    TrollBoard.prototype.restart = function () {
+        throw new Error("Method not implemented.");
+    };
+    TrollBoard.prototype.getFieldsWithBombs = function () {
+        var randPos = 0;
+        var bombs = [this.lastClickPos];
+        for (var i = 0; i < 39; ++i) {
+            do
+                randPos = Math.floor(Math.random() * 255);
+            while (bombs.indexOf(randPos) >= 0);
+            bombs.push(randPos);
+        }
+        return $("div.field")
+            .filter(function (index, elem) {
+            return bombs.indexOf(parseInt(elem.id, 10)) >= 0;
+        });
+    };
+    TrollBoard.prototype.leftClick = function (element) {
+        throw new Error("Method not implemented.");
+    };
+    TrollBoard.prototype.middleClick = function (element) {
+        throw new Error("Method not implemented.");
+    };
+    return TrollBoard;
+}(Board));
+//#endregion
+var normal = null;
+var troll = null;
+var NormalGame = /** @class */ (function () {
+    function NormalGame() {
+        this.restart();
+    }
+    NormalGame.prototype.restart = function () {
+        this.fields = [];
+        this.visible = [];
+        this.flagsLeft = 40;
+        this.clicks = 0;
+        this.shots = 0;
+        this.isReady = false;
+        for (var i = 0; i < 256; ++i) {
+            this.fields.push(0);
+            this.visible.push(0);
+        }
+    };
+    NormalGame.prototype.prepare = function (pos) {
         var bombs = this.randBombs(pos);
-        this.generated = true;
+        this.isReady = true;
         for (var i = 0; i < bombs.length; ++i) {
-            var w = Math.floor(bombs[i] / 16);
-            var k = bombs[i] % 16;
+            var row = Math.floor(bombs[i] / 16);
+            var column = bombs[i] % 16;
             this.fields[bombs[i]] = -1;
-            if (w > 0 && k > 0 && this.fields[bombs[i] - 16 - 1] >= 0)
+            if (row > 0 && column > 0 && this.fields[bombs[i] - 16 - 1] >= 0)
                 ++this.fields[bombs[i] - 16 - 1];
-            if (w > 0 && this.fields[bombs[i] - 16] >= 0)
+            if (row > 0 && this.fields[bombs[i] - 16] >= 0)
                 ++this.fields[bombs[i] - 16];
-            if (w > 0 && k < 15 && this.fields[bombs[i] - 16 + 1] >= 0)
+            if (row > 0 && column < 15 && this.fields[bombs[i] - 16 + 1] >= 0)
                 ++this.fields[bombs[i] - 16 + 1];
-            if (k > 0 && this.fields[bombs[i] - 1] >= 0)
+            if (column > 0 && this.fields[bombs[i] - 1] >= 0)
                 ++this.fields[bombs[i] - 1];
-            if (k < 15 && this.fields[bombs[i] + 1] >= 0)
+            if (column < 15 && this.fields[bombs[i] + 1] >= 0)
                 ++this.fields[bombs[i] + 1];
-            if (w < 15 && k > 0 && this.fields[bombs[i] + 16 - 1] >= 0)
+            if (row < 15 && column > 0 && this.fields[bombs[i] + 16 - 1] >= 0)
                 ++this.fields[bombs[i] + 16 - 1];
-            if (w < 15 && this.fields[bombs[i] + 16] >= 0)
+            if (row < 15 && this.fields[bombs[i] + 16] >= 0)
                 ++this.fields[bombs[i] + 16];
-            if (w < 15 && k < 15 && this.fields[bombs[i] + 16 + 1] >= 0)
+            if (row < 15 && column < 15 && this.fields[bombs[i] + 16 + 1] >= 0)
                 ++this.fields[bombs[i] + 16 + 1];
         }
     };
-    Board.prototype.randBombs = function (pos) {
+    NormalGame.prototype.randBombs = function (pos) {
         var p = 0;
         var lst = [];
         for (var i = 0; i < 40; ++i) {
@@ -52,73 +175,73 @@ var Board = /** @class */ (function () {
         }
         return lst;
     };
-    Board.prototype.isNeighbour = function (pos1, pos2) {
-        var w = Math.floor(pos1 / 16);
-        var k = pos1 % 16;
+    NormalGame.prototype.isNeighbour = function (pos1, pos2) {
+        var row = Math.floor(pos1 / 16);
+        var column = pos1 % 16;
         if (pos2 == pos1)
             return true;
-        if (w > 0 && k > 0 && pos2 == pos1 - 16 - 1)
+        if (row > 0 && column > 0 && pos2 == pos1 - 16 - 1)
             return true;
-        if (w > 0 && pos2 == pos1 - 16)
+        if (row > 0 && pos2 == pos1 - 16)
             return true;
-        if (w > 0 && k < 15 && pos2 == pos1 - 16 + 1)
+        if (row > 0 && column < 15 && pos2 == pos1 - 16 + 1)
             return true;
-        if (k > 0 && pos2 == pos1 - 1)
+        if (column > 0 && pos2 == pos1 - 1)
             return true;
-        if (k < 15 && pos2 == pos1 + 1)
+        if (column < 15 && pos2 == pos1 + 1)
             return true;
-        if (w < 15 && k > 0 && pos2 == pos1 + 16 - 1)
+        if (row < 15 && column > 0 && pos2 == pos1 + 16 - 1)
             return true;
-        if (w < 15 && pos2 == pos1 + 16)
+        if (row < 15 && pos2 == pos1 + 16)
             return true;
-        if (w < 15 && k < 15 && pos2 == pos1 + 16 + 1)
+        if (row < 15 && column < 15 && pos2 == pos1 + 16 + 1)
             return true;
         return false;
     };
-    Board.prototype.bfs = function (posBeg) {
+    NormalGame.prototype.bfs = function (posBeg) {
         var queue = [posBeg];
         this.setVisible(posBeg);
         while (queue.length > 0) {
             var pos = queue.shift();
-            var w = Math.floor(pos / 16);
-            var k = pos % 16;
+            var row = Math.floor(pos / 16);
+            var column = pos % 16;
             if (this.fields[pos] == 0) {
-                if (w > 0 && k > 0 && this.visible[pos - 16 - 1] == 0) {
+                if (row > 0 && column > 0 && this.visible[pos - 16 - 1] == 0) {
                     this.setVisible(pos - 16 - 1);
                     if (this.fields[pos - 16 - 1] >= 0)
                         queue.push(pos - 16 - 1);
                 }
-                if (w > 0 && this.visible[pos - 16] == 0) {
+                if (row > 0 && this.visible[pos - 16] == 0) {
                     this.setVisible(pos - 16);
                     if (this.fields[pos - 16] >= 0)
                         queue.push(pos - 16);
                 }
-                if (w > 0 && k < 15 && this.visible[pos - 16 + 1] == 0) {
+                if (row > 0 && column < 15 && this.visible[pos - 16 + 1] == 0) {
                     this.setVisible(pos - 16 + 1);
                     if (this.fields[pos - 16 + 1] >= 0)
                         queue.push(pos - 16 + 1);
                 }
-                if (k > 0 && this.visible[pos - 1] == 0) {
+                if (column > 0 && this.visible[pos - 1] == 0) {
                     this.setVisible(pos - 1);
                     if (this.fields[pos - 1] >= 0)
                         queue.push(pos - 1);
                 }
-                if (k < 15 && this.visible[pos + 1] == 0) {
+                if (column < 15 && this.visible[pos + 1] == 0) {
                     this.setVisible(pos + 1);
                     if (this.fields[pos + 1] >= 0)
                         queue.push(pos + 1);
                 }
-                if (w < 15 && k > 0 && this.visible[pos + 16 - 1] == 0) {
+                if (row < 15 && column > 0 && this.visible[pos + 16 - 1] == 0) {
                     this.setVisible(pos + 16 - 1);
                     if (this.fields[pos + 16 - 1] >= 0)
                         queue.push(pos + 16 - 1);
                 }
-                if (w < 15 && this.visible[pos + 16] == 0) {
+                if (row < 15 && this.visible[pos + 16] == 0) {
                     this.setVisible(pos + 16);
                     if (this.fields[pos + 16] >= 0)
                         queue.push(pos + 16);
                 }
-                if (w < 15 && k < 15 && this.visible[pos + 16 + 1] == 0) {
+                if (row < 15 && column < 15 && this.visible[pos + 16 + 1] == 0) {
                     this.setVisible(pos + 16 + 1);
                     if (this.fields[pos + 16 + 1] >= 0)
                         queue.push(pos + 16 + 1);
@@ -126,13 +249,13 @@ var Board = /** @class */ (function () {
             }
         }
     };
-    Board.prototype.setVisible = function (pos) {
+    NormalGame.prototype.setVisible = function (pos) {
         this.visible[pos] = 2;
         $("div#" + pos).css({ "border-style": "solid", "border-color": "#E6E6E6" });
         if (this.fields[pos] > 0)
             $("div#" + pos).html(String(this.fields[pos]));
     };
-    Board.prototype.flagSetting = function (pos) {
+    NormalGame.prototype.flagSetting = function (pos) {
         if (this.visible[pos] == 0) {
             this.visible[pos] = 1;
             --this.flagsLeft;
@@ -148,32 +271,32 @@ var Board = /** @class */ (function () {
                 --this.shots;
         }
     };
-    Board.prototype.isBomb = function (pos) {
+    NormalGame.prototype.isBomb = function (pos) {
         return this.fields[pos] == -1;
     };
-    Board.prototype.isEmpty = function (pos) {
+    NormalGame.prototype.isEmpty = function (pos) {
         return this.fields[pos] == 0;
     };
-    Board.prototype.isNotVisible = function (pos) {
+    NormalGame.prototype.isNotVisible = function (pos) {
         return this.visible[pos] == 0;
     };
-    return Board;
+    return NormalGame;
 }());
-var Troll = /** @class */ (function () {
-    function Troll() {
+var TrollGame = /** @class */ (function () {
+    function TrollGame() {
         this.restart();
     }
-    Troll.prototype.restart = function () {
+    TrollGame.prototype.restart = function () {
         this.flags = [];
         this.flagsLeft = 40;
         for (var i = 0; i < 256; ++i) {
             this.flags.push(false);
         }
     };
-    Troll.prototype.isFlag = function (pos) {
+    TrollGame.prototype.isFlag = function (pos) {
         return this.flags[pos];
     };
-    Troll.prototype.flagSetting = function (pos) {
+    TrollGame.prototype.flagSetting = function (pos) {
         if (this.flags[pos]) {
             this.flags[pos] = false;
             ++this.flagsLeft;
@@ -185,12 +308,12 @@ var Troll = /** @class */ (function () {
             $("div#" + pos).css({ "background-color": "green" });
         }
     };
-    return Troll;
+    return TrollGame;
 }());
 function showBombsNormal() {
     $("div.field")
         .filter(function (ix, em) {
-        return board.isBomb(parseInt(em.id, 10));
+        return normal.isBomb(parseInt(em.id, 10));
     })
         .css({
         "background-image": "url(\"images/bomba.jpg\")",
@@ -219,19 +342,19 @@ function showBombsTroll(pos) {
 }
 function leftClickOnFieldNormal(element) {
     var pos = parseInt(element.id, 10);
-    if (board.isNotVisible(pos)) {
-        ++board.clicks;
-        $("div#clicks").html(String(board.clicks));
-        if (!board.generated)
-            board.prepare(pos);
-        if (board.isBomb(pos)) {
+    if (normal.isNotVisible(pos)) {
+        ++normal.clicks;
+        $("div#clicks").html(String(normal.clicks));
+        if (!normal.isReady)
+            normal.prepare(pos);
+        if (normal.isBomb(pos)) {
             showBombsNormal();
             endGame(false);
         }
-        else if (board.isEmpty(pos))
-            board.bfs(pos);
+        else if (normal.isEmpty(pos))
+            normal.bfs(pos);
         else
-            board.setVisible(pos);
+            normal.setVisible(pos);
     }
 }
 function leftClickOnFieldTroll(element) {
@@ -244,9 +367,9 @@ function leftClickOnFieldTroll(element) {
 }
 function middleClickOnFieldNormal(element) {
     var pos = parseInt(element.id, 10);
-    board.flagSetting(pos);
-    $("div#flags").html(String(board.flagsLeft));
-    if (board.shots == 40)
+    normal.flagSetting(pos);
+    $("div#flags").html(String(normal.flagsLeft));
+    if (normal.shots == 40)
         endGame(true);
 }
 function middleClickOnFieldTroll(element) {
@@ -270,7 +393,7 @@ function checkMouseOnFieldNone(event) {
 }
 function startNormal() {
     $("div.field").off("mousedown");
-    board.restart();
+    normal.restart();
     $("div.field")
         .on("mousedown", checkMouseOnFieldNormal)
         .css({
@@ -281,8 +404,8 @@ function startNormal() {
     })
         .html("");
     $("div.face").css({ "background-image": "url(\"images/epicface.jpg\")" }).on("click", startNormal);
-    $("div#clicks").html(String(board.clicks));
-    $("div#flags").html(String(board.flagsLeft));
+    $("div#clicks").html(String(normal.clicks));
+    $("div#flags").html(String(normal.flagsLeft));
     $("div.counter").on("click", startTroll);
 }
 function startTroll() {
@@ -310,10 +433,10 @@ function endGame(correct) {
     else
         $("div.face").css({ "background-image": "url(\"images/sadface.jpg\")" });
 }
-function beginning() {
-    board = new Board();
-    troll = new Troll();
+function startNewGame() {
+    normal = new NormalGame();
+    troll = new TrollGame();
     startNormal();
 }
-$(document).ready(beginning);
+$(document).ready(startNewGame);
 //# sourceMappingURL=saper.js.map
