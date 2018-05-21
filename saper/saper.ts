@@ -1,7 +1,5 @@
 /// <reference path="jquery.d.ts"/>
 
-let board: Board = null;
-
 enum Flag {
     Hidden, Visible, Flagged
 }
@@ -174,7 +172,7 @@ abstract class Board {
 }
 
 class NormalBoard extends Board {
-    private shots: number;
+    private correctShots: number;
     private isGenerated: boolean;
 
     constructor() {
@@ -183,7 +181,7 @@ class NormalBoard extends Board {
 
     protected restart(): void {
         super.restart();
-        this.shots = 0;
+        this.correctShots = 0;
         this.isGenerated = false;
     }
 
@@ -216,18 +214,18 @@ class NormalBoard extends Board {
     protected middleClick(element: Element): void {
         super.middleClick(element);
 
-        if (this.shots == 40)
+        if (this.correctShots == NormalBoard.BOMBS_COUNT)
             this.endGame(true);
     }
 
     protected increaseShots(pos: number): void {
-        if (this.isBomb(this.distances[pos]))
-            ++this.shots;
+        if (this.isBomb(pos))
+            ++this.correctShots;
     }
 
     protected decreaseShots(pos: number): void {
-        if (this.isBomb(this.distances[pos]))
-            --this.shots;
+        if (this.isBomb(pos))
+            --this.correctShots;
     }
 
     private generate(startingPos: number): void {
@@ -241,32 +239,32 @@ class NormalBoard extends Board {
             this.distances[bombs[i]] = NormalBoard.DISTANCE_BOMB;
 
             if (row > 0 && column > 0
-                && !this.isBomb(this.distances[bombs[i] - NormalBoard.SIZE - 1]))
+                && !this.isBomb(bombs[i] - NormalBoard.SIZE - 1))
                 ++this.distances[bombs[i] - NormalBoard.SIZE - 1];
 
-            if (row > 0 && !this.isBomb(this.distances[bombs[i] - NormalBoard.SIZE]))
+            if (row > 0 && !this.isBomb(bombs[i] - NormalBoard.SIZE))
                 ++this.distances[bombs[i] - NormalBoard.SIZE];
 
             if (row > 0 && column < NormalBoard.SIZE - 1
-                && !this.isBomb(this.distances[bombs[i] - NormalBoard.SIZE + 1]))
+                && !this.isBomb(bombs[i] - NormalBoard.SIZE + 1))
                 ++this.distances[bombs[i] - NormalBoard.SIZE + 1];
 
-            if (column > 0 && !this.isBomb(this.distances[bombs[i] - 1]))
+            if (column > 0 && !this.isBomb(bombs[i] - 1))
                 ++this.distances[bombs[i] - 1];
 
-            if (column < NormalBoard.SIZE - 1 && !this.isBomb(this.distances[bombs[i] + 1]))
+            if (column < NormalBoard.SIZE - 1 && !this.isBomb(bombs[i] + 1))
                 ++this.distances[bombs[i] + 1];
 
             if (row < NormalBoard.SIZE - 1 && column > 0
-                && !this.isBomb(this.distances[bombs[i] + NormalBoard.SIZE - 1]))
+                && !this.isBomb(bombs[i] + NormalBoard.SIZE - 1))
                 ++this.distances[bombs[i] + NormalBoard.SIZE - 1];
 
             if (row < NormalBoard.SIZE - 1
-                && !this.isBomb(this.distances[bombs[i] + NormalBoard.SIZE]))
+                && !this.isBomb(bombs[i] + NormalBoard.SIZE))
                 ++this.distances[bombs[i] + NormalBoard.SIZE];
 
             if (row < NormalBoard.SIZE - 1 && column < NormalBoard.SIZE - 1
-                && !this.isBomb(this.distances[bombs[i] + NormalBoard.SIZE + 1]))
+                && !this.isBomb(bombs[i] + NormalBoard.SIZE + 1))
                 ++this.distances[bombs[i] + NormalBoard.SIZE + 1];
         }
     }
@@ -281,19 +279,19 @@ class NormalBoard extends Board {
             let row: number = Math.floor(pos / NormalBoard.SIZE);
             let column: number = pos % NormalBoard.SIZE;
 
-            if (this.isEmpty(this.distances[pos])) {
+            if (this.isEmpty(pos)) {
                 if (row > 0 && column > 0
                     && this.flags[pos - NormalBoard.SIZE - 1] == Flag.Hidden) {
                     this.setVisible(pos - NormalBoard.SIZE - 1);
 
-                    if (!this.isBomb(this.distances[pos - NormalBoard.SIZE - 1]))
+                    if (!this.isBomb(pos - NormalBoard.SIZE - 1))
                         queue.push(pos - NormalBoard.SIZE - 1);
                 }
 
                 if (row > 0 && this.flags[pos - NormalBoard.SIZE] == Flag.Hidden) {
                     this.setVisible(pos - NormalBoard.SIZE);
 
-                    if (!this.isBomb(this.distances[pos - NormalBoard.SIZE]))
+                    if (!this.isBomb(pos - NormalBoard.SIZE))
                         queue.push(pos - NormalBoard.SIZE);
                 }
 
@@ -301,21 +299,21 @@ class NormalBoard extends Board {
                     && this.flags[pos - NormalBoard.SIZE + 1] == Flag.Hidden) {
                     this.setVisible(pos - NormalBoard.SIZE + 1);
 
-                    if (!this.isBomb(this.distances[pos - NormalBoard.SIZE + 1]))
+                    if (!this.isBomb(pos - NormalBoard.SIZE + 1))
                         queue.push(pos - NormalBoard.SIZE + 1);
                 }
 
                 if (column > 0 && this.flags[pos - 1] == Flag.Hidden) {
                     this.setVisible(pos - 1);
 
-                    if (!this.isBomb(this.distances[pos - 1]))
+                    if (!this.isBomb(pos - 1))
                         queue.push(pos - 1);
                 }
 
                 if (column < NormalBoard.SIZE - 1 && this.flags[pos + 1] == Flag.Hidden) {
                     this.setVisible(pos + 1);
 
-                    if (!this.isBomb(this.distances[pos + 1]))
+                    if (!this.isBomb(pos + 1))
                         queue.push(pos + 1);
                 }
 
@@ -323,7 +321,7 @@ class NormalBoard extends Board {
                     && this.flags[pos + NormalBoard.SIZE - 1] == Flag.Hidden) {
                     this.setVisible(pos + NormalBoard.SIZE - 1);
 
-                    if (!this.isBomb(this.distances[pos + NormalBoard.SIZE - 1]))
+                    if (!this.isBomb(pos + NormalBoard.SIZE - 1))
                         queue.push(pos + NormalBoard.SIZE - 1);
                 }
 
@@ -331,7 +329,7 @@ class NormalBoard extends Board {
                     && this.flags[pos + NormalBoard.SIZE] == Flag.Hidden) {
                     this.setVisible(pos + NormalBoard.SIZE);
 
-                    if (!this.isBomb(this.distances[pos + NormalBoard.SIZE]))
+                    if (!this.isBomb(pos + NormalBoard.SIZE))
                         queue.push(pos + NormalBoard.SIZE);
                 }
 
@@ -339,7 +337,7 @@ class NormalBoard extends Board {
                     && this.flags[pos + NormalBoard.SIZE + 1] == Flag.Hidden) {
                     this.setVisible(pos + NormalBoard.SIZE + 1);
 
-                    if (!this.isBomb(this.distances[pos + NormalBoard.SIZE + 1]))
+                    if (!this.isBomb(pos + NormalBoard.SIZE + 1))
                         queue.push(pos + NormalBoard.SIZE + 1);
                 }
             }
@@ -406,6 +404,8 @@ class TrollBoard extends Board {
     protected decreaseShots(pos: number): void {
     }
 }
+
+let board: Board = null;
 
 function startNormalGame(): void {
     board = new NormalBoard();
