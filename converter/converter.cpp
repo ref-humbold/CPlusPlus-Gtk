@@ -34,7 +34,7 @@ void check_digits(std::string &number, int base, bool has_sign)
     }
 }
 
-int convert_to_decimal(std::string & number, int base)
+int to_decimal(std::string & number, int base)
 {
     auto actual_digit = [](const char & d)
         {
@@ -54,7 +54,7 @@ int convert_to_decimal(std::string & number, int base)
         [=](int decimal, const char & d){ return decimal * base + actual_digit(d); });
 }
 
-std::vector<int> convert_to_output(int decimal, int base)
+std::vector<int> to_output(int decimal, int base)
 {
     std::vector<int> output;
 
@@ -85,7 +85,7 @@ int main()
 
     check_digits(number_in, base_in, has_sign);
 
-    int base_out, decimal = convert_to_decimal(number_in, base_in);
+    int base_out, decimal = to_decimal(number_in, base_in);
 
     check_input_number(decimal);
     std::cout << "\n" << "Podaj podstawę systemu, na który chcesz zamienić tę liczbę\n";
@@ -93,7 +93,7 @@ int main()
     std::cout << "\n\n";
     check_base(base_out);
 
-    std::vector<int> number_out = convert_to_output(decimal, base_out);
+    std::vector<int> number_out = to_output(decimal, base_out);
 
     std::cout << "\tTwoja liczba w systemie o podstawie " << base_out << " wynosi:\n\n" << "\t\t";
 
