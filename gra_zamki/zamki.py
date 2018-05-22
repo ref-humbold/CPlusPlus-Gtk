@@ -143,7 +143,7 @@ class Game:
                             print("\tPOZYCJA NA PLANSZY:", self.list_players[p].castle_pos[c])
                             print("\tDOSTĘPNE ŻYCIE  = ", self.list_players[p].life[c])
                             print("\tMAKSYMALNA DOSTĘPNA PRĘDKOŚĆ POCISKU  = ",
-                                  3 * self.list_players)[p].life[c] + 100
+                                  3 * self.list_players[p].life[c] + 100)
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_SPACE:
                             K = P.shoot(self.act_castle[self.playing])
