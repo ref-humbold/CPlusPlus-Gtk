@@ -2,7 +2,7 @@
 
 from random import randint
 import pygame
-from ..utils import bound
+from .utils import bound
 
 HEAVEN_COLOUR = (0, 127, 255)
 GROUND_COLOUR = (255, 255, 0)

@@ -9,8 +9,10 @@ from os import _exit
 from random import randint, choice
 from math import pi, sqrt, sin, cos, tan
 
+
 def intervalize(a, x, b):
     return a if x < a else b if x > b else x
+
 
 class Game:
     """Klasa odpowiadająca za interfejs gry"""
@@ -136,7 +138,8 @@ class Game:
 
                     if event.type == pygame.MOUSEBUTTONDOWN:
                         x, y = pygame.mouse.get_pos()
-                        castle_mouse = [(i, j) for i in range(len(self.list_players)) for j in range(len(self.list_players[i].castle_pos)) if self.list_players[i].castle_pos[j][0] - 5 <= x <= self.list_players[i].castle_pos[j][0] + 26 and self.list_players[i].castle_pos[j][1] - 5 <= y <= self.list_players[i].castle_pos[j][1] + 21]
+                        castle_mouse = [(i, j) for i in range(len(self.list_players)) for j in range(len(self.list_players[i].castle_pos)) if self.list_players[i].castle_pos[j]
+                                        [0] - 5 <= x <= self.list_players[i].castle_pos[j][0] + 26 and self.list_players[i].castle_pos[j][1] - 5 <= y <= self.list_players[i].castle_pos[j][1] + 21]
                         if castle_mouse:
                             p, c = castle_mouse[0]
                             print("ZAMEK NUMER", c, "GRACZA", p, ":")
@@ -220,7 +223,7 @@ class Player:
         """Tworzy nowego gracza
         :param g: referencja do klasy gry
         :param nr: numer gracza"""
-        db = dbm.ndbm.open("players", "c")
+        database = dbm.ndbm.open("players", "c")
         self.game = g
         self.numer = str(nr)
         self.speeds = [20] * 3
@@ -230,20 +233,20 @@ class Player:
         self.armat_pos = []
         self.all_armats = []
         self.was_hit = False
-        db[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
-        db.close()
+        self.castle_img = None
+        self.armat_img = None
+        database[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
+        database.close()
 
     def add_castles(self, img, pos):
-        """
-        Dodaje zamek dla gracza
+        """Dodaje zamek dla gracza
         :param img: obrazek zamku
-        :param pos: pozycja zamku na planszy
-        """
+        :param pos: pozycja zamku na planszy"""
         self.castle_img = img
         self.castle_pos.append(pos)
-        db = dbm.ndbm.open("players", "c")
-        db[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
-        db.close()
+        database = dbm.ndbm.open("players", "c")
+        database[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
+        database.close()
 
     def make_armat(self, cpos):
         """Tworzy obraz armaty dla zamku
@@ -274,7 +277,8 @@ class Player:
             self.angles[castle] = self.angles[castle] + diff
             rads = self.angles[castle] * pi / 180
             new_arm_img = pygame.transform.rotate(self.armat_img, self.angles[castle])
-            new_arm_pos = (self.armat_pos[castle][0], int(self.armat_pos[castle][1] - 6 * sin(rads))) if self.angles[castle] <= 90 else (int(self.armat_pos[castle][0] + 6 * cos(rads)), int(self.armat_pos[castle][1] - 6 * sin(rads)))
+            new_arm_pos = (self.armat_pos[castle][0], int(self.armat_pos[castle][1] - 6 * sin(rads))) if self.angles[castle] <= 90 else (
+                int(self.armat_pos[castle][0] + 6 * cos(rads)), int(self.armat_pos[castle][1] - 6 * sin(rads)))
             self.all_armats[castle] = (new_arm_img, new_arm_pos)
             self.game.screen.blit(self.castle_img, self.castle_pos[castle])
             self.game.screen.blit(new_arm_img, new_arm_pos)
@@ -322,9 +326,9 @@ class Player:
     def shoot(self, castle):
         """Wykonuje strzał z armaty zamku
         :param castle: numer zamku gracza"""
-        db = dbm.ndbm.open("players", "c")
-        db[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
-        db.close()
+        database = dbm.ndbm.open("players", "c")
+        database[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
+        database.close()
 
         if self.speeds[castle] > 0:
             if self.angles[castle] != 90:
@@ -393,7 +397,7 @@ class Player:
                     pygame.display.update()
                     y -= 2
 
-                y +=  4
+                y += 4
 
                 while y + 2 < self.game.background[x][0] - 16:
                     self.draw_bullet(x, y)
@@ -450,9 +454,9 @@ class Player:
 
             pygame.display.update()
 
-        db = dbm.ndbm.open("players", "c")
-        db[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
-        db.close()
+        database = dbm.ndbm.open("players", "c")
+        database[self.numer] = "_@_".join([repr(self.life), repr(self.castle_pos)])
+        database.close()
 
 
 class Bot(Player, threading.Thread):
