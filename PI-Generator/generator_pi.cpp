@@ -2,6 +2,29 @@
 #include <cstdio>
 #include <cmath>
 #include <ctime>
+#include <gtkmm.h>
+
+class gtk_app
+{
+private:
+    Glib::RefPtr<Gtk::Application> application;
+    Glib::RefPtr<Gtk::Builder> builder;
+
+public:
+    gtk_app()
+        : application{Gtk::Application::create()},
+          builder{Gtk::Builder::create_from_file("generator.glade", "main_window")}
+    {
+    }
+};
+
+void exit_button_clicked_cb()
+{
+}
+
+void continue_button_clicked_cb()
+{
+}
 
 double pi()
 {
