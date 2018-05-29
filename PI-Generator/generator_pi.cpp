@@ -70,10 +70,8 @@ int main()
 
         do
         {
-            if(read != '\n')
-                printf("  Write Q to exit, C to continue and press ENTER\n>>> ");
-
-            scanf("%c", &read);
+            printf("  Write Q to exit, C to continue and press ENTER\n>>> ");
+            scanf(" %c", &read);
         } while(read != 'q' && read != 'Q' && read != 'c' && read != 'C');
     } while(read != 'q' && read != 'Q');
 
