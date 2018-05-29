@@ -38,9 +38,19 @@ double pi()
         double pos_y = (rand() % SIZE) / (1.0 * SIZE);
         double radius = sqrt(pos_x * pos_x + pos_y * pos_y);
 
+        if(i % 1000000 == 0)
+        {
+            for(int j = 0; j < i / 1000000; ++j)
+                printf("#");
+
+            printf("\n");
+        }
+
         if(radius <= 1.0)
             ++shot;
     }
+
+    printf("\n");
 
     return (4.0 * shot) / NUMBER;
 }
@@ -60,8 +70,10 @@ int main()
 
         do
         {
-            printf("  Write Q to exit, C to continue and press ENTER\n");
-            scanf("%c\n", &read);
+            if(read != '\n')
+                printf("  Write Q to exit, C to continue and press ENTER\n>>> ");
+
+            scanf("%c", &read);
         } while(read != 'q' && read != 'Q' && read != 'c' && read != 'C');
     } while(read != 'q' && read != 'Q');
 
