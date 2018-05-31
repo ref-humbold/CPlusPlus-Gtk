@@ -26,6 +26,7 @@ public:
 
     ~gtk_app()
     {
+        delete this->main_window;
         delete this->exit_button;
         delete this->continue_button;
         delete this->progress_bar;
@@ -65,7 +66,7 @@ void gtk_app::connect_signals()
 
 void gtk_app::exit_button_clicked_cb()
 {
-    Gtk::Main::quit();
+    main_window->hide();
 }
 
 void gtk_app::continue_button_clicked_cb()
