@@ -13,7 +13,7 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}-Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # OUTPUT
 add_executable(generator_pi generator_pi.cpp)
