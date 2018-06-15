@@ -1,13 +1,11 @@
-# Quartus output folders
-*_sim
+# Quartus output
 db
 greybox_tmp
 incremental_db
 simulation
 testbench
 timing
-
-# Quartus output files
+*_sim
 *~
 *_generation_script*
 *_inst.vhd
