@@ -2,12 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 # PROJECT
 project(traceroute VERSION 1.0)
-set(PROJECT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_DIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
 # SOURCES
-include_directories(${PROJECT_DIR})
-file(GLOB SOURCES "${PROJECT_DIR}/*.cpp")
+include_directories("${PROJECT_SOURCE_DIR}/include")
+file(GLOB SOURCES "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 11)
