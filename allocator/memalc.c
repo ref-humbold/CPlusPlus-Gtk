@@ -1,10 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <pthread.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include "memalc.h"
 
 #define ARENA struct arena
 #define BLOCK struct block
@@ -738,11 +732,9 @@ void * realloc_fcn(void * ptr, size_t size)
 void * malloc(size_t size)
 {
     pthread_mutex_lock(&mutex);
-    // printf("MALLOC - %d\n", size);
 
     void * adr = malloc_fcn(size);
 
-    // printf("\tMALLOC - %p\n", adr);
     pthread_mutex_unlock(&mutex);
 
     return adr;
@@ -751,11 +743,9 @@ void * malloc(size_t size)
 void * calloc(size_t count, size_t size)
 {
     pthread_mutex_lock(&mutex);
-    // printf("CALLOC - %d, %d\n", count, size);
 
     void * adr = calloc_fcn(count, size);
 
-    // printf("\tCALLOC - %p\n", adr);
     pthread_mutex_unlock(&mutex);
 
     return adr;
@@ -764,11 +754,9 @@ void * calloc(size_t count, size_t size)
 void * realloc(void * ptr, size_t size)
 {
     pthread_mutex_lock(&mutex);
-    // printf("REALLOC - %p, %d\n", ptr, size);
 
     void * adr = realloc_fcn(ptr, size);
 
-    // printf("\tREALLOC - %p\n", adr);
     pthread_mutex_unlock(&mutex);
 
     return adr;
@@ -777,9 +765,7 @@ void * realloc(void * ptr, size_t size)
 void free(void * ptr)
 {
     pthread_mutex_lock(&mutex);
-    // printf("FREE - %p\n", ptr);
     free_fcn(ptr);
-    // printf("\tFREE\n");
     pthread_mutex_unlock(&mutex);
 }
 
@@ -795,9 +781,4 @@ void print_free_memory()
     pthread_mutex_lock(&mutex);
     print_free_mem_fcn();
     pthread_mutex_unlock(&mutex);
-}
-
-int main(int argc, char * argv[])
-{
-    return 0;
 }

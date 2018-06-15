@@ -1,4 +1,4 @@
-#include "pthread_semaphore.h"
+#include "pthreadsem.h"
 
 void sem_init(struct pthread_semaphore * semaphore, int init_count)
 {
