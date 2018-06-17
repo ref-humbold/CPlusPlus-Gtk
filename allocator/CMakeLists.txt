@@ -13,6 +13,8 @@ find_package(Threads REQUIRED)
 
 # SOURCES
 include_directories("${PROJECT_SOURCE_DIR}/include")
+set(MEMALC_SOURCES "src/memalc.c")
+set(PTHREADSEM_SOURCES "src/pthreadsem.c")
 
 # COMPILER
 set(CMAKE_C_STANDARD 99)
@@ -20,7 +22,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 set(CMAKE_POSITION_INDEPENDENT_CODE true)
 
 # OUTPUT
-add_library(memalc SHARED "src/memalc.c")
-add_library(pthreadsem STATIC "src/pthreadsem.c")
+add_library(memalc SHARED ${MEMALC_SOURCES})
+add_library(pthreadsem STATIC ${PTHREADSEM_SOURCES})
 target_link_libraries(memalc Threads::Threads)
 target_link_libraries(pthreadsem Threads::Threads)

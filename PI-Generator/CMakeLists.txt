@@ -10,10 +10,13 @@ pkg_check_modules(GTKMM gtkmm-3.0)
 include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
+# SOURCES
+set(SOURCES "generator.cpp")
+
 # COMPILER
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
 # OUTPUT
-add_executable(generator generator.cpp)
+add_executable(generator ${SOURCES})
 target_link_libraries(generator ${GTKMM_LIBRARIES})
