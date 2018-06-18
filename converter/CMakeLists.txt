@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # PROJECT
-project(converter VERSION 1.0)
+project(converter VERSION 1.1)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
 # SOURCES

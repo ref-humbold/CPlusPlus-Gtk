@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # PROJECT
-project(generator VERSION 1.0)
+project(generator VERSION 2.1)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
 # PACKAGES
