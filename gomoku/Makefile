@@ -1,5 +1,5 @@
 OCB = ocamlbuild
-OCBFLAGS = -use-ocamlfind -I src
+OCBFLAGS = -use-ocamlfind
 BUILD = $(OCB) $(OCBFLAGS)
 
 .PHONY: all clean refresh

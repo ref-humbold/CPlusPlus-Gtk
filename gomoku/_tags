@@ -1,1 +1,2 @@
 true: package(graphics), warn(A)
+"src": include
