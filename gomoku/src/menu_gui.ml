@@ -5,7 +5,7 @@ let display () =
     Gui.draw_button (Gui.ratio 1 2, Gui.ratio 3 4) (400, 100) "NOWA GRA" Graphics.magenta;
     Gui.draw_button (Gui.ratio 1 2, Gui.ratio 1 2) (400, 100) "STATYSTYKI" Graphics.magenta;
     Gui.draw_button (Gui.ratio 1 2, Gui.ratio 1 4) (400, 100) "WYJSCIE" Graphics.magenta;
-    Gui.draw_text (Gui.ratio 1 2, Gui.ratio 1 8) "(C) RAFAL KALETA, WROCLAW 2017" Graphics.black
+    Gui.draw_text (Gui.ratio 1 2, Gui.ratio 1 8) "(C) RAFAL KALETA, MIT LICENSE" Graphics.black
   end;;
 
 let rec click_button () =

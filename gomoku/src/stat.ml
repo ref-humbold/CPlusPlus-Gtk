@@ -1,6 +1,6 @@
 exception Stat_format_error of string;;
 
-let filename = "statistics";;
+let filename = ".gomoku.stat";;
 
 let encnum num =
   let enc num_ res =
