@@ -1,8 +1,8 @@
 OCB = ocamlbuild
-OCBFLAGS = -use-ocamlfind
+OCBFLAGS = -use-ocamlfind -classic-display
 BUILD = $(OCB) $(OCBFLAGS)
 
-.PHONY: all clean refresh
+.PHONY : all clean refresh
 
 all : gomoku.byte gomoku.native
 
