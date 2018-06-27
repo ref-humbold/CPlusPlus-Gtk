@@ -1,5 +1,5 @@
-#ifndef ICMP_CONTROLLER_HPP
-#define ICMP_CONTROLLER_HPP
+#ifndef _ICMP_CONTROLLER_HPP_
+#define _ICMP_CONTROLLER_HPP_
 
 #include <cstdlib>
 #include <cerrno>
