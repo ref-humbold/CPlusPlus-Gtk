@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="interpreter-APO" basedir="." default="all">
+  <property name="vendor" value="Rafał Kaleta" />
+  <property name="version" value="1.1" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="test" />
   <property name="build.dir" value="bin" />
@@ -27,25 +29,11 @@
     <mkdir dir="${build.dir}" />
     <copy includeemptydirs="false" todir="${build.dir}">
       <fileset dir="${src.dir}" excludes="**/*.java" />
-    </copy>
-  </target>
-
-  <target name="init-test" depends="init">
-    <copy includeemptydirs="false" todir="${build.dir}">
       <fileset dir="${test.dir}" excludes="**/*.java" />
     </copy>
   </target>
 
   <target name="build" depends="init">
-    <javac source="${source}" target="${target}" debug="true" debuglevel="${debuglevel}"
-           destdir="${build.dir}" includeantruntime="false">
-      <src path="${src.dir}" />
-      <compilerarg line="-Xlint" />
-      <classpath refid="interpreter-APO.classpath" />
-    </javac>
-  </target>
-
-  <target name="build-test" depends="init-test">
     <javac source="${source}" target="${target}" debug="true" debuglevel="${debuglevel}"
            destdir="${build.dir}" includeantruntime="false">
       <src path="${src.dir}" />
@@ -83,9 +71,7 @@
     </javadoc>
   </target>
 
-  <target name="make" depends="clean, build" />
+  <target name="release" depends="clean, build" />
 
-  <target name="make-test" depends="clean, build-test" />
-
-  <target name="all" depends="make-test, test, javadocs" />
+  <target name="all" depends="clean, build, test, javadocs" />
 </project>
