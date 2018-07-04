@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project name="interpreter-APO" basedir="." default="all">
   <property name="vendor" value="Rafał Kaleta" />
-  <property name="version" value="1.1" />
+  <property name="version" value="1.2" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="test" />
   <property name="build.dir" value="bin" />
@@ -43,6 +43,22 @@
     </javac>
   </target>
 
+  <target name="jar" depends="build">
+    <buildnumber />
+    <jar destfile="fita_view.jar" basedir="${build.dir}" excludes="**/*Test.class">
+      <manifest>
+        <attribute name="Built-By" value="${vendor}" />
+        <attribute name="Main-Class" value="ref_humbold.apolanguage.Interpreter" />
+        <attribute name="Specification-Title" value="APO Language Interpreter" />
+        <attribute name="Specification-Version" value="${version}" />
+        <attribute name="Specification-Vendor" value="${vendor}" />
+        <attribute name="Implementation-Title" value="ref_humbold.apolanguage" />
+        <attribute name="Implementation-Verion" value="${version}.${build.number}" />
+        <attribute name="Implementation-Vendor" value="${vendor}" />
+      </manifest>
+    </jar>
+  </target>
+
   <target name="test">
     <delete dir="${junit.output.dir}" />
     <mkdir dir="${junit.output.dir}" />
@@ -66,12 +82,10 @@
     <mkdir dir="${javadoc.output.dir}" />
     <javadoc sourcepath="${src.dir}" destdir="${javadoc.output.dir}" access="public">
       <package name="ref_humbold.apolanguage.*" />
-      <package name="ref_humbold.apolanguage.interpret.*" />
-      <package name="ref_humbold.apolanguage.errors.*" />
     </javadoc>
   </target>
 
-  <target name="release" depends="clean, build" />
+  <target name="release" depends="clean, build, jar" />
 
-  <target name="all" depends="clean, build, test, javadocs" />
+  <target name="all" depends="clean, build, test, jar, javadocs" />
 </project>
