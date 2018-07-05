@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project name="interpreter-APO" basedir="." default="all">
+<project name="Interpreter-APO" basedir="." default="all">
   <property name="vendor" value="Rafał Kaleta" />
   <property name="major.version" value="1" />
   <property name="minor.version" value="2" />
@@ -46,7 +46,7 @@
 
   <target name="jar" depends="build">
     <buildnumber />
-    <jar destfile="fita_view.jar" basedir="${build.dir}" excludes="**/*Test.class">
+    <jar destfile="apo.jar" basedir="${build.dir}" excludes="**/*Test.class">
       <manifest>
         <attribute name="Built-By" value="${vendor}" />
         <attribute name="Main-Class" value="ref_humbold.apolanguage.Interpreter" />
