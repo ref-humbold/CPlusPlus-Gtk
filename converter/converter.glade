@@ -2,6 +2,20 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAdjustment" id="adjustment2b">
+    <property name="lower">2</property>
+    <property name="upper">16</property>
+    <property name="value">2</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment3b">
+    <property name="lower">2</property>
+    <property name="upper">16</property>
+    <property name="value">2</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">1</property>
+  </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <child>
@@ -9,14 +23,13 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">5</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkLabel" id="title_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">GENERATOR LICZBY PI</property>
-            <property name="justify">center</property>
+            <property name="label" translatable="yes">CONVERTER</property>
+            <property name="justify">fill</property>
             <property name="ellipsize">middle</property>
           </object>
           <packing>
@@ -26,16 +39,16 @@
           </packing>
         </child>
         <child>
-          <object class="GtkGrid" id="result_grid">
+          <object class="GtkGrid" id="data_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkLabel" id="label_1a">
+              <object class="GtkLabel" id="label1a">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">PI</property>
+                <property name="label" translatable="yes">WARTOŚĆ</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -43,20 +56,10 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_1b">
+              <object class="GtkLabel" id="label2a">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label_2a">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">błąd wyniku</property>
+                <property name="label" translatable="yes">PODSTAWA WARTOŚCI</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -64,13 +67,58 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_2b">
+              <object class="GtkLabel" id="label3a">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="label" translatable="yes">PODSTAWA WYNIKU</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry1b">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="caps_lock_warning">False</property>
+                <property name="input_purpose">alpha</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="spinbutton2b">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="caps_lock_warning">False</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">adjustment2b</property>
+                <property name="climb_rate">1</property>
+                <property name="numeric">True</property>
+                <property name="value">2</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
                 <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="spinbutton3b">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="caps_lock_warning">False</property>
+                <property name="input_purpose">number</property>
+                <property name="adjustment">adjustment3b</property>
+                <property name="climb_rate">1</property>
+                <property name="numeric">True</property>
+                <property name="value">2</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">2</property>
               </packing>
             </child>
           </object>
@@ -81,12 +129,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkProgressBar" id="progress_bar">
+          <object class="GtkLabel" id="result_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_top">10</property>
-            <property name="margin_bottom">10</property>
-            <property name="show_text">True</property>
+            <property name="justify">center</property>
+            <property name="ellipsize">middle</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -100,8 +147,8 @@
             <property name="can_focus">False</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="continue_button">
-                <property name="label" translatable="yes">GENERUJ!</property>
+              <object class="GtkButton" id="convert_button">
+                <property name="label" translatable="yes">CONVERT!</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
