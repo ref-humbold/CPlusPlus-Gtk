@@ -17,7 +17,7 @@ private:
     Gtk::Label * label_2b;
 
 public:
-    gtk_app() : builder{Gtk::Builder::create_from_file("generator.glade")}
+    gtk_app() : builder{Gtk::Builder::create_from_file("../generator.glade")}
     {
         srand(time(nullptr));
         this->get_components();

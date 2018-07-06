@@ -16,6 +16,8 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">GENERATOR LICZBY PI</property>
+            <property name="justify">fill</property>
+            <property name="ellipsize">middle</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -98,8 +100,8 @@
             <property name="can_focus">False</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="exit_button">
-                <property name="label" translatable="yes">ZAKOŃCZ</property>
+              <object class="GtkButton" id="continue_button">
+                <property name="label" translatable="yes">GENERUJ!</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -111,8 +113,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="continue_button">
-                <property name="label" translatable="yes">GENERUJ</property>
+              <object class="GtkButton" id="exit_button">
+                <property name="label" translatable="yes">ZAKOŃCZ</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
