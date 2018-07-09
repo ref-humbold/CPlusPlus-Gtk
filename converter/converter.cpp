@@ -8,8 +8,6 @@
 #include <vector>
 #include <gtkmm.h>
 
-#pragma region converter
-
 class converter_exception : public std::logic_error
 {
 public:
@@ -21,6 +19,8 @@ public:
     {
     }
 };
+
+#pragma region converter
 
 class converter
 {
@@ -143,7 +143,6 @@ std::string converter::build_number(const std::vector<int> & number)
 }
 
 #pragma endregion
-
 #pragma region gtk_app
 
 class gtk_app

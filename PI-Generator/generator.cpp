@@ -4,6 +4,8 @@
 #include <ctime>
 #include <gtkmm.h>
 
+#pragma region gtk_app
+
 class gtk_app
 {
 private:
@@ -101,6 +103,8 @@ double gtk_app::count_pi()
 
     return (4.0 * shot) / NUMBER;
 }
+
+#pragma endregion
 
 int main()
 {
