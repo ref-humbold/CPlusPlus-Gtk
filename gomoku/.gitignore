@@ -1,4 +1,4 @@
-# OCaml and OCamlbuild output
+# OCaml, OCamlbuild
 _build
 *.native
 *.byte
