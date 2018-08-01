@@ -25,7 +25,7 @@
     <mkdir dir="${ivy.lib.dir}" />
     <get
       src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar"
-      dest="${ivy.lib.dir}/ivy.jar" usetimestamp="true" />
+      dest="${ivy.lib.dir}/ivy-${ivy.install.version}.jar" usetimestamp="true" />
   </target>
 
   <target name="init-ivy" depends="download-ivy">
