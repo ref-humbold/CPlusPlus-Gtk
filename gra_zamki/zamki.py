@@ -51,10 +51,10 @@ class Game:
 
             y = intervalize(54, y + 16 * d, 586)
 
-        castle_imgs = [pygame.image.load("castles/images/zamek_bronze.jpg").convert(),
-                       pygame.image.load("castles/images/zamek_green.jpg").convert(),
-                       pygame.image.load("castles/images/zamek_red.jpg").convert(),
-                       pygame.image.load("castles/images/zamek_violet.jpg").convert()]
+        castle_imgs = [pygame.image.load("images/zamek_bronze.jpg").convert(),
+                       pygame.image.load("images/zamek_green.jpg").convert(),
+                       pygame.image.load("images/zamek_red.jpg").convert(),
+                       pygame.image.load("images/zamek_violet.jpg").convert()]
 
         for i, ply in enumerate(self.list_players):
             for j in range(3):
