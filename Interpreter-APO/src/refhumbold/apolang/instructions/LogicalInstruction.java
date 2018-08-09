@@ -229,6 +229,9 @@ public class LogicalInstruction
                 }
 
                 break;
+
+            default:
+                break;
         }
     }
 }

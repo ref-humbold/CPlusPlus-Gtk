@@ -88,7 +88,7 @@ public class Parser
             String label = extractLabel(line);
             int index = 2;
 
-            if(!label.equals(""))
+            if(!"".equals(label))
             {
                 index = 3;
                 labels.add(label + "@" + Integer.toString(getLineNumber(line)));
@@ -126,7 +126,7 @@ public class Parser
     private void readLines(BufferedReader reader)
         throws IOException
     {
-        Integer lineNumber = 0;
+        int lineNumber = 0;
         String line = reader.readLine();
 
         while(line != null)
@@ -134,9 +134,9 @@ public class Parser
             ++lineNumber;
             line = line.trim().split(COMMENT_SIGN, 2)[0];
 
-            if(!line.equals(""))
+            if(!"".equals(line))
             {
-                String[] splitLine = (lineNumber.toString() + " " + line).split("\\s+");
+                String[] splitLine = (Integer.toString(lineNumber) + " " + line).split("\\s+");
 
                 numberedLines.add(Arrays.asList(splitLine));
             }
@@ -152,7 +152,7 @@ public class Parser
         Instruction instruction = new NOPInstruction(getLineNumber(line));
         String label = extractLabel(line);
 
-        if(!label.equals(""))
+        if(!"".equals(label))
         {
             if(labelSet.contains(label))
                 throw new LabelException(LabelException.DUPLICATED, getLineNumber(line));

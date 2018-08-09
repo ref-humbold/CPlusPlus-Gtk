@@ -89,6 +89,9 @@ public class MemoryInstruction
                 }
 
                 break;
+
+            default:
+                break;
         }
     }
 }

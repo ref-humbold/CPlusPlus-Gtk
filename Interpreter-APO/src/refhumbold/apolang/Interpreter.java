@@ -9,7 +9,7 @@ import refhumbold.apolang.interpret.Controller;
  * Glowna klasa, ktora pozwala na uruchomienie interpretera przez uzytkownika. Odpowiada ona za
  * pobranie programu do wykonania oraz rozpoczecie dzialania interpretera.
  * @author Rafal Kaleta
- * @version 1.1
+ * @version 1.2
  */
 public class Interpreter
 {
@@ -18,7 +18,7 @@ public class Interpreter
      * @param args pobiera parametry wejsciowe interpretera: nazwe programu z rozszerzeniem .apo
      * oraz (opcjonalnie) rozmiar pamieci do alokacji
      */
-    public static void main(String args[])
+    public static void main(String[] args)
     {
         int memorySize = 1;
         String address = args[0];

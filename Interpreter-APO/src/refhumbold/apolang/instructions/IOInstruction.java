@@ -89,6 +89,9 @@ public class IOInstruction
                 }
 
                 break;
+
+            default:
+                break;
         }
     }
 }

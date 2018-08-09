@@ -37,6 +37,7 @@ public class InstructionFactory
 
             case JUMP:
             case JPEQ:
+            case JPNE:
             case JPLT:
             case JPGT:
                 return new JumpInstruction(lineNumber, name, args);

@@ -9,7 +9,7 @@ import refhumbold.apolang.errors.LanguageException;
  * Klasa odpowiadajaca za interakcje programu z uzytkownikiem. Wykonuje operacje wejscia / wyjscia
  * zadane w programie asemblerowym.
  */
-public class IOConnector
+public final class IOConnector
 {
     private static BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in), 1);
     private static IOConnector instance = null;

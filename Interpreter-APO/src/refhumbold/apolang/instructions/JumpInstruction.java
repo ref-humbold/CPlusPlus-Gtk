@@ -28,6 +28,15 @@ public class JumpInstruction
         return this.isJump ? this.link : super.next;
     }
 
+    /**
+     * Ustawia wskaznik do instrukcji, do ktorej moze zostac wykonany skok.
+     * @param link referencja do instrukcji
+     */
+    public void setLink(Instruction link)
+    {
+        this.link = link;
+    }
+
     @Override
     public boolean equals(Object obj)
     {
@@ -51,15 +60,6 @@ public class JumpInstruction
         int prime = 37;
 
         return prime * super.hashCode() + (link == null ? 0 : link.hashCode());
-    }
-
-    /**
-     * Ustawia wskaznik do instrukcji, do ktorej moze zostac wykonany skok.
-     * @param link referencja do instrukcji
-     */
-    public void setLink(Instruction link)
-    {
-        this.link = link;
     }
 
     @Override
@@ -137,6 +137,9 @@ public class JumpInstruction
                 }
 
                 isJump = argValue0 > argValue1;
+                break;
+
+            default:
                 break;
         }
     }

@@ -49,7 +49,7 @@ public class InstructionList
         end = instruction;
     }
 
-    private class InstructionIterator
+    private final class InstructionIterator
         implements Iterator<Instruction>
     {
         private Instruction previous = null;
