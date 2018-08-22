@@ -88,7 +88,7 @@
 
   <target name="execfile" depends="jar">
     <delete file="${exec.file}" />
-    <echo message="Building file: ${basedir}/${exec.file}" />
+    <echo level="info" message="Building file: ${basedir}/${exec.file}" />
     <echo file="${exec.file}"
           message="#! /bin/sh${line.separator}${line.separator}java -jar $(dirname $0)/apolang-${jar.version}.jar $@" />
     <chmod file="${exec.file}" perm="+x" />
