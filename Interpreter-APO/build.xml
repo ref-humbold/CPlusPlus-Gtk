@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="Interpreter-APO" basedir="." default="all">
   <property name="vendor" value="Rafał Kaleta" />
+  <property name="spec.version" value="1" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="test" />
   <property name="build.dir" value="bin" />
@@ -13,9 +14,10 @@
   <property name="debuglevel" value="source,lines,vars" />
   <property name="target" value="1.8" />
   <property name="source" value="1.8" />
+  <property name="exec.file" value="APO" />
 
   <tstamp>
-    <format property="version" pattern="yyyy.M.d" locale="en,GB" />
+    <format property="jar.version" pattern="yyyy.M.d" locale="en,GB" />
   </tstamp>
 
   <path id="Interpreter-APO.classpath">
@@ -69,19 +71,26 @@
     <delete>
       <fileset dir="." includes="apolang-*.jar" />
     </delete>
-    <jar destfile="apolang-${version}.jar" basedir="${build.dir}"
+    <jar destfile="apolang-${jar.version}.jar" basedir="${build.dir}"
          excludes="**/*Test.class">
       <manifest>
         <attribute name="Built-By" value="${vendor}" />
         <attribute name="Main-Class" value="${main.package}.Interpreter" />
         <attribute name="Specification-Title" value="APO Language Interpreter" />
-        <attribute name="Specification-Version" value="1" />
+        <attribute name="Specification-Version" value="${spec.version}" />
         <attribute name="Specification-Vendor" value="${vendor}" />
         <attribute name="Implementation-Title" value="${main.package}" />
-        <attribute name="Implementation-Verion" value="${version}" />
+        <attribute name="Implementation-Version" value="${jar.version}" />
         <attribute name="Implementation-Vendor" value="${vendor}" />
       </manifest>
     </jar>
+  </target>
+
+  <target name="execfile" depends="jar">
+    <delete file="${exec.file}" />
+    <echo file="${exec.file}"
+          message="#! /bin/sh${line.separator}${line.separator}java -jar $(dirname $0)/apolang-${jar.version}.jar $@" />
+    <chmod file="${exec.file}" perm="+x" />
   </target>
 
   <target name="test">
@@ -110,7 +119,7 @@
     </javadoc>
   </target>
 
-  <target name="release" depends="clean, build, jar" />
+  <target name="release" depends="clean, build, jar, execfile" />
 
-  <target name="all" depends="clean, build, test, jar, javadocs" />
+  <target name="all" depends="clean, build, test, jar, execfile, javadocs" />
 </project>
