@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="Interpreter-APO" basedir="." default="all">
   <property name="vendor" value="Rafał Kaleta" />
-  <property name="major.version" value="1" />
-  <property name="minor.version" value="2" />
   <property name="src.dir" value="src" />
   <property name="test.dir" value="test" />
   <property name="build.dir" value="bin" />
@@ -15,6 +13,10 @@
   <property name="debuglevel" value="source,lines,vars" />
   <property name="target" value="1.8" />
   <property name="source" value="1.8" />
+
+  <tstamp>
+    <format property="version" pattern="yyyy.M.d" locale="en,GB" />
+  </tstamp>
 
   <path id="Interpreter-APO.classpath">
     <fileset dir="${ivy.lib.dir}" includes="*.jar" />
@@ -64,17 +66,19 @@
   </target>
 
   <target name="jar" depends="build">
-    <delete file="apolang-*.jar" />
-    <jar destfile="apolang-${major.version}.${minor.version}.jar" basedir="${build.dir}"
+    <delete>
+      <fileset dir="." includes="apolang-*.jar" />
+    </delete>
+    <jar destfile="apolang-${version}.jar" basedir="${build.dir}"
          excludes="**/*Test.class">
       <manifest>
         <attribute name="Built-By" value="${vendor}" />
         <attribute name="Main-Class" value="${main.package}.Interpreter" />
         <attribute name="Specification-Title" value="APO Language Interpreter" />
-        <attribute name="Specification-Version" value="${major.version}" />
+        <attribute name="Specification-Version" value="1" />
         <attribute name="Specification-Vendor" value="${vendor}" />
         <attribute name="Implementation-Title" value="${main.package}" />
-        <attribute name="Implementation-Verion" value="${major.version}.${minor.version}" />
+        <attribute name="Implementation-Verion" value="${version}" />
         <attribute name="Implementation-Vendor" value="${vendor}" />
       </manifest>
     </jar>
