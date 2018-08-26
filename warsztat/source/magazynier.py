@@ -35,7 +35,7 @@ class Magazynier:
         self.magazynier_comboboxtext3_1b = magazynier_builder.get_object("magazynier_comboboxtext3_1b")
         self.magazynier_button3_1c = magazynier_builder.get_object("magazynier_button3_1c")
 
-        self.__load_ids(self.magazynier_comboboxtext1_4b, "czesci")
+        self.__load_ids(self.magazynier_comboboxtext1_4b, "carparts")
         self.__load_ids(self.magazynier_comboboxtext2_1b, "zamowienia")
         self.__load_ids(self.magazynier_comboboxtext3_1b, "zamowienia_unreal")
 
@@ -47,8 +47,8 @@ class Magazynier:
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
         cur = self.conn.cursor()
 
-        if tablename == "czesci":
-            cur.execute("SELECT id FROM czesci;")
+        if tablename == "carparts":
+            cur.execute("SELECT id FROM carparts;")
         elif tablename == "zamowienia":
             cur.execute("SELECT id FROM zamowienia;")
         elif tablename == "zamowienia_unreal":

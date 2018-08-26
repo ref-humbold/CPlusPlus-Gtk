@@ -35,7 +35,7 @@ class Zlecenia:
         self.zlecenia_button3_1c = zlecenia_builder.get_object("zlecenia_button3_1c")
 
         self.__load_ids(self.zlecenia_comboboxtext1_3b, "clients")
-        self.__load_ids(self.zlecenia_comboboxtext1_4b, "samochody")
+        self.__load_ids(self.zlecenia_comboboxtext1_4b, "cars")
         self.__load_ids(self.zlecenia_comboboxtext2_1b, "zlecenia")
         self.__load_ids(self.zlecenia_comboboxtext2_2b, "uslugi")
         self.__load_ids(self.zlecenia_comboboxtext3_1b, "zlecenia")
@@ -52,8 +52,8 @@ class Zlecenia:
             cur.execute("SELECT id FROM zlecenia;")
         elif tablename == "clients":
             cur.execute("SELECT id FROM clients;")
-        elif tablename == "samochody":
-            cur.execute("SELECT model FROM samochody;")
+        elif tablename == "cars":
+            cur.execute("SELECT model FROM cars;")
         elif tablename == "uslugi":
             cur.execute("SELECT nazwa FROM uslugi;")
 

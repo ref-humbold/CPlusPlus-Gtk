@@ -34,10 +34,10 @@ class Mechanik:
         self.mechanik_button3_3b = mechanik_builder.get_object("mechanik_button3_3b")
 
         self.__load_ids(self.mechanik_comboboxtext1_1b, "zlecenia")
-        self.__load_ids(self.mechanik_comboboxtext2_1b, "czesci")
+        self.__load_ids(self.mechanik_comboboxtext2_1b, "carparts")
         self.__load_ids(self.mechanik_comboboxtext2_2b, "uslugi")
-        self.__load_ids(self.mechanik_comboboxtext2_3b, "samochody")
-        self.__load_ids(self.mechanik_comboboxtext3_1b, "czesci")
+        self.__load_ids(self.mechanik_comboboxtext2_3b, "cars")
+        self.__load_ids(self.mechanik_comboboxtext3_1b, "carparts")
 
         mechanik_builder.connect_signals(self)
 
@@ -47,12 +47,12 @@ class Mechanik:
         """Ładuje identyfikatory (klucze główne) z określonej tabeli do zadanego pola wyboru."""
         cur = self.conn.cursor()
 
-        if tablename == "czesci":
-            cur.execute("SELECT id FROM czesci;")
+        if tablename == "carparts":
+            cur.execute("SELECT id FROM carparts;")
         elif tablename == "uslugi":
             cur.execute("SELECT nazwa FROM uslugi;")
-        elif tablename == "samochody":
-            cur.execute("SELECT model FROM samochody;")
+        elif tablename == "cars":
+            cur.execute("SELECT model FROM cars;")
         elif tablename == "zlecenia":
             cur.execute("SELECT id FROM zlecenia WHERE data_real IS NULL;")
 
@@ -142,7 +142,7 @@ class Mechanik:
 
         try:
             cur = self.conn.cursor()
-            cur.execute("SELECT ilosc FROM czesci WHERE id = %s", args)
+            cur.execute("SELECT ilosc FROM carparts WHERE id = %s", args)
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
@@ -166,7 +166,7 @@ class Mechanik:
 
         try:
             cur = self.conn.cursor()
-            cur.execute("UPDATE TABLE czesci SET ilosc = ilosc-%s WHERE id = %s", args)
+            cur.execute("UPDATE TABLE carparts SET ilosc = ilosc-%s WHERE id = %s", args)
         except:
             self.conn.rollback()
             popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
