@@ -4,7 +4,7 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from .extra import Extra
+from .popup import PopUp
 
 class Mechanik:
     """Klasa odpowiadająca za działanie okna interakcji mechanika z bazą danych."""
@@ -79,12 +79,12 @@ class Mechanik:
             cur.execute("UPDATE TABLE zlecenia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -101,12 +101,12 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -123,12 +123,12 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -145,12 +145,12 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("W MAGAZYNIE ZNAJDUJE SIĘ "+str(wyn)+" CZĘŚCI NUMER "+str(ident)+".")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("W MAGAZYNIE ZNAJDUJE SIĘ "+str(wyn)+" CZĘŚCI NUMER "+str(ident)+".")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -166,12 +166,12 @@ class Mechanik:
             cur.execute("UPDATE TABLE czesci SET ilosc = ilosc-%s WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("POBRANO "+str(ilosc)+" JEDNOSTEK CZĘŚCI NUMER "+str(ident)+".")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("POBRANO "+str(ilosc)+" JEDNOSTEK CZĘŚCI NUMER "+str(ident)+".")
+            PopUpWindow.show()
         finally:
             cur.close()
 

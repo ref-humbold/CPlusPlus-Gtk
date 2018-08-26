@@ -9,7 +9,7 @@ from re import match
 from .sprzedawca import Sprzedawca
 from .mechanik import Mechanik
 from .magazynier import Magazynier
-from .extra import Extra
+from .popup import PopUp
 
 
 class Login:
@@ -39,7 +39,7 @@ class Login:
         """Tworzy nowe okno wyświetlające komunikat o błędzie."""
         self.__login_entry_1b.set_text("")
         self.__login_entry_2b.set_text("")
-        Extra(msg).show()
+        PopUp(msg).show()
 
     def login_window_destroy_cb(self, window):
         """Zamyka okno logowania."""

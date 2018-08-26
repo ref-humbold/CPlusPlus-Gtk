@@ -4,7 +4,7 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from .extra import Extra
+from .popup import PopUp
 
 
 class Uslugi:
@@ -62,12 +62,12 @@ class Uslugi:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("CENA USLUGI " + nazwa + " WYNOSI " + str(wyn) + " zł.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("CENA USLUGI " + nazwa + " WYNOSI " + str(wyn) + " zł.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -83,14 +83,14 @@ class Uslugi:
             cur.execute("INSERT INTO uslugi(nazwa, cena) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
             self.uslugi_comboboxtext1_1b.append_text(nazwa)
             self.uslugi_comboboxtext3_1b.append_text(nazwa)
-            ExtraWindow = Extra("USŁUGA " + nazwa + " ZOSTAŁA POMYŚLNIE DODANA.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("USŁUGA " + nazwa + " ZOSTAŁA POMYŚLNIE DODANA.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -106,11 +106,11 @@ class Uslugi:
             cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s;", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("CENA USŁUGI " + nazwa + " ZOSTAŁA POMYŚNIE ZMIENIONA.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("CENA USŁUGI " + nazwa + " ZOSTAŁA POMYŚNIE ZMIENIONA.")
+            PopUpWindow.show()
         finally:
             cur.close()

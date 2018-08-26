@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from psycopg2.extensions import AsIs
-from .extra import Extra
+from .popup import PopUp
 
 
 class Klienci:
@@ -81,8 +81,8 @@ class Klienci:
             except:
                 self.conn.rollback()
                 cur.close()
-                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-                ExtraWindow.show()
+                PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                PopUpWindow.show()
                 return False
 
         return True
@@ -107,14 +107,14 @@ class Klienci:
         except:
             self.conn.rollback()
             cur.close()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
             self.klienci_comboboxtext2_1b.append_text(str(wynid))
             self.klienci_comboboxtext3_1b.append_text(str(wynid))
-            ExtraWindow = Extra("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = " + str(wynid))
-            ExtraWindow.show()
+            PopUpWindow = PopUp("NOWY KLIENT ZOSTAŁ POMYŚLNIE DODANY.\nID = " + str(wynid))
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -146,8 +146,8 @@ class Klienci:
 
         self.conn.commit()
         cur.close()
-        ExtraWindow = Extra("DANE KLIENTA NUMER " + str(ident) + " ZOSTAŁY POMYŚLNIE ZMIENIONE.")
-        ExtraWindow.show()
+        PopUpWindow = PopUp("DANE KLIENTA NUMER " + str(ident) + " ZOSTAŁY POMYŚLNIE ZMIENIONE.")
+        PopUpWindow.show()
 
     def klienci_button3_5b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania klienta."""
@@ -167,13 +167,13 @@ class Klienci:
                 wyn = cur.fetchone()[:]
             except:
                 self.conn.rollback()
-                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-                ExtraWindow.show()
+                PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                PopUpWindow.show()
                 return
             else:
                 self.conn.commit()
-                ExtraWindow = Extra(", ".join(map(str, wyn)))
-                ExtraWindow.show()
+                PopUpWindow = PopUp(", ".join(map(str, wyn)))
+                PopUpWindow.show()
             finally:
                 cur.close()
         else:
@@ -185,14 +185,14 @@ class Klienci:
                 wyn = cur.fetchall()[:]
             except:
                 self.conn.rollback()
-                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-                ExtraWindow.show()
+                PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                PopUpWindow.show()
                 return
             else:
                 self.conn.commit()
                 res = map(lambda x: ", ".join(map(str, x)), wyn)
                 out_str = "BRAK WYNIKÓW!" if wyn == [] else "\n".join(res)
-                ExtraWindow = Extra(out_str)
-                ExtraWindow.show()
+                PopUpWindow = PopUp(out_str)
+                PopUpWindow.show()
             finally:
                 cur.close()

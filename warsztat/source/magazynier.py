@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from decimal import Decimal
-from .extra import Extra
+from .popup import PopUp
 
 
 class Magazynier:
@@ -79,8 +79,8 @@ class Magazynier:
             except:
                 self.conn.rollback()
                 cur.close()
-                ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-                ExtraWindow.show()
+                PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                PopUpWindow.show()
                 return False
 
         return True
@@ -108,14 +108,14 @@ class Magazynier:
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
             self.magazynier_comboboxtext2_1b.append_text(str(wyn))
             self.magazynier_comboboxtext3_1b.append_text(str(wyn))
-            ExtraWindow = Extra("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = " + str(wyn))
-            ExtraWindow.show()
+            PopUpWindow = PopUp("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = " + str(wyn))
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -139,8 +139,8 @@ class Magazynier:
 
         self.conn.commit()
         cur.close()
-        ExtraWindow = Extra("ZAMÓWIENIE NUMER " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
-        ExtraWindow.show()
+        PopUpWindow = PopUp("ZAMÓWIENIE NUMER " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        PopUpWindow.show()
 
     def magazynier_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku odbioru zamówienia."""
@@ -153,11 +153,11 @@ class Magazynier:
             cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
         else:
             self.conn.commit()
-            ExtraWindow = Extra("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER " + str(ident) + ".")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER " + str(ident) + ".")
+            PopUpWindow.show()
         finally:
             cur.close()

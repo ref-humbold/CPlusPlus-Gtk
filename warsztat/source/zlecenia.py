@@ -5,7 +5,7 @@ require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
 from decimal import Decimal
-from .extra import Extra
+from .popup import PopUp
 
 
 class Zlecenia:
@@ -84,15 +84,15 @@ class Zlecenia:
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
             return
         else:
             self.conn.commit()
             self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
             self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
-            ExtraWindow = Extra("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = " + str(wyn))
-            ExtraWindow.show()
+            PopUpWindow = PopUp("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = " + str(wyn))
+            PopUpWindow.show()
         finally:
             cur.close()
 
@@ -108,20 +108,20 @@ class Zlecenia:
             cur.execute("INSERT INTO zle_usl(zle_id, usl_nazwa) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
             return
         else:
             self.conn.commit()
             self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
             self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
-            ExtraWindow = Extra("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
+            PopUpWindow.show()
         finally:
             cur.close()
 
-        ExtraWindow = Extra("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
-        ExtraWindow.show()
+        PopUpWindow = PopUp("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        PopUpWindow.show()
 
     def zlecenia_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania zlecenia."""
@@ -136,12 +136,12 @@ class Zlecenia:
             wyn = cur.fetchone()[:]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            PopUpWindow.show()
             return
         else:
             self.conn.commit()
-            ExtraWindow = Extra(", ".join(map(str, wyn)))
-            ExtraWindow.show()
+            PopUpWindow = PopUp(", ".join(map(str, wyn)))
+            PopUpWindow.show()
         finally:
             cur.close()
