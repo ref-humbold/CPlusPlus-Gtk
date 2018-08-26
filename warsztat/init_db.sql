@@ -10,7 +10,7 @@ CREATE DOMAIN rejestr AS text NOT NULL CHECK(VALUE ~ '(^[A-Z][A-Z]:[A-Z0-9][A-Z0
 CREATE DOMAIN nrtel AS integer CHECK(100000000 <= VALUE AND VALUE <= 999999999);
 
 /* TWORZENE TABEL */
-CREATE TABLE klienci (id serial PRIMARY KEY, imie text, nazwisko text, telefon nrtel, firma text DEFAULT NULL, rabat procent);
+CREATE TABLE clients (id serial PRIMARY KEY, imie text, nazwisko text, telefon nrtel, firma text DEFAULT NULL, rabat procent);
 
 CREATE TABLE samochody (model text PRIMARY KEY, marka text NOT NULL, typ typauto, waga double precision CHECK(waga > 0));
 
@@ -29,7 +29,7 @@ CREATE TABLE czesam (cze_id integer, sam_model text);
 CREATE TABLE czeusl (cze_id integer, usl_nazwa text);
 
 /* DODANIE KLUCZY OBCYCH */
-ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_kli FOREIGN KEY (kli_id) REFERENCES klienci(id) ON DELETE SET NULL DEFERRABLE;
+ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_kli FOREIGN KEY (kli_id) REFERENCES clients(id) ON DELETE SET NULL DEFERRABLE;
 ALTER TABLE zlecenia ADD CONSTRAINT fk_zle_sam FOREIGN KEY (sam_model) REFERENCES samochody(model) ON DELETE SET NULL DEFERRABLE;
 
 ALTER TABLE zamowienia ADD CONSTRAINT fk_zam_cze FOREIGN KEY (cze_id) REFERENCES czesci(id) ON DELETE SET NULL DEFERRABLE;
@@ -49,7 +49,7 @@ CREATE ROLE mechanik;
 CREATE ROLE magazynier;
 
 GRANT SELECT ON uslugi, samochody TO sprzedawca;
-GRANT SELECT, INSERT, UPDATE ON klienci, zlecenia, zleusl TO sprzedawca;
+GRANT SELECT, INSERT, UPDATE ON clients, zlecenia, zleusl TO sprzedawca;
 
 GRANT SELECT ON zlecenia, samochody, uslugi TO mechanik;
 GRANT SELECT, INSERT, UPDATE ON czesci, czesam, czeusl TO mechanik;

@@ -79,8 +79,8 @@ class Magazynier:
             except:
                 self.conn.rollback()
                 cur.close()
-                PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-                PopUpWindow.show()
+                popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+                popup_window.show()
                 return False
 
         return True
@@ -108,14 +108,14 @@ class Magazynier:
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
             self.magazynier_comboboxtext2_1b.append_text(str(wyn))
             self.magazynier_comboboxtext3_1b.append_text(str(wyn))
-            PopUpWindow = PopUp("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = " + str(wyn))
-            PopUpWindow.show()
+            popup_window = PopUp("ZAMÓWIENIE ZOSTAŁO POMYŚLNIE WYSŁANE.\nID = " + str(wyn))
+            popup_window.show()
         finally:
             cur.close()
 
@@ -139,8 +139,8 @@ class Magazynier:
 
         self.conn.commit()
         cur.close()
-        PopUpWindow = PopUp("ZAMÓWIENIE NUMER " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
-        PopUpWindow.show()
+        popup_window = PopUp("ZAMÓWIENIE NUMER " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        popup_window.show()
 
     def magazynier_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku odbioru zamówienia."""
@@ -153,11 +153,11 @@ class Magazynier:
             cur.execute("UPDATE TABLE zamowienia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER " + str(ident) + ".")
-            PopUpWindow.show()
+            popup_window = PopUp("POMYŚLNIE ODEBRANO ZAMÓWIENIE NUMER " + str(ident) + ".")
+            popup_window.show()
         finally:
             cur.close()

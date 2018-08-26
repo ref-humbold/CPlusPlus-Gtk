@@ -6,8 +6,10 @@ require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from .popup import PopUp
 
+
 class Mechanik:
     """Klasa odpowiadająca za działanie okna interakcji mechanika z bazą danych."""
+
     def __init__(self, conndb):
         """Tworzy nowe okno z połączeniem z bazą danych."""
         self.conn = conndb
@@ -70,7 +72,7 @@ class Mechanik:
 
     def mechanik_button1_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zakończenia zlecenia."""
-        ident = self.mechanik_comboboxtext1_1b.get_active_text() # SQL integer
+        ident = self.mechanik_comboboxtext1_1b.get_active_text()  # SQL integer
 
         args = [int(ident)]
 
@@ -79,21 +81,21 @@ class Mechanik:
             cur.execute("UPDATE TABLE zlecenia SET data_real = now() WHERE id = %s", args)
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("ZLECENIE "+str(ident)+" ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
-            PopUpWindow.show()
+            popup_window = PopUp("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZAKOŃCZONE.")
+            popup_window.show()
         finally:
             cur.close()
 
     def mechanik_button2_4a_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku przypisania części samochodowej do usługi."""
-        ident = self.mechanik_comboboxtext2_1b.get_active_text() # SQL integer
-        nazwa = self.mechanik_comboboxtext2_2b.get_active_text() # SQL text
+        ident = self.mechanik_comboboxtext2_1b.get_active_text()  # SQL integer
+        nazwa = self.mechanik_comboboxtext2_2b.get_active_text()  # SQL text
 
-        args = [ int(ident), nazwa ]
+        args = [int(ident), nazwa]
 
         try:
             cur = self.conn.cursor()
@@ -101,21 +103,21 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
-            PopUpWindow.show()
+            popup_window = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO USŁUGI.")
+            popup_window.show()
         finally:
             cur.close()
 
     def mechanik_button2_4b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku przypisania części samochodowej do modelu samochodu."""
-        ident = self.mechanik_comboboxtext2_1b.get_active_text() # SQL integer
-        model = self.mechanik_comboboxtext2_3b.get_active_text() # SQL text
+        ident = self.mechanik_comboboxtext2_1b.get_active_text()  # SQL integer
+        model = self.mechanik_comboboxtext2_3b.get_active_text()  # SQL text
 
-        args = [ int(ident), model ]
+        args = [int(ident), model]
 
         try:
             cur = self.conn.cursor()
@@ -123,18 +125,18 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
-            PopUpWindow.show()
+            popup_window = PopUp("POMYŚLNIE PRZYPISANO CZĘŚĆ DO MODELU SAMOCHODU.")
+            popup_window.show()
         finally:
             cur.close()
 
     def mechanik_button3_3a_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyświetlenia ilości części."""
-        ident = self.mechanik_comboboxtext3_1b.get_active_text() # SQL integer
+        ident = self.mechanik_comboboxtext3_1b.get_active_text()  # SQL integer
 
         args = [int(ident)]
 
@@ -145,19 +147,20 @@ class Mechanik:
         except:
             self.conn.rollback()
             cur.close()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("W MAGAZYNIE ZNAJDUJE SIĘ "+str(wyn)+" CZĘŚCI NUMER "+str(ident)+".")
-            PopUpWindow.show()
+            popup_window = PopUp("W MAGAZYNIE ZNAJDUJE SIĘ " + str(wyn) +
+                                 " CZĘŚCI NUMER " + str(ident) + ".")
+            popup_window.show()
         finally:
             cur.close()
 
     def mechanik_button3_3b_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku pobrania określonej ilości części."""
-        ident = self.mechanik_comboboxtext3_1b.get_active_text() # SQL integer
-        ilosc = self.mechanik_entry3_2b.get_text() # SQL integer
+        ident = self.mechanik_comboboxtext3_1b.get_active_text()  # SQL integer
+        ilosc = self.mechanik_entry3_2b.get_text()  # SQL integer
 
         args = [int(ilosc), int(ident)]
 
@@ -166,12 +169,12 @@ class Mechanik:
             cur.execute("UPDATE TABLE czesci SET ilosc = ilosc-%s WHERE id = %s", args)
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("POBRANO "+str(ilosc)+" JEDNOSTEK CZĘŚCI NUMER "+str(ident)+".")
-            PopUpWindow.show()
+            popup_window = PopUp("POBRANO " + str(ilosc) +
+                                 " JEDNOSTEK CZĘŚCI NUMER " + str(ident) + ".")
+            popup_window.show()
         finally:
             cur.close()
-

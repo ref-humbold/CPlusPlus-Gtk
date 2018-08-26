@@ -4,7 +4,7 @@ from gi import require_version
 require_version('Gtk', '3.0')
 
 from gi.repository import Gtk
-from .klienci import Klienci
+from .clients import Clients
 from .uslugi import Uslugi
 from .zlecenia import Zlecenia
 
@@ -40,7 +40,7 @@ class Sprzedawca:
 
     def sprzedawca_button_2_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zarządania klientami."""
-        klienci_window = Klienci(self.conn)
+        clients_window = Clients(self.conn)
 
     def sprzedawca_button_3_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku zarządania usługami."""

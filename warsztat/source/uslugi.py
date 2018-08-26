@@ -62,12 +62,12 @@ class Uslugi:
         except:
             self.conn.rollback()
             cur.close()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("CENA USLUGI " + nazwa + " WYNOSI " + str(wyn) + " zł.")
-            PopUpWindow.show()
+            popup_window = PopUp("CENA USLUGI " + nazwa + " WYNOSI " + str(wyn) + " zł.")
+            popup_window.show()
         finally:
             cur.close()
 
@@ -83,14 +83,14 @@ class Uslugi:
             cur.execute("INSERT INTO uslugi(nazwa, cena) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
             self.uslugi_comboboxtext1_1b.append_text(nazwa)
             self.uslugi_comboboxtext3_1b.append_text(nazwa)
-            PopUpWindow = PopUp("USŁUGA " + nazwa + " ZOSTAŁA POMYŚLNIE DODANA.")
-            PopUpWindow.show()
+            popup_window = PopUp("USŁUGA " + nazwa + " ZOSTAŁA POMYŚLNIE DODANA.")
+            popup_window.show()
         finally:
             cur.close()
 
@@ -106,11 +106,11 @@ class Uslugi:
             cur.execute("UPDATE TABLE uslugi SET cena = %s WHERE nazwa = %s;", args)
         except:
             self.conn.rollback()
-            PopUpWindow = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            PopUpWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
         else:
             self.conn.commit()
-            PopUpWindow = PopUp("CENA USŁUGI " + nazwa + " ZOSTAŁA POMYŚNIE ZMIENIONA.")
-            PopUpWindow.show()
+            popup_window = PopUp("CENA USŁUGI " + nazwa + " ZOSTAŁA POMYŚNIE ZMIENIONA.")
+            popup_window.show()
         finally:
             cur.close()
