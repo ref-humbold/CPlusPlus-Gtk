@@ -32,7 +32,7 @@
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkLabel" id="label_1a">
+              <object class="GtkLabel" id="label_A1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">PI</property>
@@ -43,7 +43,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_1b">
+              <object class="GtkLabel" id="label_B1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -53,7 +53,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_2a">
+              <object class="GtkLabel" id="label_A2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">błąd wyniku</property>
@@ -64,7 +64,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_2b">
+              <object class="GtkLabel" id="label_B2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>

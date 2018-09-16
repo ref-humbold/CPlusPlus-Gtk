@@ -15,15 +15,25 @@ private:
     Gtk::Button * exit_button;
     Gtk::Button * continue_button;
     Gtk::ProgressBar * progress_bar;
-    Gtk::Label * label_1b;
-    Gtk::Label * label_2b;
+    Gtk::Label * label_B1;
+    Gtk::Label * label_B2;
 
 public:
-    gtk_app() : builder{Gtk::Builder::create_from_file("../generator.glade")}
+    explicit gtk_app(std::string path)
     {
+        try
+        {
+            this->builder = Gtk::Builder::create_from_file("../generator.glade");
+            this->get_components();
+            this->connect_signals();
+        }
+        catch(const Glib::Exception & e)
+        {
+            std::cerr << e.what() << '\n';
+            throw;
+        }
+
         srand(time(nullptr));
-        this->get_components();
-        this->connect_signals();
     }
 
     ~gtk_app()
@@ -32,8 +42,8 @@ public:
         delete this->exit_button;
         delete this->continue_button;
         delete this->progress_bar;
-        delete this->label_1b;
-        delete this->label_2b;
+        delete this->label_B1;
+        delete this->label_B2;
     }
 
     Gtk::Window & get_main_window()
@@ -55,8 +65,8 @@ void gtk_app::get_components()
     this->builder->get_widget("exit_button", this->exit_button);
     this->builder->get_widget("continue_button", this->continue_button);
     this->builder->get_widget("progress_bar", this->progress_bar);
-    this->builder->get_widget("label_1b", this->label_1b);
-    this->builder->get_widget("label_2b", this->label_2b);
+    this->builder->get_widget("label_B1", this->label_B1);
+    this->builder->get_widget("label_B2", this->label_B2);
 }
 
 void gtk_app::connect_signals()
@@ -75,8 +85,8 @@ void gtk_app::continue_button_clicked_cb()
 {
     progress_bar->set_fraction(0.0);
     pi_value = count_pi();
-    label_1b->set_text(std::to_string(pi_value));
-    label_2b->set_text(std::to_string(pi_value - M_PI));
+    label_B1->set_text(std::to_string(pi_value));
+    label_B2->set_text(std::to_string(pi_value - M_PI));
 }
 
 double gtk_app::count_pi()
@@ -106,10 +116,19 @@ double gtk_app::count_pi()
 
 #pragma endregion
 
-int main()
+std::string extract_directory(const char * full_path)
 {
-    Glib::RefPtr<Gtk::Application> application = Gtk::Application::create("generator.liczby.pi");
-    gtk_app app_window;
+    std::string exec_path = std::string(full_path);
+    size_t dirpos = exec_path.find_last_of("/\\");
+
+    return exec_path.substr(0, dirpos);
+}
+
+int main(int argc, char * argv[])
+{
+    Glib::RefPtr<Gtk::Application> application =
+        Gtk::Application::create(argc, argv, "generator.liczby.pi");
+    gtk_app app_window(extract_directory(argv[0]));
 
     application->run(app_window.get_main_window());
 
