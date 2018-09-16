@@ -45,7 +45,7 @@
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkLabel" id="label1a">
+              <object class="GtkLabel" id="label_A1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">WARTOŚĆ</property>
@@ -56,7 +56,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label2a">
+              <object class="GtkLabel" id="label_A2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">PODSTAWA WARTOŚCI</property>
@@ -67,7 +67,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label3a">
+              <object class="GtkLabel" id="label_A3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">PODSTAWA WYNIKU</property>
@@ -78,7 +78,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry1b">
+              <object class="GtkEntry" id="entry_B1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="caps_lock_warning">False</property>
@@ -90,7 +90,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="spinbutton2b">
+              <object class="GtkSpinButton" id="spinbutton_B2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="caps_lock_warning">False</property>
@@ -106,7 +106,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="spinbutton3b">
+              <object class="GtkSpinButton" id="spinbutton_B3">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="caps_lock_warning">False</property>

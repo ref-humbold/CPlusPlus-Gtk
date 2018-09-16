@@ -153,15 +153,24 @@ private:
     Gtk::Button * convert_button;
     Gtk::Button * exit_button;
     Gtk::Label * result_label;
-    Gtk::Entry * entry1b;
-    Gtk::SpinButton * spinbutton2b;
-    Gtk::SpinButton * spinbutton3b;
+    Gtk::Entry * entry_B1;
+    Gtk::SpinButton * spinbutton_B2;
+    Gtk::SpinButton * spinbutton_B3;
 
 public:
-    gtk_app() : builder{Gtk::Builder::create_from_file("../converter.glade")}
+    explicit gtk_app(std::string path)
     {
-        this->get_components();
-        this->connect_signals();
+        try
+        {
+            this->builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
+            this->get_components();
+            this->connect_signals();
+        }
+        catch(const Glib::Exception & e)
+        {
+            std::cerr << e.what() << '\n';
+            throw;
+        }
     }
 
     ~gtk_app()
@@ -170,9 +179,9 @@ public:
         delete this->exit_button;
         delete this->convert_button;
         delete this->result_label;
-        delete this->entry1b;
-        delete this->spinbutton2b;
-        delete this->spinbutton3b;
+        delete this->entry_B1;
+        delete this->spinbutton_B2;
+        delete this->spinbutton_B3;
     }
 
     gtk_app(const gtk_app &) = delete;
@@ -198,9 +207,9 @@ void gtk_app::get_components()
     this->builder->get_widget("exit_button", this->exit_button);
     this->builder->get_widget("convert_button", this->convert_button);
     this->builder->get_widget("result_label", this->result_label);
-    this->builder->get_widget("entry1b", this->entry1b);
-    this->builder->get_widget("spinbutton2b", this->spinbutton2b);
-    this->builder->get_widget("spinbutton3b", this->spinbutton3b);
+    this->builder->get_widget("entry_B1", this->entry_B1);
+    this->builder->get_widget("spinbutton_B2", this->spinbutton_B2);
+    this->builder->get_widget("spinbutton_B3", this->spinbutton_B3);
 }
 
 void gtk_app::connect_signals()
@@ -221,26 +230,31 @@ void gtk_app::convert_button_clicked_cb()
 
     try
     {
-        converter conv(entry1b->get_text(), spinbutton2b->get_value_as_int(),
-                       spinbutton3b->get_value_as_int());
+        converter conv(entry_B1->get_text(), spinbutton_B2->get_value_as_int(),
+                       spinbutton_B3->get_value_as_int());
 
         result = conv.convert();
     }
     catch(const converter_exception & e)
     {
-        result = "ERROR!\n" + std::string(e.what());
+        result = "ERROR: " + std::string(e.what());
     }
 
-    entry1b->set_text("");
+    entry_B1->set_text("");
     result_label->set_text(result);
 }
 
 #pragma endregion
 
-int main()
+int main(int argc, char * argv[])
 {
-    Glib::RefPtr<Gtk::Application> application = Gtk::Application::create("converter.liczbowy");
-    gtk_app app_window;
+    std::string exec_path = std::string(argv[0]);
+    size_t dirpos = exec_path.find_last_of("/\\");
+    std::string dir_path = exec_path.substr(0, dirpos);
+
+    Glib::RefPtr<Gtk::Application> application =
+        Gtk::Application::create(argc, argv, "converter.liczbowy");
+    gtk_app app_window(dir_path);
 
     application->run(app_window.get_main_window());
 
