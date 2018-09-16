@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <cmath>
 #include <ctime>
+#include <iostream>
+#include <string>
 #include <gtkmm.h>
 
 #pragma region gtk_app
@@ -23,7 +25,7 @@ public:
     {
         try
         {
-            this->builder = Gtk::Builder::create_from_file("../generator.glade");
+            this->builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
             this->get_components();
             this->connect_signals();
         }
