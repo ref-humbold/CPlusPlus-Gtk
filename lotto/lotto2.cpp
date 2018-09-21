@@ -16,30 +16,37 @@ private:
     Gtk::Window * main_window;
 
 public:
-    explicit gtk_app(std::string path)
-    {
-        try
-        {
-            this->builder = Gtk::Builder::create_from_file(path.append("/../lotto.glade"));
-            this->get_components();
-            this->connect_signals();
-        }
-        catch(const Glib::Exception & e)
-        {
-            std::cerr << e.what() << '\n';
-            throw;
-        }
-    }
-
-    ~gtk_app()
-    {
-    }
+    explicit gtk_app(std::string path);
+    ~gtk_app();
+    gtk_app(const gtk_app &) = delete;
+    gtk_app(gtk_app &&) = delete;
+    gtk_app & operator=(const gtk_app &) = delete;
+    gtk_app & operator=(gtk_app &&) = delete;
 
 private:
     void get_components();
     void connect_signals();
     void togglebutton_clicked_cb();
 };
+
+gtk_app::gtk_app(std::string path)
+{
+    try
+    {
+        this->builder = Gtk::Builder::create_from_file(path.append("/../lotto.glade"));
+        this->get_components();
+        this->connect_signals();
+    }
+    catch(const Glib::Exception & e)
+    {
+        std::cerr << e.what() << '\n';
+        throw;
+    }
+}
+
+gtk_app::~gtk_app()
+{
+}
 
 void gtk_app::get_components()
 {
