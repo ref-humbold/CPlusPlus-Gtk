@@ -158,32 +158,8 @@ private:
     Gtk::SpinButton * spinbutton_B3;
 
 public:
-    explicit gtk_app(std::string path)
-    {
-        try
-        {
-            this->builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
-            this->get_components();
-            this->connect_signals();
-        }
-        catch(const Glib::Exception & e)
-        {
-            std::cerr << e.what() << '\n';
-            throw;
-        }
-    }
-
-    ~gtk_app()
-    {
-        delete this->main_window;
-        delete this->exit_button;
-        delete this->convert_button;
-        delete this->result_label;
-        delete this->entry_B1;
-        delete this->spinbutton_B2;
-        delete this->spinbutton_B3;
-    }
-
+    explicit gtk_app(std::string path);
+    ~gtk_app();
     gtk_app(const gtk_app &) = delete;
     gtk_app(gtk_app &&) = delete;
     gtk_app & operator=(const gtk_app &) = delete;
@@ -200,6 +176,32 @@ private:
     void exit_button_clicked_cb();
     void convert_button_clicked_cb();
 };
+
+gtk_app::gtk_app(std::string path)
+{
+    try
+    {
+        this->builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
+        this->get_components();
+        this->connect_signals();
+    }
+    catch(const Glib::Exception & e)
+    {
+        std::cerr << e.what() << '\n';
+        throw;
+    }
+}
+
+gtk_app::~gtk_app()
+{
+    delete this->main_window;
+    delete this->exit_button;
+    delete this->convert_button;
+    delete this->result_label;
+    delete this->entry_B1;
+    delete this->spinbutton_B2;
+    delete this->spinbutton_B3;
+}
 
 void gtk_app::get_components()
 {

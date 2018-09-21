@@ -21,32 +21,12 @@ private:
     Gtk::Label * label_B2;
 
 public:
-    explicit gtk_app(std::string path)
-    {
-        try
-        {
-            this->builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
-            this->get_components();
-            this->connect_signals();
-        }
-        catch(const Glib::Exception & e)
-        {
-            std::cerr << e.what() << '\n';
-            throw;
-        }
-
-        srand(time(nullptr));
-    }
-
-    ~gtk_app()
-    {
-        delete this->main_window;
-        delete this->exit_button;
-        delete this->continue_button;
-        delete this->progress_bar;
-        delete this->label_B1;
-        delete this->label_B2;
-    }
+    explicit gtk_app(std::string path);
+    ~gtk_app();
+    gtk_app(const gtk_app &) = delete;
+    gtk_app(gtk_app &&) = delete;
+    gtk_app & operator=(const gtk_app &) = delete;
+    gtk_app & operator=(gtk_app &&) = delete;
 
     Gtk::Window & get_main_window()
     {
@@ -60,6 +40,33 @@ private:
     void continue_button_clicked_cb();
     double count_pi();
 };
+
+gtk_app::gtk_app(std::string path)
+{
+    try
+    {
+        this->builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
+        this->get_components();
+        this->connect_signals();
+    }
+    catch(const Glib::Exception & e)
+    {
+        std::cerr << e.what() << '\n';
+        throw;
+    }
+
+    srand(time(nullptr));
+}
+
+gtk_app::~gtk_app()
+{
+    delete this->main_window;
+    delete this->exit_button;
+    delete this->continue_button;
+    delete this->progress_bar;
+    delete this->label_B1;
+    delete this->label_B2;
+}
 
 void gtk_app::get_components()
 {
