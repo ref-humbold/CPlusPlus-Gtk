@@ -1,3 +1,5 @@
+.gomoku.stat
+
 # OCaml, OCamlbuild
 _build
 *.byte
