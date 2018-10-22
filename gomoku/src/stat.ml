@@ -69,12 +69,7 @@ let read () =
   let text = input_line file in
   close_in file; decode text;;
 
-let write lst =
-  let text = encode lst in
-  let file = open_out filename in
-  output_string file text; flush file; close_out file;;
-
-let end_game winner hmoves cmoves =
+let update_data winner hmoves cmoves =
   let data = read () in
   match data with
   | [_; _; twn; tls; thm; tcm; topen] ->
@@ -86,11 +81,11 @@ let end_game winner hmoves cmoves =
         write [hmoves; cmoves; twn; tls + 1; thm + hmoves; tcm + cmoves; topen]
       | Board.Blocked -> raise @@ Board.Incorrect_player "Stat.end_game"
     end
-  | _ -> raise @@ Stat_format_error "Stat.end_game";;
+  | _ -> raise @@ Stat_format_error "Stat.update_data";;
 
-let open_game () =
+let prepare_data () =
   let data = read () in
   match data with
   | [hm; cm; twn; tls; thm; tcm; topen] ->
     write [hm; cm; twn; tls; thm; tcm; topen + 1]
-  | _ -> raise @@ Stat_format_error "Stat.open_game";;
+  | _ -> raise @@ Stat_format_error "Stat.prepare_data";;

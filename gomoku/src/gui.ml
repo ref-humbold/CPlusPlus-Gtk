@@ -7,16 +7,16 @@ let ratio n d =
     else if a > b
     then gcd b a
     else gcd (b mod a) a in
-  let n' = n/(gcd n d) and d' = d/(gcd n d) in
-  n'*window_size/d';;
+  let n' = n / (gcd n d) and d' = d / (gcd n d) in
+  n' * window_size / d';;
 
 let center_text (xc, yc) str =
   let (xt, yt) = Graphics.text_size str in
-  (xc-xt/2, yc-yt/2);;
+  (xc - xt / 2, yc - yt / 2);;
 
 let new_window () =
   begin
-    Graphics.open_graph @@ " "^(string_of_int window_size)^"x"^(string_of_int window_size);
+    Graphics.open_graph @@ " " ^ (string_of_int window_size) ^ "x" ^ (string_of_int window_size);
     Graphics.set_text_size 15
   end;;
 
@@ -38,7 +38,7 @@ let draw_text ctr txt clr =
 let draw_button (xc, yc) (w, h) lbl clr =
   begin
     Graphics.set_color clr;
-    Graphics.fill_rect (xc-w/2) (yc-h/2) w h;
+    Graphics.fill_rect (xc - w / 2) (yc - h / 2) w h;
     draw_text (xc, yc) lbl Graphics.black
   end;;
 
@@ -46,4 +46,4 @@ let mouse_click () =
   let st = Graphics.wait_next_event [Graphics.Button_down] in
   (st.Graphics.mouse_x, st.Graphics.mouse_y);;
 
-let check_button_clicked (xc, yc) (w, h) (mpx, mpy) = abs (mpx-xc) <= w && abs (mpy-yc) <= h;;
+let check_button_clicked (xc, yc) (w, h) (mpx, mpy) = abs (mpx - xc) <= w && abs (mpy - yc) <= h;;

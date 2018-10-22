@@ -19,7 +19,7 @@ let rec choose_size () =
   let rec get_size lst sz =
     match lst with
     | true::_ -> sz
-    | false::xs -> get_size xs (sz+2)
+    | false::xs -> get_size xs @@ sz + 2
     | [] -> 0 in
   let boardsize = get_size clk 15 in
   if boardsize > 0

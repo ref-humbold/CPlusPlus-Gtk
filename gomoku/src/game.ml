@@ -7,8 +7,8 @@ let win gameboard size player (row, col) =
       | [] -> List.rev acc
       | rw::rws ->
         if s-i < 0 || s-i > size+1
-        then gs (i+1) rws acc
-        else gs (i+1) rws ((List.nth rw @@ s-i)::acc) in
+        then gs (i + 1) rws acc
+        else gs (i + 1) rws ((List.nth rw @@ s - i)::acc) in
     gs 0 g []
   and get_diff_diag d g =
     let rec gd i g_ acc =
@@ -16,8 +16,8 @@ let win gameboard size player (row, col) =
       | [] -> List.rev acc
       | rw::rws ->
         if i-d < 0 || i-d > size+1
-        then gd (i+1) rws acc
-        else gd (i+1) rws ((List.nth rw @@ i-d)::acc) in
+        then gd (i + 1) rws acc
+        else gd (i + 1) rws ((List.nth rw @@ i - d)::acc) in
     gd 0 g [] in
   let rec check lst =
     match lst with
@@ -31,7 +31,8 @@ let win gameboard size player (row, col) =
         player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
     | _::ps -> check ps
     | [] -> false in
-  let get_all r c g = [get_row r g; get_column c g; get_sum_diag (r+c) g; get_diff_diag (r-c) g] in
+  let get_all r c g =
+    [get_row r g; get_column c g; get_sum_diag (r + c) g; get_diff_diag (r - c) g] in
   if List.exists check @@ get_all row col gameboard
   then Some player
   else None;;
@@ -41,12 +42,12 @@ let start_game size =
     Random.self_init ();
     Comp_player.clear ();
     Game_gui.display size;
-    Board.create @@ size+2
+    Board.create @@ size + 2
   end;;
 
 let end_game (winner, mvh, mvc) =
   begin
-    Stat.end_game winner mvh mvc;
+    Stat.update_data winner mvh mvc;
     Game_gui.return winner
   end;;
 
@@ -61,8 +62,8 @@ let play_game size gameboard =
     let _ = Game_gui.draw_stone size player mpos in
     let mvnum =
       match player with
-      | Board.Human -> (mvh+1, mvc)
-      | Board.Comp -> (mvh, mvc+1)
+      | Board.Human -> (mvh + 1, mvc)
+      | Board.Comp -> (mvh, mvc + 1)
       | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
     match win gmbd' size player mpos with
     | None -> turn mvnum mpos (Board.opponent player) gmbd'

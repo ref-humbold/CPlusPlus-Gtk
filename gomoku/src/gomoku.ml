@@ -1,5 +1,5 @@
 begin
-  Stat.open_game ();
+  Stat.prepare_data ();
   Gui.new_window ();
   Gui_runner.run_menu ();
   Graphics.close_graph ();

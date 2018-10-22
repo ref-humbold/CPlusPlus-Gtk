@@ -15,7 +15,7 @@ let rec click_button () =
   let rec choose_action lst i =
     match lst with
     | true::_ -> i
-    | false::xs -> choose_action xs (i+1)
+    | false::xs -> choose_action xs @@ i + 1
     | [] -> -1 in
   let index = choose_action clk 0 in
   if index >= 0

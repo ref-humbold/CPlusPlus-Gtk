@@ -26,8 +26,8 @@ let extract_sum_diag sum size gameboard =
     | [] -> List.rev acc
     | rw::rws ->
       if sum-i < 0 || sum-i > size+1
-      then esd_ (i+1) rws acc
-      else esd_ (i+1) rws ((List.nth rw @@ sum-i)::acc) in
+      then esd_ (i + 1) rws acc
+      else esd_ (i + 1) rws ((List.nth rw @@ sum-i)::acc) in
   esd_ 0 gameboard []
 and extract_diff_diag diff size gameboard =
   let rec edd_ i g acc =
@@ -35,8 +35,8 @@ and extract_diff_diag diff size gameboard =
     | [] -> List.rev acc
     | rw::rws ->
       if i-diff < 0 || i-diff > size+1
-      then edd_ (i+1) rws acc
-      else edd_ (i+1) rws ((List.nth rw @@ i-diff)::acc) in
+      then edd_ (i + 1) rws acc
+      else edd_ (i + 1) rws ((List.nth rw @@ i-diff)::acc) in
   edd_ 0 gameboard []
 
 let move_queue = ref [Any];;
