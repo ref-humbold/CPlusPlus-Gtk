@@ -1,3 +1,7 @@
+let buttons = [Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 3 4; width=400; height=100};
+               Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 1 2; width=400; height=100};
+               Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 1 4; width=400; height=100}];;
+
 let display () =
   begin
     Gui.clear_window Graphics.blue;

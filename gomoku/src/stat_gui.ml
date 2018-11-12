@@ -1,3 +1,6 @@
+let buttons = [Gui.Btn {xc=Gui.ratio 1 4; yc=Gui.ratio 2 16; width=160; height=50};
+               Gui.Btn {xc=Gui.ratio 3 4; yc=Gui.ratio 2 16; width=160; height=50};];;
+
 let rec check_click () =
   let mp = Gui.mouse_click () in
   if Gui.check_button_clicked (Gui.ratio 3 4, Gui.ratio 2 16) (160, 50) mp

@@ -1,3 +1,5 @@
+type button = Btn of {xc: int; yc: int; width: int; height: int};;
+
 let window_size = 800;;
 
 let ratio n d =
@@ -7,11 +9,12 @@ let ratio n d =
     else if a > b
     then gcd b a
     else gcd (b mod a) a in
-  let n' = n / (gcd n d) and d' = d / (gcd n d) in
+  let n' = n / (gcd n d)
+  and d' = d / (gcd n d) in
   n' * window_size / d';;
 
-let center_text (xc, yc) str =
-  let (xt, yt) = Graphics.text_size str in
+let center_text (xc, yc) text =
+  let (xt, yt) = Graphics.text_size text in
   (xc - xt / 2, yc - yt / 2);;
 
 let new_window () =
@@ -20,26 +23,26 @@ let new_window () =
     Graphics.set_text_size 15
   end;;
 
-let clear_window clr =
+let clear_window colour =
   begin
     Graphics.clear_graph ();
-    Graphics.set_color clr;
+    Graphics.set_color colour;
     Graphics.fill_rect 0 0 window_size window_size
   end;;
 
-let draw_text ctr txt clr =
-  let (x, y) = center_text ctr txt in
+let draw_text center_pos text colour =
+  let (x, y) = center_text center_pos text in
   begin
-    Graphics.set_color clr;
+    Graphics.set_color colour;
     Graphics.moveto x y;
-    Graphics.draw_string txt
+    Graphics.draw_string text
   end;;
 
-let draw_button (xc, yc) (w, h) lbl clr =
+let draw_button (xc, yc) (width, height) label colour =
   begin
-    Graphics.set_color clr;
-    Graphics.fill_rect (xc - w / 2) (yc - h / 2) w h;
-    draw_text (xc, yc) lbl Graphics.black
+    Graphics.set_color colour;
+    Graphics.fill_rect (xc - width / 2) (yc - height / 2) width height;
+    draw_text (xc, yc) label Graphics.black
   end;;
 
 let mouse_click () =

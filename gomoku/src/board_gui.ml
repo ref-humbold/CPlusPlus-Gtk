@@ -1,3 +1,11 @@
+let buttons = [Gui.Btn {xc=Gui.ratio 1 4; yc=Gui.ratio 3 4; width=200; height=100};
+               Gui.Btn {xc=Gui.ratio 3 4; yc=Gui.ratio 3 4; width=200; height=100};
+               Gui.Btn {xc=Gui.ratio 1 4; yc=Gui.ratio 1 2; width=200; height=100};
+               Gui.Btn {xc=Gui.ratio 3 4; yc=Gui.ratio 1 2; width=200; height=100};
+               Gui.Btn {xc=Gui.ratio 1 4; yc=Gui.ratio 1 4; width=200; height=100};
+               Gui.Btn {xc=Gui.ratio 3 4; yc=Gui.ratio 1 4; width=200; height=100}];;
+
+
 let display () =
   begin
     Gui.clear_window Graphics.cyan;
