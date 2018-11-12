@@ -1,4 +1,11 @@
-let button = Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 1 16; width=160; height=30}
+let button = Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 1 16;
+                      width=160; height=30;
+                      label="POWROT"; colour=Graphics.white};;
+
+let texts = (Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 92 100;
+                      label="WYGRANA!!! :)"; colour=Graphics.blue},
+             Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 92 100;
+                      label="PRZEGRANA :("; colour=Graphics.red});;
 
 let step = 24;;
 
@@ -61,16 +68,16 @@ let rec choose_stone size =
 let return winner =
   let print_winner () =
     match winner with
-    | Board.Human -> Gui.draw_text (Gui.ratio 1 2, Gui.ratio 92 100) "WYGRANA!!! :)" Graphics.blue
-    | Board.Comp -> Gui.draw_text (Gui.ratio 1 2, Gui.ratio 92 100) "PRZEGRANA :(" Graphics.red
+    | Board.Human -> Gui.draw_text @@ fst texts
+    | Board.Comp -> Gui.draw_text @@ snd texts
     | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
   let rec ret () =
-    let mp = Gui.mouse_click () in
-    if Gui.check_button_clicked (Gui.ratio 1 2, Gui.ratio 1 16) (160, 30) mp
+    let mouse_pos = Gui.mouse_click () in
+    if Gui.check_button_clicked mouse_pos button
     then ()
     else ret () in
   begin
     print_winner ();
-    Gui.draw_button (Gui.ratio 1 2, Gui.ratio 1 16) (160, 30) "POWROT" Graphics.white;
+    Gui.draw_button button;
     ret ()
   end;;
