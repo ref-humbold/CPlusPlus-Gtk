@@ -10,11 +10,13 @@ let texts = (Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 92 100;
 let step = 24;;
 
 let get_borders size =
-  let cols = size / 2 + 1 and half = Gui.ratio 1 2 in
+  let cols = size / 2 + 1
+  and half = Gui.ratio 1 2 in
   (half + step * cols, half - step * cols);;
 
 let get_lines_pos size =
-  let cols = size / 2 + 1 and half = Gui.ratio 1 2 in
+  let cols = size / 2 + 1
+  and half = Gui.ratio 1 2 in
   let rec glp i acc =
     if i + cols >= 0
     then glp (i - 1) ((half + step * i)::acc)

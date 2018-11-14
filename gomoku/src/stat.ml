@@ -43,11 +43,10 @@ let decode str =
         else None in
       match cd' with
       | None ->
-        begin
-          match act with
+        ( match act with
           | [] -> split str_ (i + 1) [] res
           | _ -> split str_ (i + 1) [] ((List.rev act)::res)
-        end
+        )
       | Some x -> split str_ (i + 1) (x::act) res in
   let rec dec res lst_ =
     match lst_ with
@@ -73,14 +72,13 @@ let update_data winner hmoves cmoves =
   let data = read () in
   match data with
   | [_; _; twn; tls; thm; tcm; topen] ->
-    begin
-      match winner with
+    ( match winner with
       | Board.Human ->
         write [hmoves; cmoves; twn + 1; tls; thm + hmoves; tcm + cmoves; topen]
       | Board.Comp ->
         write [hmoves; cmoves; twn; tls + 1; thm + hmoves; tcm + cmoves; topen]
       | Board.Blocked -> raise @@ Board.Incorrect_player "Stat.end_game"
-    end
+    )
   | _ -> raise @@ Stat_format_error "Stat.update_data";;
 
 let prepare_data () =

@@ -25,16 +25,16 @@ let extract_sum_diag sum size gameboard =
     match g with
     | [] -> List.rev acc
     | rw::rws ->
-      if sum-i < 0 || sum-i > size+1
+      if sum - i < 0 || sum - i > size + 1
       then esd_ (i + 1) rws acc
-      else esd_ (i + 1) rws ((List.nth rw @@ sum-i)::acc) in
+      else esd_ (i + 1) rws ((List.nth rw @@ sum - i)::acc) in
   esd_ 0 gameboard []
 and extract_diff_diag diff size gameboard =
   let rec edd_ i g acc =
     match g with
     | [] -> List.rev acc
     | rw::rws ->
-      if i-diff < 0 || i-diff > size+1
+      if i - diff < 0 || i - diff > size + 1
       then edd_ (i + 1) rws acc
       else edd_ (i + 1) rws ((List.nth rw @@ i-diff)::acc) in
   edd_ 0 gameboard []
@@ -45,7 +45,7 @@ let last_move = ref (0, 0);;
 let get_row row gameboard = (List.nth gameboard row, Row row, 0)
 and get_column col gameboard = (List.map (fun lst -> List.nth lst col) gameboard, Column col, 0)
 and get_sum_diag size sum gameboard =
-  let beg_row = if sum <= size+1 then 0 else sum-size-1 in
+  let beg_row = if sum <= size + 1 then 0 else sum - size - 1 in
   (extract_sum_diag sum size gameboard, Sum sum, beg_row)
 and get_diff_diag size diff gameboard =
   let beg_row = if diff <= 0 then 0 else diff in
@@ -64,7 +64,7 @@ let count_points lst =
     match lst_ with
     | (x1, _)::((x2, _)::_ as xt) ->
       if x1 = x2
-      then cnt (num+1) xt
+      then cnt (num + 1) xt
       else (num, x1)::(cnt 1 xt)
     | [(x, _)] -> [(num, x)]
     | [] -> [] in
@@ -75,7 +75,7 @@ let count_nums lst =
     match lst_ with
     | x1::(x2::_ as xt) ->
       if x1 = x2
-      then cnt (num+1) xt
+      then cnt (num + 1) xt
       else (x1, num)::(cnt 1 xt)
     | [x] -> [(x, num)]
     | [] -> [] in
@@ -83,9 +83,16 @@ let count_nums lst =
 
 let get_empties size gameboard =
   let neibs r c =
-    let prv = List.nth gameboard (r-1) and same = List.nth gameboard r
-    and nxt = List.nth gameboard (r+1) in
-    [List.nth prv (c-1); List.nth prv c; List.nth prv (c+1); List.nth same (c-1); List.nth same (c+1); List.nth nxt (c-1); List.nth nxt c; List.nth nxt (c+1)] in
+    let prv = List.nth gameboard (r - 1) and same = List.nth gameboard r
+    and nxt = List.nth gameboard (r + 1) in
+    [List.nth prv (c - 1);
+     List.nth prv c;
+     List.nth prv (c + 1);
+     List.nth same (c - 1);
+     List.nth same (c + 1);
+     List.nth nxt (c - 1);
+     List.nth nxt c;
+     List.nth nxt (c + 1)] in
   let check x =
     match x with
     | Some Board.Human | Some Board.Comp -> true
@@ -116,40 +123,43 @@ let check_win_situation size player (row, col) gameboard =
     match dir with
     | Row r -> (r, num)
     | Column c -> (num, c)
-    | Sum s -> (num, s-num)
-    | Diff d -> (num, num-d) in
+    | Sum s -> (num, s - num)
+    | Diff d -> (num, num - d) in
   let rec check acc (lst, dir, numrow) =
     match lst with
     | None::Some t1::Some t2::Some t3::Some t4::ps when
         player = t1 && t1 = t2 && t2 = t3 && t3 = t4 ->
-      check ((pos_by dir numrow, 5)::acc) (ps, dir, numrow+5)
+      check ((pos_by dir numrow, 5)::acc) (ps, dir, numrow + 5)
     | Some t0::None::Some t2::Some t3::Some t4::ps when
         player = t0 && t0 = t2 && t2 = t3 && t3 = t4 ->
-      check ((pos_by dir (numrow+1), 5)::acc) (ps, dir, numrow+5)
+      check ((pos_by dir (numrow + 1), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::None::Some t3::Some t4::ps when
         player = t0 && t0 = t1 && t1 = t3 && t3 = t4 ->
-      check ((pos_by dir (numrow+2), 5)::acc) (ps, dir, numrow+5)
+      check ((pos_by dir (numrow + 2), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::Some t2::None::Some t4::ps when
         player = t0 && t0 = t1 && t1 = t2 && t2 = t4 ->
-      check ((pos_by dir (numrow+3), 5)::acc) (ps, dir, numrow+5)
+      check ((pos_by dir (numrow + 3), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::Some t2::Some t3::None::ps when
         player = t0 && t0 = t1 && t1 = t2 && t2 = t3 ->
-      check ((pos_by dir (numrow+4), 5)::acc) (ps, dir, numrow+5)
+      check ((pos_by dir (numrow + 4), 5)::acc) (ps, dir, numrow + 5)
     | None::Some t1::Some t2::Some t3::ps when
         player = t1 && t1 = t2 && t2 = t3 ->
-      check ((pos_by dir numrow, 4)::acc) (ps, dir, numrow+4)
+      check ((pos_by dir numrow, 4)::acc) (ps, dir, numrow + 4)
     | Some t0::None::Some t2::Some t3::ps when
         player = t0 && t0 = t2 && t2 = t3 ->
-      check ((pos_by dir (numrow+1), 4)::acc) (ps, dir, numrow+4)
+      check ((pos_by dir (numrow + 1), 4)::acc) (ps, dir, numrow + 4)
     | Some t0::Some t1::None::Some t3::ps when
         player = t0 && t0 = t1 && t1 = t3 ->
-      check ((pos_by dir (numrow+2), 4)::acc) (ps, dir, numrow+4)
+      check ((pos_by dir ( + 2), 4)::acc) (ps, dir, numrow + 4)
     | Some t0::Some t1::Some t2::None::ps when
         player = t0 && t0 = t1 && t1 = t2 ->
-      check ((pos_by dir (numrow+3), 4)::acc) (ps, dir, numrow+4)
-    | _::ps -> check acc (ps, dir, numrow+1)
+      check ((pos_by dir (numrow + 3), 4)::acc) (ps, dir, numrow + 4)
+    | _::ps -> check acc (ps, dir, numrow + 1)
     | [] -> acc in
-  let get_all r c g = [get_row r g; get_column c g; get_sum_diag size (r+c) g; get_diff_diag size (r-c) g] in
+  let get_all r c g = [get_row r g;
+                       get_column c g;
+                       get_sum_diag size (r + c) g;
+                       get_diff_diag size (r - c) g] in
   List.concat @@ List.map (check []) @@ get_all row col gameboard;;
 
 let check_board_situation size player gameboard =
@@ -167,28 +177,30 @@ let check_board_situation size player gameboard =
   and get_columns g = List.mapi (fun i _ -> List.nth g i) g
   and get_sum_diags g =
     let rec get_s s acc =
-      if s <= size+size
-      then get_s (s+1) @@ (extract_sum_diag s size g)::acc
+      if s <= size + size
+      then get_s (s + 1) @@ (extract_sum_diag s size g)::acc
       else acc in
     get_s 2 []
   and get_diff_diags g =
     let rec get_d d acc =
-      if d <= size-1
-      then get_d (d+1) @@ (extract_diff_diag d size g)::acc
+      if d <= size - 1
+      then get_d (d + 1) @@ (extract_diff_diag d size g)::acc
       else acc in
-    get_d (-size+1) [] in
-  let get_all g = List.concat [get_rows g; get_columns g; get_sum_diags g; get_diff_diags g] in
+    get_d (-size + 1) [] in
+  let get_all g = List.concat [get_rows g;
+                               get_columns g;
+                               get_sum_diags g;
+                               get_diff_diags g] in
   count_nums @@ List.concat @@ List.map (check []) @@ get_all gameboard;;
 
 let numbered player situation =
   match count_points situation with
   | (n, (p1, p2))::_ when n > 1 ->
-    begin
-      match player with
+    ( match player with
       | Board.Human -> Human_make_more (p1, p2)
       | Board.Comp -> Comp_make_more (p1, p2)
       | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.numbered"
-    end
+    )
   | _ -> Any;;
 
 let make_five player situation =
@@ -196,12 +208,11 @@ let make_five player situation =
   match make_five_list with
   | _::_ ->
     let ((p1, p2), _) = random_element make_five_list in
-    begin
-      match player with
+    ( match player with
       | Board.Human -> Human_make_five (p1, p2)
       | Board.Comp -> Comp_make_five (p1, p2)
       | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.make_five"
-    end
+    )
   | [] -> Any;;
 
 let make_four player situation =
@@ -209,12 +220,11 @@ let make_four player situation =
   match make_four_list with
   | _::_ ->
     let ((p1, p2), _) = random_element make_four_list in
-    begin
-      match player with
+    ( match player with
       | Board.Human -> Human_make_four (p1, p2)
       | Board.Comp -> Comp_make_four (p1, p2)
       | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.make_four"
-    end
+    )
   | [] -> Any;;
 
 let heura size gameboard =
@@ -230,8 +240,8 @@ let heura size gameboard =
       let for_human =
         try List.find (fun e -> fst e = n) human_sit with
         | Not_found -> (n, 0) in
-      ((snd for_human)-(snd for_comp))::(diffs (n-1)) in
-  List.fold_right (fun e a -> (float_of_int e)+.1.5*.a) (diffs 5) 0.0;;
+      ((snd for_human) - (snd for_comp))::(diffs (n - 1)) in
+  List.fold_right (fun e a -> (float_of_int e) +. 1.5 *. a) (diffs 5) 0.0;;
 
 let heuristic_move size gameboard =
   let cmp f (pm, xm) (pa, xa) =
@@ -252,7 +262,7 @@ let heuristic_move size gameboard =
         | [] -> acc
         | p::ps ->
           let next_bd = Board.set_move p player gmbd in
-          let chd = (p, snd (fwd_move (level-1) a_ b_ (Board.opponent player) next_bd)) in
+          let chd = (p, snd (fwd_move (level - 1) a_ b_ (Board.opponent player) next_bd)) in
           match player with
           | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
           | Board.Comp ->
@@ -290,16 +300,25 @@ let move human_move size gameboard =
   let choose_pos () =
     match List.hd analyzed with
     | Any ->
-      begin
-        match List.hd (!move_queue) with
+      ( match List.hd (!move_queue) with
         | Any -> heuristic_move size gameboard
-        | Comp_make_five (p1, p2) | Human_make_more (p1, p2) | Human_make_five (p1, p2) | Comp_make_more (p1, p2) | Comp_make_four (p1, p2) | Human_make_four (p1, p2) ->
+        | Comp_make_five (p1, p2)
+        | Human_make_more (p1, p2)
+        | Human_make_five (p1, p2)
+        | Comp_make_more (p1, p2)
+        | Comp_make_four (p1, p2)
+        | Human_make_four (p1, p2) ->
           begin
             move_queue := List.tl (!move_queue);
             (p1, p2)
           end
-      end
-    | Comp_make_five (p1, p2) | Human_make_more (p1, p2) | Human_make_five (p1, p2) | Comp_make_more (p1, p2) | Comp_make_four (p1, p2) | Human_make_four (p1, p2) ->
+      )
+    | Comp_make_five (p1, p2)
+    | Human_make_more (p1, p2)
+    | Human_make_five (p1, p2)
+    | Comp_make_more (p1, p2)
+    | Comp_make_four (p1, p2)
+    | Human_make_four (p1, p2) ->
       let non_any = List.filter (fun m -> m <> Any) analyzed in
       begin
         move_queue := List.rev_append non_any (!move_queue);

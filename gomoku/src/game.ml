@@ -6,7 +6,7 @@ let win gameboard size player (row, col) =
       match g_ with
       | [] -> List.rev acc
       | rw::rws ->
-        if s-i < 0 || s-i > size+1
+        if s - i < 0 || s - i > size + 1
         then gs (i + 1) rws acc
         else gs (i + 1) rws ((List.nth rw @@ s - i)::acc) in
     gs 0 g []
@@ -15,7 +15,7 @@ let win gameboard size player (row, col) =
       match g_ with
       | [] -> List.rev acc
       | rw::rws ->
-        if i-d < 0 || i-d > size+1
+        if i - d < 0 || i - d > size + 1
         then gd (i + 1) rws acc
         else gd (i + 1) rws ((List.nth rw @@ i - d)::acc) in
     gd 0 g [] in
@@ -31,8 +31,10 @@ let win gameboard size player (row, col) =
         player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
     | _::ps -> check ps
     | [] -> false in
-  let get_all r c g =
-    [get_row r g; get_column c g; get_sum_diag (r + c) g; get_diff_diag (r - c) g] in
+  let get_all r c g = [get_row r g;
+                       get_column c g;
+                       get_sum_diag (r + c) g;
+                       get_diff_diag (r - c) g] in
   if List.exists check @@ get_all row col gameboard
   then Some player
   else None;;
