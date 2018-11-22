@@ -1,4 +1,5 @@
 /// <reference path="jquery.d.ts"/>
+//#region classes
 
 enum Flag {
     Hidden, Visible, Flagged
@@ -25,15 +26,12 @@ abstract class Board {
     }
 
     protected restart() {
-        this.distances = [];
-        this.flags = [];
+        this.distances = Array.apply(null, Array(Board.SIZE * Board.SIZE))
+            .map(() => Board.DISTANCE_EMPTY);
+        this.flags = Array.apply(null, Array(Board.SIZE * Board.SIZE))
+            .map(() => Flag.Hidden);
         this.flagsLeft = Board.BOMBS_COUNT;
         this.clicks = 0;
-
-        for (let i = 0; i < Board.SIZE * Board.SIZE; ++i) {
-            this.distances.push(Board.DISTANCE_EMPTY);
-            this.flags.push(Flag.Hidden);
-        }
     }
 
     protected leftClick(element: Element): void {
@@ -42,7 +40,7 @@ abstract class Board {
     }
 
     protected middleClick(element: Element): void {
-        let pos = parseInt(element.id, 10);
+        const pos = parseInt(element.id, 10);
 
         this.changeFlag(pos);
         $("div#flags").html(String(this.flagsLeft));
@@ -63,11 +61,12 @@ abstract class Board {
     protected abstract getFieldsWithBombs(): JQuery<HTMLElement>;
 
     protected randBombs(count: number, posClicked: number, isOnClicked: boolean): Array<number> {
-        let pos: number = 0;
         let bombs: Array<number> = isOnClicked ? [posClicked] : [];
-        let factor = Board.SIZE * Board.SIZE - 1;
+        const factor = Board.SIZE * Board.SIZE - 1;
 
         for (let i = 0; i < count; ++i) {
+            let pos: number = 0;
+
             do
                 pos = Math.floor(Math.random() * factor);
             while (bombs.indexOf(pos) >= 0 || this.isNeighbour(posClicked, pos));
@@ -76,6 +75,10 @@ abstract class Board {
         }
 
         return bombs;
+    }
+
+    protected extractRowColumn(pos: number): [number, number] {
+        return [Math.floor(pos / NormalBoard.SIZE), pos % NormalBoard.SIZE];
     }
 
     protected abstract increaseShots(pos: number): void;
@@ -133,8 +136,8 @@ abstract class Board {
     }
 
     private isNeighbour(pos1: number, pos2: number): boolean {
-        let row: number = Math.floor(pos1 / NormalBoard.SIZE);
-        let column: number = pos1 % NormalBoard.SIZE;
+        let row: number, column: number;
+        [row, column] = this.extractRowColumn(pos1);
 
         if (pos2 == pos1)
             return true;
@@ -193,9 +196,9 @@ class NormalBoard extends Board {
     }
 
     protected leftClick(element: Element): void {
-        super.leftClick(element);
+        const pos: number = parseInt(element.id, 10);
 
-        let pos: number = parseInt(element.id, 10);
+        super.leftClick(element);
 
         if (this.flags[pos] == Flag.Hidden) {
             if (!this.isGenerated)
@@ -229,13 +232,12 @@ class NormalBoard extends Board {
     }
 
     private generate(startingPos: number): void {
-        let bombs = this.randBombs(NormalBoard.BOMBS_COUNT, startingPos, false);
+        const bombs = this.randBombs(NormalBoard.BOMBS_COUNT, startingPos, false);
         this.isGenerated = true;
 
         for (let i = 0; i < bombs.length; ++i) {
-            let row: number = Math.floor(bombs[i] / NormalBoard.SIZE);
-            let column: number = bombs[i] % NormalBoard.SIZE;
-
+            let row: number, column: number;
+            [row, column] = this.extractRowColumn(bombs[i]);
             this.distances[bombs[i]] = NormalBoard.DISTANCE_BOMB;
 
             if (row > 0 && column > 0
@@ -275,9 +277,9 @@ class NormalBoard extends Board {
         this.setVisible(posBeg);
 
         while (queue.length > 0) {
-            let pos: number = queue.shift();
-            let row: number = Math.floor(pos / NormalBoard.SIZE);
-            let column: number = pos % NormalBoard.SIZE;
+            const pos: number = queue.shift();
+            let row: number, column: number;
+            [row, column] = this.extractRowColumn(pos);
 
             if (this.isEmpty(pos)) {
                 if (row > 0 && column > 0
@@ -373,7 +375,7 @@ class TrollBoard extends Board {
     }
 
     protected getFieldsWithBombs(): JQuery<HTMLElement> {
-        let bombs: Array<number> =
+        const bombs: Array<number> =
             this.randBombs(NormalBoard.BOMBS_COUNT - 1, this.lastClickPos, true);
 
         return $("div.field")
@@ -383,10 +385,9 @@ class TrollBoard extends Board {
     }
 
     protected leftClick(element: Element): void {
+        const pos = parseInt(element.id, 10);
+
         super.leftClick(element);
-
-        let pos = parseInt(element.id, 10);
-
         this.lastClickPos = pos;
 
         if (this.flags[pos] == Flag.Hidden) {
@@ -405,6 +406,9 @@ class TrollBoard extends Board {
     }
 }
 
+//#endregion
+//#region main
+
 let board: Board = null;
 
 function startNormalGame(): void {
@@ -416,3 +420,5 @@ function startTrollGame(): void {
 }
 
 $(document).ready(startNormalGame);
+
+//#endregion

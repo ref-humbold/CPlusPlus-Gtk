@@ -1,4 +1,5 @@
 /// <reference path="jquery.d.ts"/>
+//#region classes
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -22,14 +23,12 @@ var Board = /** @class */ (function () {
         this.beginNewGame();
     }
     Board.prototype.restart = function () {
-        this.distances = [];
-        this.flags = [];
+        this.distances = Array.apply(null, Array(Board.SIZE * Board.SIZE))
+            .map(function () { return Board.DISTANCE_EMPTY; });
+        this.flags = Array.apply(null, Array(Board.SIZE * Board.SIZE))
+            .map(function () { return Flag.Hidden; });
         this.flagsLeft = Board.BOMBS_COUNT;
         this.clicks = 0;
-        for (var i = 0; i < Board.SIZE * Board.SIZE; ++i) {
-            this.distances.push(Board.DISTANCE_EMPTY);
-            this.flags.push(Flag.Hidden);
-        }
     };
     Board.prototype.leftClick = function (element) {
         ++this.clicks;
@@ -51,16 +50,19 @@ var Board = /** @class */ (function () {
         }
     };
     Board.prototype.randBombs = function (count, posClicked, isOnClicked) {
-        var pos = 0;
         var bombs = isOnClicked ? [posClicked] : [];
         var factor = Board.SIZE * Board.SIZE - 1;
         for (var i = 0; i < count; ++i) {
+            var pos = 0;
             do
                 pos = Math.floor(Math.random() * factor);
             while (bombs.indexOf(pos) >= 0 || this.isNeighbour(posClicked, pos));
             bombs.push(pos);
         }
         return bombs;
+    };
+    Board.prototype.extractRowColumn = function (pos) {
+        return [Math.floor(pos / NormalBoard.SIZE), pos % NormalBoard.SIZE];
     };
     Board.prototype.beginNewGame = function () {
         $("div.field").off("mousedown");
@@ -108,8 +110,8 @@ var Board = /** @class */ (function () {
         }
     };
     Board.prototype.isNeighbour = function (pos1, pos2) {
-        var row = Math.floor(pos1 / NormalBoard.SIZE);
-        var column = pos1 % NormalBoard.SIZE;
+        var row, column;
+        _a = this.extractRowColumn(pos1), row = _a[0], column = _a[1];
         if (pos2 == pos1)
             return true;
         if (row > 0 && column > 0 && pos2 == pos1 - NormalBoard.SIZE - 1)
@@ -130,6 +132,7 @@ var Board = /** @class */ (function () {
             && pos2 == pos1 + NormalBoard.SIZE + 1)
             return true;
         return false;
+        var _a;
     };
     Board.prototype.clickNothing = function (event) {
     };
@@ -159,8 +162,8 @@ var NormalBoard = /** @class */ (function (_super) {
         });
     };
     NormalBoard.prototype.leftClick = function (element) {
-        _super.prototype.leftClick.call(this, element);
         var pos = parseInt(element.id, 10);
+        _super.prototype.leftClick.call(this, element);
         if (this.flags[pos] == Flag.Hidden) {
             if (!this.isGenerated)
                 this.generate(pos);
@@ -190,8 +193,8 @@ var NormalBoard = /** @class */ (function (_super) {
         var bombs = this.randBombs(NormalBoard.BOMBS_COUNT, startingPos, false);
         this.isGenerated = true;
         for (var i = 0; i < bombs.length; ++i) {
-            var row = Math.floor(bombs[i] / NormalBoard.SIZE);
-            var column = bombs[i] % NormalBoard.SIZE;
+            var row = void 0, column = void 0;
+            _a = this.extractRowColumn(bombs[i]), row = _a[0], column = _a[1];
             this.distances[bombs[i]] = NormalBoard.DISTANCE_BOMB;
             if (row > 0 && column > 0
                 && !this.isBomb(bombs[i] - NormalBoard.SIZE - 1))
@@ -215,14 +218,15 @@ var NormalBoard = /** @class */ (function (_super) {
                 && !this.isBomb(bombs[i] + NormalBoard.SIZE + 1))
                 ++this.distances[bombs[i] + NormalBoard.SIZE + 1];
         }
+        var _a;
     };
     NormalBoard.prototype.bfs = function (posBeg) {
         var queue = [posBeg];
         this.setVisible(posBeg);
         while (queue.length > 0) {
             var pos = queue.shift();
-            var row = Math.floor(pos / NormalBoard.SIZE);
-            var column = pos % NormalBoard.SIZE;
+            var row = void 0, column = void 0;
+            _a = this.extractRowColumn(pos), row = _a[0], column = _a[1];
             if (this.isEmpty(pos)) {
                 if (row > 0 && column > 0
                     && this.flags[pos - NormalBoard.SIZE - 1] == Flag.Hidden) {
@@ -271,6 +275,7 @@ var NormalBoard = /** @class */ (function (_super) {
                 }
             }
         }
+        var _a;
     };
     NormalBoard.prototype.setVisible = function (pos) {
         this.flags[pos] = Flag.Visible;
@@ -302,8 +307,8 @@ var TrollBoard = /** @class */ (function (_super) {
         });
     };
     TrollBoard.prototype.leftClick = function (element) {
-        _super.prototype.leftClick.call(this, element);
         var pos = parseInt(element.id, 10);
+        _super.prototype.leftClick.call(this, element);
         this.lastClickPos = pos;
         if (this.flags[pos] == Flag.Hidden) {
             this.endGame(false);
@@ -318,6 +323,8 @@ var TrollBoard = /** @class */ (function (_super) {
     };
     return TrollBoard;
 }(Board));
+//#endregion
+//#region main
 var board = null;
 function startNormalGame() {
     board = new NormalBoard();
@@ -326,4 +333,5 @@ function startTrollGame() {
     board = new TrollBoard();
 }
 $(document).ready(startNormalGame);
+//#endregion
 //# sourceMappingURL=saper.js.map
