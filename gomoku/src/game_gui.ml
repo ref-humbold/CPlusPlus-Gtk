@@ -1,20 +1,31 @@
+let button = Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 1 16;
+                      width=160; height=30;
+                      label="POWROT"; colour=Graphics.white};;
+
+let texts = (Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 92 100;
+                      label="WYGRANA!!! :)"; colour=Graphics.blue},
+             Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 92 100;
+                      label="PRZEGRANA :("; colour=Graphics.red});;
+
 let step = 24;;
 
 let get_borders size =
-  let cols = size/2+1 and half = Gui.ratio 1 2 in
-  (half+step*cols, half-step*cols);;
+  let cols = size / 2 + 1
+  and half = Gui.ratio 1 2 in
+  (half + step * cols, half - step * cols);;
 
 let get_lines_pos size =
-  let cols = size/2+1 and half = Gui.ratio 1 2 in
+  let cols = size / 2 + 1
+  and half = Gui.ratio 1 2 in
   let rec glp i acc =
-    if i+cols >= 0
-    then glp (i-1) ((half+step*i)::acc)
+    if i + cols >= 0
+    then glp (i - 1) ((half + step * i)::acc)
     else acc in
   glp cols [];;
 
 let norm size (x, y) =
   let (_, endline) = get_borders size in
-  let nrm w = (w-endline+step/2)/step in
+  let nrm w = (w - endline + step / 2) / step in
   (nrm x, nrm y);;
 
 let display size =
@@ -44,10 +55,10 @@ let draw_stone size ply (row, col) =
     | Board.Human -> Graphics.white
     | Board.Comp -> Graphics.black
     | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
-  let (px, py) = (endline+col*step, endline+row*step) in
+  let (px, py) = (endline + col * step, endline + row * step) in
   begin
     Graphics.set_color stone_color;
-    Graphics.fill_circle px py (7*step/16)
+    Graphics.fill_circle px py (7 * step / 16)
   end;;
 
 let rec choose_stone size =
@@ -59,16 +70,16 @@ let rec choose_stone size =
 let return winner =
   let print_winner () =
     match winner with
-    | Board.Human -> Gui.draw_text (Gui.ratio 1 2, Gui.ratio 92 100) "WYGRANA!!! :)" Graphics.blue
-    | Board.Comp -> Gui.draw_text (Gui.ratio 1 2, Gui.ratio 92 100) "PRZEGRANA :(" Graphics.red
+    | Board.Human -> Gui.draw_text @@ fst texts
+    | Board.Comp -> Gui.draw_text @@ snd texts
     | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
   let rec ret () =
-    let mp = Gui.mouse_click () in
-    if Gui.check_button_clicked (Gui.ratio 1 2, Gui.ratio 1 16) (160, 30) mp
+    let mouse_pos = Gui.mouse_click () in
+    if Gui.check_button_clicked mouse_pos button
     then ()
     else ret () in
   begin
     print_winner ();
-    Gui.draw_button (Gui.ratio 1 2, Gui.ratio 1 16) (160, 30) "POWROT" Graphics.white;
+    Gui.draw_button button;
     ret ()
   end;;
