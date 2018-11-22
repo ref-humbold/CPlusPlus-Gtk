@@ -5,7 +5,6 @@
 #include <set>
 #include <string>
 #include <unistd.h>
-
 #include "ICMPController.hpp"
 #include "IPAddress.hpp"
 #include "RawSocket.hpp"

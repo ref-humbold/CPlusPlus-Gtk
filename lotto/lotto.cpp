@@ -1,10 +1,10 @@
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <exception>
+#include <iostream>
 #include <stdexcept>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 void next_wyg(std::vector<long long int> & wyg, bool reset)
 {
@@ -36,7 +36,8 @@ int main()
     long long int gra;
     std::vector<long long int> wyg;
 
-    std::cout << "\t\tDUŻY LOTEK\n" << "\tPODAJ LICZBĘ GIER\n";
+    std::cout << "\t\tDUŻY LOTEK\n"
+              << "\tPODAJ LICZBĘ GIER\n";
 
     std::cin >> gra;
     wyg.push_back(0LL);
@@ -47,7 +48,9 @@ int main()
     {
         long long int x, gl = 0LL, kl = 0LL, lt = 0LL;
 
-        std::cout << "\n" << "\tKUMULACJA " << 1000000 * wyg[2] << " zł\n" << "\tPodaj 6 roznych liczb od 1 do 49\n";
+        std::cout << "\n"
+                  << "\tKUMULACJA " << 1000000 * wyg[2] << " zł\n"
+                  << "\tPodaj 6 roznych liczb od 1 do 49\n";
 
         for(long long int i = 0; i < 6; ++i)
         {
@@ -76,7 +79,9 @@ int main()
             kl |= 1LL << x;
         }
 
-        std::cout << "\n\n" << "Losowanie numer" << gra << "\tKumulacja " << 1000000 * wyg[2] << " zł\n\n" << "Wylosowane liczby to:\n";
+        std::cout << "\n\n"
+                  << "Losowanie numer" << gra << "\tKumulacja " << 1000000 * wyg[2] << " zł\n\n"
+                  << "Wylosowane liczby to:\n";
         print_numbs(kl);
         std::cout << "\n\n";
 
@@ -87,38 +92,45 @@ int main()
         switch(lt)
         {
             case 6:
-                std::cout << "\t TRAFILES 6 LICZB!!!\n" << "Wygrana to " << 1000000 * wyg[2] << " zł\n";
-            break;
+                std::cout << "\t TRAFILES 6 LICZB!!!\n"
+                          << "Wygrana to " << 1000000 * wyg[2] << " zł\n";
+                break;
 
             case 5:
-                std::cout << "\t TRAFILES 5 LICZB!!!\n" << "Wygrana to " << 5000 * wyg[2] << " zł\n";
-            break;
+                std::cout << "\t TRAFILES 5 LICZB!!!\n"
+                          << "Wygrana to " << 5000 * wyg[2] << " zł\n";
+                break;
 
             case 4:
-                std::cout << "\t TRAFILES 4 LICZBY!!!\n" << "Wygrana to " << 1500 * wyg[2] << " zł\n";
-            break;
+                std::cout << "\t TRAFILES 4 LICZBY!!!\n"
+                          << "Wygrana to " << 1500 * wyg[2] << " zł\n";
+                break;
 
             case 3:
-                std::cout << "\tTRAFILES 3 LICZBY!!!\n" << "Wygrana to 20 zł\n";
-            break;
+                std::cout << "\tTRAFILES 3 LICZBY!!!\n"
+                          << "Wygrana to 20 zł\n";
+                break;
 
             case 2:
-                std::cout << "\tTRAFILES 2 LICZBY\n" << "Przegrana\n";
-            break;
+                std::cout << "\tTRAFILES 2 LICZBY\n"
+                          << "Przegrana\n";
+                break;
 
             case 1:
-                std::cout << "\tTRAFILES 1 LICZBE\n" << "Przegrana\n";
-            break;
+                std::cout << "\tTRAFILES 1 LICZBE\n"
+                          << "Przegrana\n";
+                break;
 
             case 0:
-                std::cout << "\tNIC NIE TRAFIONO\n" << "Przegrana\n";
-            break;
+                std::cout << "\tNIC NIE TRAFIONO\n"
+                          << "Przegrana\n";
+                break;
         }
 
         next_wyg(wyg, lt == 6);
-        std::cout << "\n\n" << "Najblizsza kumulacja wynosi " << 1000000 * wyg[2] << " zł\n";
+        std::cout << "\n\n"
+                  << "Najblizsza kumulacja wynosi " << 1000000 * wyg[2] << " zł\n";
     }
 
     return 0;
 }
-

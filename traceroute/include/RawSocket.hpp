@@ -2,8 +2,8 @@
 #define _RAW_SOCKET_HPP_
 
 #include <cstdlib>
-#include <cstring>
 #include <cerrno>
+#include <cstring>
 #include <exception>
 #include <stdexcept>
 #include <arpa/inet.h>

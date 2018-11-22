@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <exception>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -12,7 +12,7 @@ bool collide(const std::vector<std::string> & vf, int n, int row, int col)
 
     for(int dr = -1; dr <= 1; ++dr)
         for(int dc = -1; dc <= n; ++dc)
-            if(row + dr >= 0 && row + dr < size && col+dc >= 0 && col + dc < size)
+            if(row + dr >= 0 && row + dr < size && col + dc >= 0 && col + dc < size)
                 if(vf[row + dr][col + dc] == '#')
                     return true;
 
@@ -29,8 +29,7 @@ void add_ship(std::vector<std::string> & vf, int n)
         row = rand() % 10;
         col = rand() % (10 - n + 1);
         cld = vert ? collide(vf, n, row, col) : collide(vf, n, col, row);
-    }
-    while(cld);
+    } while(cld);
 
     for(int dc = 0; dc < n; ++dc)
     {
@@ -83,12 +82,14 @@ bool check_shot(std::vector<std::string> & v, const std::pair<int, int> & coef)
 
 void legend(bool is_game)
 {
-    std::cout << "\n\n\tLEGENDA PLANSZY\n" << "= - puste miejsce\n";
+    std::cout << "\n\n\tLEGENDA PLANSZY\n"
+              << "= - puste miejsce\n";
 
     if(!is_game)
         std::cout << "# - nietrafiony statek \n";
 
-    std::cout << "~ - Twoje pudlo\n" << "X - trafiony statek\n\n";
+    std::cout << "~ - Twoje pudlo\n"
+              << "X - trafiony statek\n\n";
 }
 
 void board(const std::vector<std::string> & v, bool is_game)
@@ -121,16 +122,18 @@ int main()
     int limit;
     std::vector<std::string> v(10, "==========");
 
-    std::cout << "\t(C) by Rafał Kaleta, Wrocław, Poland\n" << "\t\tAll rights reserved\n\n\n";
+    std::cout << "\t(C) by Rafał Kaleta, Wrocław, Poland\n"
+              << "\t\tAll rights reserved\n\n\n";
     std::cout << "\t\tGRA W STATKI\n\n";
 
     srand(time(NULL));
 
     for(int i = 4; i >= 1; --i)
-        for(int j = 0; j <= 4-i; ++j)
+        for(int j = 0; j <= 4 - i; ++j)
             add_ship(v, i);
 
-    std::cout << "Komputer wylosował statki.\n" << "\t\tZATOP JE WSZYSTKIE!!!!!!\n\n\n";
+    std::cout << "Komputer wylosował statki.\n"
+              << "\t\tZATOP JE WSZYSTKIE!!!!!!\n\n\n";
     std::cout << "Określ swój limit strzałów (zakres 20 - 200)\n";
     std::cin >> limit;
 
@@ -143,7 +146,8 @@ int main()
 
     do
     {
-        std::cout << "\t\tZostało Ci: " << limit-shots << " strzalow \n" << "\t\t\tTrafiono: " << hits << " razy\n\n";
+        std::cout << "\t\tZostało Ci: " << limit - shots << " strzalow \n"
+                  << "\t\t\tTrafiono: " << hits << " razy\n\n";
 
         std::pair<int, int> coef = shoot();
 
@@ -157,10 +161,10 @@ int main()
         ++shots;
         std::cout << "\tPLANSZA:\n";
         board(v, true);
-    }
-    while(hits < 20 && shots < limit);
+    } while(hits < 20 && shots < limit);
 
-    std::cout << "\t\tKONIEC\n\n" << "\tStrzelono " << shots << " razy\n\n";
+    std::cout << "\t\tKONIEC\n\n"
+              << "\tStrzelono " << shots << " razy\n\n";
     legend(false);
     std::cout << "\tTwoje próby to:\n\n";
     board(v, false);
