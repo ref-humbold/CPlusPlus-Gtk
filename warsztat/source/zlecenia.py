@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from gi import require_version
 
-require_version('Gtk', '3.0')
+require_version("Gtk", "3.0")
 
 from gi.repository import Gtk
 from decimal import Decimal
-from .extra import Extra
+from .popup import PopUp
 
 
 class Zlecenia:
@@ -34,8 +34,8 @@ class Zlecenia:
         self.zlecenia_comboboxtext3_1b = zlecenia_builder.get_object("zlecenia_comboboxtext3_1b")
         self.zlecenia_button3_1c = zlecenia_builder.get_object("zlecenia_button3_1c")
 
-        self.__load_ids(self.zlecenia_comboboxtext1_3b, "klienci")
-        self.__load_ids(self.zlecenia_comboboxtext1_4b, "samochody")
+        self.__load_ids(self.zlecenia_comboboxtext1_3b, "clients")
+        self.__load_ids(self.zlecenia_comboboxtext1_4b, "cars")
         self.__load_ids(self.zlecenia_comboboxtext2_1b, "zlecenia")
         self.__load_ids(self.zlecenia_comboboxtext2_2b, "uslugi")
         self.__load_ids(self.zlecenia_comboboxtext3_1b, "zlecenia")
@@ -50,10 +50,10 @@ class Zlecenia:
 
         if tablename == "zlecenia":
             cur.execute("SELECT id FROM zlecenia;")
-        elif tablename == "klienci":
-            cur.execute("SELECT id FROM klienci;")
-        elif tablename == "samochody":
-            cur.execute("SELECT model FROM samochody;")
+        elif tablename == "clients":
+            cur.execute("SELECT id FROM clients;")
+        elif tablename == "cars":
+            cur.execute("SELECT model FROM cars;")
         elif tablename == "uslugi":
             cur.execute("SELECT nazwa FROM uslugi;")
 
@@ -84,15 +84,15 @@ class Zlecenia:
             wyn = cur.fetchone()[0]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
             return
         else:
             self.conn.commit()
             self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
             self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
-            ExtraWindow = Extra("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = " + str(wyn))
-            ExtraWindow.show()
+            popup_window = PopUp("ZLECENIE ZOSTAŁO POMYŚLNIE ZŁOŻONE.\nID = " + str(wyn))
+            popup_window.show()
         finally:
             cur.close()
 
@@ -108,20 +108,20 @@ class Zlecenia:
             cur.execute("INSERT INTO zle_usl(zle_id, usl_nazwa) VALUES(%s, %s);", args)
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
             return
         else:
             self.conn.commit()
             self.zlecenia_comboboxtext2_1b.append_text(str(wyn))
             self.zlecenia_comboboxtext3_1b.append_text(str(wyn))
-            ExtraWindow = Extra("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
-            ExtraWindow.show()
+            popup_window = PopUp("POMYŚLNIE DODANO USŁUGĘ DO ZLECENIA.")
+            popup_window.show()
         finally:
             cur.close()
 
-        ExtraWindow = Extra("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
-        ExtraWindow.show()
+        popup_window = PopUp("ZLECENIE " + str(ident) + " ZOSTAŁO POMYŚLNIE ZMIENIONE.")
+        popup_window.show()
 
     def zlecenia_button3_1c_clicked_cb(self, button):
         """Reaguje na kliknięcie przycisku wyszukania zlecenia."""
@@ -136,12 +136,12 @@ class Zlecenia:
             wyn = cur.fetchone()[:]
         except:
             self.conn.rollback()
-            ExtraWindow = Extra("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
-            ExtraWindow.show()
+            popup_window = PopUp("WYSTĄPIŁ BŁĄD WEWNĘTRZNY BAZY. PRZERWANO.")
+            popup_window.show()
             return
         else:
             self.conn.commit()
-            ExtraWindow = Extra(", ".join(map(str, wyn)))
-            ExtraWindow.show()
+            popup_window = PopUp(", ".join(map(str, wyn)))
+            popup_window.show()
         finally:
             cur.close()

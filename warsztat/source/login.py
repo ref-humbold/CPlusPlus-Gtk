@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from gi import require_version
 
-require_version('Gtk', '3.0')
+require_version("Gtk", "3.0")
 
 from gi.repository import Gtk
 from psycopg2 import connect
@@ -9,7 +9,7 @@ from re import match
 from .sprzedawca import Sprzedawca
 from .mechanik import Mechanik
 from .magazynier import Magazynier
-from .extra import Extra
+from .popup import PopUp
 
 
 class Login:
@@ -39,7 +39,7 @@ class Login:
         """Tworzy nowe okno wyświetlające komunikat o błędzie."""
         self.__login_entry_1b.set_text("")
         self.__login_entry_2b.set_text("")
-        Extra(msg).show()
+        PopUp(msg).show()
 
     def login_window_destroy_cb(self, window):
         """Zamyka okno logowania."""
@@ -69,7 +69,7 @@ class Login:
         try:
             cur = conn.cursor()
             cur.execute(
-                'SELECT r2.rolname FROM pg_roles AS r1 JOIN pg_auth_members AS m ON r1.oid = m.member JOIN pg_roles AS r2 ON m.roleid = r2.oid WHERE r1.rolname = %s;', args)
+                "SELECT r2.rolname FROM pg_roles AS r1 JOIN pg_auth_members AS m ON r1.oid = m.member JOIN pg_roles AS r2 ON m.roleid = r2.oid WHERE r1.rolname = %s;", args)
         except:
             conn.rollback()
             cur.close()

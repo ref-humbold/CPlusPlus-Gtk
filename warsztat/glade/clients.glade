@@ -2,15 +2,15 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.10"/>
-  <object class="GtkWindow" id="klienci_window">
+  <object class="GtkWindow" id="clients_window">
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkBox" id="klienci_box">
+      <object class="GtkBox" id="clients_box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkLabel" id="klienci_label_main">
+          <object class="GtkLabel" id="clients_label_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">PANEL KLIENTÓW SPRZEDAWCY</property>
@@ -22,17 +22,17 @@
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook" id="klienci_notebook">
+          <object class="GtkNotebook" id="clients_notebook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkGrid" id="klienci_grid_page1">
+              <object class="GtkGrid" id="clients_grid_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="klienci_label1_1a">
+                  <object class="GtkLabel" id="clients_label1_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -43,7 +43,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label1_2a">
+                  <object class="GtkLabel" id="clients_label1_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -54,7 +54,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label1_3a">
+                  <object class="GtkLabel" id="clients_label1_3a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -66,7 +66,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry1_1b">
+                  <object class="GtkEntry" id="clients_entry1_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -77,7 +77,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry1_3b">
+                  <object class="GtkEntry" id="clients_entry1_3b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -88,12 +88,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="klienci_button1_6b">
+                  <object class="GtkButton" id="clients_button1_6b">
                     <property name="label" translatable="yes">DODAJ KLIENTA</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="klienci_button1_6b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="clients_button1_6b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -101,7 +101,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label1_4a">
+                  <object class="GtkLabel" id="clients_label1_4a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -112,7 +112,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label1_5a">
+                  <object class="GtkLabel" id="clients_label1_5a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">RABAT</property>
@@ -123,7 +123,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry1_2b">
+                  <object class="GtkEntry" id="clients_entry1_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -134,7 +134,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry1_4b">
+                  <object class="GtkEntry" id="clients_entry1_4b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
@@ -144,7 +144,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="klienci_comboboxtext1_5b">
+                  <object class="GtkComboBoxText" id="clients_comboboxtext1_5b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -168,7 +168,7 @@
               </object>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="klienci_label_page1">
+              <object class="GtkLabel" id="clients_label_page1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">NOWY KLIENT</property>
@@ -178,18 +178,18 @@
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="klienci_grid_page2">
+              <object class="GtkGrid" id="clients_grid_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkButton" id="klienci_button2_7b">
+                  <object class="GtkButton" id="clients_button2_7b">
                     <property name="label" translatable="yes">ZATWIERDŹ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="klienci_button2_7b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="clients_button2_7b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -197,7 +197,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_6a">
+                  <object class="GtkLabel" id="clients_label2_6a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">RABAT</property>
@@ -208,7 +208,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_5a">
+                  <object class="GtkLabel" id="clients_label2_5a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWA FIRMY</property>
@@ -219,7 +219,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_4a">
+                  <object class="GtkLabel" id="clients_label2_4a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -231,7 +231,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_3a">
+                  <object class="GtkLabel" id="clients_label2_3a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -242,7 +242,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_2a">
+                  <object class="GtkLabel" id="clients_label2_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -253,7 +253,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="klienci_comboboxtext2_6b">
+                  <object class="GtkComboBoxText" id="clients_comboboxtext2_6b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -274,7 +274,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry2_5b">
+                  <object class="GtkEntry" id="clients_entry2_5b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                   </object>
@@ -284,7 +284,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry2_4b">
+                  <object class="GtkEntry" id="clients_entry2_4b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -295,7 +295,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry2_3b">
+                  <object class="GtkEntry" id="clients_entry2_3b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -306,7 +306,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry2_2b">
+                  <object class="GtkEntry" id="clients_entry2_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -317,7 +317,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label2_1b">
+                  <object class="GtkLabel" id="clients_label2_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID</property>
@@ -328,7 +328,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="klienci_comboboxtext2_1b">
+                  <object class="GtkComboBoxText" id="clients_comboboxtext2_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -347,7 +347,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="klienci_label_page2">
+              <object class="GtkLabel" id="clients_label_page2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">EDYTUJ DANE KLIENTA</property>
@@ -358,13 +358,13 @@
               </packing>
             </child>
             <child>
-              <object class="GtkGrid" id="klienci_grid_page3">
+              <object class="GtkGrid" id="clients_grid_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="row_homogeneous">True</property>
                 <property name="column_homogeneous">True</property>
                 <child>
-                  <object class="GtkLabel" id="klienci_label3_4a">
+                  <object class="GtkLabel" id="clients_label3_4a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NUMER TELEFONU</property>
@@ -376,7 +376,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label3_3a">
+                  <object class="GtkLabel" id="clients_label3_3a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">NAZWISKO</property>
@@ -387,7 +387,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label3_2a">
+                  <object class="GtkLabel" id="clients_label3_2a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">IMIĘ</property>
@@ -398,7 +398,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry3_4b">
+                  <object class="GtkEntry" id="clients_entry3_4b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">digits</property>
@@ -409,7 +409,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry3_3b">
+                  <object class="GtkEntry" id="clients_entry3_3b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -420,7 +420,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="klienci_entry3_2b">
+                  <object class="GtkEntry" id="clients_entry3_2b">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="input_purpose">alpha</property>
@@ -431,7 +431,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="klienci_label3_1a">
+                  <object class="GtkLabel" id="clients_label3_1a">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">ID</property>
@@ -442,12 +442,12 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="klienci_button3_5b">
+                  <object class="GtkButton" id="clients_button3_5b">
                     <property name="label" translatable="yes">SZUKAJ</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
-                    <signal name="clicked" handler="klienci_button3_5b_clicked_cb" swapped="no"/>
+                    <signal name="clicked" handler="clients_button3_5b_clicked_cb" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
@@ -455,7 +455,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkComboBoxText" id="klienci_comboboxtext3_1b">
+                  <object class="GtkComboBoxText" id="clients_comboboxtext3_1b">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
@@ -474,7 +474,7 @@
               </packing>
             </child>
             <child type="tab">
-              <object class="GtkLabel" id="klienci_label_page3">
+              <object class="GtkLabel" id="clients_label_page3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">WYSZUKAJ KLIENTA</property>
