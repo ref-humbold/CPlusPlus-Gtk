@@ -1,0 +1,3 @@
+#! /bin/sh
+
+java -jar $(dirname $0)/apolang-2018.11.22.jar $@
