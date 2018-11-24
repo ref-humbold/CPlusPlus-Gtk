@@ -9,7 +9,7 @@ let buttons = [Gui.Btn {xc=Gui.ratio 1 2; yc=Gui.ratio 3 4;
                         label="WYJSCIE"; colour=Graphics.magenta}];;
 
 let texts = [Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 7 8;
-                      label="GOMOKU!!!"; colour=Graphics.green};
+                      label=Gui.window_title; colour=Graphics.green};
              Gui.Txt {xc=Gui.ratio 1 2; yc=Gui.ratio 1 8;
                       label="(C) 2017 RAFAL KALETA, MIT LICENSE"; colour=Graphics.black}];;
 

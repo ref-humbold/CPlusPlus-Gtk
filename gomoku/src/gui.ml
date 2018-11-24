@@ -6,6 +6,8 @@ type text_t = Txt of {xc: int; yc: int;
 
 let window_size = 800;;
 
+let window_title = "GOMOKU!!!";;
+
 let ratio n d =
   let rec gcd a b =
     if a = 0
@@ -24,6 +26,7 @@ let center_text (Txt {xc; yc; label; _}) =
 let new_window () =
   begin
     Graphics.open_graph @@ " " ^ (string_of_int window_size) ^ "x" ^ (string_of_int window_size);
+    Graphics.set_window_title window_title;
     Graphics.set_text_size 15
   end;;
 

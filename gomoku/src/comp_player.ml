@@ -11,7 +11,7 @@ type move_t =
   | Comp_make_more of int * int
   | Comp_make_four of int * int
   | Human_make_four of int * int
-  | Any
+  | Any;;
 
 let compare_moves m1 m2 =
   match (m1, m2) with
@@ -21,29 +21,31 @@ let compare_moves m1 m2 =
   | (_, _) -> compare m1 m2;;
 
 let extract_sum_diag sum size gameboard =
-  let rec esd_ i g acc =
+  let rec extract_sum i g acc =
     match g with
     | [] -> List.rev acc
     | rw::rws ->
       if sum - i < 0 || sum - i > size + 1
-      then esd_ (i + 1) rws acc
-      else esd_ (i + 1) rws ((List.nth rw @@ sum - i)::acc) in
-  esd_ 0 gameboard []
+      then extract_sum (i + 1) rws acc
+      else extract_sum (i + 1) rws @@ (List.nth rw (sum - i))::acc in
+  extract_sum 0 gameboard []
 and extract_diff_diag diff size gameboard =
-  let rec edd_ i g acc =
+  let rec extract_diff i g acc =
     match g with
     | [] -> List.rev acc
     | rw::rws ->
       if i - diff < 0 || i - diff > size + 1
-      then edd_ (i + 1) rws acc
-      else edd_ (i + 1) rws ((List.nth rw @@ i-diff)::acc) in
-  edd_ 0 gameboard []
+      then extract_diff (i + 1) rws acc
+      else extract_diff (i + 1) rws @@ (List.nth rw (i - diff))::acc in
+  extract_diff 0 gameboard []
 
 let move_queue = ref [Any];;
 let last_move = ref (0, 0);;
 
-let get_row row gameboard = (List.nth gameboard row, Row row, 0)
-and get_column col gameboard = (List.map (fun lst -> List.nth lst col) gameboard, Column col, 0)
+let get_row row gameboard =
+  (List.nth gameboard row, Row row, 0)
+and get_column col gameboard =
+  (List.map (fun lst -> List.nth lst col) gameboard, Column col, 0)
 and get_sum_diag size sum gameboard =
   let beg_row = if sum <= size + 1 then 0 else sum - size - 1 in
   (extract_sum_diag sum size gameboard, Sum sum, beg_row)
@@ -60,8 +62,8 @@ let compare_positions (n1, p1) (n2, p2) =
   else -nc;;
 
 let count_points lst =
-  let rec cnt num lst_ =
-    match lst_ with
+  let rec cnt num lst' =
+    match lst' with
     | (x1, _)::((x2, _)::_ as xt) ->
       if x1 = x2
       then cnt (num + 1) xt
@@ -71,8 +73,8 @@ let count_points lst =
   List.sort compare_positions @@ cnt 1 @@ List.sort compare lst;;
 
 let count_nums lst =
-  let rec cnt num lst_ =
-    match lst_ with
+  let rec cnt num lst' =
+    match lst' with
     | x1::(x2::_ as xt) ->
       if x1 = x2
       then cnt (num + 1) xt
@@ -83,8 +85,9 @@ let count_nums lst =
 
 let get_empties size gameboard =
   let neibs r c =
-    let prv = List.nth gameboard (r - 1) and same = List.nth gameboard r
-    and nxt = List.nth gameboard (r + 1) in
+    let prv = List.nth gameboard (r - 1)
+    and nxt = List.nth gameboard (r + 1)
+    and same = List.nth gameboard r in
     [List.nth prv (c - 1);
      List.nth prv c;
      List.nth prv (c + 1);
@@ -101,16 +104,21 @@ let get_empties size gameboard =
     if ix >= 1 && ix <= size
     then
       match elem with
-      | None -> if List.exists check @@ neibs rownum ix then ix else -1
+      | None ->
+        if List.exists check @@ neibs rownum ix
+        then ix
+        else -1
       | Some _ -> -1
     else -1 in
   let map_row f rownum lst =
-    let rec map_row_i ix lst_ =
-      match lst_ with
+    let rec map_row_i ix lst' =
+      match lst' with
       | [] -> []
       | x::xs ->
         let res = (f ix rownum x) in
-        if res > 0 then (rownum, res)::(map_row_i (ix+1) xs) else map_row_i (ix+1) xs in
+        if res > 0
+        then (rownum, res)::(map_row_i (ix + 1) xs)
+        else map_row_i (ix + 1) xs in
     map_row_i 0 lst in
   let row_empt ix row =
     if ix >= 1 && ix <= size
@@ -248,40 +256,42 @@ let heuristic_move size gameboard =
     if f xm xa
     then (pm, xm)
     else if xm = xa
-    then if Random.bool ()
+    then
+      if Random.bool ()
       then (pm, xm)
       else (pa, xa)
     else (pa, xa) in
-  let rec fwd_move level a b player gmbd =
+  let rec forward_move level a b player gameboard' =
     if level = 0
-    then ((0, 0), heura size gmbd)
+    then ((0, 0), heura size gameboard')
     else
-      let empty_pos = get_empties size gmbd in
-      let rec find_res a_ b_ lst acc =
+      let empty_pos = get_empties size gameboard' in
+      let rec find_res a' b' lst acc =
         match lst with
         | [] -> acc
         | p::ps ->
-          let next_bd = Board.set_move p player gmbd in
-          let chd = (p, snd (fwd_move (level - 1) a_ b_ (Board.opponent player) next_bd)) in
+          let next_gameboard = Board.set_move p player gameboard' in
+          let next = forward_move (level - 1) a' b' (Board.opponent player) next_gameboard in
+          let nacc = (p, snd next) in
           match player with
           | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
           | Board.Comp ->
-            let nacc = (cmp (>) chd acc) in
-            let na_ = max (snd nacc) a_ in
-            if na_ >= b_
-            then nacc
-            else find_res na_ b_ ps nacc
+            let new_acc = cmp (>) nacc acc in
+            let new_a = max (snd new_acc) a' in
+            if new_a >= b'
+            then new_acc
+            else find_res new_a b' ps new_acc
           | Board.Human ->
-            let nacc = (cmp (<) chd acc) in
-            let nb_ = min (snd nacc) b_ in
-            if a_ >= nb_
-            then nacc
-            else find_res a_ nb_ ps nacc in
+            let new_acc = cmp (<) nacc acc in
+            let new_b = min (snd new_acc) b' in
+            if a' >= new_b
+            then new_acc
+            else find_res a' new_b ps new_acc in
       match player with
       | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
       | Board.Comp -> find_res a b empty_pos ((0, 0), neg_infinity)
       | Board.Human -> find_res a b empty_pos ((0, 0), infinity) in
-  fst @@ fwd_move 4 neg_infinity infinity Board.Comp gameboard;;
+  fst @@ forward_move 4 neg_infinity infinity Board.Comp gameboard;;
 
 let analyze size human_move gameboard =
   let anl player mv =

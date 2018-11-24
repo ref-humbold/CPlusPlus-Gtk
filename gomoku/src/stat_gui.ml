@@ -10,7 +10,11 @@ let rec check_click () =
   if Gui.check_button_clicked mouse_pos @@ fst buttons
   then 0
   else if Gui.check_button_clicked mouse_pos @@ snd buttons
-  then begin Stat.clear (); 1 end
+  then
+    begin
+      Stat.clear ();
+      1
+    end
   else check_click ();;
 
 let display () =

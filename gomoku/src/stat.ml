@@ -10,19 +10,19 @@ let filename = ".gomoku.stat";;
 let str_case () = if Random.bool () then 'A' else 'a';;
 
 let encode_num num =
-  let enc num_ res =
-    if num_ = 0
+  let enc num' res =
+    if num' = 0
     then String.make 1 @@ str_case ()
     else
-      let rec enc' num_' res' =
-        if num_' = 0
+      let rec enc' num'' res' =
+        if num'' = 0
         then res'
         else
-          let n = num_' mod 10 in
+          let n = num'' mod 10 in
           let base = Char.code @@ str_case () in
           let newres = (String.make 1 @@ Char.chr @@ 2 * n + base) ^ res' in
-          enc' (num_' / 10) newres in
-      enc' num_ res in
+          enc' (num'' / 10) newres in
+      enc' num' res in
   enc num "";;
 
 let encode stat_rcd =
@@ -39,11 +39,11 @@ let encode stat_rcd =
   cncmap (stat_to_list stat_rcd) "";;
 
 let decode str =
-  let rec split str_ i act res =
-    if i = String.length str_
+  let rec split str' i act res =
+    if i = String.length str'
     then (List.rev act)::res
     else
-      let cd = (Char.code str_.[i]) mod 32 in
+      let cd = (Char.code str'.[i]) mod 32 in
       let cd' =
         if cd mod 2 = 1 && cd < 20
         then Some (cd / 2)
@@ -51,10 +51,10 @@ let decode str =
       match cd' with
       | None ->
         ( match act with
-          | [] -> split str_ (i + 1) [] res
-          | _ -> split str_ (i + 1) [] @@ (List.rev act)::res
+          | [] -> split str' (i + 1) [] res
+          | _ -> split str' (i + 1) [] @@ (List.rev act)::res
         )
-      | Some x -> split str_ (i + 1) (x::act) res in
+      | Some x -> split str' (i + 1) (x::act) res in
   let rec make_int res lst =
     match lst with
     | [] -> res
