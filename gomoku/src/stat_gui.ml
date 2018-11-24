@@ -14,29 +14,29 @@ let rec check_click () =
   else check_click ();;
 
 let display () =
-  let stat_lst = Stat.read () in
+  let stat_rcd = Stat.read () in
   let print_info xc yc text =
     Gui.draw_text @@ Gui.Txt {xc=xc; yc=yc; label=text; colour=Graphics.black} in
-  match stat_lst with
-  | [hmoves; cmoves; totwon; totlost; tothmoves; totcmoves; totopen] ->
+  match stat_rcd with
+  | Stat.St {hmoves; cmoves; won; lost; thmoves; tcmoves; opened} ->
     begin
       Gui.clear_window Graphics.yellow;
       Graphics.set_color Graphics.black;
       print_info (Gui.ratio 1 2) (Gui.ratio 14 16) "STATYSTYKI:";
       print_info (Gui.ratio 1 2) (Gui.ratio 12 16)
-        ("LICZBA URUCHOMIEN PROGRAMU: " ^ (string_of_int totopen));
+        ("LICZBA URUCHOMIEN PROGRAMU: " ^ (string_of_int opened));
       print_info (Gui.ratio 1 2) (Gui.ratio 11 16)
-        ("LICZBA ROZEGRANYCH GIER: " ^ (string_of_int (totwon + totlost)));
+        ("LICZBA ROZEGRANYCH GIER: " ^ (string_of_int (won + lost)));
       print_info (Gui.ratio 1 4) (Gui.ratio 10 16)
-        ("WYGRANYCH: " ^ (string_of_int totwon));
+        ("WYGRANYCH: " ^ (string_of_int won));
       print_info (Gui.ratio 3 4) (Gui.ratio 10 16)
-        ("PRZEGRANYCH: " ^ (string_of_int totlost));
+        ("PRZEGRANYCH: " ^ (string_of_int lost));
       print_info (Gui.ratio 1 2) (Gui.ratio 9 16)
-        ("CALKOWITA LICZBA RUCHOW: " ^ (string_of_int (tothmoves + totcmoves)));
+        ("CALKOWITA LICZBA RUCHOW: " ^ (string_of_int (thmoves + tcmoves)));
       print_info (Gui.ratio 1 4) (Gui.ratio 8 16)
-        ("TWOICH: " ^ (string_of_int tothmoves));
+        ("TWOICH: " ^ (string_of_int thmoves));
       print_info (Gui.ratio 3 4) (Gui.ratio 8 16)
-        ("KOMPUTERA: " ^ (string_of_int totcmoves));
+        ("KOMPUTERA: " ^ (string_of_int tcmoves));
       print_info (Gui.ratio 1 2) (Gui.ratio 6 16)
         ("LICZBA RUCHOW W OSTATNIEJ GRZE: "^(string_of_int (hmoves + cmoves)));
       print_info (Gui.ratio 1 4) (Gui.ratio 5 16)
@@ -45,5 +45,4 @@ let display () =
         ("KOMPUTERA: " ^ (string_of_int cmoves));
       Gui.draw_button @@ fst buttons;
       Gui.draw_button @@ snd buttons
-    end
-  | _ -> raise @@ Stat.Stat_format_error "Stat_gui.display";;
+    end;;
