@@ -31,7 +31,7 @@ let norm size (x, y) =
 let display size =
   let pos = get_lines size
   and (pbeg, pend) = get_borders size in
-  let rec draw_line width pos =
+  let draw_line width pos =
     begin
       Graphics.set_line_width width;
       Graphics.set_color Graphics.black;
@@ -52,8 +52,7 @@ let draw_stone size player (row, col) =
   let stone_colour =
     match player with
     | Board.Human -> Graphics.white
-    | Board.Comp -> Graphics.black
-    | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
+    | Board.Comp -> Graphics.black in
   let px = endline + col * step
   and py = endline + row * step in
   begin
@@ -71,8 +70,7 @@ let return winner =
   let print_winner () =
     match winner with
     | Board.Human -> Gui.draw_text @@ fst texts
-    | Board.Comp -> Gui.draw_text @@ snd texts
-    | Board.Blocked -> raise @@ Board.Incorrect_player "Game_gui.draw_stone" in
+    | Board.Comp -> Gui.draw_text @@ snd texts in
   let rec ret () =
     let mouse_pos = Gui.mouse_click () in
     if Gui.check_button_clicked mouse_pos button

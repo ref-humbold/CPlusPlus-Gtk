@@ -84,47 +84,47 @@ let count_nums lst =
   List.sort compare @@ cnt 1 @@ List.sort compare lst;;
 
 let get_empties size gameboard =
-  let neibs r c =
-    let prv = List.nth gameboard (r - 1)
-    and nxt = List.nth gameboard (r + 1)
-    and same = List.nth gameboard r in
-    [List.nth prv (c - 1);
-     List.nth prv c;
-     List.nth prv (c + 1);
-     List.nth same (c - 1);
-     List.nth same (c + 1);
-     List.nth nxt (c - 1);
-     List.nth nxt c;
-     List.nth nxt (c + 1)] in
-  let check x =
-    match x with
-    | Some Board.Human | Some Board.Comp -> true
-    | Some Board.Blocked | None -> false in
-  let is_empt ix rownum elem =
-    if ix >= 1 && ix <= size
+  let neighbours row col =
+    let prv = List.nth gameboard (row - 1)
+    and nxt = List.nth gameboard (row + 1)
+    and same = List.nth gameboard row in
+    [List.nth prv (col - 1);
+     List.nth prv col;
+     List.nth prv (col + 1);
+     List.nth same (col - 1);
+     List.nth same (col + 1);
+     List.nth nxt (col - 1);
+     List.nth nxt col;
+     List.nth nxt (col + 1)] in
+  let check field =
+    match field with
+    | Some (Some _) -> true
+    | Some None | None -> false in
+  let empty i row_i field =
+    if i >= 1 && i <= size
     then
-      match elem with
+      match field with
       | None ->
-        if List.exists check @@ neibs rownum ix
-        then ix
+        if List.exists check @@ neighbours row_i i
+        then i
         else -1
       | Some _ -> -1
     else -1 in
-  let map_row f rownum lst =
-    let rec map_row_i ix lst' =
-      match lst' with
+  let map_row f row_i row =
+    let rec mapi_row i row' =
+      match row' with
       | [] -> []
       | x::xs ->
-        let res = (f ix rownum x) in
+        let res = f i row_i x in
         if res > 0
-        then (rownum, res)::(map_row_i (ix + 1) xs)
-        else map_row_i (ix + 1) xs in
-    map_row_i 0 lst in
-  let row_empt ix row =
-    if ix >= 1 && ix <= size
-    then map_row is_empt ix row
+        then (row_i, res)::(mapi_row (i + 1) xs)
+        else mapi_row (i + 1) xs in
+    mapi_row 0 row in
+  let row_empty row_i row =
+    if row_i >= 1 && row_i <= size
+    then map_row empty row_i row
     else [] in
-  List.concat @@ List.mapi row_empt gameboard;;
+  List.concat @@ List.mapi row_empty gameboard;;
 
 let check_win_situation size player (row, col) gameboard =
   let pos_by dir num =
@@ -136,31 +136,31 @@ let check_win_situation size player (row, col) gameboard =
   let rec check acc (lst, dir, numrow) =
     match lst with
     | None::Some t1::Some t2::Some t3::Some t4::ps when
-        player = t1 && t1 = t2 && t2 = t3 && t3 = t4 ->
+        Some player = t1 && t1 = t2 && t2 = t3 && t3 = t4 ->
       check ((pos_by dir numrow, 5)::acc) (ps, dir, numrow + 5)
     | Some t0::None::Some t2::Some t3::Some t4::ps when
-        player = t0 && t0 = t2 && t2 = t3 && t3 = t4 ->
+        Some player = t0 && t0 = t2 && t2 = t3 && t3 = t4 ->
       check ((pos_by dir (numrow + 1), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::None::Some t3::Some t4::ps when
-        player = t0 && t0 = t1 && t1 = t3 && t3 = t4 ->
+        Some player = t0 && t0 = t1 && t1 = t3 && t3 = t4 ->
       check ((pos_by dir (numrow + 2), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::Some t2::None::Some t4::ps when
-        player = t0 && t0 = t1 && t1 = t2 && t2 = t4 ->
+        Some player = t0 && t0 = t1 && t1 = t2 && t2 = t4 ->
       check ((pos_by dir (numrow + 3), 5)::acc) (ps, dir, numrow + 5)
     | Some t0::Some t1::Some t2::Some t3::None::ps when
-        player = t0 && t0 = t1 && t1 = t2 && t2 = t3 ->
+        Some player = t0 && t0 = t1 && t1 = t2 && t2 = t3 ->
       check ((pos_by dir (numrow + 4), 5)::acc) (ps, dir, numrow + 5)
     | None::Some t1::Some t2::Some t3::ps when
-        player = t1 && t1 = t2 && t2 = t3 ->
+        Some player = t1 && t1 = t2 && t2 = t3 ->
       check ((pos_by dir numrow, 4)::acc) (ps, dir, numrow + 4)
     | Some t0::None::Some t2::Some t3::ps when
-        player = t0 && t0 = t2 && t2 = t3 ->
+        Some player = t0 && t0 = t2 && t2 = t3 ->
       check ((pos_by dir (numrow + 1), 4)::acc) (ps, dir, numrow + 4)
     | Some t0::Some t1::None::Some t3::ps when
-        player = t0 && t0 = t1 && t1 = t3 ->
+        Some player = t0 && t0 = t1 && t1 = t3 ->
       check ((pos_by dir ( + 2), 4)::acc) (ps, dir, numrow + 4)
     | Some t0::Some t1::Some t2::None::ps when
-        player = t0 && t0 = t1 && t1 = t2 ->
+        Some player = t0 && t0 = t1 && t1 = t2 ->
       check ((pos_by dir (numrow + 3), 4)::acc) (ps, dir, numrow + 4)
     | _::ps -> check acc (ps, dir, numrow + 1)
     | [] -> acc in
@@ -174,11 +174,13 @@ let check_board_situation size player gameboard =
   let rec check acc lst =
     match lst with
     | Some t0::Some t1::Some t2::Some t3::Some t4::ps when
-        player = t0 && t0 = t1 && t1 = t2 && t2 = t3 && t3 = t4 -> check (5::acc) ps
+        Some player = t0 && t0 = t1 && t1 = t2 && t2 = t3 && t3 = t4 -> check (5::acc) ps
     | Some t0::Some t1::Some t2::Some t3::ps when
-        player = t0 && t0 = t1 && t1 = t2 && t2 = t3 -> check (4::acc) ps
-    | Some t0::Some t1::Some t2::ps when player = t0 && t0 = t1 && t1 = t2 -> check (3::acc) ps
-    | Some t0::Some t1::ps when player = t0 && t0 = t1 -> check (2::acc) ps
+        Some player = t0 && t0 = t1 && t1 = t2 && t2 = t3 -> check (4::acc) ps
+    | Some t0::Some t1::Some t2::ps when
+        Some player = t0 && t0 = t1 && t1 = t2 -> check (3::acc) ps
+    | Some t0::Some t1::ps when
+        Some player = t0 && t0 = t1 -> check (2::acc) ps
     | _::ps -> check acc ps
     | [] -> acc in
   let get_rows g = g
@@ -207,7 +209,6 @@ let numbered player situation =
     ( match player with
       | Board.Human -> Human_make_more (p1, p2)
       | Board.Comp -> Comp_make_more (p1, p2)
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.numbered"
     )
   | _ -> Any;;
 
@@ -219,7 +220,6 @@ let make_five player situation =
     ( match player with
       | Board.Human -> Human_make_five (p1, p2)
       | Board.Comp -> Comp_make_five (p1, p2)
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.make_five"
     )
   | [] -> Any;;
 
@@ -231,7 +231,6 @@ let make_four player situation =
     ( match player with
       | Board.Human -> Human_make_four (p1, p2)
       | Board.Comp -> Comp_make_four (p1, p2)
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.make_four"
     )
   | [] -> Any;;
 
@@ -243,11 +242,11 @@ let heura size gameboard =
     then []
     else
       let for_comp =
-        try List.find (fun e -> fst e = n) comp_sit with
-        | Not_found -> (n, 0) in
+        try List.find (fun e -> fst e = n) comp_sit
+        with Not_found -> (n, 0) in
       let for_human =
-        try List.find (fun e -> fst e = n) human_sit with
-        | Not_found -> (n, 0) in
+        try List.find (fun e -> fst e = n) human_sit
+        with Not_found -> (n, 0) in
       ((snd for_human) - (snd for_comp))::(diffs (n - 1)) in
   List.fold_right (fun e a -> (float_of_int e) +. 1.5 *. a) (diffs 5) 0.0;;
 
@@ -274,7 +273,6 @@ let heuristic_move size gameboard =
           let next = forward_move (level - 1) a' b' (Board.opponent player) next_gameboard in
           let nacc = (p, snd next) in
           match player with
-          | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
           | Board.Comp ->
             let new_acc = cmp (>) nacc acc in
             let new_a = max (snd new_acc) a' in
@@ -288,7 +286,6 @@ let heuristic_move size gameboard =
             then new_acc
             else find_res a' new_b ps new_acc in
       match player with
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Comp_player.heuristic_move"
       | Board.Comp -> find_res a b empty_pos ((0, 0), neg_infinity)
       | Board.Human -> find_res a b empty_pos ((0, 0), infinity) in
   fst @@ forward_move 4 neg_infinity infinity Board.Comp gameboard;;

@@ -114,7 +114,6 @@ let update_data winner human_moves comp_moves =
                      thmoves=(thmoves + human_moves);
                      tcmoves=(tcmoves + comp_moves);
                      opened}
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Stat.end_game"
     );;
 
 let prepare_data () =

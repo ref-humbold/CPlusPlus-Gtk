@@ -24,13 +24,13 @@ let win gameboard size player (row, col) =
   let rec check lst =
     match lst with
     | None::Some t1::Some t2::Some t3::Some t4::Some t5::None::_ when
-        player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
+        Some player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 -> true
     | Some t0::Some t1::Some t2::Some t3::Some t4::Some t5::None::_ when
-        player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
+        Some player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 -> true
     | None::Some t1::Some t2::Some t3::Some t4::Some t5::Some t6::_ when
-        player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
+        Some player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t6 -> true
     | Some t0::Some t1::Some t2::Some t3::Some t4::Some t5::Some t6::_ when
-        player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
+        Some player = t1 && t1 = t2 && t2 = t3 && t3 = t4 && t4 = t5 && t1 <> t0 && t1 <> t6 -> true
     | _::ps -> check ps
     | [] -> false in
   let get_all row' col' gameboard' =
@@ -61,13 +61,11 @@ let play_game size gameboard =
     let move_pos =
       match player with
       | Board.Human -> Human_player.move size gameboard'
-      | Board.Comp -> Comp_player.move last size gameboard'
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
+      | Board.Comp -> Comp_player.move last size gameboard' in
     let move_nums =
       match player with
       | Board.Human -> (mvh + 1, mvc)
-      | Board.Comp -> (mvh, mvc + 1)
-      | Board.Blocked -> raise @@ Board.Incorrect_player "Game.play_game" in
+      | Board.Comp -> (mvh, mvc + 1) in
     let new_gameboard = Board.set_move move_pos player gameboard' in
     begin
       Game_gui.draw_stone size player move_pos;
