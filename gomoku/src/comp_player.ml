@@ -241,13 +241,11 @@ let heura size gameboard =
     if n = 0
     then []
     else
-      let for_comp =
-        try List.find (fun e -> fst e = n) comp_sit
-        with Not_found -> (n, 0) in
-      let for_human =
-        try List.find (fun e -> fst e = n) human_sit
-        with Not_found -> (n, 0) in
-      ((snd for_human) - (snd for_comp))::(diffs (n - 1)) in
+      let for_player sit =
+        try List.find (fun e -> fst e = n) sit with
+        | Not_found -> (n, 0) in
+      let sit_diff = (snd @@ for_player human_sit) - (snd @@ for_player comp_sit) in
+      sit_diff::(diffs @@ n - 1) in
   List.fold_right (fun e a -> (float_of_int e) +. 1.5 *. a) (diffs 5) 0.0;;
 
 let heuristic_move size gameboard =
@@ -291,10 +289,10 @@ let heuristic_move size gameboard =
   fst @@ forward_move 4 neg_infinity infinity Board.Comp gameboard;;
 
 let analyze size human_move gameboard =
-  let anl player mv =
+  let analyze' player mv =
     let sit = check_win_situation size player mv gameboard in
     [numbered player sit; make_five player sit; make_four player sit] in
-  List.sort compare_moves @@ (anl Board.Human human_move)@(anl Board.Comp (!last_move));;
+  List.sort compare_moves @@ (analyze' Board.Human human_move)@(analyze' Board.Comp (!last_move));;
 
 let clear () =
   begin
@@ -336,7 +334,7 @@ let move human_move size gameboard =
     if Board.is_free pos gameboard
     then pos
     else make_move () in
-  let move_pos = make_move() in
+  let move_pos = make_move () in
   begin
     last_move := move_pos;
     move_pos
