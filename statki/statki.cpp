@@ -157,7 +157,9 @@ int main()
             break;
         }
 
-        check_shot(v, coef);
+        if(check_shot(v, coef))
+            ++hits;
+
         ++shots;
         std::cout << "\tPLANSZA:\n";
         board(v, true);
