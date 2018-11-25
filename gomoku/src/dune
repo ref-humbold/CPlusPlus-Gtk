@@ -1,0 +1,7 @@
+(executable
+    (name gomoku)
+    (public_name gomoku)
+    (libraries graphics)
+    (modes native)
+    (flags (-w A))
+)
