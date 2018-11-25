@@ -54,7 +54,7 @@ ARENA_PTR arena_list = NULL;
  */
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-// region ogólne funkcje pomocnicze
+#pragma region common helper functions
 
 /**
  * Funkcja określająca faktyczny rozmiar pamięci do przydzielenia.
@@ -129,10 +129,8 @@ PLACE find_place(void * ptr)
     return mp;
 }
 
-// endregion
-
-// region funkcje wypisujące pamięć
-
+#pragma endregion
+#pragma region print memory
 /**
  * Funkcja wypisująca na standardowe wyjście całą zawartość pamięci.
  */
@@ -222,9 +220,8 @@ void print_free_mem_fcn()
         printf("-----------------------\n");
 }
 
-// endregion
-
-// region operujące na pamięci funkcje pomocnicze
+#pragma endregion
+#pragma region memory helper functions
 
 /**
  * Funkcja zapisująca pola struktury bloku.
@@ -498,9 +495,8 @@ void * resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_pt
     return (void *)rs_bl_ptr + 32;
 }
 
-// endregion
-
-// region funkcje operujące na pamięci
+#pragma endregion
+#pragma region memory functions
 
 /**
  * Funkcja zwalniająca pamięć spod danego wskaźnika.
@@ -725,9 +721,8 @@ void * realloc_fcn(void * ptr, size_t size)
     return ret;
 }
 
-// endregion
-
-// region funkcje zewnętrzne
+#pragma endregion
+#pragma region public functions
 
 void * malloc(size_t size)
 {
