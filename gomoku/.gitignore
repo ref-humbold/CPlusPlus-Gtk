@@ -1,6 +1,7 @@
 .gomoku.stat
 
-# OCaml, OCamlbuild
+# OCaml, Dune
 _build
-*.byte
-*.native
+**/.merlin
+graphics.install
+gomoku

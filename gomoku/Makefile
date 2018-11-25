@@ -1,18 +1,16 @@
-OCB = ocamlbuild
-OCBFLAGS = -use-ocamlfind -classic-display
-BUILD = $(OCB) $(OCBFLAGS)
+DUNE = dune
+GOMOKU = _build/install/default/bin/gomoku
 
 .PHONY : all clean refresh
 
-all : gomoku.byte gomoku.native
+all : gomoku
 
 clean :
-	$(OCB) -clean
+	rm -f gomoku
+	$(DUNE) clean
 
 refresh : clean all
 
-gomoku.byte :
-	$(BUILD) gomoku.byte
-
-gomoku.native :
-	$(BUILD) gomoku.native
+gomoku :
+	$(DUNE) build
+	@ln -s $(GOMOKU)
