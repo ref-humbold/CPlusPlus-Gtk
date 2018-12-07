@@ -1,7 +1,0 @@
-.gomoku.stat
-
-# OCaml, Dune
-_build
-gomoku
-*.install
-**/.merlin
