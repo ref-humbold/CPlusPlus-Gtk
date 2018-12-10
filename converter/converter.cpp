@@ -1,12 +1,15 @@
 #include <cstdlib>
 #include <cmath>
+#include <algorithm>
 #include <exception>
 #include <iostream>
+#include <numeric>
 #include <stdexcept>
-#include <algorithm>
 #include <string>
 #include <vector>
 #include <gtkmm.h>
+
+using namespace std::string_literals;
 
 class converter_exception : public std::logic_error
 {
@@ -239,7 +242,7 @@ void gtk_app::convert_button_clicked_cb()
     }
     catch(const converter_exception & e)
     {
-        result = "ERROR: " + std::string(e.what());
+        result = "ERROR: "s + e.what();
     }
 
     entry_B1->set_text("");

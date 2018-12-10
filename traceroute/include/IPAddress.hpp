@@ -2,10 +2,10 @@
 #define _IP_ADDRESS_HPP_
 
 #include <cstdlib>
-#include <exception>
-#include <stdexcept>
 #include <algorithm>
+#include <exception>
 #include <numeric>
+#include <stdexcept>
 #include <string>
 #include <tuple>
 #include <vector>

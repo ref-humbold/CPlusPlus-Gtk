@@ -1,9 +1,9 @@
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <stdexcept>
-#include <algorithm>
 #include <vector>
 
 void next_wyg(std::vector<long long int> & wyg, bool reset)
