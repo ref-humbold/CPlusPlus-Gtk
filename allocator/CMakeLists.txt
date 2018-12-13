@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 project(memalc VERSION 1.0)
-set(CMAKE_BUILD_TYPE Release)
 
 # COMPILER
 set(CMAKE_C_STANDARD 99)
