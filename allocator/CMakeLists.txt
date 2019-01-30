@@ -17,10 +17,10 @@ set(MEMALC_SOURCES "${PROJECT_SOURCE_DIR}/src/memalc.c")
 set(PTHREADSEM_SOURCES "${PROJECT_SOURCE_DIR}/src/pthreadsem.c")
 
 # OUTPUT
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 add_library(memalc SHARED ${MEMALC_SOURCES})
 target_link_libraries(memalc Threads::Threads)
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 add_library(pthreadsem STATIC ${PTHREADSEM_SOURCES})
 target_link_libraries(pthreadsem Threads::Threads)

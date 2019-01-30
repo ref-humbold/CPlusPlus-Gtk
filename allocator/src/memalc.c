@@ -6,9 +6,7 @@
 #define ARENA_PTR ARENA *
 #define BLOCK_PTR BLOCK *
 
-/**
- * Struktura informacyjna bloku.
- */
+/// Struktura informacyjna bloku
 struct block
 {
     ssize_t length;
@@ -18,9 +16,7 @@ struct block
     BLOCK_PTR prev_free;
 } __attribute__((aligned(16)));
 
-/**
- * Struktura informacyjna areny (obszaru).
- */
+/// Struktura informacyjna areny (obszaru)
 struct arena
 {
     ssize_t length;
@@ -30,28 +26,20 @@ struct arena
     BLOCK_PTR freeblock_list;
 } __attribute__((aligned(16)));
 
-/**
- * Struktura informująca o arenie i bloku pamieci.
- */
+/// Struktura informująca o arenie i bloku pamieci
 struct memory_place
 {
     ARENA_PTR arena;
     BLOCK_PTR block;
 };
 
-/**
- * Ilość wolnej przestrzeni.
- */
+/// Ilość wolnej przestrzeni
 long long int free_space = 0;
 
-/**
- * Wskaźnik na listę aren.
- */
+/// Wskaźnik na listę aren.
 ARENA_PTR arena_list = NULL;
 
-/**
- * Mutex.
- */
+/// Mutex
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 #pragma region common helper functions
@@ -131,6 +119,7 @@ PLACE find_place(void * ptr)
 
 #pragma endregion
 #pragma region print memory
+
 /**
  * Funkcja wypisująca na standardowe wyjście całą zawartość pamięci.
  */
@@ -377,6 +366,10 @@ void * alloc_to_block(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, ssize_t ln, int will_b
 void * alloc_to_arena(ARENA_PTR ar_back_ptr, ARENA_PTR ar_forw_ptr, ssize_t ln, int alc_block)
 {
     void * adr = mmap(NULL, ln, (PROT_READ | PROT_WRITE), (MAP_ANONYMOUS | MAP_PRIVATE), -1, 0);
+
+    if(adr == MAP_FAILED)
+        return MAP_FAILED;
+
     ARENA_PTR ar_ptr = adr;
 
     while(ar_back_ptr != NULL && ar_back_ptr > ar_ptr)
@@ -504,15 +497,26 @@ void * resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_pt
  */
 void free_fcn(void * ptr)
 {
-    if(ptr == NULL || ptr < (void *)arena_list)
+    if(ptr == NULL)
         return;
+
+    if(ptr < (void *)arena_list)
+    {
+        errno = EINVAL;
+
+        return;
+    }
 
     PLACE mp = find_place(ptr);
     ARENA_PTR ar_ptr = mp.arena;
     BLOCK_PTR bl_ptr = mp.block;
 
     if(ar_ptr == NULL && bl_ptr == NULL)
+    {
+        errno = EINVAL;
+
         return;
+    }
 
     if(bl_ptr == NULL)
     {
@@ -585,7 +589,6 @@ void * malloc_fcn(size_t size)
                && absolute(ar_forw_ptr->length) >= norm_size)
             {
                 ar_forw_ptr->length = absolute(ar_forw_ptr->length);
-
                 free_space -= absolute(ar_forw_ptr->length);
 
                 return (void *)ar_forw_ptr + 32;
@@ -619,6 +622,10 @@ void * malloc_fcn(size_t size)
         }
 
         void * adr = alloc_to_arena(ar_back_ptr, ar_forw_ptr, treshold, 1);
+
+        if(adr == MAP_FAILED)
+            return MAP_FAILED;
+
         ARENA_PTR ar_ptr = adr - 32;
         BLOCK_PTR bl_str = adr;
 
@@ -682,6 +689,13 @@ void * realloc_fcn(void * ptr, size_t size)
         return NULL;
     }
 
+    if(ptr < (void *)arena_list)
+    {
+        errno = EINVAL;
+
+        return MAP_FAILED;
+    }
+
     void * ret;
     ssize_t norm_size = normalize(size);
     PLACE mp = find_place(ptr);
@@ -689,7 +703,11 @@ void * realloc_fcn(void * ptr, size_t size)
     BLOCK_PTR bl_ptr = mp.block;
 
     if(ar_ptr == NULL && bl_ptr == NULL)
-        return NULL;
+    {
+        errno = EINVAL;
+
+        return MAP_FAILED;
+    }
 
     if(bl_ptr == NULL)
     {
