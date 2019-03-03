@@ -1,2 +1,2 @@
 # Projekty
-My own small home or university sofware projects. 
+My own small sofware projects created at home or at the university.
