@@ -12,7 +12,8 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
-set(SOURCES "converter.cpp")
+include_directories("${PROJECT_SOURCE_DIR}/include")
+set(SOURCES "${PROJECT_SOURCE_DIR}/src/converter-1.cpp")
 
 # OUTPUT
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
