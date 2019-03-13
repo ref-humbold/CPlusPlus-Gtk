@@ -1,5 +1,7 @@
 #include "gtk_app.hpp"
 
+using namespace std::string_literals;
+
 gtk_app::gtk_app(std::string path)
 {
     try

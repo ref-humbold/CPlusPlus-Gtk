@@ -1,5 +1,7 @@
 #include "converter.hpp"
 
+using namespace std::string_literals;
+
 std::string converter::convert()
 {
     if(base_in == base_out)
@@ -22,21 +24,21 @@ void converter::validate_digits()
     char max_small_hex = (char)std::max(96, base_in + 86);
 
     if(number_in.length() == digits_begin)
-        throw converter_exception("No number specified");
+        throw converter_exception("No number specified"s);
 
     for(auto it = number_in.begin() + digits_begin; it != number_in.end(); ++it)
     {
         if(*it < '0' || (*it > max_dec && *it < 'A') || (*it > max_big_hex && *it < 'a')
            || *it > max_small_hex)
-            throw converter_exception("Digit \'" + std::string(1, *it)
-                                      + "\' is invalid for given base");
+            throw converter_exception("Digit \'"s + std::string(1, *it)
+                                      + "\' is invalid for given base"s);
     }
 }
 
 void converter::validate_size(int decimal)
 {
     if(abs(decimal) > 2000000000)
-        throw converter_exception("Number out of input scope\n");
+        throw converter_exception("Number out of input scope\n"s);
 }
 
 int converter::to_decimal()

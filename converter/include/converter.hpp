@@ -17,10 +17,6 @@ public:
     explicit converter_exception(const std::string & s) : std::logic_error(s)
     {
     }
-
-    explicit converter_exception(const char * s) : std::logic_error(s)
-    {
-    }
 };
 
 class converter
