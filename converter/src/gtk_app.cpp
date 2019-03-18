@@ -6,9 +6,9 @@ gtk_app::gtk_app(std::string path)
 {
     try
     {
-        this->builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
-        this->get_components();
-        this->connect_signals();
+        builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
+        get_components();
+        connect_signals();
     }
     catch(const Glib::Exception & e)
     {
@@ -19,24 +19,24 @@ gtk_app::gtk_app(std::string path)
 
 gtk_app::~gtk_app()
 {
-    delete this->main_window;
-    delete this->exit_button;
-    delete this->convert_button;
-    delete this->result_label;
-    delete this->entry_B1;
-    delete this->spinbutton_B2;
-    delete this->spinbutton_B3;
+    delete main_window;
+    delete exit_button;
+    delete convert_button;
+    delete result_label;
+    delete entry_B1;
+    delete spinbutton_B2;
+    delete spinbutton_B3;
 }
 
 void gtk_app::get_components()
 {
-    this->builder->get_widget("main_window", this->main_window);
-    this->builder->get_widget("exit_button", this->exit_button);
-    this->builder->get_widget("convert_button", this->convert_button);
-    this->builder->get_widget("result_label", this->result_label);
-    this->builder->get_widget("entry_B1", this->entry_B1);
-    this->builder->get_widget("spinbutton_B2", this->spinbutton_B2);
-    this->builder->get_widget("spinbutton_B3", this->spinbutton_B3);
+    builder->get_widget("main_window", main_window);
+    builder->get_widget("exit_button", exit_button);
+    builder->get_widget("convert_button", convert_button);
+    builder->get_widget("result_label", result_label);
+    builder->get_widget("entry_B1", entry_B1);
+    builder->get_widget("spinbutton_B2", spinbutton_B2);
+    builder->get_widget("spinbutton_B3", spinbutton_B3);
 }
 
 void gtk_app::connect_signals()

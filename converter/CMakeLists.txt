@@ -13,9 +13,15 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
 include_directories("${PROJECT_SOURCE_DIR}/include")
-set(SOURCES "${PROJECT_SOURCE_DIR}/src/converter-1.cpp")
+set(CMD_SOURCES "${PROJECT_SOURCE_DIR}/src/converter.cpp"
+                "${PROJECT_SOURCE_DIR}/src/cmd_app.cpp"
+                "${PROJECT_SOURCE_DIR}/src/cmd_main.cpp")
+set(GTK_SOURCES "${PROJECT_SOURCE_DIR}/src/converter.cpp"
+                "${PROJECT_SOURCE_DIR}/src/gtk_app.cpp"
+                "${PROJECT_SOURCE_DIR}/src/gtk_main.cpp")
 
 # OUTPUT
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
-add_executable(converter ${SOURCES})
-target_link_libraries(converter ${GTKMM_LIBRARIES})
+add_executable(converter ${CMD_SOURCES})
+add_executable(converter-gtk ${GTK_SOURCES})
+target_link_libraries(converter-gtk ${GTKMM_LIBRARIES})

@@ -2,8 +2,10 @@
 #define _GTK_APP_HPP_
 
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <gtkmm.h>
+#include "converter.hpp"
 
 class gtk_app
 {
@@ -17,7 +19,7 @@ public:
 
     Gtk::Window & get_main_window()
     {
-        return *(this->main_window);
+        return *(main_window);
     }
 
 private:
