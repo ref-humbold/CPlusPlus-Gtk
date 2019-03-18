@@ -57,10 +57,8 @@ void gtk_app::convert_button_clicked_cb()
 
     try
     {
-        converter conv(entry_B1->get_text(), spinbutton_B2->get_value_as_int(),
-                       spinbutton_B3->get_value_as_int());
-
-        result = conv.convert();
+        result = converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
+                     .convert(entry_B1->get_text());
     }
     catch(const converter_exception & e)
     {

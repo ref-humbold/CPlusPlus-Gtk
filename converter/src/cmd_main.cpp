@@ -1,15 +1,14 @@
 #include <cstdlib>
 #include "cmd_app.hpp"
 
-class args_exception : public std::invalid_argument
-{
-public:
-    explicit args_exception(const std::string & s) : std::invalid_argument(s)
-    {
-    }
-};
-
 int main(int argc, char * argv[])
 {
+    std::vector<std::string> arguments;
+
+    for(int i = 1; i < argc; ++i)
+        arguments.push_back(std::string(argv[i]));
+
+    cmd_app(arguments).run();
+
     return 0;
 }

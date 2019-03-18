@@ -21,12 +21,17 @@ public:
 
 class converter
 {
-public:
-    converter(std::string number_in, int base_in, int base_out)
-        : number_in{number_in}, base_in{base_in}, base_out{base_out}
+private:
+    enum sign
     {
-        this->has_sign = number_in[0] == '-' || number_in[0] == '+';
-        this->validate_digits();
+        minus,
+        plus,
+        unspec
+    };
+
+public:
+    converter(int base_in, int base_out) : base_in{base_in}, base_out{base_out}
+    {
     }
 
     ~converter() = default;
@@ -35,18 +40,17 @@ public:
     converter & operator=(converter &&) = delete;
     converter & operator=(const converter &) = delete;
 
-    std::string convert();
+    std::string convert(const std::string & number);
 
 private:
-    void validate_digits();
-    int to_decimal();
+    sign get_sign(const std::string & number);
+    void validate_digits(sign sgn, const std::string & number);
+    int to_decimal(const std::string & number);
     void validate_size(int decimal);
     std::vector<int> to_base_out(int decimal);
-    std::string build_number(const std::vector<int> & number);
+    std::string build_number(sign sgn, const std::vector<int> & number);
 
-    std::string number_in;
     int base_in, base_out;
-    bool has_sign;
 };
 
 #endif
