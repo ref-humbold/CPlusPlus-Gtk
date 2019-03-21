@@ -7,7 +7,3 @@ void cmd_app::run()
     for(const auto & n : numbers)
         std::cout << conv.convert(n);
 }
-
-void cmd_app::parse_args(const std::vector<std::string> & args)
-{
-}
