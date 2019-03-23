@@ -1,5 +1,5 @@
-#ifndef _CONVERTER_HPP_
-#define _CONVERTER_HPP_
+#ifndef CONVERTER_HPP
+#define CONVERTER_HPP
 
 #include <cstdlib>
 #include <cmath>
@@ -30,10 +30,7 @@ private:
     };
 
 public:
-    converter(int base_in, int base_out) : base_in{base_in}, base_out{base_out}
-    {
-    }
-
+    converter(int base_in, int base_out);
     ~converter() = default;
     converter(converter &&) = delete;
     converter(const converter &) = delete;

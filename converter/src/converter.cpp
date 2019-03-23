@@ -2,6 +2,15 @@
 
 using namespace std::string_literals;
 
+converter::converter(int base_in, int base_out) : base_in{base_in}, base_out{base_out}
+{
+    if(base_in < 2 || base_in > 16)
+        throw converter_exception("Invalid input base, must be between 2 and 16"s);
+
+    if(base_out < 2 || base_out > 16)
+        throw converter_exception("Invalid output base, must be between 2 and 16"s);
+}
+
 std::string converter::convert(const std::string & number)
 {
     sign sgn = get_sign(number);

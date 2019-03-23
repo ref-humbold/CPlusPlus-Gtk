@@ -1,5 +1,5 @@
-#ifndef _GTK_APP_HPP_
-#define _GTK_APP_HPP_
+#ifndef GTK_APP_HPP
+#define GTK_APP_HPP
 
 #include <cstdlib>
 #include <iostream>
