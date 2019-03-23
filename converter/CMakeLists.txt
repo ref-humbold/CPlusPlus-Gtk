@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(converter VERSION 2.0)
+project(converter VERSION 2019.3.23)
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
