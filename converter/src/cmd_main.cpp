@@ -64,7 +64,7 @@ int main(int argc, char * argv[]) try
 }
 catch(const std::exception & e)
 {
-    std::cerr << "ERROR! " << e.what() << "\n";
+    std::cerr << "ERROR: " << e.what() << "\n";
 
     return 1;
 }

@@ -49,7 +49,7 @@ int cmd_app::parse_base(const std::string & s)
 
 void cmd_app::convert(const std::string & from, const converter & conv)
 {
-    std::cout << from << " @" << base_in << " : ";
+    std::cout << from << " @" << base_in << " => ";
 
     try
     {
@@ -57,6 +57,6 @@ void cmd_app::convert(const std::string & from, const converter & conv)
     }
     catch(const converter_exception & e)
     {
-        std::cerr << "ERROR! " << e.what() << '\n';
+        std::cerr << "ERROR: " << e.what() << '\n';
     }
 }

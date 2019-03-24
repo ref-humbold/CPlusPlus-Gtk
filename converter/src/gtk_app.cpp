@@ -53,16 +53,17 @@ void gtk_app::exit_button_clicked_cb()
 
 void gtk_app::convert_button_clicked_cb()
 {
-    std::string result;
+    std::string input = entry_B1->get_text();
+    std::string result = input + "\n=>\n"s;
 
     try
     {
-        result = converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
-                     .convert(entry_B1->get_text());
+        result += converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
+                      .convert(input);
     }
     catch(const converter_exception & e)
     {
-        result = "ERROR! "s + e.what();
+        result += "ERROR: "s + e.what();
     }
 
     entry_B1->set_text("");
