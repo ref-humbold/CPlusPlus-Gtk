@@ -62,7 +62,7 @@ void gtk_app::convert_button_clicked_cb()
     }
     catch(const converter_exception & e)
     {
-        result = "ERROR: "s + e.what();
+        result = "ERROR! "s + e.what();
     }
 
     entry_B1->set_text("");

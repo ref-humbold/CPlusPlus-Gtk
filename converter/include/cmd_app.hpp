@@ -29,7 +29,7 @@ public:
 
 private:
     int parse_base(const std::string & s);
-    void print(const std::string & from, const std::string & to);
+    void convert(const std::string & from, const converter & conv);
 
     static constexpr int defbase = 10;
     std::vector<std::string> numbers;
