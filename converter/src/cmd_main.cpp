@@ -9,7 +9,7 @@ using namespace std::string_literals;
 class args_exception : public std::logic_error
 {
 public:
-    args_exception(const std::string & s) : std::logic_error(s)
+    explicit args_exception(const std::string & s) : std::logic_error(s)
     {
     }
 };
