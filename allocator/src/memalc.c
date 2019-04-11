@@ -650,9 +650,10 @@ PTR alloc_and_move(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, PTR del_ptr, ssize_t size
 {
     PTR ret = malloc_fcn(absolute(size));
 
-    ret = ar_ptr != NULL
-              ? memmove(ret, (PTR)ar_ptr + 32, absolute(ar_ptr->length))
-              : bl_ptr != NULL ? memmove(ret, (PTR)bl_ptr + 32, absolute(bl_ptr->length)) : ret;
+    if(ar_ptr != NULL)
+        ret = memmove(ret, (PTR)ar_ptr + 32, absolute(ar_ptr->length));
+    else if(bl_ptr != NULL)
+        ret = memmove(ret, (PTR)bl_ptr + 32, absolute(bl_ptr->length));
 
     free_fcn(del_ptr);
 
