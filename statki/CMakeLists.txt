@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(statki VERSION 1.1)
+project(statki VERSION 0.3.190423)
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
