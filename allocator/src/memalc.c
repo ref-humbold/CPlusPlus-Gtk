@@ -5,8 +5,9 @@
 #define PLACE struct memory_place
 #define ARENA_PTR ARENA *
 #define BLOCK_PTR BLOCK *
+#define PTR void *
 
-/// Struktura informacyjna bloku
+/// Block structure
 struct block
 {
     ssize_t length;
@@ -16,7 +17,7 @@ struct block
     BLOCK_PTR prev_free;
 } __attribute__((aligned(16)));
 
-/// Struktura informacyjna areny (obszaru)
+/// Arena structure
 struct arena
 {
     ssize_t length;
@@ -26,17 +27,17 @@ struct arena
     BLOCK_PTR freeblock_list;
 } __attribute__((aligned(16)));
 
-/// Struktura informująca o arenie i bloku pamieci
+/// Place in memory
 struct memory_place
 {
     ARENA_PTR arena;
     BLOCK_PTR block;
 };
 
-/// Ilość wolnej przestrzeni
+/// Amount of free space
 long long int free_space = 0;
 
-/// Wskaźnik na listę aren.
+/// Pointer to list of arenas
 ARENA_PTR arena_list = NULL;
 
 /// Mutex
@@ -45,8 +46,8 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 #pragma region common helper functions
 
 /**
- * Funkcja określająca faktyczny rozmiar pamięci do przydzielenia.
- * @param size rozmiar zadeklarowany
+ * Counts real amount of allocated space
+ * @param size declared size
  */
 ssize_t normalize(ssize_t size)
 {
@@ -57,50 +58,51 @@ ssize_t normalize(ssize_t size)
 }
 
 /**
- * Funkcja wyliczająca wartość bezwzględną rozmiaru.
- * @param size rozmiar
+ * Counts absolute value
+ * @param value value
  */
-ssize_t absolute(ssize_t size)
+ssize_t absolute(ssize_t value)
 {
-    return size < 0 ? -size : size;
+    return value < 0 ? -value : value;
 }
 
 /**
- * Funkcja wyszukująca arenę i blok przypisane do podanego wskaźnika.
- * @param ptr wskaźnik do odszukania
+ * Looks up for arena and block where pointer is located
+ * @param ptr pointer to look up
  */
-PLACE find_place(void * ptr)
+PLACE find_place(PTR ptr)
 {
-    PLACE mp;
     ARENA_PTR ar_ptr = arena_list;
+    PLACE mp;
 
     mp.arena = NULL;
     mp.block = NULL;
 
     while(ar_ptr != NULL)
     {
-        if((void *)ar_ptr + 32 == ptr && ar_ptr->length > 0 && ar_ptr->block_list == NULL)
+        if((PTR)ar_ptr + 32 == ptr && ar_ptr->length > 0 && ar_ptr->block_list == NULL)
         {
             mp.arena = ar_ptr;
 
             return mp;
         }
-        else if((void *)ar_ptr + 32 < ptr && ar_ptr->block_list != NULL
-                && ((void *)(ar_ptr->next) > ptr || (void *)(ar_ptr->next) == NULL))
+
+        if((PTR)ar_ptr + 32 < ptr && ar_ptr->block_list != NULL
+           && ((PTR)(ar_ptr->next) > ptr || (PTR)(ar_ptr->next) == NULL))
         {
             BLOCK_PTR bl_ptr = ar_ptr->block_list;
 
             while(bl_ptr != NULL)
             {
-                if((void *)bl_ptr + 32 == ptr && bl_ptr->length > 0)
+                if((PTR)bl_ptr + 32 == ptr && bl_ptr->length > 0)
                 {
                     mp.arena = ar_ptr;
                     mp.block = bl_ptr;
 
                     return mp;
                 }
-                else if(((void *)bl_ptr + 32 == ptr && bl_ptr->length < 0)
-                        || (void *)bl_ptr + 32 > ptr)
+
+                if(((PTR)bl_ptr + 32 == ptr && bl_ptr->length < 0) || (PTR)bl_ptr + 32 > ptr)
                     return mp;
 
                 bl_ptr = bl_ptr->next;
@@ -108,7 +110,8 @@ PLACE find_place(void * ptr)
 
             return mp;
         }
-        else if((void *)ar_ptr + 32 > ptr)
+
+        if((PTR)ar_ptr + 32 > ptr)
             return mp;
 
         ar_ptr = ar_ptr->next;
@@ -121,7 +124,7 @@ PLACE find_place(void * ptr)
 #pragma region print memory
 
 /**
- * Funkcja wypisująca na standardowe wyjście całą zawartość pamięci.
+ * Prints all memory to standard output
  */
 void print_all_mem_fcn()
 {
@@ -141,11 +144,11 @@ void print_all_mem_fcn()
             else
                 printf("  %p - ", ar_ptr);
 
-            printf("arena at %p -> length = %zd\n", (void *)ar_ptr + 32, absolute(ar_ptr->length));
+            printf("arena at %p -> length = %zd\n", (PTR)ar_ptr + 32, absolute(ar_ptr->length));
         }
         else
         {
-            printf("  %p - arena at %p -> length = %zd:\n", ar_ptr, (void *)ar_ptr + 32,
+            printf("  %p - arena at %p -> length = %zd:\n", ar_ptr, (PTR)ar_ptr + 32,
                    absolute(ar_ptr->length));
 
             while(bl_ptr != NULL)
@@ -155,8 +158,7 @@ void print_all_mem_fcn()
                 if(bl_ptr->length < 0)
                     printf("free ");
 
-                printf("block at %p -> length = %zd\n", (void *)bl_ptr + 32,
-                       absolute(bl_ptr->length));
+                printf("block at %p -> length = %zd\n", (PTR)bl_ptr + 32, absolute(bl_ptr->length));
                 bl_ptr = bl_ptr->next;
             }
         }
@@ -169,7 +171,7 @@ void print_all_mem_fcn()
 }
 
 /**
- * Funkcja wypisująca na standardowe wyjście zawartość wolnej pamięci.
+ * Prints all free memory to standard output
  */
 void print_free_mem_fcn()
 {
@@ -185,18 +187,18 @@ void print_free_mem_fcn()
         if(fbl_ptr == NULL)
         {
             if(ar_ptr->length < 0)
-                printf("  %p - free arena at %p -> length = %zd\n", ar_ptr, (void *)ar_ptr + 32,
+                printf("  %p - free arena at %p -> length = %zd\n", ar_ptr, (PTR)ar_ptr + 32,
                        absolute(ar_ptr->length));
         }
         else
         {
-            printf("  %p - arena at %p -> length = %zd:\n", ar_ptr, (void *)ar_ptr + 32,
+            printf("  %p - arena at %p -> length = %zd:\n", ar_ptr, (PTR)ar_ptr + 32,
                    absolute(ar_ptr->length));
 
             while(fbl_ptr != NULL)
             {
                 printf("    %p - free block at %p -> length = %zd, prev = %p, next = %p\n", fbl_ptr,
-                       (void *)fbl_ptr + 32, absolute(fbl_ptr->length), fbl_ptr->prev_free,
+                       (PTR)fbl_ptr + 32, absolute(fbl_ptr->length), fbl_ptr->prev_free,
                        fbl_ptr->next_free);
                 fbl_ptr = fbl_ptr->next_free;
             }
@@ -320,28 +322,25 @@ void switch_arena_pointers(ARENA_PTR ar_fw_ptr, ARENA_PTR ar_bk_ptr, ARENA_PTR p
  * @param ln rozmiar do alokacji
  * @param will_be_free czy blok będzie wolny
  */
-void * alloc_to_block(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, ssize_t ln, int will_be_free)
+PTR alloc_to_block(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, ssize_t ln, int will_be_free)
 {
     if(absolute(bl_ptr->length) >= ln + 32 + 16)
     {
-        BLOCK_PTR new_block = (void *)bl_ptr + 32 + ln;
+        BLOCK_PTR new_block = (PTR)bl_ptr + 32 + ln;
 
         switch_fblock_pointers(ar_ptr, bl_ptr, new_block, new_block);
         switch_block_pointers(NULL, bl_ptr, new_block, NULL);
-
         set_block_fields(new_block, -(absolute(bl_ptr->length) - ln - 32), bl_ptr, bl_ptr->next,
                          bl_ptr->prev_free, bl_ptr->next_free);
 
         if(will_be_free == 0)
         {
             set_block_fields(bl_ptr, ln, bl_ptr->prev, new_block, NULL, NULL);
-
             free_space -= 32 - absolute(bl_ptr->length);
         }
         else
         {
             set_block_fields(bl_ptr, ln, bl_ptr->prev, new_block, bl_ptr->prev_free, new_block);
-
             free_space += absolute(new_block->length);
         }
     }
@@ -353,7 +352,7 @@ void * alloc_to_block(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, ssize_t ln, int will_b
         free_space -= absolute(bl_ptr->length);
     }
 
-    return (void *)bl_ptr + 32;
+    return (PTR)bl_ptr + 32;
 }
 
 /**
@@ -363,9 +362,9 @@ void * alloc_to_block(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, ssize_t ln, int will_b
  * @param ln rozmiar do alokacji
  * @param alc_block czy przydzielamy z blokami
  */
-void * alloc_to_arena(ARENA_PTR ar_back_ptr, ARENA_PTR ar_forw_ptr, ssize_t ln, int alc_block)
+PTR alloc_to_arena(ARENA_PTR ar_back_ptr, ARENA_PTR ar_forw_ptr, ssize_t ln, int alc_block)
 {
-    void * adr = mmap(NULL, ln, (PROT_READ | PROT_WRITE), (MAP_ANONYMOUS | MAP_PRIVATE), -1, 0);
+    PTR adr = mmap(NULL, ln, (PROT_READ | PROT_WRITE), (MAP_ANONYMOUS | MAP_PRIVATE), -1, 0);
 
     if(adr == MAP_FAILED)
         return MAP_FAILED;
@@ -381,22 +380,18 @@ void * alloc_to_arena(ARENA_PTR ar_back_ptr, ARENA_PTR ar_forw_ptr, ssize_t ln, 
     switch_arena_pointers(ar_forw_ptr, ar_back_ptr, ar_ptr, ar_ptr);
 
     if(alc_block == 0)
-    {
         set_arena_fields(ar_ptr, ln - 32, ar_back_ptr, ar_forw_ptr, NULL, NULL);
-    }
     else
     {
         set_arena_fields(ar_ptr, ln - 32, ar_back_ptr, ar_forw_ptr, adr + 32, adr + 32);
-        adr += 32;
 
-        BLOCK_PTR bl_str = adr;
+        BLOCK_PTR bl_str = adr + 32;
 
         set_block_fields(bl_str, -ln + 64, NULL, NULL, NULL, NULL);
-
         free_space += absolute(bl_str->length);
     }
 
-    return (void *)ar_ptr + 32;
+    return (PTR)ar_ptr + 32;
 }
 
 /**
@@ -414,26 +409,22 @@ void concat_blocks(ARENA_PTR ar_ptr, BLOCK_PTR first_bl_ptr, BLOCK_PTR second_fb
         if(is_first_free == 0)
         {
             free_space += 32 + absolute(first_bl_ptr->length);
-
             set_block_fields(
                 first_bl_ptr,
                 -(absolute(first_bl_ptr->length) + 32 + absolute(second_fbl_ptr->length)),
                 first_bl_ptr->prev, second_fbl_ptr->next, second_fbl_ptr->prev_free,
                 second_fbl_ptr->next_free);
-
             switch_block_pointers(NULL, second_fbl_ptr, first_bl_ptr, NULL);
             switch_fblock_pointers(ar_ptr, second_fbl_ptr, first_bl_ptr, first_bl_ptr);
         }
         else
         {
             free_space += 32;
-
             set_block_fields(
                 first_bl_ptr,
                 -(absolute(first_bl_ptr->length) + 32 + absolute(second_fbl_ptr->length)),
                 first_bl_ptr->prev, second_fbl_ptr->next, first_bl_ptr->prev_free,
                 second_fbl_ptr->next_free);
-
             switch_block_pointers(NULL, second_fbl_ptr, first_bl_ptr, NULL);
             switch_fblock_pointers(NULL, second_fbl_ptr, first_bl_ptr, NULL);
         }
@@ -459,20 +450,18 @@ void concat_blocks(ARENA_PTR ar_ptr, BLOCK_PTR first_bl_ptr, BLOCK_PTR second_fb
  * @param mv_bl_ptr wskaźnik na blok przesuwany
  * @param ln nowy rozmiar
  */
-void * resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_ptr, ssize_t ln)
+PTR resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_ptr, ssize_t ln)
 {
     if(absolute(rs_bl_ptr->length) + 32 + absolute(mv_bl_ptr->length) >= ln + 32 + 16)
     {
-        BLOCK_PTR new_block = (void *)rs_bl_ptr + 32 + ln;
+        BLOCK_PTR new_block = (PTR)rs_bl_ptr + 32 + ln;
         BLOCK mvbl = *mv_bl_ptr;
 
         switch_fblock_pointers(ar_ptr, &mvbl, new_block, new_block);
-
         set_block_fields(new_block, -(absolute(rs_bl_ptr->length) + absolute(mvbl.length) - ln),
                          rs_bl_ptr, mvbl.next, mvbl.prev_free, mvbl.next_free);
         set_block_fields(rs_bl_ptr, ln, rs_bl_ptr->prev, new_block, rs_bl_ptr->prev_free,
                          new_block);
-
         free_space -= absolute(mvbl.length) + absolute(new_block->length);
     }
     else
@@ -480,12 +469,11 @@ void * resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_pt
         set_block_fields(rs_bl_ptr, absolute(rs_bl_ptr->length) + 32 + absolute(mv_bl_ptr->length),
                          rs_bl_ptr->prev, mv_bl_ptr->next, rs_bl_ptr->prev_free,
                          rs_bl_ptr->next_free);
-
         switch_block_pointers(NULL, mv_bl_ptr, rs_bl_ptr, NULL);
         switch_fblock_pointers(ar_ptr, mv_bl_ptr, mv_bl_ptr->prev_free, mv_bl_ptr->next_free);
     }
 
-    return (void *)rs_bl_ptr + 32;
+    return (PTR)rs_bl_ptr + 32;
 }
 
 #pragma endregion
@@ -495,12 +483,12 @@ void * resize_and_move(ARENA_PTR ar_ptr, BLOCK_PTR rs_bl_ptr, BLOCK_PTR mv_bl_pt
  * Funkcja zwalniająca pamięć spod danego wskaźnika.
  * @param ptr wskaźnik
  */
-void free_fcn(void * ptr)
+void free_fcn(PTR ptr)
 {
     if(ptr == NULL)
         return;
 
-    if(ptr < (void *)arena_list)
+    if(ptr < (PTR)arena_list)
     {
         errno = EINVAL;
 
@@ -531,7 +519,7 @@ void free_fcn(void * ptr)
         bl_ptr->length = -bl_ptr->length;
         free_space += absolute(bl_ptr->length);
 
-        while(forw_fbl != NULL && (void *)forw_fbl < (void *)bl_ptr)
+        while(forw_fbl != NULL && (PTR)forw_fbl < (PTR)bl_ptr)
         {
             back_fbl = forw_fbl;
             forw_fbl = forw_fbl->next_free;
@@ -554,10 +542,9 @@ void free_fcn(void * ptr)
                    && absolute(del_ptr->freeblock_list->length) == treshold - 64))
             {
                 ssize_t ln = absolute(del_ptr->length);
-                void * ptr = del_ptr;
+                PTR ptr = del_ptr;
 
                 switch_arena_pointers(del_ptr->next, del_ptr->prev, del_ptr->prev, del_ptr->next);
-
                 del_ptr = del_ptr->next;
                 free_space -= ln;
                 munmap(ptr, ln + 32);
@@ -572,12 +559,13 @@ void free_fcn(void * ptr)
  * Funkcja przydzielająca pamięć o zadanym rozmiarze.
  * @param size rozmiar
  */
-void * malloc_fcn(size_t size)
+PTR malloc_fcn(size_t size)
 {
     if(size == 0)
         return NULL;
 
-    ssize_t norm_size = normalize(size), treshold = 4 * getpagesize();
+    ssize_t norm_size = normalize(size);
+    ssize_t treshold = 4 * getpagesize();
     ARENA_PTR ar_forw_ptr = arena_list;
     ARENA_PTR ar_back_ptr = NULL;
 
@@ -591,7 +579,7 @@ void * malloc_fcn(size_t size)
                 ar_forw_ptr->length = absolute(ar_forw_ptr->length);
                 free_space -= absolute(ar_forw_ptr->length);
 
-                return (void *)ar_forw_ptr + 32;
+                return (PTR)ar_forw_ptr + 32;
             }
 
             ar_back_ptr = ar_forw_ptr;
@@ -621,7 +609,7 @@ void * malloc_fcn(size_t size)
             ar_forw_ptr = ar_forw_ptr->next;
         }
 
-        void * adr = alloc_to_arena(ar_back_ptr, ar_forw_ptr, treshold, 1);
+        PTR adr = alloc_to_arena(ar_back_ptr, ar_forw_ptr, treshold, 1);
 
         if(adr == MAP_FAILED)
             return MAP_FAILED;
@@ -638,13 +626,14 @@ void * malloc_fcn(size_t size)
  * @param count liczba kawałków
  * @param size rozmiar pojedynczego kawałka
  */
-void * calloc_fcn(size_t count, size_t size)
+PTR calloc_fcn(size_t count, size_t size)
 {
     if(count == 0 || size == 0)
         return NULL;
 
     size_t norm_size = normalize(count * size);
-    void * ret = malloc_fcn(count * size);
+    PTR ret = malloc_fcn(count * size);
+
     ret = memset(ret, 0, norm_size);
 
     return ret;
@@ -655,14 +644,16 @@ void * calloc_fcn(size_t count, size_t size)
  * @param ar_ptr wskaźnik na arenę
  * @param bl_ptr wskaźnik na blok
  * @param del_ptr wskaźnik do zwolnienia
- * @param ln nowy rozmiar
+ * @param size nowy rozmiar
  */
-void * alloc_and_move(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, void * del_ptr, ssize_t ln)
+PTR alloc_and_move(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, PTR del_ptr, ssize_t size)
 {
-    void * ret = malloc_fcn(absolute(ln));
+    PTR ret = malloc_fcn(absolute(size));
 
-    ret = ar_ptr != NULL ? memmove(ret, (void *)ar_ptr + 32, absolute(ar_ptr->length))
-                         : memmove(ret, (void *)bl_ptr + 32, absolute(bl_ptr->length));
+    if(ar_ptr != NULL)
+        ret = memmove(ret, (PTR)ar_ptr + 32, absolute(ar_ptr->length));
+    else if(bl_ptr != NULL)
+        ret = memmove(ret, (PTR)bl_ptr + 32, absolute(bl_ptr->length));
 
     free_fcn(del_ptr);
 
@@ -674,7 +665,7 @@ void * alloc_and_move(ARENA_PTR ar_ptr, BLOCK_PTR bl_ptr, void * del_ptr, ssize_
  * @param ptr wskaźnik na przydzialony obszar
  * @param size nowy rozmiar obszaru
  */
-void * realloc_fcn(void * ptr, size_t size)
+PTR realloc_fcn(PTR ptr, size_t size)
 {
     if(ptr == NULL && size == 0)
         return NULL;
@@ -689,14 +680,13 @@ void * realloc_fcn(void * ptr, size_t size)
         return NULL;
     }
 
-    if(ptr < (void *)arena_list)
+    if(ptr < (PTR)arena_list)
     {
         errno = EINVAL;
 
         return MAP_FAILED;
     }
 
-    void * ret;
     ssize_t norm_size = normalize(size);
     PLACE mp = find_place(ptr);
     ARENA_PTR ar_ptr = mp.arena;
@@ -710,72 +700,65 @@ void * realloc_fcn(void * ptr, size_t size)
     }
 
     if(bl_ptr == NULL)
-    {
-        if(absolute(ar_ptr->length) < norm_size)
-            ret = alloc_and_move(ar_ptr, NULL, ptr, size);
-        else
-            ret = (void *)ar_ptr + 32;
-    }
-    else
-    {
-        if(norm_size + 64 > 4 * getpagesize())
-            ret = alloc_and_move(NULL, bl_ptr, ptr, size);
-        else if(absolute(bl_ptr->length) >= norm_size + 32 + 16)
-            ret = alloc_to_block(ar_ptr, bl_ptr, norm_size, 1);
-        else if(norm_size > absolute(bl_ptr->length))
-        {
-            BLOCK_PTR forw_bl = bl_ptr->next;
+        return absolute(ar_ptr->length) < norm_size ? alloc_and_move(ar_ptr, NULL, ptr, size)
+                                                    : (PTR)ar_ptr + 32;
 
-            if(forw_bl != NULL && forw_bl->length < 0
-               && absolute(bl_ptr->length) + 32 + absolute(forw_bl->length) >= norm_size)
-                ret = resize_and_move(ar_ptr, bl_ptr, forw_bl, norm_size);
-            else
-                ret = alloc_and_move(NULL, bl_ptr, ptr, size);
-        }
-        else
-            ret = (void *)bl_ptr + 32;
+    if(norm_size + 64 > 4 * getpagesize())
+        return alloc_and_move(NULL, bl_ptr, ptr, size);
+
+    if(absolute(bl_ptr->length) >= norm_size + 32 + 16)
+        return alloc_to_block(ar_ptr, bl_ptr, norm_size, 1);
+
+    if(norm_size > absolute(bl_ptr->length))
+    {
+        BLOCK_PTR forw_bl = bl_ptr->next;
+
+        return forw_bl != NULL && forw_bl->length < 0
+                       && absolute(bl_ptr->length) + 32 + absolute(forw_bl->length) >= norm_size
+                   ? resize_and_move(ar_ptr, bl_ptr, forw_bl, norm_size)
+                   : alloc_and_move(NULL, bl_ptr, ptr, size);
     }
 
-    return ret;
+    return (PTR)bl_ptr + 32;
 }
 
 #pragma endregion
 #pragma region public functions
 
-void * malloc(size_t size)
+PTR malloc(size_t size)
 {
     pthread_mutex_lock(&mutex);
 
-    void * adr = malloc_fcn(size);
+    PTR adr = malloc_fcn(size);
 
     pthread_mutex_unlock(&mutex);
 
     return adr;
 }
 
-void * calloc(size_t count, size_t size)
+PTR calloc(size_t count, size_t size)
 {
     pthread_mutex_lock(&mutex);
 
-    void * adr = calloc_fcn(count, size);
+    PTR adr = calloc_fcn(count, size);
 
     pthread_mutex_unlock(&mutex);
 
     return adr;
 }
 
-void * realloc(void * ptr, size_t size)
+PTR realloc(PTR ptr, size_t size)
 {
     pthread_mutex_lock(&mutex);
 
-    void * adr = realloc_fcn(ptr, size);
+    PTR adr = realloc_fcn(ptr, size);
 
     pthread_mutex_unlock(&mutex);
 
     return adr;
 }
 
-void free(void * ptr)
+void free(PTR ptr)
 {
     pthread_mutex_lock(&mutex);
     free_fcn(ptr);
