@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(lotto VERSION 2.0)
+project(lotto VERSION 0.2.190423)
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
