@@ -12,7 +12,7 @@ void cmd_app::run()
     converter conv(base_in, base_out);
 
     for(auto it = numbers.begin() + 2; it != numbers.end(); ++it)
-        print(*it, conv.convert(*it));
+        convert(*it, conv);
 
     if(numbers.size() == 2)
         while(true)
@@ -20,7 +20,7 @@ void cmd_app::run()
             std::string n;
 
             std::cin >> n;
-            print(n, conv.convert(n));
+            convert(n, conv);
         }
 }
 
@@ -47,7 +47,16 @@ int cmd_app::parse_base(const std::string & s)
     return v;
 }
 
-void cmd_app::print(const std::string & from, const std::string & to)
+void cmd_app::convert(const std::string & from, const converter & conv)
 {
-    std::cout << from << " @" << base_in << " : " << to << " @" << base_out << "\n";
+    std::cout << from << " @" << base_in << " => ";
+
+    try
+    {
+        std::cout << conv.convert(from) << " @" << base_out << "\n";
+    }
+    catch(const converter_exception & e)
+    {
+        std::cerr << "ERROR: " << e.what() << '\n';
+    }
 }

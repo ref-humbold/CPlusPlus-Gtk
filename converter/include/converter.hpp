@@ -37,15 +37,14 @@ public:
     converter & operator=(converter &&) = delete;
     converter & operator=(const converter &) = delete;
 
-    std::string convert(const std::string & number);
+    std::string convert(const std::string & number) const;
 
 private:
-    sign get_sign(const std::string & number);
-    void validate_digits(sign sgn, const std::string & number);
-    int to_decimal(const std::string & number);
-    void validate_size(int decimal);
-    std::vector<int> to_base_out(int decimal);
-    std::string build_number(sign sgn, const std::vector<int> & number);
+    sign get_sign(const std::string & number) const;
+    void validate_digits(sign sgn, const std::string & number) const;
+    long long int to_decimal(const std::string & number) const;
+    std::vector<int> to_base_out(long long int decimal) const;
+    std::string build_number(sign sgn, const std::vector<int> & number) const;
 
     int base_in, base_out;
 };

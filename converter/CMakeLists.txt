@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(converter VERSION 2019.3.23)
+project(converter VERSION 0.3.190423)
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
@@ -13,14 +13,12 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
 include_directories("${PROJECT_SOURCE_DIR}/include")
-set(CMD_SOURCES
-    "${PROJECT_SOURCE_DIR}/src/converter.cpp"
-    "${PROJECT_SOURCE_DIR}/src/cmd_app.cpp"
-    "${PROJECT_SOURCE_DIR}/src/cmd_main.cpp")
-set(GTK_SOURCES
-    "${PROJECT_SOURCE_DIR}/src/converter.cpp"
-    "${PROJECT_SOURCE_DIR}/src/gtk_app.cpp"
-    "${PROJECT_SOURCE_DIR}/src/gtk_main.cpp")
+set(CMD_SOURCES "${PROJECT_SOURCE_DIR}/src/converter.cpp"
+                "${PROJECT_SOURCE_DIR}/src/cmd_app.cpp"
+                "${PROJECT_SOURCE_DIR}/src/cmd_main.cpp")
+set(GTK_SOURCES "${PROJECT_SOURCE_DIR}/src/converter.cpp"
+                "${PROJECT_SOURCE_DIR}/src/gtk_app.cpp"
+                "${PROJECT_SOURCE_DIR}/src/gtk_main.cpp")
 
 # OUTPUT
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
