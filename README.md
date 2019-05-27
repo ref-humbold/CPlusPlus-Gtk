@@ -1,2 +1,2 @@
-# Projekty
-My own small sofware projects created at home or at the university.
+# CPlusPlus-Gtk
+Small projects in C++ with Gtk GUI
