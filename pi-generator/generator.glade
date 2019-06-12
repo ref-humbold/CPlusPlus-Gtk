@@ -15,7 +15,7 @@
           <object class="GtkLabel" id="title_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">GENERATOR LICZBY PI</property>
+            <property name="label" translatable="yes">PI GENERATOR</property>
             <property name="justify">center</property>
             <property name="ellipsize">middle</property>
           </object>
@@ -56,7 +56,7 @@
               <object class="GtkLabel" id="label_A2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">błąd wyniku</property>
+                <property name="label" translatable="yes">result error</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -101,7 +101,7 @@
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="continue_button">
-                <property name="label" translatable="yes">GENERUJ!</property>
+                <property name="label" translatable="yes">GENERATE!</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -114,7 +114,7 @@
             </child>
             <child>
               <object class="GtkButton" id="exit_button">
-                <property name="label" translatable="yes">ZAKOŃCZ</property>
+                <property name="label" translatable="yes">CLOSE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

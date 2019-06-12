@@ -48,7 +48,7 @@
               <object class="GtkLabel" id="label_A1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">WARTOŚĆ</property>
+                <property name="label" translatable="yes">VALUE</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -59,7 +59,7 @@
               <object class="GtkLabel" id="label_A2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">PODSTAWA WARTOŚCI</property>
+                <property name="label" translatable="yes">BASE OF VALUE</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -70,7 +70,7 @@
               <object class="GtkLabel" id="label_A3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">PODSTAWA WYNIKU</property>
+                <property name="label" translatable="yes">BASE OF RESULT</property>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -161,7 +161,7 @@
             </child>
             <child>
               <object class="GtkButton" id="exit_button">
-                <property name="label" translatable="yes">ZAKOŃCZ</property>
+                <property name="label" translatable="yes">CLOSE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
