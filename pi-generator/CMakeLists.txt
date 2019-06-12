@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(generator VERSION 0.4.190423)
+project(generator VERSION 0.4.190612)
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
