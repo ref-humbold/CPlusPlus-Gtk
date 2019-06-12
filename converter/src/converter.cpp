@@ -39,13 +39,13 @@ converter::sign converter::get_sign(const std::string & number) const
             return plus;
 
         default:
-            return unspec;
+            return nosign;
     }
 }
 
 void converter::validate_digits(converter::sign sgn, const std::string & number) const
 {
-    size_t digits_begin = sgn != unspec ? 1 : 0;
+    size_t digits_begin = sgn != nosign ? 1 : 0;
     char max_dec = static_cast<char>(std::min(57LL, base_in + 47LL));
     char max_big_hex = static_cast<char>(std::max(64LL, base_in + 54LL));
     char max_small_hex = static_cast<char>(std::max(96LL, base_in + 86LL));

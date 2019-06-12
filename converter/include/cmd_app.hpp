@@ -10,7 +10,7 @@
 class base_exception : public std::logic_error
 {
 public:
-    base_exception(const std::string & s) : std::logic_error(s)
+    explicit base_exception(const std::string & s) : std::logic_error(s)
     {
     }
 };

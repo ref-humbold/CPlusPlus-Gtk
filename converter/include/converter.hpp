@@ -26,7 +26,7 @@ private:
     {
         minus,
         plus,
-        unspec
+        nosign
     };
 
 public:
