@@ -2,10 +2,13 @@
 #define GTK_APP_HPP_
 
 #include <cstdlib>
+#include <ctime>
+#include <exception>
 #include <iostream>
-#include <string>
+#include <stdexcept>
+#include <algorithm>
+#include <vector>
 #include <gtkmm.h>
-#include "converter.hpp"
 
 class gtk_app
 {
@@ -17,25 +20,13 @@ public:
     gtk_app & operator=(const gtk_app &) = delete;
     gtk_app & operator=(gtk_app &&) = delete;
 
-    Gtk::Window & get_main_window()
-    {
-        return *(main_window);
-    }
-
 private:
     void get_components();
     void connect_signals();
-    void exit_button_clicked_cb();
-    void convert_button_clicked_cb();
+    void togglebutton_clicked_cb();
 
     Glib::RefPtr<Gtk::Builder> builder;
     Gtk::Window * main_window;
-    Gtk::Button * convert_button;
-    Gtk::Button * exit_button;
-    Gtk::Label * result_label;
-    Gtk::Entry * entry_B1;
-    Gtk::SpinButton * spinbutton_B2;
-    Gtk::SpinButton * spinbutton_B3;
 };
 
 #endif

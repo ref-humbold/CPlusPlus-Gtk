@@ -1,5 +1,5 @@
-#ifndef CMD_APP_HPP
-#define CMD_APP_HPP
+#ifndef CMD_APP_HPP_
+#define CMD_APP_HPP_
 
 #include <cstdlib>
 #include <iostream>

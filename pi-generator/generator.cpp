@@ -1,6 +1,6 @@
 #include <cstdlib>
-#include <cstdio>
 #include <cmath>
+#include <cstdio>
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -10,16 +10,6 @@
 
 class gtk_app
 {
-private:
-    double pi_value;
-    Glib::RefPtr<Gtk::Builder> builder;
-    Gtk::Window * main_window;
-    Gtk::Button * exit_button;
-    Gtk::Button * continue_button;
-    Gtk::ProgressBar * progress_bar;
-    Gtk::Label * label_B1;
-    Gtk::Label * label_B2;
-
 public:
     explicit gtk_app(std::string path);
     ~gtk_app();
@@ -30,7 +20,7 @@ public:
 
     Gtk::Window & get_main_window()
     {
-        return *(this->main_window);
+        return *main_window;
     }
 
 private:
@@ -40,15 +30,24 @@ private:
     void continue_button_clicked_cb();
     double count_pi();
     long long int shoot_points(long long int throws);
+
+    double pi_value;
+    Glib::RefPtr<Gtk::Builder> builder;
+    Gtk::Window * main_window;
+    Gtk::Button * exit_button;
+    Gtk::Button * continue_button;
+    Gtk::ProgressBar * progress_bar;
+    Gtk::Label * label_B1;
+    Gtk::Label * label_B2;
 };
 
 gtk_app::gtk_app(std::string path)
 {
     try
     {
-        this->builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
-        this->get_components();
-        this->connect_signals();
+        builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
+        get_components();
+        connect_signals();
     }
     catch(const Glib::Exception & e)
     {
@@ -61,29 +60,29 @@ gtk_app::gtk_app(std::string path)
 
 gtk_app::~gtk_app()
 {
-    delete this->main_window;
-    delete this->exit_button;
-    delete this->continue_button;
-    delete this->progress_bar;
-    delete this->label_B1;
-    delete this->label_B2;
+    delete main_window;
+    delete exit_button;
+    delete continue_button;
+    delete progress_bar;
+    delete label_B1;
+    delete label_B2;
 }
 
 void gtk_app::get_components()
 {
-    this->builder->get_widget("main_window", this->main_window);
-    this->builder->get_widget("exit_button", this->exit_button);
-    this->builder->get_widget("continue_button", this->continue_button);
-    this->builder->get_widget("progress_bar", this->progress_bar);
-    this->builder->get_widget("label_B1", this->label_B1);
-    this->builder->get_widget("label_B2", this->label_B2);
+    builder->get_widget("main_window", main_window);
+    builder->get_widget("exit_button", exit_button);
+    builder->get_widget("continue_button", continue_button);
+    builder->get_widget("progress_bar", progress_bar);
+    builder->get_widget("label_B1", label_B1);
+    builder->get_widget("label_B2", label_B2);
 }
 
 void gtk_app::connect_signals()
 {
     exit_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::exit_button_clicked_cb));
     continue_button->signal_clicked().connect(
-        sigc::mem_fun(*this, &gtk_app::continue_button_clicked_cb));
+            sigc::mem_fun(*this, &gtk_app::continue_button_clicked_cb));
 }
 
 void gtk_app::exit_button_clicked_cb()
@@ -145,7 +144,7 @@ std::string extract_directory(const char * full_path)
 int main(int argc, char * argv[])
 {
     Glib::RefPtr<Gtk::Application> application =
-        Gtk::Application::create(argc, argv, "generator.liczby.pi");
+            Gtk::Application::create(argc, argv, "pi.generator");
     gtk_app app_window(extract_directory(argv[0]));
 
     application->run(app_window.get_main_window());

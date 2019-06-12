@@ -1,15 +1,15 @@
-#ifndef CONVERTER_HPP
-#define CONVERTER_HPP
+#ifndef CONVERTER_HPP_
+#define CONVERTER_HPP_
 
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
 #include <exception>
 #include <iostream>
-#include <numeric>
 #include <stdexcept>
+#include <algorithm>
 #include <string>
 #include <vector>
+#include <numeric>
 
 class converter_exception : public std::logic_error
 {

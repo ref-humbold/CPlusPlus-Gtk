@@ -12,6 +12,7 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
+include_directories("${PROJECT_SOURCE_DIR}/include")
 set(SOURCES "lotto.cpp")
 
 # OUTPUT
