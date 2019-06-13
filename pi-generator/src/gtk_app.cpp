@@ -1,45 +1,4 @@
-#include <cstdlib>
-#include <cmath>
-#include <cstdio>
-#include <ctime>
-#include <iostream>
-#include <string>
-#include <gtkmm.h>
-
-#pragma region gtk_app
-
-class gtk_app
-{
-public:
-    explicit gtk_app(std::string path);
-    ~gtk_app();
-    gtk_app(const gtk_app &) = delete;
-    gtk_app(gtk_app &&) = delete;
-    gtk_app & operator=(const gtk_app &) = delete;
-    gtk_app & operator=(gtk_app &&) = delete;
-
-    Gtk::Window & get_main_window()
-    {
-        return *main_window;
-    }
-
-private:
-    void get_components();
-    void connect_signals();
-    void exit_button_clicked_cb();
-    void continue_button_clicked_cb();
-    double count_pi();
-    long long int shoot_points(long long int throws);
-
-    double pi_value;
-    Glib::RefPtr<Gtk::Builder> builder;
-    Gtk::Window * main_window;
-    Gtk::Button * exit_button;
-    Gtk::Button * continue_button;
-    Gtk::ProgressBar * progress_bar;
-    Gtk::Label * label_B1;
-    Gtk::Label * label_B2;
-};
+#include "gtk_app.hpp"
 
 gtk_app::gtk_app(std::string path)
 {
@@ -129,25 +88,4 @@ long long int gtk_app::shoot_points(long long int throws)
     }
 
     return shots;
-}
-
-#pragma endregion
-
-std::string extract_directory(const char * full_path)
-{
-    std::string exec_path = std::string(full_path);
-    size_t dirpos = exec_path.find_last_of("/\\");
-
-    return exec_path.substr(0, dirpos);
-}
-
-int main(int argc, char * argv[])
-{
-    Glib::RefPtr<Gtk::Application> application =
-            Gtk::Application::create(argc, argv, "pi.generator");
-    gtk_app app_window(extract_directory(argv[0]));
-
-    application->run(app_window.get_main_window());
-
-    return 0;
 }
