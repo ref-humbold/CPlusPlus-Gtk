@@ -12,10 +12,10 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
-include_directories("${PROJECT_SOURCE_DIR}/include")
-set(SOURCES "lotto.cpp")
+include_directories(include)
+set(SOURCES lotto.cpp)
 
 # OUTPUT
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_executable(lotto ${SOURCES})
 target_link_libraries(lotto ${GTKMM_LIBRARIES})

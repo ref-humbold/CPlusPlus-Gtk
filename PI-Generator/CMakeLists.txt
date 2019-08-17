@@ -12,12 +12,12 @@ include_directories(${GTKMM_INCLUDE_DIRS})
 link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
-include_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories(include)
 set(SOURCES
-    "${PROJECT_SOURCE_DIR}/src/gtk_app.cpp"
-    "${PROJECT_SOURCE_DIR}/src/pi_generator.cpp")
+    src/gtk_app.cpp
+    src/pi_generator.cpp)
 
 # OUTPUT
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 add_executable(pi_generator ${SOURCES})
 target_link_libraries(pi_generator ${GTKMM_LIBRARIES})
