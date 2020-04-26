@@ -1,21 +1,20 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project(Lotto VERSION 0.2.190612)
+
+# PROPERTIES
+set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+set(TEST_DIR "${PROJECT_SOURCE_DIR}/test")
+set(EXE_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/bin")
+set(LIB_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/dist")
+set(DOCS_OUTPUT_DIR "${PROJECT_SOURCE_DIR}/docs")
 
 # COMPILER
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unknown-pragmas")
-
-# PACKAGES
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTKMM gtkmm-3.0)
-include_directories(${GTKMM_INCLUDE_DIRS})
-link_directories(${GTKMM_LIBRARY_DIRS})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unknown-pragmas -O2")
 
 # SOURCES
-include_directories(include)
-set(SOURCES lotto.cpp)
+include_directories("${INCLUDE_DIR}")
 
 # OUTPUT
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
-add_executable(lotto ${SOURCES})
-target_link_libraries(lotto ${GTKMM_LIBRARIES})
+add_subdirectory("${SRC_DIR}")

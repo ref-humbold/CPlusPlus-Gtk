@@ -1,19 +1,25 @@
+# VERSION 9
+
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
-AlignEscapedNewlines: Left
+AlignConsecutiveMacros: false
+AlignEscapedNewlines: DontAlign
 AlignOperands: true
 AlignTrailingComments: false
-AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: true
+AllowAllConstructorInitializersOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: false
-AllowShortIfStatementsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: true
+AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
 BinPackParameters: true
 BreakBeforeBinaryOperators: NonAssignment
@@ -31,33 +37,36 @@ ContinuationIndentWidth: 8
 Cpp11BracedListStyle: true
 DerivePointerAlignment: false
 FixNamespaceComments: false
-ForEachMacros: []
 IncludeBlocks: Merge
 IncludeCategories:
-    # C Standard library
-    - Regex: '^<cstdlib>'
-      Priority: 1
-    # C standard library
-    - Regex: '^<c(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)>'
-      Priority: 2
-    # C++ standard library: input-output, exceptions, memory, threads
-    - Regex: '^<(ios(fwd)?|(i|o|io|f|s)stream|streambuf|iomanip|exception|stdexcept|system_error|new|memory|atomic|thread|(shared_)?mutex|future|condition_variable)>'
-      Priority: 3
-    # C++ standard library: algorithms, containers, strings
-    - Regex: '^<(algorithm|array|bitset|deque|iterator|(forward_|initializer_)?list|(unordered_)?map|queue|(unordered_)?set|stack|string|tuple|vector)>'
-      Priority: 4
-    # C++ standard library: utilities, numerics, types
-    - Regex: '^<(complex|chrono|functional|limits|locale|numeric|random|ratio|regex|type(info|index|_traits)|valarray)>'
-      Priority: 5
-    # All other headers (C++ style)
-    - Regex: '^<.*>'
-      Priority: 6
-    # All other headers (C style)
-    - Regex: '^<.*\.(h|hpp)>'
-      Priority: 7
-    # All custom headers
-    - Regex: '^".*"'
-      Priority: 8
+  # C Standard library
+  - Regex: '^<cstdlib>|<stdlib.h>'
+    Priority: 1
+  # C standard library (C++ style)
+  - Regex: '^<c(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)>'
+    Priority: 2
+  # C standard library (C style)
+  - Regex: '^<(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)\.h>'
+    Priority: 2
+  # C++ standard library: input-output, exceptions, memory, threads
+  - Regex: '^<(ios(fwd)?|(i|o|io|f|s)stream|streambuf|iomanip|exception|stdexcept|system_error|new|memory|atomic|thread|(shared_)?mutex|future|condition_variable)>'
+    Priority: 3
+  # C++ standard library: algorithms, containers, strings
+  - Regex: '^<(algorithm|array|bitset|deque|iterator|(forward_|initializer_)?list|(unordered_)?map|queue|(unordered_)?set|stack|string|tuple|vector)>'
+    Priority: 4
+  # C++ standard library: utilities, numerics, types
+  - Regex: '^<(complex|chrono|functional|limits|locale|numeric|random|ratio|regex|type(info|index|_traits)|valarray)>'
+    Priority: 5
+  # All other headers (C++ style)
+  - Regex: '^<.*>'
+    Priority: 6
+  # All other headers (C style)
+  - Regex: '^<.*\.(h|hpp)>'
+    Priority: 7
+  # All custom headers
+  - Regex: '^".*"'
+    Priority: 8
+IncludeIsMainRegex: '$'
 IndentCaseLabels: true
 IndentPPDirectives: None
 IndentWidth: 4
@@ -68,10 +77,11 @@ MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
 PointerAlignment: Middle
-ReflowComments: true
+ReflowComments: false
 SortIncludes: true
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
