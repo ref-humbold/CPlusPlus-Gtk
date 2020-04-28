@@ -1,12 +1,14 @@
 #include "gtk_app.hpp"
+#include "files/converter_glade.hpp"
 
 using namespace std::string_literals;
 
-gtk_app::gtk_app(std::string path)
+gtk_app::gtk_app()
 {
     try
     {
-        builder = Gtk::Builder::create_from_file(path.append("/../converter.glade"));
+        builder =
+                Gtk::Builder::create_from_string(std::string(converter_glade, converter_glade_len));
         get_components();
         connect_signals();
     }
@@ -43,7 +45,7 @@ void gtk_app::connect_signals()
 {
     exit_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::exit_button_clicked_cb));
     convert_button->signal_clicked().connect(
-        sigc::mem_fun(*this, &gtk_app::convert_button_clicked_cb));
+            sigc::mem_fun(*this, &gtk_app::convert_button_clicked_cb));
 }
 
 void gtk_app::exit_button_clicked_cb()
@@ -59,7 +61,7 @@ void gtk_app::convert_button_clicked_cb()
     try
     {
         result += converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
-                      .convert(input);
+                          .convert(input);
     }
     catch(const converter_exception & e)
     {

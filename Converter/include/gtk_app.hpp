@@ -10,7 +10,7 @@
 class gtk_app
 {
 public:
-    explicit gtk_app(std::string path);
+    gtk_app();
     ~gtk_app();
     gtk_app(const gtk_app &) = delete;
     gtk_app(gtk_app &&) = delete;

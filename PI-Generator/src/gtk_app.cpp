@@ -1,10 +1,12 @@
 #include "gtk_app.hpp"
+#include "files/generator_glade.hpp"
 
-gtk_app::gtk_app(std::string path)
+gtk_app::gtk_app()
 {
     try
     {
-        builder = Gtk::Builder::create_from_file(path.append("/../generator.glade"));
+        builder =
+                Gtk::Builder::create_from_string(std::string(generator_glade, generator_glade_len));
         get_components();
         connect_signals();
     }
