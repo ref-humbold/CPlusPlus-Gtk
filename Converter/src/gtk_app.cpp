@@ -7,8 +7,7 @@ gtk_app::gtk_app()
 {
     try
     {
-        builder =
-                Gtk::Builder::create_from_string(std::string(converter_glade, converter_glade_len));
+        builder = Gtk::Builder::create_from_string(converter_glade);
         get_components();
         connect_signals();
     }
@@ -56,16 +55,19 @@ void gtk_app::exit_button_clicked_cb()
 void gtk_app::convert_button_clicked_cb()
 {
     std::string input = entry_B1->get_text();
-    std::string result = input + "\n=>\n"s;
+    std::string result;
 
     try
     {
-        result += converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
-                          .convert(input);
+        std::string value =
+                converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
+                        .convert(input);
+
+        result = input + "\n|||\n"s + value;
     }
     catch(const converter_exception & e)
     {
-        result += "ERROR: "s + e.what();
+        result = "ERROR: "s + e.what();
     }
 
     entry_B1->set_text("");

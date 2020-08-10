@@ -5,8 +5,7 @@ gtk_app::gtk_app()
 {
     try
     {
-        builder =
-                Gtk::Builder::create_from_string(std::string(generator_glade, generator_glade_len));
+        builder = Gtk::Builder::create_from_string(generator_glade);
         get_components();
         connect_signals();
     }
