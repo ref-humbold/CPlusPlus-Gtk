@@ -4,18 +4,16 @@
 using namespace std::string_literals;
 
 gtk_app::gtk_app()
+try
 {
-    try
-    {
-        builder = Gtk::Builder::create_from_string(converter_glade);
-        get_components();
-        connect_signals();
-    }
-    catch(const Glib::Exception & e)
-    {
-        std::cerr << e.what() << '\n';
-        throw;
-    }
+    builder = Gtk::Builder::create_from_string(converter_glade);
+    get_components();
+    connect_signals();
+}
+catch(const Glib::Exception & e)
+{
+    std::cerr << e.what() << '\n';
+    throw;
 }
 
 gtk_app::~gtk_app()

@@ -5,28 +5,115 @@
 
 const std::string lotto_glade = R"glade(
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.12"/>
+  <requires lib="gtk+" version="3.12" />
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder />
+    </child>
     <child>
       <object class="GtkBox" id="main_box">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <placeholder/>
+          <object class="GtkLabel" id="title_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">LOTTO</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkGrid" id="lotto_info_grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_homogeneous">True</property>
+            <property name="column_homogeneous">True</property>
+            <child>
+              <object class="GtkLabel" id="draw_name_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">DRAW</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="draw_value_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="jackpot_name_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">JACKPOT</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="jackpot_value_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator" id="separator">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="info_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label" translatable="yes">CHOOSE 6 NUMBERS:</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
         </child>
         <child>
           <object class="GtkGrid" id="numbers_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A1">
+              <object class="GtkToggleButton" id="togglebutton_1">
                 <property name="label" translatable="yes">1</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -38,7 +125,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A2">
+              <object class="GtkToggleButton" id="togglebutton_2">
                 <property name="label" translatable="yes">2</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -50,7 +137,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A3">
+              <object class="GtkToggleButton" id="togglebutton_3">
                 <property name="label" translatable="yes">3</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -62,7 +149,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A4">
+              <object class="GtkToggleButton" id="togglebutton_4">
                 <property name="label" translatable="yes">4</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -74,7 +161,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A5">
+              <object class="GtkToggleButton" id="togglebutton_5">
                 <property name="label" translatable="yes">5</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -86,7 +173,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A6">
+              <object class="GtkToggleButton" id="togglebutton_6">
                 <property name="label" translatable="yes">6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -98,7 +185,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_A7">
+              <object class="GtkToggleButton" id="togglebutton_7">
                 <property name="label" translatable="yes">7</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -110,7 +197,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B1">
+              <object class="GtkToggleButton" id="togglebutton_8">
                 <property name="label" translatable="yes">8</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -122,7 +209,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B2">
+              <object class="GtkToggleButton" id="togglebutton_9">
                 <property name="label" translatable="yes">9</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -134,7 +221,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B3">
+              <object class="GtkToggleButton" id="togglebutton_10">
                 <property name="label" translatable="yes">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -146,7 +233,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B4">
+              <object class="GtkToggleButton" id="togglebutton_11">
                 <property name="label" translatable="yes">11</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -158,7 +245,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B5">
+              <object class="GtkToggleButton" id="togglebutton_12">
                 <property name="label" translatable="yes">12</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -170,7 +257,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B6">
+              <object class="GtkToggleButton" id="togglebutton_13">
                 <property name="label" translatable="yes">13</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -182,7 +269,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_B7">
+              <object class="GtkToggleButton" id="togglebutton_14">
                 <property name="label" translatable="yes">14</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -194,7 +281,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C1">
+              <object class="GtkToggleButton" id="togglebutton_15">
                 <property name="label" translatable="yes">15</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -206,7 +293,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C2">
+              <object class="GtkToggleButton" id="togglebutton_16">
                 <property name="label" translatable="yes">16</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -218,7 +305,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C3">
+              <object class="GtkToggleButton" id="togglebutton_17">
                 <property name="label" translatable="yes">17</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -230,7 +317,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C4">
+              <object class="GtkToggleButton" id="togglebutton_18">
                 <property name="label" translatable="yes">18</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -242,7 +329,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C5">
+              <object class="GtkToggleButton" id="togglebutton_19">
                 <property name="label" translatable="yes">19</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -254,7 +341,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C6">
+              <object class="GtkToggleButton" id="togglebutton_20">
                 <property name="label" translatable="yes">20</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -266,7 +353,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_C7">
+              <object class="GtkToggleButton" id="togglebutton_21">
                 <property name="label" translatable="yes">21</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -278,7 +365,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D1">
+              <object class="GtkToggleButton" id="togglebutton_22">
                 <property name="label" translatable="yes">22</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -290,7 +377,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D2">
+              <object class="GtkToggleButton" id="togglebutton_23">
                 <property name="label" translatable="yes">23</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -302,7 +389,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D3">
+              <object class="GtkToggleButton" id="togglebutton_24">
                 <property name="label" translatable="yes">24</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -314,7 +401,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D4">
+              <object class="GtkToggleButton" id="togglebutton_25">
                 <property name="label" translatable="yes">25</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -326,7 +413,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D5">
+              <object class="GtkToggleButton" id="togglebutton_26">
                 <property name="label" translatable="yes">26</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -338,7 +425,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D6">
+              <object class="GtkToggleButton" id="togglebutton_27">
                 <property name="label" translatable="yes">27</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -350,7 +437,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_D7">
+              <object class="GtkToggleButton" id="togglebutton_28">
                 <property name="label" translatable="yes">28</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -362,7 +449,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E1">
+              <object class="GtkToggleButton" id="togglebutton_29">
                 <property name="label" translatable="yes">29</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -374,7 +461,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E2">
+              <object class="GtkToggleButton" id="togglebutton_30">
                 <property name="label" translatable="yes">30</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -386,7 +473,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E3">
+              <object class="GtkToggleButton" id="togglebutton_31">
                 <property name="label" translatable="yes">31</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -398,7 +485,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E4">
+              <object class="GtkToggleButton" id="togglebutton_32">
                 <property name="label" translatable="yes">32</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -410,7 +497,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E5">
+              <object class="GtkToggleButton" id="togglebutton_33">
                 <property name="label" translatable="yes">33</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -422,7 +509,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E6">
+              <object class="GtkToggleButton" id="togglebutton_34">
                 <property name="label" translatable="yes">34</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -434,7 +521,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_E7">
+              <object class="GtkToggleButton" id="togglebutton_35">
                 <property name="label" translatable="yes">35</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -446,7 +533,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F1">
+              <object class="GtkToggleButton" id="togglebutton_36">
                 <property name="label" translatable="yes">36</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -458,7 +545,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F2">
+              <object class="GtkToggleButton" id="togglebutton_37">
                 <property name="label" translatable="yes">37</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -470,7 +557,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F3">
+              <object class="GtkToggleButton" id="togglebutton_38">
                 <property name="label" translatable="yes">38</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -482,7 +569,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F4">
+              <object class="GtkToggleButton" id="togglebutton_39">
                 <property name="label" translatable="yes">39</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -494,7 +581,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F5">
+              <object class="GtkToggleButton" id="togglebutton_40">
                 <property name="label" translatable="yes">40</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -506,7 +593,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F6">
+              <object class="GtkToggleButton" id="togglebutton_41">
                 <property name="label" translatable="yes">41</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -518,7 +605,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_F7">
+              <object class="GtkToggleButton" id="togglebutton_42">
                 <property name="label" translatable="yes">42</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -530,7 +617,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G1">
+              <object class="GtkToggleButton" id="togglebutton_43">
                 <property name="label" translatable="yes">43</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -542,7 +629,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G2">
+              <object class="GtkToggleButton" id="togglebutton_44">
                 <property name="label" translatable="yes">44</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -554,7 +641,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G3">
+              <object class="GtkToggleButton" id="togglebutton_45">
                 <property name="label" translatable="yes">45</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -566,7 +653,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G4">
+              <object class="GtkToggleButton" id="togglebutton_46">
                 <property name="label" translatable="yes">46</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -578,7 +665,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G5">
+              <object class="GtkToggleButton" id="togglebutton_47">
                 <property name="label" translatable="yes">47</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -590,7 +677,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G6">
+              <object class="GtkToggleButton" id="togglebutton_48">
                 <property name="label" translatable="yes">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -602,7 +689,7 @@ const std::string lotto_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkToggleButton" id="togglebutton_G7">
+              <object class="GtkToggleButton" id="togglebutton_49">
                 <property name="label" translatable="yes">49</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -617,14 +704,78 @@ const std::string lotto_glade = R"glade(
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkLabel" id="results_label">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">5</property>
+          </packing>
         </child>
         <child>
-          <placeholder/>
+          <object class="GtkGrid" id="buttons_grid">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="row_homogeneous">True</property>
+            <property name="column_homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="draw_button">
+                <property name="label" translatable="yes">RUN</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="next_button">
+                <property name="label" translatable="yes">NEXT DRAW</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">0</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="close_button">
+                <property name="label" translatable="yes">CLOSE</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="results_labe">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="left_attach">1</property>
+                <property name="top_attach">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">6</property>
+          </packing>
         </child>
       </object>
     </child>

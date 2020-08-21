@@ -5,7 +5,7 @@
 
 const std::string converter_glade = R"Glade(
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkAdjustment" id="adjustment2b">
@@ -24,6 +24,9 @@ const std::string converter_glade = R"Glade(
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="main_box">
         <property name="visible">True</property>
@@ -104,7 +107,7 @@ const std::string converter_glade = R"Glade(
                 <property name="adjustment">adjustment2b</property>
                 <property name="climb_rate">1</property>
                 <property name="numeric">True</property>
-                <property name="value">2</property>
+                <property name="value">10</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -120,7 +123,7 @@ const std::string converter_glade = R"Glade(
                 <property name="adjustment">adjustment3b</property>
                 <property name="climb_rate">1</property>
                 <property name="numeric">True</property>
-                <property name="value">2</property>
+                <property name="value">10</property>
               </object>
               <packing>
                 <property name="left_attach">1</property>
