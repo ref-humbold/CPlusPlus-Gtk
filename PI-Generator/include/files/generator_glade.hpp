@@ -5,11 +5,14 @@
 
 const std::string generator_glade = R"glade(
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.3 -->
+<!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
     <child>
       <object class="GtkBox" id="main_box">
         <property name="visible">True</property>
@@ -38,7 +41,7 @@ const std::string generator_glade = R"glade(
             <property name="row_homogeneous">True</property>
             <property name="column_homogeneous">True</property>
             <child>
-              <object class="GtkLabel" id="label_A1">
+              <object class="GtkLabel" id="pi_name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">PI</property>
@@ -49,7 +52,7 @@ const std::string generator_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_B1">
+              <object class="GtkLabel" id="pi_value_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -59,7 +62,7 @@ const std::string generator_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_A2">
+              <object class="GtkLabel" id="error_name_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">result error</property>
@@ -70,7 +73,7 @@ const std::string generator_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label_B2">
+              <object class="GtkLabel" id="error_value_label">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>

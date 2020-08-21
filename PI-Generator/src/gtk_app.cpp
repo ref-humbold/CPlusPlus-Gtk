@@ -24,8 +24,8 @@ gtk_app::~gtk_app()
     delete exit_button;
     delete continue_button;
     delete progress_bar;
-    delete label_B1;
-    delete label_B2;
+    delete pi_value_label;
+    delete error_value_label;
 }
 
 void gtk_app::get_components()
@@ -34,8 +34,8 @@ void gtk_app::get_components()
     builder->get_widget("exit_button", exit_button);
     builder->get_widget("continue_button", continue_button);
     builder->get_widget("progress_bar", progress_bar);
-    builder->get_widget("label_B1", label_B1);
-    builder->get_widget("label_B2", label_B2);
+    builder->get_widget("pi_value_label", pi_value_label);
+    builder->get_widget("error_value_label", error_value_label);
 }
 
 void gtk_app::connect_signals()
@@ -54,8 +54,8 @@ void gtk_app::continue_button_clicked_cb()
 {
     set_progress_bar(0.0);
     pi_value = count_pi();
-    label_B1->set_text(std::to_string(pi_value));
-    label_B2->set_text(std::to_string(pi_value - M_PI));
+    pi_value_label->set_text(std::to_string(pi_value));
+    error_value_label->set_text(std::to_string(pi_value - M_PI));
 }
 
 double gtk_app::count_pi()

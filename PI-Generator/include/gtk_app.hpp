@@ -39,8 +39,8 @@ private:
     Gtk::Button * exit_button;
     Gtk::Button * continue_button;
     Gtk::ProgressBar * progress_bar;
-    Gtk::Label * label_B1;
-    Gtk::Label * label_B2;
+    Gtk::Label * pi_value_label;
+    Gtk::Label * error_value_label;
 };
 
 #endif
