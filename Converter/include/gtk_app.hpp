@@ -17,9 +17,9 @@ public:
     gtk_app & operator=(const gtk_app &) = delete;
     gtk_app & operator=(gtk_app &&) = delete;
 
-    Gtk::Window & get_main_window()
+    Gtk::Window & main_window()
     {
-        return *(main_window);
+        return *main_window_;
     }
 
 private:
@@ -29,7 +29,7 @@ private:
     void convert_button_clicked_cb();
 
     Glib::RefPtr<Gtk::Builder> builder;
-    Gtk::Window * main_window;
+    Gtk::Window * main_window_;
     Gtk::Button * convert_button;
     Gtk::Button * exit_button;
     Gtk::Label * result_label;

@@ -18,7 +18,7 @@ catch(const Glib::Exception & e)
 
 gtk_app::~gtk_app()
 {
-    delete main_window;
+    delete main_window_;
     delete exit_button;
     delete convert_button;
     delete result_label;
@@ -29,7 +29,7 @@ gtk_app::~gtk_app()
 
 void gtk_app::get_components()
 {
-    builder->get_widget("main_window", main_window);
+    builder->get_widget("main_window", main_window_);
     builder->get_widget("exit_button", exit_button);
     builder->get_widget("convert_button", convert_button);
     builder->get_widget("result_label", result_label);
@@ -47,7 +47,7 @@ void gtk_app::connect_signals()
 
 void gtk_app::exit_button_clicked_cb()
 {
-    main_window->hide();
+    main_window_->hide();
 }
 
 void gtk_app::convert_button_clicked_cb()

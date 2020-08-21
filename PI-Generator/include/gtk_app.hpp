@@ -19,9 +19,9 @@ public:
     gtk_app & operator=(const gtk_app &) = delete;
     gtk_app & operator=(gtk_app &&) = delete;
 
-    Gtk::Window & get_main_window()
+    Gtk::Window & main_window()
     {
-        return *main_window;
+        return *main_window_;
     }
 
 private:
@@ -35,7 +35,7 @@ private:
 
     double pi_value;
     Glib::RefPtr<Gtk::Builder> builder;
-    Gtk::Window * main_window;
+    Gtk::Window * main_window_;
     Gtk::Button * exit_button;
     Gtk::Button * continue_button;
     Gtk::ProgressBar * progress_bar;

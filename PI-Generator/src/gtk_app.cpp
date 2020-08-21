@@ -20,7 +20,7 @@ gtk_app::gtk_app()
 
 gtk_app::~gtk_app()
 {
-    delete main_window;
+    delete main_window_;
     delete exit_button;
     delete continue_button;
     delete progress_bar;
@@ -30,7 +30,7 @@ gtk_app::~gtk_app()
 
 void gtk_app::get_components()
 {
-    builder->get_widget("main_window", main_window);
+    builder->get_widget("main_window", main_window_);
     builder->get_widget("exit_button", exit_button);
     builder->get_widget("continue_button", continue_button);
     builder->get_widget("progress_bar", progress_bar);
@@ -47,7 +47,7 @@ void gtk_app::connect_signals()
 
 void gtk_app::exit_button_clicked_cb()
 {
-    main_window->hide();
+    main_window_->hide();
 }
 
 void gtk_app::continue_button_clicked_cb()

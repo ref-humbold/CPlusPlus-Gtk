@@ -20,13 +20,18 @@ public:
     gtk_app & operator=(const gtk_app &) = delete;
     gtk_app & operator=(gtk_app &&) = delete;
 
+    Gtk::Window & main_window()
+    {
+        return *main_window_;
+    }
+
 private:
     void get_components();
     void connect_signals();
     void togglebutton_clicked_cb();
 
     Glib::RefPtr<Gtk::Builder> builder;
-    Gtk::Window * main_window;
+    Gtk::Window * main_window_;
 };
 
 #endif

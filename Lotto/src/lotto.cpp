@@ -15,7 +15,7 @@ int main(int argc, char * argv[])
     Glib::RefPtr<Gtk::Application> application = Gtk::Application::create(argc, argv, "lotto");
     gtk_app app_window(extract_directory(argv[0]));
 
-    application->run(app_window.get_main_window());
+    application->run(app_window.main_window());
 
     return 0;
 }

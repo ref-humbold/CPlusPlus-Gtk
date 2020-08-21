@@ -8,7 +8,7 @@ int main(int argc, char * argv[])
             Gtk::Application::create(argc, argv, "pi.generator");
     gtk_app app_window;
 
-    application->run(app_window.get_main_window());
+    application->run(app_window.main_window());
 
     return 0;
 }

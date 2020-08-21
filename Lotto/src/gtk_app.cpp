@@ -18,12 +18,12 @@ gtk_app::gtk_app()
 
 gtk_app::~gtk_app()
 {
-    delete main_window;
+    delete main_window_;
 }
 
 void gtk_app::get_components()
 {
-    builder->get_widget("main_window", main_window);
+    builder->get_widget("main_window", main_window_);
 }
 
 void gtk_app::connect_signals()
