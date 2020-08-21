@@ -22,9 +22,9 @@ gtk_app::~gtk_app()
     delete exit_button;
     delete convert_button;
     delete result_label;
-    delete entry_B1;
-    delete spinbutton_B2;
-    delete spinbutton_B3;
+    delete value_entry;
+    delete base_value_spinbutton;
+    delete base_result_spinbutton;
 }
 
 void gtk_app::get_components()
@@ -33,9 +33,9 @@ void gtk_app::get_components()
     builder->get_widget("exit_button", exit_button);
     builder->get_widget("convert_button", convert_button);
     builder->get_widget("result_label", result_label);
-    builder->get_widget("entry_B1", entry_B1);
-    builder->get_widget("spinbutton_B2", spinbutton_B2);
-    builder->get_widget("spinbutton_B3", spinbutton_B3);
+    builder->get_widget("value_entry", value_entry);
+    builder->get_widget("base_value_spinbutton", base_value_spinbutton);
+    builder->get_widget("base_result_spinbutton", base_result_spinbutton);
 }
 
 void gtk_app::connect_signals()
@@ -52,14 +52,14 @@ void gtk_app::exit_button_clicked_cb()
 
 void gtk_app::convert_button_clicked_cb()
 {
-    std::string input = entry_B1->get_text();
+    std::string input = value_entry->get_text();
     std::string result;
 
     try
     {
-        std::string value =
-                converter(spinbutton_B2->get_value_as_int(), spinbutton_B3->get_value_as_int())
-                        .convert(input);
+        std::string value = converter(base_value_spinbutton->get_value_as_int(),
+                                      base_result_spinbutton->get_value_as_int())
+                                    .convert(input);
 
         result = input + "\n|||\n"s + value;
     }
@@ -68,6 +68,6 @@ void gtk_app::convert_button_clicked_cb()
         result = "ERROR: "s + e.what();
     }
 
-    entry_B1->set_text("");
+    value_entry->set_text("");
     result_label->set_text(result);
 }

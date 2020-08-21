@@ -33,9 +33,9 @@ private:
     Gtk::Button * convert_button;
     Gtk::Button * exit_button;
     Gtk::Label * result_label;
-    Gtk::Entry * entry_B1;
-    Gtk::SpinButton * spinbutton_B2;
-    Gtk::SpinButton * spinbutton_B3;
+    Gtk::Entry * value_entry;
+    Gtk::SpinButton * base_value_spinbutton;
+    Gtk::SpinButton * base_result_spinbutton;
 };
 
 #endif
