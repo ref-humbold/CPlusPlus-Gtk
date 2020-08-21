@@ -52,7 +52,7 @@ void gtk_app::exit_button_clicked_cb()
 
 void gtk_app::continue_button_clicked_cb()
 {
-    progress_bar->set_fraction(0.0);
+    set_progress_bar(0.0);
     pi_value = count_pi();
     label_B1->set_text(std::to_string(pi_value));
     label_B2->set_text(std::to_string(pi_value - M_PI));
@@ -61,27 +61,27 @@ void gtk_app::continue_button_clicked_cb()
 double gtk_app::count_pi()
 {
     long long int shots = 0LL;
-    const long long int NUMBER = 1LL << 24;
-    const long long int STEP = NUMBER >> 5;
+    constexpr long long int total_number = 1LL << 24;
+    constexpr long long int step = total_number >> 5;
 
-    for(long long int j = 1LL; j <= NUMBER / STEP; ++j)
+    for(double j = 1.0; j <= total_number / step; ++j)
     {
-        shots += shoot_points(STEP);
-        progress_bar->set_fraction(j * STEP * 100.0 / NUMBER);
+        shots += shoot_points(step);
+        set_progress_bar(j * step / total_number);
     }
 
-    return (4.0 * shots) / NUMBER;
+    return (4.0 * shots) / total_number;
 }
 
 long long int gtk_app::shoot_points(long long int throws)
 {
     long long int shots = 0LL;
-    const int SIZE = 32750;
+    constexpr int size = 32750;
 
     for(long long int i = 0LL; i < throws; ++i)
     {
-        double pos_x = (rand() % SIZE) / (1.0 * SIZE);
-        double pos_y = (rand() % SIZE) / (1.0 * SIZE);
+        double pos_x = (rand() % size) / (1.0 * size);
+        double pos_y = (rand() % size) / (1.0 * size);
         double radius = sqrt(pos_x * pos_x + pos_y * pos_y);
 
         if(radius <= 1.0)
@@ -89,4 +89,11 @@ long long int gtk_app::shoot_points(long long int throws)
     }
 
     return shots;
+}
+
+void gtk_app::set_progress_bar(double fraction)
+{
+    progress_bar->set_fraction(fraction);
+    Gtk::Main::iteration(false);
+    Gtk::Main::iteration(false);
 }

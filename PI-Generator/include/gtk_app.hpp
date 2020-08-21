@@ -31,6 +31,7 @@ private:
     void continue_button_clicked_cb();
     double count_pi();
     long long int shoot_points(long long int throws);
+    void set_progress_bar(double fraction);
 
     double pi_value;
     Glib::RefPtr<Gtk::Builder> builder;
