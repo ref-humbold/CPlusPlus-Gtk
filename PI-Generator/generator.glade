@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.12" />
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <child type="titlebar">
-      <placeholder />
+      <placeholder/>
     </child>
     <child>
       <object class="GtkBox" id="main_box">
@@ -87,8 +87,8 @@
           <object class="GtkProgressBar" id="progress_bar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_top">10</property>
-            <property name="margin_bottom">10</property>
+            <property name="margin_top">12</property>
+            <property name="margin_bottom">12</property>
             <property name="show_text">True</property>
           </object>
           <packing>

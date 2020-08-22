@@ -93,8 +93,8 @@ const std::string generator_glade = R"glade(
           <object class="GtkProgressBar" id="progress_bar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="margin_top">10</property>
-            <property name="margin_bottom">10</property>
+            <property name="margin_top">12</property>
+            <property name="margin_bottom">12</property>
             <property name="show_text">True</property>
           </object>
           <packing>

@@ -7,11 +7,11 @@ const std::string lotto_glade = R"glade(
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.2 -->
 <interface>
-  <requires lib="gtk+" version="3.12" />
+  <requires lib="gtk+" version="3.12"/>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
     <child type="titlebar">
-      <placeholder />
+      <placeholder/>
     </child>
     <child>
       <object class="GtkBox" id="main_box">
@@ -22,6 +22,8 @@ const std::string lotto_glade = R"glade(
           <object class="GtkLabel" id="title_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
             <property name="label" translatable="yes">LOTTO</property>
           </object>
           <packing>
@@ -86,9 +88,11 @@ const std::string lotto_glade = R"glade(
           </packing>
         </child>
         <child>
-          <object class="GtkSeparator" id="separator">
+          <object class="GtkSeparator" id="upper_separator">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -100,6 +104,7 @@ const std::string lotto_glade = R"glade(
           <object class="GtkLabel" id="info_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_bottom">10</property>
             <property name="label" translatable="yes">CHOOSE 6 NUMBERS:</property>
           </object>
           <packing>
@@ -112,6 +117,8 @@ const std::string lotto_glade = R"glade(
           <object class="GtkGrid" id="numbers_grid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="row_homogeneous">True</property>
+            <property name="column_homogeneous">True</property>
             <child>
               <object class="GtkToggleButton" id="togglebutton_1">
                 <property name="label" translatable="yes">1</property>
@@ -708,9 +715,11 @@ const std::string lotto_glade = R"glade(
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="results_label">
+          <object class="GtkSeparator" id="lower_sparator">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -719,23 +728,36 @@ const std::string lotto_glade = R"glade(
           </packing>
         </child>
         <child>
-          <object class="GtkGrid" id="buttons_grid">
+          <object class="GtkButton" id="draw_button">
+            <property name="label" translatable="yes">RUN</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">7</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="results_label">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="row_homogeneous">True</property>
-            <property name="column_homogeneous">True</property>
-            <child>
-              <object class="GtkButton" id="draw_button">
-                <property name="label" translatable="yes">RUN</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">0</property>
-              </packing>
-            </child>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">8</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="buttons_box">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="homogeneous">True</property>
             <child>
               <object class="GtkButton" id="next_button">
                 <property name="label" translatable="yes">NEXT DRAW</property>
@@ -744,8 +766,9 @@ const std::string lotto_glade = R"glade(
                 <property name="receives_default">True</property>
               </object>
               <packing>
-                <property name="left_attach">0</property>
-                <property name="top_attach">1</property>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -756,25 +779,16 @@ const std::string lotto_glade = R"glade(
                 <property name="receives_default">True</property>
               </object>
               <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="results_labe">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">0</property>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">6</property>
+            <property name="position">9</property>
           </packing>
         </child>
       </object>

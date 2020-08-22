@@ -11,14 +11,14 @@ const std::string converter_glade = R"Glade(
   <object class="GtkAdjustment" id="base_result_adjustment">
     <property name="lower">2</property>
     <property name="upper">16</property>
-    <property name="value">2</property>
+    <property name="value">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
   <object class="GtkAdjustment" id="base_value_adjustment">
     <property name="lower">2</property>
     <property name="upper">16</property>
-    <property name="value">2</property>
+    <property name="value">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">1</property>
   </object>
