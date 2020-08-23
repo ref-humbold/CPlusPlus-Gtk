@@ -22,7 +22,7 @@ gtk_app::gtk_app()
 
 gtk_app::~gtk_app()
 {
-    for(size_t i = 0; i < NUMBERS; ++i)
+    for(size_t i = 0; i < lotto_game::NUMBERS; ++i)
         delete number_buttons[i];
 
     delete run_button;
@@ -56,7 +56,7 @@ void gtk_app::connect_signals()
     run_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::run_button_clicked));
     next_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::next_button_clicked));
 
-    for(size_t i = 0; i < NUMBERS; ++i)
+    for(size_t i = 0; i < number_buttons.size(); ++i)
         number_buttons[i]->signal_toggled().connect(
                 sigc::bind<size_t>(sigc::mem_fun(*this, &gtk_app::number_toggled), i + 1));
 }
