@@ -27,8 +27,8 @@ public:
 private:
     void get_components();
     void connect_signals();
-    void exit_button_clicked_cb();
-    void continue_button_clicked_cb();
+    void close_button_clicked();
+    void generate_button_clicked();
     double count_pi();
     long long int shoot_points(long long int throws);
     void set_progress_bar(double fraction);
@@ -36,8 +36,8 @@ private:
     double pi_value;
     Glib::RefPtr<Gtk::Builder> builder;
     Gtk::Window * main_window_;
-    Gtk::Button * exit_button;
-    Gtk::Button * continue_button;
+    Gtk::Button * close_button;
+    Gtk::Button * generate_button;
     Gtk::ProgressBar * progress_bar;
     Gtk::Label * pi_value_label;
     Gtk::Label * error_value_label;

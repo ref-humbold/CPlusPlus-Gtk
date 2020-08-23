@@ -32,10 +32,6 @@ private:
 public:
     converter(int base_in, int base_out);
     ~converter() = default;
-    converter(converter &&) = delete;
-    converter(const converter &) = delete;
-    converter & operator=(converter &&) = delete;
-    converter & operator=(const converter &) = delete;
 
     std::string convert(const std::string & number) const;
 

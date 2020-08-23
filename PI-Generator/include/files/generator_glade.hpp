@@ -109,7 +109,7 @@ const std::string generator_glade = R"glade(
             <property name="can_focus">False</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkButton" id="continue_button">
+              <object class="GtkButton" id="generate_button">
                 <property name="label" translatable="yes">GENERATE!</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -122,7 +122,7 @@ const std::string generator_glade = R"glade(
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="exit_button">
+              <object class="GtkButton" id="close_button">
                 <property name="label" translatable="yes">CLOSE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

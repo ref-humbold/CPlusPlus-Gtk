@@ -20,19 +20,19 @@ gtk_app::gtk_app()
 
 gtk_app::~gtk_app()
 {
-    delete main_window_;
-    delete exit_button;
-    delete continue_button;
+    delete close_button;
+    delete generate_button;
     delete progress_bar;
     delete pi_value_label;
     delete error_value_label;
+    delete main_window_;
 }
 
 void gtk_app::get_components()
 {
     builder->get_widget("main_window", main_window_);
-    builder->get_widget("exit_button", exit_button);
-    builder->get_widget("continue_button", continue_button);
+    builder->get_widget("close_button", close_button);
+    builder->get_widget("generate_button", generate_button);
     builder->get_widget("progress_bar", progress_bar);
     builder->get_widget("pi_value_label", pi_value_label);
     builder->get_widget("error_value_label", error_value_label);
@@ -40,17 +40,17 @@ void gtk_app::get_components()
 
 void gtk_app::connect_signals()
 {
-    exit_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::exit_button_clicked_cb));
-    continue_button->signal_clicked().connect(
-            sigc::mem_fun(*this, &gtk_app::continue_button_clicked_cb));
+    close_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::close_button_clicked));
+    generate_button->signal_clicked().connect(
+            sigc::mem_fun(*this, &gtk_app::generate_button_clicked));
 }
 
-void gtk_app::exit_button_clicked_cb()
+void gtk_app::close_button_clicked()
 {
     main_window_->hide();
 }
 
-void gtk_app::continue_button_clicked_cb()
+void gtk_app::generate_button_clicked()
 {
     set_progress_bar(0.0);
     pi_value = count_pi();

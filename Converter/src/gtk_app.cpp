@@ -18,19 +18,19 @@ catch(const Glib::Exception & e)
 
 gtk_app::~gtk_app()
 {
-    delete main_window_;
-    delete exit_button;
+    delete close_button;
     delete convert_button;
     delete result_label;
     delete value_entry;
     delete base_value_spinbutton;
     delete base_result_spinbutton;
+    delete main_window_;
 }
 
 void gtk_app::get_components()
 {
     builder->get_widget("main_window", main_window_);
-    builder->get_widget("exit_button", exit_button);
+    builder->get_widget("close_button", close_button);
     builder->get_widget("convert_button", convert_button);
     builder->get_widget("result_label", result_label);
     builder->get_widget("value_entry", value_entry);
@@ -40,17 +40,17 @@ void gtk_app::get_components()
 
 void gtk_app::connect_signals()
 {
-    exit_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::exit_button_clicked_cb));
+    close_button->signal_clicked().connect(sigc::mem_fun(*this, &gtk_app::close_button_clicked));
     convert_button->signal_clicked().connect(
-            sigc::mem_fun(*this, &gtk_app::convert_button_clicked_cb));
+            sigc::mem_fun(*this, &gtk_app::convert_button_clicked));
 }
 
-void gtk_app::exit_button_clicked_cb()
+void gtk_app::close_button_clicked()
 {
     main_window_->hide();
 }
 
-void gtk_app::convert_button_clicked_cb()
+void gtk_app::convert_button_clicked()
 {
     std::string input = value_entry->get_text();
     std::string result;

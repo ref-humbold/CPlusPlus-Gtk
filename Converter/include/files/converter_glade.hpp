@@ -169,7 +169,7 @@ const std::string converter_glade = R"Glade(
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="exit_button">
+              <object class="GtkButton" id="close_button">
                 <property name="label" translatable="yes">CLOSE</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>

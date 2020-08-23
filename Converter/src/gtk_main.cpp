@@ -4,7 +4,7 @@
 
 int main(int argc, char * argv[])
 {
-    Glib::RefPtr<Gtk::Application> application = Gtk::Application::create(argc, argv, "converter");
+    Glib::RefPtr<Gtk::Application> application = Gtk::Application::create(argc, argv, "Converter");
     gtk_app app_window;
 
     application->run(app_window.main_window());

@@ -25,13 +25,13 @@ public:
 private:
     void get_components();
     void connect_signals();
-    void exit_button_clicked_cb();
-    void convert_button_clicked_cb();
+    void close_button_clicked();
+    void convert_button_clicked();
 
     Glib::RefPtr<Gtk::Builder> builder;
     Gtk::Window * main_window_;
     Gtk::Button * convert_button;
-    Gtk::Button * exit_button;
+    Gtk::Button * close_button;
     Gtk::Label * result_label;
     Gtk::Entry * value_entry;
     Gtk::SpinButton * base_value_spinbutton;
