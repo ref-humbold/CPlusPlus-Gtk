@@ -728,7 +728,7 @@ const std::string lotto_glade = R"glade(
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="draw_button">
+          <object class="GtkButton" id="run_button">
             <property name="label" translatable="yes">RUN</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>

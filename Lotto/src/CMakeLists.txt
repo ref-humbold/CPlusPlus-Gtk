@@ -8,9 +8,15 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
 set(SOURCES
+    gtk_app.cpp
+    lotto.cpp
+    lotto_game.cpp)
+
+set(OLD_SOURCES
     ../lotto.cpp)
 
 # OUTPUT
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EXE_OUTPUT_DIR}")
-add_executable(lotto ${SOURCES})
-target_link_libraries(lotto ${GTKMM_LIBRARIES})
+add_executable(lotto ${OLD_SOURCES})
+add_executable(lotto-gtk ${SOURCES})
+target_link_libraries(lotto-gtk ${GTKMM_LIBRARIES})
