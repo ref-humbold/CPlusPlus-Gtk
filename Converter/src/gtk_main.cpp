@@ -4,7 +4,8 @@
 
 int main(int argc, char * argv[])
 {
-    Glib::RefPtr<Gtk::Application> application = Gtk::Application::create(argc, argv, "Converter");
+    Glib::RefPtr<Gtk::Application> application =
+            Gtk::Application::create(argc, argv, "ref_humbold.converter");
     gtk_app app_window;
 
     application->run(app_window.main_window());

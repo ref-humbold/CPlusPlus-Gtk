@@ -1,5 +1,6 @@
 #include "gtk_app.hpp"
 #include <iostream>
+#include <set>
 #include <string>
 #include "files/lotto_glade.hpp"
 
@@ -22,8 +23,8 @@ gtk_app::gtk_app()
 
 gtk_app::~gtk_app()
 {
-    for(size_t i = 0; i < lotto_game::NUMBERS; ++i)
-        delete number_buttons[i];
+    for(auto && btn : number_buttons)
+        delete btn;
 
     delete run_button;
     delete next_button;
@@ -44,9 +45,12 @@ void gtk_app::get_components()
     builder->get_widget("jackpot_value_label", jackpot_value_label);
     builder->get_widget("results_label", results_label);
 
-    for(size_t i = 0; i < lotto_game::NUMBERS; ++i)
+    for(size_t i = 0; i < lotto_game::TOTAL_NUMBERS; ++i)
     {
-        builder->get_widget("togglebutton_"s + std::to_string(i + 1), number_buttons[i]);
+        Gtk::ToggleButton * btn;
+
+        builder->get_widget("togglebutton_"s + std::to_string(i + 1), btn);
+        number_buttons.push_back(btn);
     }
 }
 
@@ -58,15 +62,18 @@ void gtk_app::connect_signals()
 
     for(size_t i = 0; i < number_buttons.size(); ++i)
         number_buttons[i]->signal_toggled().connect(
-                sigc::bind<size_t>(sigc::mem_fun(*this, &gtk_app::number_toggled), i + 1));
+                sigc::bind<size_t>(sigc::mem_fun(*this, &gtk_app::number_toggled), i));
 }
 
 void gtk_app::run_button_clicked()
 {
+    std::set<size_t> result = game.run();
+    size_t matched = game.check(result);
 }
 
 void gtk_app::next_button_clicked()
 {
+    game.start();
 }
 
 void gtk_app::close_button_clicked()
@@ -76,5 +83,5 @@ void gtk_app::close_button_clicked()
 
 void gtk_app::number_toggled(size_t number)
 {
-    std::cout << "TOGGLED " << number << "\n";
+    game.toggle(number);
 }
