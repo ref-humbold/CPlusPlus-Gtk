@@ -1,7 +1,10 @@
 #include "gtk_app.hpp"
+#include <cmath>
+#include <iostream>
+#include <string>
 #include "files/generator_glade.hpp"
 
-gtk_app::gtk_app()
+gtk_app::gtk_app() : distribution{0.0, 1.0}
 {
     try
     {
@@ -76,15 +79,13 @@ double gtk_app::count_pi()
 long long int gtk_app::shoot_points(long long int throws)
 {
     long long int shots = 0LL;
-    constexpr int size = 32750;
 
     for(long long int i = 0LL; i < throws; ++i)
     {
-        double pos_x = (rand() % size) / (1.0 * size);
-        double pos_y = (rand() % size) / (1.0 * size);
-        double radius = sqrt(pos_x * pos_x + pos_y * pos_y);
+        double pos_x = distribution(rand_eng);
+        double pos_y = distribution(rand_eng);
 
-        if(radius <= 1.0)
+        if(sqrt(pos_x * pos_x + pos_y * pos_y) <= 1.0)
             ++shots;
     }
 

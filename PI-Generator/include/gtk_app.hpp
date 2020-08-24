@@ -2,11 +2,7 @@
 #define GTK_APP_HPP_
 
 #include <cstdlib>
-#include <cmath>
-#include <cstdio>
-#include <ctime>
-#include <iostream>
-#include <string>
+#include <random>
 #include <gtkmm.h>
 
 class gtk_app
@@ -34,6 +30,8 @@ private:
     void set_progress_bar(double fraction);
 
     double pi_value;
+    std::default_random_engine rand_eng;
+    std::uniform_real_distribution<double> distribution;
     Glib::RefPtr<Gtk::Builder> builder;
     Gtk::Window * main_window_;
     Gtk::Button * close_button;
