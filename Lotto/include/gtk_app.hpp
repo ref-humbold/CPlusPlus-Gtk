@@ -39,7 +39,9 @@ private:
     Gtk::Button * close_button;
     Gtk::Label * draw_value_label;
     Gtk::Label * jackpot_value_label;
-    Gtk::Label * results_label;
+    Gtk::Label * result_value_label;
+    Gtk::Label * matched_value_label;
+    Gtk::Label * next_jackpot_value_label;
 };
 
 #endif

@@ -31,7 +31,9 @@ gtk_app::~gtk_app()
     delete close_button;
     delete draw_value_label;
     delete jackpot_value_label;
-    delete results_label;
+    delete result_value_label;
+    delete matched_value_label;
+    delete next_jackpot_value_label;
     delete main_window_;
 }
 
@@ -43,7 +45,9 @@ void gtk_app::get_components()
     builder->get_widget("close_button", close_button);
     builder->get_widget("draw_value_label", draw_value_label);
     builder->get_widget("jackpot_value_label", jackpot_value_label);
-    builder->get_widget("results_label", results_label);
+    builder->get_widget("results_label", result_value_label);
+    builder->get_widget("matched_value_label", matched_value_label);
+    builder->get_widget("next_jackpot_value_label", next_jackpot_value_label);
 
     for(size_t i = 0; i < lotto_game::TOTAL_NUMBERS; ++i)
     {
@@ -69,11 +73,22 @@ void gtk_app::run_button_clicked()
 {
     std::set<size_t> result = game.run();
     size_t matched = game.check(result);
+    size_t next_jackpot = game.count_jackpot(matched);
+
+    result_value_label->set_text("");
+    matched_value_label->set_text(std::to_string(matched));
+    next_jackpot_value_label->set_text(std::to_string(next_jackpot));
 }
 
 void gtk_app::next_button_clicked()
 {
     game.start();
+
+    draw_value_label->set_text(std::to_string(game.run_number()));
+    jackpot_value_label->set_text(std::to_string(game.jackpot()));
+    result_value_label->set_text("");
+    matched_value_label->set_text("");
+    next_jackpot_value_label->set_text("");
 }
 
 void gtk_app::close_button_clicked()
