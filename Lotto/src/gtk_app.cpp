@@ -13,7 +13,7 @@ gtk_app::gtk_app()
         builder = Gtk::Builder::create_from_string(lotto_glade);
         get_components();
         connect_signals();
-        next_button->set_sensitive(false);
+        next_button_clicked();
     }
     catch(const Glib::Exception & e)
     {
@@ -70,15 +70,6 @@ void gtk_app::connect_signals()
                 sigc::bind<size_t>(sigc::mem_fun(*this, &gtk_app::number_toggled), i));
 }
 
-void gtk_app::activate_numbers(bool active)
-{
-    next_button->set_sensitive(!active);
-    run_button->set_sensitive(active);
-
-    for(auto && btn : number_buttons)
-        btn->set_sensitive(active);
-}
-
 void gtk_app::run_button_clicked()
 {
     std::set<size_t> result = game.run();
@@ -88,11 +79,18 @@ void gtk_app::run_button_clicked()
     result_value_label->set_text("");
     matched_value_label->set_text(std::to_string(matched));
     next_jackpot_value_label->set_text(std::to_string(next_jackpot));
-    activate_numbers(false);
+    next_button->set_sensitive(true);
+    run_button->set_sensitive(false);
+
+    for(auto && btn : number_buttons)
+        btn->set_sensitive(false);
 }
 
 void gtk_app::next_button_clicked()
 {
+    for(auto && btn : number_buttons)
+        btn->set_active(false);
+
     game.start();
 
     draw_value_label->set_text(std::to_string(game.run_number()));
@@ -100,7 +98,11 @@ void gtk_app::next_button_clicked()
     result_value_label->set_text("");
     matched_value_label->set_text("");
     next_jackpot_value_label->set_text("");
-    activate_numbers(true);
+    next_button->set_sensitive(false);
+    run_button->set_sensitive(false);
+
+    for(auto && btn : number_buttons)
+        btn->set_sensitive(true);
 }
 
 void gtk_app::close_button_clicked()
@@ -111,4 +113,21 @@ void gtk_app::close_button_clicked()
 void gtk_app::number_toggled(size_t number)
 {
     game.toggle(number);
+
+    if(game.count_chosen() >= lotto_game::DRAW_NUMBERS)
+    {
+        unsigned long long int chosen = game.mask();
+
+        run_button->set_sensitive(true);
+
+        for(size_t i = 0; i < number_buttons.size(); ++i)
+            number_buttons[i]->set_sensitive((chosen & (1ULL << i)) == (1ULL << i));
+    }
+    else if(game.count_chosen() == lotto_game::DRAW_NUMBERS - 1 && !game.is_chosen(number))
+    {
+        run_button->set_sensitive(false);
+
+        for(auto && btn : number_buttons)
+            btn->set_sensitive(true);
+    }
 }

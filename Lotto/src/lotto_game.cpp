@@ -3,7 +3,7 @@
 
 void lotto_game::start()
 {
-    chosen.reset();
+    numbers_.reset();
     ++run_number_;
     jackpot_.first = jackpot_.second;
 }
@@ -21,7 +21,7 @@ std::set<size_t> lotto_game::run()
 size_t lotto_game::check(const std::set<size_t> & result)
 {
     return std::count_if(std::begin(result), std::end(result),
-                         [&](size_t num) { return chosen.test(num - 1); });
+                         [&](size_t num) { return numbers_.test(num - 1); });
 }
 
 size_t lotto_game::count_jackpot(size_t matched)

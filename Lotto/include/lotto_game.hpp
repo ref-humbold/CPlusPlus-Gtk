@@ -13,7 +13,6 @@ public:
     lotto_game()
         : run_number_{0}, jackpot_{BASE_JACKPOT, BASE_JACKPOT}, distribution{1, TOTAL_NUMBERS}
     {
-        start();
     }
 
     ~lotto_game() = default;
@@ -30,7 +29,22 @@ public:
 
     void toggle(size_t number)
     {
-        chosen.flip(number);
+        numbers_.flip(number);
+    }
+
+    bool is_chosen(size_t number)
+    {
+        return numbers_.test(number);
+    }
+
+    size_t count_chosen()
+    {
+        return numbers_.count();
+    }
+
+    unsigned long long int mask()
+    {
+        return numbers_.to_ullong();
     }
 
     void start();
@@ -46,7 +60,7 @@ private:
 
     size_t run_number_;
     std::pair<size_t, size_t> jackpot_;
-    std::bitset<TOTAL_NUMBERS> chosen;
+    std::bitset<TOTAL_NUMBERS> numbers_;
     std::default_random_engine rand_eng;
     std::uniform_int_distribution<size_t> distribution;
 };
