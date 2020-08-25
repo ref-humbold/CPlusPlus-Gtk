@@ -13,6 +13,7 @@ gtk_app::gtk_app()
         builder = Gtk::Builder::create_from_string(lotto_glade);
         get_components();
         connect_signals();
+        next_button->set_sensitive(false);
     }
     catch(const Glib::Exception & e)
     {
@@ -45,7 +46,7 @@ void gtk_app::get_components()
     builder->get_widget("close_button", close_button);
     builder->get_widget("draw_value_label", draw_value_label);
     builder->get_widget("jackpot_value_label", jackpot_value_label);
-    builder->get_widget("results_label", result_value_label);
+    builder->get_widget("result_value_label", result_value_label);
     builder->get_widget("matched_value_label", matched_value_label);
     builder->get_widget("next_jackpot_value_label", next_jackpot_value_label);
 
@@ -69,6 +70,15 @@ void gtk_app::connect_signals()
                 sigc::bind<size_t>(sigc::mem_fun(*this, &gtk_app::number_toggled), i));
 }
 
+void gtk_app::activate_numbers(bool active)
+{
+    next_button->set_sensitive(!active);
+    run_button->set_sensitive(active);
+
+    for(auto && btn : number_buttons)
+        btn->set_sensitive(active);
+}
+
 void gtk_app::run_button_clicked()
 {
     std::set<size_t> result = game.run();
@@ -78,6 +88,7 @@ void gtk_app::run_button_clicked()
     result_value_label->set_text("");
     matched_value_label->set_text(std::to_string(matched));
     next_jackpot_value_label->set_text(std::to_string(next_jackpot));
+    activate_numbers(false);
 }
 
 void gtk_app::next_button_clicked()
@@ -89,6 +100,7 @@ void gtk_app::next_button_clicked()
     result_value_label->set_text("");
     matched_value_label->set_text("");
     next_jackpot_value_label->set_text("");
+    activate_numbers(true);
 }
 
 void gtk_app::close_button_clicked()

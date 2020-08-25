@@ -24,6 +24,7 @@ public:
 private:
     void get_components();
     void connect_signals();
+    void activate_numbers(bool active);
     void run_button_clicked();
     void next_button_clicked();
     void close_button_clicked();
