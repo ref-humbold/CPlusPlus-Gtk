@@ -8,10 +8,10 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 # SOURCES
 set(SOURCES
-    gtk_app.cpp
-    pi_generator.cpp)
+    "gtk_app.cpp"
+    "pi_generator.cpp")
 
 # OUTPUT
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EXE_OUTPUT_DIR}")
-add_executable(pi_generator ${SOURCES})
-target_link_libraries(pi_generator ${GTKMM_LIBRARIES})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${EXE_OUTPUT_DIR})
+add_executable(${EXE_NAME} ${SOURCES})
+target_link_libraries(${EXE_NAME} ${GTKMM_LIBRARIES})

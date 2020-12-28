@@ -17,8 +17,6 @@ gtk_app::gtk_app() : distribution{0.0, 1.0}
         std::cerr << e.what() << '\n';
         throw;
     }
-
-    srand(time(nullptr));
 }
 
 gtk_app::~gtk_app()
