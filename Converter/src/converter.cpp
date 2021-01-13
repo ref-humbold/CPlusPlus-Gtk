@@ -5,12 +5,12 @@ using namespace std::string_literals;
 converter::converter(size_t base_in, size_t base_out) : base_in{base_in}, base_out{base_out}
 {
     if(base_in < 2 || base_in > 16)
-        throw converter_exception("Invalid input base ("s + std::to_string(base_in)
-                                  + "), must be between 2 and 16"s);
+        throw converter_exception("Invalid input base "s + std::to_string(base_in)
+                                  + ", must be between 2 and 16"s);
 
     if(base_out < 2 || base_out > 16)
-        throw converter_exception("Invalid output base ("s + std::to_string(base_out)
-                                  + "), must be between 2 and 16"s);
+        throw converter_exception("Invalid output base "s + std::to_string(base_out)
+                                  + ", must be between 2 and 16"s);
 }
 
 std::string converter::convert(const std::string & number) const
@@ -56,7 +56,7 @@ void converter::validate_digits(converter::sign sign_, const std::string & numbe
     for(auto it = number.begin() + digits_begin; it != number.end(); ++it)
         if(*it < '0' || (*it > max_dec && *it < 'A') || (*it > max_big_hex && *it < 'a')
            || *it > max_small_hex)
-            throw converter_exception("Character \'"s + std::string(1, *it)
+            throw converter_exception("Character \'"s + *it
                                       + "\' is invalid for numeral system of base "s
                                       + std::to_string(base_in));
 }
