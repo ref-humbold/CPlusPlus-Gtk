@@ -23,7 +23,7 @@ std::string converter::convert(const std::string & number) const
         return number;
 
     long long int decimal = to_decimal(number);
-    std::vector<int> number_out = to_base_out(decimal);
+    std::vector<size_t> number_out = to_base_out(decimal);
 
     return build_number(sign_, number_out);
 }
@@ -86,9 +86,9 @@ long long int converter::to_decimal(const std::string & number) const
     });
 }
 
-std::vector<int> converter::to_base_out(long long int decimal) const
+std::vector<size_t> converter::to_base_out(long long int decimal) const
 {
-    std::vector<int> output;
+    std::vector<size_t> output;
 
     do
     {
@@ -99,7 +99,7 @@ std::vector<int> converter::to_base_out(long long int decimal) const
     return output;
 }
 
-std::string converter::build_number(converter::sign sign_, const std::vector<int> & number) const
+std::string converter::build_number(converter::sign sign_, const std::vector<size_t> & number) const
 {
     std::string result;
 
@@ -108,7 +108,7 @@ std::string converter::build_number(converter::sign sign_, const std::vector<int
 
     for(auto it = number.rbegin(); it != number.rend(); ++it)
     {
-        int shift = *it < 10 ? '0' : 'A';
+        size_t shift = *it < 10 ? '0' : 'A';
 
         result.push_back(*it % 10 + shift);
     }

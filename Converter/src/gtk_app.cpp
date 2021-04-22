@@ -57,9 +57,9 @@ void gtk_app::convert_button_clicked()
 
     try
     {
-        std::string value = converter(base_value_spinbutton->get_value_as_int(),
-                                      base_result_spinbutton->get_value_as_int())
-                                    .convert(input);
+        converter conv(base_value_spinbutton->get_value_as_int(),
+                       base_result_spinbutton->get_value_as_int());
+        std::string value = conv.convert(input);
 
         result = input + "\n|||\n"s + value;
     }

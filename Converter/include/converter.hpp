@@ -39,8 +39,8 @@ private:
     sign get_sign(const std::string & number) const;
     void validate_digits(sign sign_, const std::string & number) const;
     long long int to_decimal(const std::string & number) const;
-    std::vector<int> to_base_out(long long int decimal) const;
-    std::string build_number(sign sign_, const std::vector<int> & number) const;
+    std::vector<size_t> to_base_out(long long int decimal) const;
+    std::string build_number(sign sign_, const std::vector<size_t> & number) const;
 
     size_t base_in, base_out;
 };
