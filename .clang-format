@@ -1,17 +1,18 @@
-# VERSION 9
+# VERSION 14
 
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: false
-AlignConsecutiveMacros: false
+AlignArrayOfStructures: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveBitFields: None
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: None
 AlignEscapedNewlines: DontAlign
 AlignOperands: true
 AlignTrailingComments: false
-AllowAllArgumentsOnNextLine: true
-AllowAllConstructorInitializersOnNextLine: true
-AllowAllParametersOfDeclarationOnNextLine: true
-AllowShortBlocksOnASingleLine: false
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
@@ -21,21 +22,24 @@ AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: true
-BinPackParameters: true
+BinPackParameters: false
+BitFieldColonSpacing: Both
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Allman
+BreakBeforeConceptDeclarations: true
+#15 BreakBeforeConceptDeclarations: Always
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
 BreakStringLiterals: false
 ColumnLimit: 100
-CommentPragmas: ''
 CompactNamespaces: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 8
 Cpp11BracedListStyle: true
 DerivePointerAlignment: false
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Always
 FixNamespaceComments: false
 IncludeBlocks: Merge
 IncludeCategories:
@@ -43,7 +47,13 @@ IncludeCategories:
   - Regex: '^<cstdlib>|<stdlib.h>'
     Priority: 1
   # C standard library (C++ style)
-  - Regex: '^<c(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)>'
+  - Regex: "^<c(assert|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|stdarg|stddef|stdint|stdio|stdlib|string|time|uchar|wchar|wctype)>"
+    Priority: 1
+  # C standard library (C style)
+  - Regex: '^<(assert|complex|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|stdarg|stdbool|stddef|stdint|stdio|stdlib|string|tgmath|time|uchar|wchar|wctype)\.h>'
+    Priority: 1
+  # Standard headers (C++ style)
+  - Regex: "^<[a-z_]+>"
     Priority: 2
   # C standard library (C style)
   - Regex: '^<(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)\.h>'
@@ -58,32 +68,44 @@ IncludeCategories:
   - Regex: '^<(complex|chrono|functional|limits|locale|numeric|random|ratio|regex|type(info|index|_traits)|utility|valarray)>'
     Priority: 5
   # All other headers (C++ style)
-  - Regex: '^<.*>'
-    Priority: 6
-  # All other headers (C style)
-  - Regex: '^<.*\.(h|hpp)>'
-    Priority: 7
+  - Regex: "^<.+>"
+    Priority: 4
   # All custom headers
-  - Regex: '^".*"'
-    Priority: 8
-IncludeIsMainRegex: '$'
+  - Regex: '^".+"'
+    Priority: 6
+IncludeIsMainRegex: "$"
+IncludeIsMainSourceRegex: "$"
+IndentAccessModifiers: false
+IndentCaseBlocks: true
 IndentCaseLabels: true
 IndentPPDirectives: None
+IndentRequires: true
+#15 IndentRequiresClause: true
 IndentWidth: 4
 IndentWrappedFunctionNames: true
+#15 InsertBraces: false
+InsertTrailingCommas: None
 KeepEmptyLinesAtTheStartOfBlocks: false
-MacroBlockBegin: ''
-MacroBlockEnd: ''
+LambdaBodyIndentation: Signature
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: All
+PPIndentWidth: 0
+PackConstructorInitializers: NextLine
 PointerAlignment: Middle
+QualifierAlignment: Leave
+ReferenceAlignment: Pointer
 ReflowComments: false
-SortIncludes: true
+#15 RequiresClausePosition: OwnLine
+SeparateDefinitionBlocks: Always
+ShortNamespaceLines: 1
+SortIncludes: CaseSensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true
+SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
@@ -91,11 +113,15 @@ SpaceBeforeParens: Never
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
-SpacesInAngles: false
+SpacesInAngles: Never
 SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
 SpacesInContainerLiterals: false
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 1
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard: Cpp11
+Standard: c++17
 TabWidth: 4
 UseTab: Never
