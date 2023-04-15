@@ -1,8 +1,10 @@
-# [ C / C++ ]
-# Visual Studio Code
+**/build/
+**/buildOut/
+
 .vscode
 *.code-workspace
 
-# CLion
 .idea
 cmake-build-debug/
+
+**/*~
