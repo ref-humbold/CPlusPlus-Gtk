@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(Ships-Game VERSION 0.3.190423)
+project(Battleships-Game VERSION 0.3.190423)
 
 # PROPERTIES
-set(EXE_NAME ships_game)
+set(EXE_NAME battleships_game)
 
 set(INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
