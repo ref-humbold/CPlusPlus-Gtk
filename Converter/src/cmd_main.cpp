@@ -6,18 +6,43 @@
 
 using namespace std::string_literals;
 
-class args_exception : public std::logic_error
+struct args_exception : public std::logic_error
 {
-public:
     explicit args_exception(const std::string & s) : std::logic_error(s)
     {
     }
 };
 
-std::vector<std::string> parse_args(int argc, char * argv[])
+struct base_exception : public std::domain_error
 {
-    const std::string optstring = ":b:B:"s;
-    std::vector<std::string> args = {"", ""};
+    explicit base_exception(const std::string & s) : std::domain_error(s)
+    {
+    }
+};
+
+size_t parse_base(const std::string & s)
+{
+    size_t pos, base;
+
+    try
+    {
+        base = std::stoi(s, &pos);
+    }
+    catch(const std::invalid_argument & e)
+    {
+        throw base_exception("Given base is not a number");
+    }
+
+    if(pos < s.length())
+        throw base_exception("Given base is not a number");
+
+    return base;
+}
+
+app_parameters parse_args(int argc, char * argv[])
+{
+    app_parameters params;
+    const std::string optstring = ":b:B:v"s;
     int option = getopt(argc, argv, optstring.c_str());
 
     opterr = 0;
@@ -27,11 +52,15 @@ std::vector<std::string> parse_args(int argc, char * argv[])
         switch(option)
         {
             case 'b':
-                args[0] = optarg;
+                params.base_in = parse_base(optarg);
                 break;
 
             case 'B':
-                args[1] = optarg;
+                params.base_out = parse_base(optarg);
+                break;
+
+            case 'v':
+                params.verbose = true;
                 break;
 
             case '?':
@@ -49,22 +78,21 @@ std::vector<std::string> parse_args(int argc, char * argv[])
     }
 
     for(int i = optind; i < argc; ++i)
-        args.push_back(argv[i]);
+        params.numbers.push_back(argv[i]);
 
-    return args;
+    return params;
 }
 
-int main(int argc, char * argv[]) try
+int main(int argc, char * argv[])
+try
 {
-    std::vector<std::string> arguments = parse_args(argc, argv);
+    app_parameters params = parse_args(argc, argv);
 
-    cmd_app(arguments).run();
-
+    cmd_app(params).run();
     return 0;
 }
 catch(const std::exception & e)
 {
     std::cerr << "ERROR: " << e.what() << "\n";
-
     return 1;
 }

@@ -11,9 +11,8 @@
 #include <string>
 #include <vector>
 
-class converter_exception : public std::logic_error
+struct converter_exception : public std::logic_error
 {
-public:
     explicit converter_exception(const std::string & s) : std::logic_error(s)
     {
     }

@@ -7,18 +7,28 @@
 #include <vector>
 #include "converter.hpp"
 
-class base_exception : public std::logic_error
+class app_parameters
 {
 public:
-    explicit base_exception(const std::string & s) : std::logic_error(s)
+    app_parameters() : base_in{default_base}, base_out{default_base}, numbers{}, verbose{false}
     {
     }
+
+    size_t base_in, base_out;
+    std::vector<std::string> numbers;
+    bool verbose;
+
+private:
+    static constexpr size_t default_base = 10;
 };
 
 class cmd_app
 {
 public:
-    explicit cmd_app(const std::vector<std::string> & args);
+    explicit cmd_app(const app_parameters & params) : params{params}
+    {
+    }
+
     ~cmd_app() = default;
     cmd_app(const cmd_app &) = delete;
     cmd_app(cmd_app &&) = delete;
@@ -28,12 +38,9 @@ public:
     void run();
 
 private:
-    size_t parse_base(const std::string & s);
     void convert(const std::string & input, const converter & conv);
 
-    static constexpr size_t default_base = 10;
-    std::vector<std::string> numbers;
-    size_t base_in, base_out;
+    const app_parameters & params;
 };
 
 #endif
