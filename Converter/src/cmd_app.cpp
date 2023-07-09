@@ -24,36 +24,37 @@ void cmd_app::run()
         }
 }
 
-int cmd_app::parse_base(const std::string & s)
+size_t cmd_app::parse_base(const std::string & s)
 {
-    size_t n;
-    int v;
+    size_t pos, base;
 
     if(s == "")
-        return defbase;
+        return default_base;
 
     try
     {
-        v = stoi(s, &n);
+        base = stoi(s, &pos);
     }
     catch(const std::invalid_argument & e)
     {
         throw base_exception("Given base is not a number");
     }
 
-    if(n < s.length())
+    if(pos < s.length())
         throw base_exception("Given base is not a number");
 
-    return v;
+    return base;
 }
 
-void cmd_app::convert(const std::string & from, const converter & conv)
+void cmd_app::convert(const std::string & input, const converter & conv)
 {
-    std::cout << from << " @" << base_in << " => ";
+    std::cout << input << " @" << base_in << " => ";
 
     try
     {
-        std::cout << conv.convert(from) << " @" << base_out << "\n";
+        std::string result = conv.convert(input);
+
+        std::cout << result << " @" << base_out << "\n";
     }
     catch(const converter_exception & e)
     {
