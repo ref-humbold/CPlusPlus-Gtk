@@ -1,15 +1,15 @@
 #ifndef CONVERTER_HPP_
 #define CONVERTER_HPP_
 
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
+#include <algorithm>
 #include <exception>
 #include <iostream>
+#include <numeric>
 #include <stdexcept>
-#include <algorithm>
 #include <string>
 #include <vector>
-#include <numeric>
 
 class converter_exception : public std::logic_error
 {
@@ -30,19 +30,19 @@ private:
     };
 
 public:
-    converter(int base_in, int base_out);
+    converter(size_t base_in, size_t base_out);
     ~converter() = default;
 
     std::string convert(const std::string & number) const;
 
 private:
     sign get_sign(const std::string & number) const;
-    void validate_digits(sign sgn, const std::string & number) const;
+    void validate_digits(sign sign_, const std::string & number) const;
     long long int to_decimal(const std::string & number) const;
-    std::vector<int> to_base_out(long long int decimal) const;
-    std::string build_number(sign sgn, const std::vector<int> & number) const;
+    std::vector<size_t> to_base_out(long long int decimal) const;
+    std::string build_number(sign sign_, const std::vector<size_t> & number) const;
 
-    int base_in, base_out;
+    size_t base_in, base_out;
 };
 
 #endif

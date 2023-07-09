@@ -8,16 +8,18 @@ AlignConsecutiveBitFields: None
 AlignConsecutiveDeclarations: None
 AlignConsecutiveMacros: None
 AlignEscapedNewlines: DontAlign
-AlignOperands: true
+AlignOperands: Align
 AlignTrailingComments: false
 AllowAllArgumentsOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
@@ -37,15 +39,13 @@ CompactNamespaces: false
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 8
 Cpp11BracedListStyle: true
+DeriveLineEnding: false
 DerivePointerAlignment: false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: Always
 FixNamespaceComments: false
 IncludeBlocks: Merge
 IncludeCategories:
-  # C Standard library
-  - Regex: '^<cstdlib>|<stdlib.h>'
-    Priority: 1
   # C standard library (C++ style)
   - Regex: "^<c(assert|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|stdarg|stddef|stdint|stdio|stdlib|string|time|uchar|wchar|wctype)>"
     Priority: 1
@@ -56,16 +56,16 @@ IncludeCategories:
   - Regex: "^<[a-z_]+>"
     Priority: 2
   # C standard library (C style)
-  - Regex: '^<(std(arg|def|int|io)|assert|(u|w)char|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|string|time|wctype)\.h>'
+  - Regex: '^<(assert|complex|ctype|errno|fenv|float|inttypes|limits|locale|math|setjmp|signal|stdarg|stdbool|stddef|stdint|stdio|stdlib|string|tgmath|time|uchar|wchar|wctype)\.h>'
+    Priority: 1
+  # Standard headers (C++ style)
+  - Regex: '^<[a-z_]+>'
     Priority: 2
-  # C++ standard library: input-output, exceptions, memory, threads
-  - Regex: '^<(ios(fwd)?|(i|o|io|f|s)stream|streambuf|iomanip|exception|stdexcept|system_error|new|memory|atomic|thread|(shared_)?mutex|future|condition_variable)>'
+  # Standard headers (C style)
+  - Regex: '^<[a-z_]+\.(h|hpp)>'
     Priority: 3
-  # C++ standard library: algorithms, containers, strings
-  - Regex: '^<(algorithm|array|bitset|deque|iterator|(forward_|initializer_)?list|(unordered_)?map|queue|(unordered_)?set|stack|string|tuple|vector)>'
-    Priority: 4
-  # C++ standard library: utilities, numerics, types
-  - Regex: '^<(complex|chrono|functional|limits|locale|numeric|random|ratio|regex|type(info|index|_traits)|utility|valarray)>'
+  # All other headers (C style)
+  - Regex: '^<.+\.(h|hpp)>'
     Priority: 5
   # All other headers (C++ style)
   - Regex: "^<.+>"
@@ -78,6 +78,8 @@ IncludeIsMainSourceRegex: "$"
 IndentAccessModifiers: false
 IndentCaseBlocks: true
 IndentCaseLabels: true
+IndentExternBlock: NoIndent
+IndentGotoLabels: false
 IndentPPDirectives: None
 IndentRequires: true
 #15 IndentRequiresClause: true
@@ -111,6 +113,8 @@ SpaceBeforeCtorInitializerColon: true
 SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: Never
 SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
 SpaceInEmptyParentheses: false
 SpacesBeforeTrailingComments: 2
 SpacesInAngles: Never

@@ -28,12 +28,12 @@ public:
     void run();
 
 private:
-    int parse_base(const std::string & s);
-    void convert(const std::string & from, const converter & conv);
+    size_t parse_base(const std::string & s);
+    void convert(const std::string & input, const converter & conv);
 
-    static constexpr int defbase = 10;
+    static constexpr size_t default_base = 10;
     std::vector<std::string> numbers;
-    int base_in, base_out;
+    size_t base_in, base_out;
 };
 
 #endif
