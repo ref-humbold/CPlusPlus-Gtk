@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <exception>
+#include <stdexcept>
 #include <string>
 #include <vector>
 #include <unistd.h>
@@ -13,30 +15,23 @@ struct args_exception : public std::logic_error
     }
 };
 
-struct base_exception : public std::domain_error
+size_t parse_number(const std::string & s, const std::string & arg_name)
 {
-    explicit base_exception(const std::string & s) : std::domain_error(s)
-    {
-    }
-};
-
-size_t parse_base(const std::string & s)
-{
-    size_t pos, base;
+    size_t pos, value;
 
     try
     {
-        base = std::stoi(s, &pos);
+        value = std::stoi(s, &pos);
     }
     catch(const std::invalid_argument & e)
     {
-        throw base_exception("Given base is not a number");
+        throw args_exception("Given "s + arg_name + " is not a number"s);
     }
 
     if(pos < s.length())
-        throw base_exception("Given base is not a number");
+        throw args_exception("Given "s + arg_name + " is not a number"s);
 
-    return base;
+    return value;
 }
 
 app_parameters parse_args(int argc, char * argv[])
@@ -52,11 +47,11 @@ app_parameters parse_args(int argc, char * argv[])
         switch(option)
         {
             case 'b':
-                params.base_in = parse_base(optarg);
+                params.base_in = parse_number(optarg, "input base"s);
                 break;
 
             case 'B':
-                params.base_out = parse_base(optarg);
+                params.base_out = parse_number(optarg, "output base"s);
                 break;
 
             case 'v':
