@@ -41,7 +41,7 @@ $ /path/to/directory/bin/converter-gtk
 ## How to run command-line mode?
 Converter in command-line mode can be run directly using the executable file with options described below:
 ```sh
-$ /path/to/directory/bin/converter ...
+$ /path/to/directory/bin/converter OPTIONS ARGUMENTS
 ```
 
 ### Synopsis

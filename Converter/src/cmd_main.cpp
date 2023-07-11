@@ -21,7 +21,7 @@ size_t parse_number(const std::string & s, const std::string & arg_name)
 
     try
     {
-        value = std::stoi(s, &pos);
+        value = std::stoul(s, &pos);
     }
     catch(const std::invalid_argument & e)
     {
@@ -62,8 +62,16 @@ app_parameters parse_args(int argc, char * argv[])
                 throw args_exception("Unknown option -"s + static_cast<char>(optopt));
 
             case ':':
-                throw args_exception("Option -"s + static_cast<char>(optopt)
-                                     + " requires a number between 2 and 16"s);
+                {
+                    char option = static_cast<char>(optopt);
+
+                    if(option == 'b' || option == 'B')
+                        throw args_exception(
+                                "Option -"s + option
+                                + " requires a number between 2 and 16 as an argument"s);
+
+                    throw args_exception("Option -"s + option + " requires an argument"s);
+                }
 
             default:
                 break;
