@@ -45,10 +45,10 @@ $ /path/to/directory/bin/converter OPTIONS ARGUMENTS
 ```
 
 ### Synopsis
-**converter** \[**-b** *in*\] \[**-B** *out*\] \[*arg*\]...
+**converter** \[**-b** *in*\] \[**-B** *out*\] \[--\] \[*NUMBER*...\]
 
 ### Description
-Convert each number *arg* from numeral system of base *in* to system of base *out*. If no numbers are specified as arguments, read them from standard input.
+Convert each number *NUMBER* from numeral system of base *in* to system of base *out*. If no *NUMBER*s are specified, or if *NUMBER* is **"-"**, read from standard input.
 
 ### Options
 **-b** *in*

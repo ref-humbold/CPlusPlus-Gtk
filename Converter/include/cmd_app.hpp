@@ -38,8 +38,10 @@ public:
     void run();
 
 private:
+    void read_from_stdin(const converter & conv);
     void convert(const std::string & input, const converter & conv);
 
+    static const std::string stdin_number;
     const app_parameters & params;
 };
 

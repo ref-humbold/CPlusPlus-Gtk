@@ -1,24 +1,28 @@
 #include "cmd_app.hpp"
 
+using namespace std::string_literals;
+
+const std::string cmd_app::stdin_number = "-"s;
+
 void cmd_app::run()
 {
     converter conv(params.base_in, params.base_out);
 
-    if(params.numbers.size() > 0)
-        for(auto n : params.numbers)
+    if(params.numbers.size() == 0)
+        read_from_stdin(conv);
+    for(auto n : params.numbers)
+        if(n == stdin_number)
+            read_from_stdin(conv);
+        else
             convert(n, conv);
-    else
-        while(true)
-        {
-            std::string n;
+}
 
-            std::cin >> n;
+void cmd_app::read_from_stdin(const converter & conv)
+{
+    std::string n;
 
-            if(n == ".")
-                break;
-
-            convert(n, conv);
-        }
+    while(std::cin >> n)
+        convert(n, conv);
 }
 
 void cmd_app::convert(const std::string & input, const converter & conv)
