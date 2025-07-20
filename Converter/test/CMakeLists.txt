@@ -20,5 +20,5 @@ foreach(testsource ${TEST_SOURCES})
                           GTest::GTest
                           GTest::Main
                           ${LIB_NAME})
-    gtest_add_tests(TARGET ${testexec})
+    gtest_discover_tests(${testexec})
 endforeach(testsource ${TEST_SOURCES})
